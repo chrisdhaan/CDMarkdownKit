@@ -1,0 +1,6 @@
+framework module Pods_CDMarkdownKit_Example {
+  umbrella header "Pods-CDMarkdownKit_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

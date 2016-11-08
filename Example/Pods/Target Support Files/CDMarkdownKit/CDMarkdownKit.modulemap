@@ -1,0 +1,6 @@
+framework module CDMarkdownKit {
+  umbrella header "CDMarkdownKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

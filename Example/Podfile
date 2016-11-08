@@ -1,0 +1,5 @@
+use_frameworks!
+
+target 'CDMarkdownKit_Example' do
+  pod 'CDMarkdownKit', :path => '../'
+end

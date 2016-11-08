@@ -1,0 +1,16 @@
+PODS:
+  - CDMarkdownKit (0.9.0)
+
+DEPENDENCIES:
+  - CDMarkdownKit (from `../`)
+
+EXTERNAL SOURCES:
+  CDMarkdownKit:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CDMarkdownKit: 457844de8cc1d1ca7eeae25dc29ae53f10a3d985
+
+PODFILE CHECKSUM: f2dbf598da137dcf7c7de1f44af84ba6524a9830
+
+COCOAPODS: 1.1.1
