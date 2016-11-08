@@ -39,8 +39,14 @@ open class CDMarkdownItalic: CDMarkdownCommonElement {
         return CDMarkdownItalic.regex
     }
     
-    public init(font: UIFont? = nil, color: UIColor? = nil, backgroundColor: UIColor? = nil) {
-        self.font = font?.italic()
+    public init(font: UIFont? = nil, customItalicFont: UIFont? = nil, color: UIColor? = nil,
+                backgroundColor: UIColor? = nil) {
+        if let customItalicFont = customItalicFont {
+            self.font = customItalicFont
+        } else {
+            self.font = font?.italic()
+        }
+
         self.color = color
         self.backgroundColor = backgroundColor
     }

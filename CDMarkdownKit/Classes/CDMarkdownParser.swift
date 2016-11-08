@@ -60,6 +60,8 @@ open class CDMarkdownParser {
     
     // MARK: - Initializer
     public init(font: UIFont = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize),
+                boldFont: UIFont? = nil,
+                italicFont: UIFont? = nil,
                 fontColor: UIColor = UIColor.black,
                 backgroundColor: UIColor = UIColor.clear,
                 automaticLinkDetectionEnabled: Bool = true,
@@ -73,8 +75,8 @@ open class CDMarkdownParser {
         quote = CDMarkdownQuote(font: font)
         link = CDMarkdownLink(font: font)
         automaticLink = CDMarkdownAutomaticLink(font: font)
-        bold = CDMarkdownBold(font: font)
-        italic = CDMarkdownItalic(font: font)
+        bold = CDMarkdownBold(font: font, customBoldFont: boldFont)
+        italic = CDMarkdownItalic(font: font, customItalicFont: italicFont)
         code = CDMarkdownCode(font: font)
         
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled

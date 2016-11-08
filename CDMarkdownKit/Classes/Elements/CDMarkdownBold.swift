@@ -39,8 +39,14 @@ open class CDMarkdownBold: CDMarkdownCommonElement {
         return CDMarkdownBold.regex
     }
     
-    public init(font: UIFont? = nil, color: UIColor? = nil, backgroundColor: UIColor? = nil) {
-        self.font = font?.bold()
+    public init(font: UIFont? = nil, customBoldFont: UIFont? = nil, color: UIColor? = nil,
+                backgroundColor: UIColor? = nil) {
+        if let customBoldFont = customBoldFont {
+            self.font = customBoldFont
+        } else {
+            self.font = font?.bold()
+        }
+
         self.color = color
         self.backgroundColor = backgroundColor
     }
