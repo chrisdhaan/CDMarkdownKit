@@ -30,6 +30,7 @@ public protocol CDMarkdownStyle {
     
     var font: UIFont? { get }
     var color: UIColor? { get }
+    var backgroundColor: UIColor? { get }
     var attributes: [String: AnyObject] { get }
 }
 
@@ -42,6 +43,9 @@ public extension CDMarkdownStyle {
         }
         if let color = color {
             attributes[NSForegroundColorAttributeName] = color
+        }
+        if let backgroundColor = backgroundColor {
+            attributes[NSBackgroundColorAttributeName] = backgroundColor
         }
         return attributes
     }

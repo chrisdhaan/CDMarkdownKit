@@ -33,26 +33,24 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
     
     open var font: UIFont?
     open var color: UIColor?
+    open var backgroundColor: UIColor?
     
     open var regex: String {
         return CDMarkdownCode.regex
     }
     
-    public init(font: UIFont? = nil, color: UIColor? = nil) {
+    public init(font: UIFont? = UIFont(name: "Menlo-Regular", size: UIFont.smallSystemFontSize),
+                color: UIColor? = UIColor(red: 0.95, green: 0.25, blue: 0.44, alpha: 1.0),
+                backgroundColor: UIColor? = UIColor(red: 0.91, green: 0.91, blue: 0.91, alpha: 1.0)) {
         self.font = font
         self.color = color
+        self.backgroundColor = backgroundColor
     }
     
     open func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange) {
         let matchString: String = attributedString.attributedSubstring(from: range).string
         guard let unescapedString = matchString.unescapeUTF16() else { return }
         attributedString.replaceCharacters(in: range, with: unescapedString)
-        var markdownCodeAttributes = attributes
-        markdownCodeAttributes[NSBackgroundColorAttributeName] = UIColor(red: 0.91, green: 0.91, blue: 0.91, alpha: 1.0)
-        markdownCodeAttributes[NSForegroundColorAttributeName] = UIColor(red: 0.95, green: 0.25, blue: 0.44, alpha: 1.0)
-        if let size = font?.pointSize {
-            markdownCodeAttributes[NSFontAttributeName] = UIFont(name: "Menlo-Regular", size: size)
-        }
-        attributedString.addAttributes(markdownCodeAttributes, range: NSRange(location: range.location, length: unescapedString.characters.count))
+        attributedString.addAttributes(attributes, range: NSRange(location: range.location, length: unescapedString.characters.count))
     }
 }

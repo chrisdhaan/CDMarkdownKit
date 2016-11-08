@@ -43,6 +43,7 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
     open var maxLevel: Int
     open var font: UIFont?
     open var color: UIColor?
+    open var backgroundColor: UIColor?
     open var fontIncrease: Int
     
     open var regex: String {
@@ -51,10 +52,12 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
     }
     
     public init(font: UIFont? = UIFont.boldSystemFont(ofSize: UIFont.smallSystemFontSize),
-                maxLevel: Int = 0, fontIncrease: Int = 2, color: UIColor? = nil) {
+                maxLevel: Int = 0, fontIncrease: Int = 2, color: UIColor? = nil,
+                backgroundColor: UIColor? = nil) {
         self.maxLevel = maxLevel
         self.font = font
         self.color = color
+        self.backgroundColor = backgroundColor
         self.fontIncrease = fontIncrease
     }
     

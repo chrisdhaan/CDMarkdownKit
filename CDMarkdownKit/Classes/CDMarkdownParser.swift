@@ -55,12 +55,18 @@ open class CDMarkdownParser {
     // Enables or disables detection of URLs even without Markdown format
     open var automaticLinkDetectionEnabled: Bool = true
     open let font: UIFont
+    open let fontColor: UIColor
+    open let backgroundColor: UIColor
     
-    // MARK: - Initializers
+    // MARK: - Initializer
     public init(font: UIFont = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize),
+                fontColor: UIColor = UIColor.black,
+                backgroundColor: UIColor = UIColor.clear,
                 automaticLinkDetectionEnabled: Bool = true,
                 customElements: [CDMarkdownElement] = []) {
         self.font = font
+        self.fontColor = fontColor
+        self.backgroundColor = backgroundColor
         
         header = CDMarkdownHeader(font: font)
         list = CDMarkdownList(font: font)
@@ -69,30 +75,6 @@ open class CDMarkdownParser {
         automaticLink = CDMarkdownAutomaticLink(font: font)
         bold = CDMarkdownBold(font: font)
         italic = CDMarkdownItalic(font: font)
-        code = CDMarkdownCode(font: font)
-        
-        self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
-        self.escapingElements = [codeEscaping, escaping]
-        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic]
-        self.unescapingElements = [code, unescaping]
-        self.customElements = customElements
-    }
-    
-    // Allows for custom fonts
-    public init(font: UIFont = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize),
-                boldFont: UIFont?,
-                italicFont: UIFont?,
-                automaticLinkDetectionEnabled: Bool = true,
-                customElements: [CDMarkdownElement] = []) {
-        self.font = font
-        
-        header = CDMarkdownHeader(font: font)
-        list = CDMarkdownList(font: font)
-        quote = CDMarkdownQuote(font: font)
-        link = CDMarkdownLink(font: font)
-        automaticLink = CDMarkdownAutomaticLink(font: font)
-        bold = CDMarkdownBold(font: font, customBoldFont: boldFont)
-        italic = CDMarkdownItalic(font: font, customItalicFont: italicFont)
         code = CDMarkdownCode(font: font)
         
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
@@ -124,6 +106,10 @@ open class CDMarkdownParser {
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         attributedString.addAttribute(NSFontAttributeName, value: font,
+                                      range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSForegroundColorAttributeName, value: fontColor,
+                                      range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSBackgroundColorAttributeName, value: backgroundColor,
                                       range: NSRange(location: 0, length: attributedString.length))
         var elements: [CDMarkdownElement] = escapingElements
         elements.append(contentsOf: defaultElements)

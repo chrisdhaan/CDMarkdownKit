@@ -33,6 +33,7 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
     
     open var font: UIFont?
     open var color: UIColor?
+    open var backgroundColor: UIColor?
     
     open var regex: String {
         return CDMarkdownLink.regex
@@ -42,9 +43,10 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
         return try NSRegularExpression(pattern: regex, options: .dotMatchesLineSeparators)
     }
     
-    public init(font: UIFont? = nil, color: UIColor? = UIColor.blue) {
+    public init(font: UIFont? = nil, color: UIColor? = UIColor.blue, backgroundColor: UIColor? = nil) {
         self.font = font
         self.color = color
+        self.backgroundColor = backgroundColor
     }
     
     open func formatText(_ attributedString: NSMutableAttributedString, range: NSRange,

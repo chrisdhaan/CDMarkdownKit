@@ -40,14 +40,27 @@ class ViewController: UIViewController {
         let markdownString = NSLocalizedString("Markdown", tableName: nil, bundle: Bundle.main, value: "", comment: "")
         let attributedString = NSAttributedString(string: markdownString)
         
+        // Example of a markdown parser with default properties
         let markdownParser = CDMarkdownParser()
-        markdownParser.header.color = UIColor.black
-        markdownParser.list.color = UIColor.black
-        markdownParser.quote.color = UIColor.gray
-        markdownParser.link.color = UIColor.blue
-        markdownParser.automaticLink.color = UIColor.blue
-        markdownParser.italic.color = UIColor.gray
-        markdownParser.code.color = UIColor.red
+        
+        // Example of a markdown parser with custom properties
+//        let markdownParser = CDMarkdownParser(fontColor: UIColor.brown, backgroundColor: UIColor.yellow)
+//        markdownParser.bold.color = UIColor.cyan
+//        markdownParser.bold.backgroundColor = UIColor.purple
+//        markdownParser.header.color = UIColor.black
+//        markdownParser.header.backgroundColor = UIColor.orange
+//        markdownParser.list.color = UIColor.black
+//        markdownParser.list.backgroundColor = UIColor.red
+//        markdownParser.quote.color = UIColor.gray
+//        markdownParser.link.color = UIColor.blue
+//        markdownParser.link.backgroundColor = UIColor.green
+//        markdownParser.automaticLink.color = UIColor.blue
+//        markdownParser.automaticLink.backgroundColor = UIColor.green
+//        markdownParser.italic.color = UIColor.gray
+//        markdownParser.code.font = UIFont.systemFont(ofSize: 17)
+//        markdownParser.code.color = UIColor.red
+//        markdownParser.code.backgroundColor = UIColor.black
+
         self.textView.attributedText = markdownParser.parse(attributedString)
     }
     

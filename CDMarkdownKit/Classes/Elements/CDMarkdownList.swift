@@ -34,6 +34,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
     open var maxLevel: Int
     open var font: UIFont?
     open var color: UIColor?
+    open var backgroundColor: UIColor?
     open var separator: String
     open var indicator: String
     
@@ -43,12 +44,13 @@ open class CDMarkdownList: CDMarkdownLevelElement {
     }
     
     public init(font: UIFont? = nil, maxLevel: Int = 0, indicator: String = "•", separator: String = "  ",
-                color: UIColor? = nil) {
+                color: UIColor? = nil, backgroundColor: UIColor? = nil) {
         self.maxLevel = maxLevel
         self.indicator = indicator
         self.separator = separator
         self.font = font
         self.color = color
+        self.backgroundColor = backgroundColor
     }
     
     open func formatText(_ attributedString: NSMutableAttributedString, range: NSRange, level: Int) {
