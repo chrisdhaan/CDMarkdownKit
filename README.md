@@ -12,7 +12,13 @@ This pod is currently in development. As of release 0.9.0 the code is stable and
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+---
+
 ## Requirements
+
+- iosSDK: 8.0
+
+---
 
 ## Installation
 
@@ -59,6 +65,83 @@ Afterwards, run the following command:
 carthage update
 ```
 
+---
+
+## Usage
+
+### Initialization
+
+```swift
+// Create parser
+let markdownParser = CDMarkdownParser()
+// Parse markdown
+let markdown = "This *framework* helps **with** parsing `markdown`."
+label.attributedText = markdownParser.parse(markdown)
+```
+
+### Customization
+
+```swift
+// Create parser
+let markdownParser = CDMarkdownParser(font: UIFont(name: "HelveticaNeue", size: 16),
+                                      boldFont: UIFont(name: "HelveticaNeue-Bold", size: 16),
+                                      italicFont: UIFont(name: "HelveticaNeue-Thin", size: 16),
+                                      fontColor: UIColor.darkGray,
+                                      backgroundColor: UIColor.lightGray)
+// Customize elements
+/// Bold
+markdownParser.bold.color = UIColor.cyan
+markdownParser.bold.backgroundColor = UIColor.purple
+/// Header
+markdownParser.header.color = UIColor.black
+markdownParser.header.backgroundColor = UIColor.orange
+/// List
+markdownParser.list.color = UIColor.black
+markdownParser.list.backgroundColor = UIColor.red
+/// Quote
+markdownParser.quote.color = UIColor.gray
+/// Link
+markdownParser.link.color = UIColor.blue
+markdownParser.link.backgroundColor = UIColor.green
+markdownParser.automaticLink.color = UIColor.blue
+markdownParser.automaticLink.backgroundColor = UIColor.green
+/// Italic
+markdownParser.italic.color = UIColor.gray
+/// Code
+markdownParser.code.font = UIFont.systemFont(ofSize: 17)
+markdownParser.code.color = UIColor.red
+markdownParser.code.backgroundColor = UIColor.black
+// Parse markdown
+let markdown = "This *framework* helps **with** parsing `markdown`."
+label.attributedText = markdownParser.parse(markdown)
+```
+
+### Supported Elements
+
+```
+*italic* or _italic_
+**bold or **bold**
+
+# Header 1
+## Header 2
+### Header 3
+#### Header 4
+##### Header 5
+###### Header 6
+
+> Quote
+
+* List
+- List
++ List
+
+`code` or ```code```
+
+[Link](url)
+```
+
+---
+
 ## Author
 
 Christopher de Haan, contact@christopherdehaan.me
@@ -70,3 +153,5 @@ CDMarkdownKit was influenced by [MarkdownKit](https://github.com/ivanbruel/Markd
 ## License
 
 CDMarkdownKit is available under the MIT license. See the LICENSE file for more info.
+
+---
