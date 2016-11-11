@@ -52,14 +52,19 @@ class ViewController: UIViewController {
 //        markdownParser.list.color = UIColor.black
 //        markdownParser.list.backgroundColor = UIColor.red
 //        markdownParser.quote.color = UIColor.gray
+//        markdownParser.quote.backgroundColor = UIColor.clear
 //        markdownParser.link.color = UIColor.blue
 //        markdownParser.link.backgroundColor = UIColor.green
 //        markdownParser.automaticLink.color = UIColor.blue
 //        markdownParser.automaticLink.backgroundColor = UIColor.green
 //        markdownParser.italic.color = UIColor.gray
+//        markdownParser.italic.backgroundColor = UIColor.clear
 //        markdownParser.code.font = UIFont.systemFont(ofSize: 17)
 //        markdownParser.code.color = UIColor.red
 //        markdownParser.code.backgroundColor = UIColor.black
+//        markdownParser.syntax.font = UIFont.systemFont(ofSize: 15)
+//        markdownParser.syntax.color = UIColor.lightGray
+//        markdownParser.syntax.backgroundColor = UIColor.black
 
         self.textView.attributedText = markdownParser.parse(attributedString)
     }

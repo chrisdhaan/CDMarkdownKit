@@ -2,7 +2,7 @@
 //  CDMarkdownCode.swift
 //  Pods
 //
-//  Created by Chris De Haan on 11/7/16.
+//  Created by Chris De Haan on 11/10/16.
 //
 //  Copyright (c) 2016 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -27,21 +27,21 @@
 
 import UIKit
 
-open class CDMarkdownCode: CDMarkdownCommonElement {
+open class CDMarkdownSyntax: CDMarkdownCommonElement {
     
-    fileprivate static let regex = "(\\s+|^)(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)"
+    fileprivate static let regex = "(\\s+|^)(`{3})(\\s*[^`]*?\\s*)(\\2)(?!`)"
     
     open var font: UIFont?
     open var color: UIColor?
     open var backgroundColor: UIColor?
     
     open var regex: String {
-        return CDMarkdownCode.regex
+        return CDMarkdownSyntax.regex
     }
     
     public init(font: UIFont? = UIFont(name: "Menlo-Regular", size: UIFont.smallSystemFontSize),
-                color: UIColor? = UIColor(red: 189/255.0, green: 0/255.0, blue: 58/255.0, alpha: 1.0),
-                backgroundColor: UIColor? = UIColor(red: 247/255.0, green: 238/255.0, blue: 241/255.0, alpha: 1.0)) {
+                color: UIColor? = UIColor(red: 57/255.0, green: 57/255.0, blue: 57/255.0, alpha: 1.0),
+                backgroundColor: UIColor? = UIColor(red: 235/255.0, green: 235/255.0, blue: 235/255.0, alpha: 1.0)) {
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor

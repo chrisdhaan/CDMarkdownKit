@@ -16,7 +16,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
-- iosSDK: 8.0
+- iOS 8.0 or higher
 
 ---
 
@@ -100,6 +100,7 @@ markdownParser.list.color = UIColor.black
 markdownParser.list.backgroundColor = UIColor.red
 /// Quote
 markdownParser.quote.color = UIColor.gray
+markdownParser.quote.backgroundColor = UIColor.clear
 /// Link
 markdownParser.link.color = UIColor.blue
 markdownParser.link.backgroundColor = UIColor.green
@@ -107,10 +108,15 @@ markdownParser.automaticLink.color = UIColor.blue
 markdownParser.automaticLink.backgroundColor = UIColor.green
 /// Italic
 markdownParser.italic.color = UIColor.gray
+markdownParser.italic.backgroundColor = UIColor.clear
 /// Code
 markdownParser.code.font = UIFont.systemFont(ofSize: 17)
 markdownParser.code.color = UIColor.red
 markdownParser.code.backgroundColor = UIColor.black
+/// Syntax
+markdownParser.syntax.font = UIFont.systemFont(ofSize: 15)
+markdownParser.syntax.color = UIColor.lightGray
+markdownParser.syntax.backgroundColor = UIColor.black
 // Parse markdown
 let markdown = "This *framework* helps **with** parsing `markdown`."
 label.attributedText = markdownParser.parse(markdown)
@@ -120,7 +126,7 @@ label.attributedText = markdownParser.parse(markdown)
 
 ```
 *italic* or _italic_
-**bold or **bold**
+**bold** or __bold__
 
 # Header 1
 ## Header 2
@@ -135,7 +141,9 @@ label.attributedText = markdownParser.parse(markdown)
 - List
 + List
 
-`code` or ```code```
+`code`
+
+```syntax```
 
 [Link](url)
 ```
