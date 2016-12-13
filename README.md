@@ -148,6 +148,17 @@ label.attributedText = markdownParser.parse(markdown)
 [Link](url)
 ```
 
+### UI
+
+```swift
+@IBOutlet fileprivate weak var textView: CDMarkdownTextView!
+/// Standard markdown UI formatting
+self.textView.roundCodeCorners = true
+self.textView.roundSyntaxCorners = true
+/// Custom markdown UI formatting
+self.textView.roundAllCorners = true
+```
+
 ---
 
 ## Author

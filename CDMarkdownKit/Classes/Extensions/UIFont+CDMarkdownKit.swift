@@ -27,7 +27,7 @@
 
 import UIKit
 
-extension UIFont {
+internal extension UIFont {
     
     func withTraits(_ traits: UIFontDescriptorSymbolicTraits...) -> UIFont {
         let descriptor = fontDescriptor

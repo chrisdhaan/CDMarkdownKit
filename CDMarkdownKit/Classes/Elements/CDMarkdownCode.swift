@@ -40,8 +40,8 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
     }
     
     public init(font: UIFont? = UIFont(name: "Menlo-Regular", size: UIFont.smallSystemFontSize),
-                color: UIColor? = UIColor(red: 189/255.0, green: 0/255.0, blue: 58/255.0, alpha: 1.0),
-                backgroundColor: UIColor? = UIColor(red: 247/255.0, green: 238/255.0, blue: 241/255.0, alpha: 1.0)) {
+                color: UIColor? = UIColor.codeTextRed(),
+                backgroundColor: UIColor? = UIColor.codeBackgroundRed()) {
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor

@@ -31,7 +31,7 @@ import CDMarkdownKit
 
 class ViewController: UIViewController {
     
-    @IBOutlet private weak var textView: UITextView!
+    @IBOutlet fileprivate weak var textView: CDMarkdownTextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +42,8 @@ class ViewController: UIViewController {
         
         // Example of a markdown parser with default properties
         let markdownParser = CDMarkdownParser()
+        self.textView.roundCodeCorners = true
+        self.textView.roundSyntaxCorners = true
         
         // Example of a markdown parser with custom properties
 //        let markdownParser = CDMarkdownParser(fontColor: UIColor.brown, backgroundColor: UIColor.yellow)
@@ -65,8 +67,10 @@ class ViewController: UIViewController {
 //        markdownParser.syntax.font = UIFont.systemFont(ofSize: 15)
 //        markdownParser.syntax.color = UIColor.lightGray
 //        markdownParser.syntax.backgroundColor = UIColor.black
+//        self.textView.roundAllCorners = true
 
-        self.textView.attributedText = markdownParser.parse(attributedString)
+        let attributedText = markdownParser.parse(attributedString)
+        self.textView.attributedText = attributedText
     }
     
     override func didReceiveMemoryWarning() {
