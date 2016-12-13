@@ -29,9 +29,9 @@ import UIKit
 
 open class CDMarkdownLayoutManager: NSLayoutManager {
 
-    open var roundAllCorners: Bool!
-    open var roundCodeCorners: Bool!
-    open var roundSyntaxCorners: Bool!
+    open var roundAllCorners: Bool = false
+    open var roundCodeCorners: Bool = false
+    open var roundSyntaxCorners: Bool = false
     
     override open func fillBackgroundRectArray(_ rectArray: UnsafePointer<CGRect>, count rectCount: Int, forCharacterRange charRange: NSRange, color: UIColor) {
         

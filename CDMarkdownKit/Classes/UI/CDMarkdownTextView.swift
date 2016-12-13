@@ -31,40 +31,19 @@ open class CDMarkdownTextView: UITextView {
 
     fileprivate var customLayoutManager: CDMarkdownLayoutManager!
     
-    open var roundAllCorners: Bool! {
-        get {
-            if let roundAllCorners = roundAllCorners {
-                return roundAllCorners
-            } else {
-                return false
-            }
-        }
-        set {
-            self.customLayoutManager.roundAllCorners = newValue
+    open var roundAllCorners: Bool = false {
+        didSet {
+            self.customLayoutManager.roundAllCorners = roundAllCorners
         }
     }
-    open var roundCodeCorners: Bool! {
-        get {
-            if let roundCodeCorners = roundCodeCorners {
-                return roundCodeCorners
-            } else {
-                return false
-            }
-        }
-        set {
-            self.customLayoutManager.roundCodeCorners = newValue
+    open var roundCodeCorners: Bool = false {
+        didSet {
+            self.customLayoutManager.roundCodeCorners = roundCodeCorners
         }
     }
-    open var roundSyntaxCorners: Bool! {
-        get {
-            if let roundSyntaxCorners = roundSyntaxCorners {
-                return roundSyntaxCorners
-            } else {
-                return false
-            }
-        }
-        set {
-            self.customLayoutManager.roundSyntaxCorners = newValue
+    open var roundSyntaxCorners: Bool = false {
+        didSet {
+            self.customLayoutManager.roundSyntaxCorners = roundSyntaxCorners
         }
     }
     
@@ -89,9 +68,6 @@ open class CDMarkdownTextView: UITextView {
     
     open func configure() {
         let layoutManager = CDMarkdownLayoutManager()
-        layoutManager.roundAllCorners = false
-        layoutManager.roundCodeCorners = false
-        layoutManager.roundSyntaxCorners = false
         layoutManager.addTextContainer(self.textContainer)
         self.textStorage.addLayoutManager(layoutManager)
         self.customLayoutManager = layoutManager
