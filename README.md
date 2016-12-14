@@ -122,7 +122,7 @@ let markdown = "This *framework* helps **with** parsing `markdown`."
 label.attributedText = markdownParser.parse(markdown)
 ```
 
-### Supported Elements
+### Supported Markdown Elements
 
 ```
 *italic* or _italic_
@@ -148,9 +148,51 @@ label.attributedText = markdownParser.parse(markdown)
 [Link](url)
 ```
 
-### UI
+### UI Objects
+
+#### CDMarkdownTextView
+
+**It is recommended that any CDMarkdownTextView objects be initialized programmatically** as it uses custom text drawing objects to render attributed strings.
+
+A CDMarkdownTextView object will still render when initialized via a storyboard but the default behavior for the following properties will be overridden:
+
+- ```isScrollEnabled = true```
+- ```isSelectable = false```
+- ```isEditable = false```
+
+**These defaults are set to avoid crashes. There still may be unforeseen crashes that occur when initializing a CDMarkdownTextView object via a storyboard.**
+
+##### Programmatic Example
 
 ```swift
+let size = self.frame.size
+let rect = CGRect(x: 10, 
+                  y: 10, 
+                  width: CGFloat(size.width - 20), 
+                  height: CGFloat(size.height - 20))
+/// Create custom text container
+let textContainer = NSTextContainer(size: size)
+/// Create custom layout manager
+let layoutManager = CDMarkdownLayoutManager()
+layoutManager.addTextContainer(textContainer)
+/// Initialization
+let textView = CDMarkdownTextView(frame: rect, 
+                                  textContainer: textContainer, 
+                                  layoutManager: layoutManager)
+textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+/// Standard markdown UI formatting
+self.textView.roundCodeCorners = true
+self.textView.roundSyntaxCorners = true
+/// Custom markdown UI formatting
+self.textView.roundAllCorners = true
+
+self.view.addSubview(textView)
+```
+
+##### Storyboard Example
+
+```swift
+/// Initialization
 @IBOutlet fileprivate weak var textView: CDMarkdownTextView!
 /// Standard markdown UI formatting
 self.textView.roundCodeCorners = true

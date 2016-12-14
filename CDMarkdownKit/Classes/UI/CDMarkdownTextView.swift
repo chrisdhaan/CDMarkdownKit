@@ -28,9 +28,9 @@
 import UIKit
 
 open class CDMarkdownTextView: UITextView {
-
-    fileprivate var customLayoutManager: CDMarkdownLayoutManager!
     
+    open var customLayoutManager: CDMarkdownLayoutManager!
+    open var customTextStorage: NSTextStorage!
     open var roundAllCorners: Bool = false {
         didSet {
             self.customLayoutManager.roundAllCorners = roundAllCorners
@@ -52,24 +52,37 @@ open class CDMarkdownTextView: UITextView {
             return super.attributedText
         }
         set {
-            self.textStorage.setAttributedString(newValue)
+            self.customTextStorage = NSTextStorage(attributedString: newValue)
+            if let layoutManager = self.customLayoutManager {
+                self.customTextStorage.addLayoutManager(layoutManager)
+            } else {
+                self.configure()
+                
+                self.customTextStorage.addLayoutManager(self.customLayoutManager)
+            }
         }
+    }
+    
+    public init(frame: CGRect, textContainer: NSTextContainer, layoutManager: CDMarkdownLayoutManager) {
+        super.init(frame: frame, textContainer: textContainer)
+        
+        self.customLayoutManager = layoutManager
     }
     
     public override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
-        self.configure()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.configure()
     }
     
     open func configure() {
-        let layoutManager = CDMarkdownLayoutManager()
-        layoutManager.addTextContainer(self.textContainer)
-        self.textStorage.addLayoutManager(layoutManager)
-        self.customLayoutManager = layoutManager
+        self.customLayoutManager = CDMarkdownLayoutManager()
+        self.customLayoutManager.addTextContainer(self.textContainer)
+        
+        self.isScrollEnabled = true
+        self.isSelectable = false
+        self.isEditable = false
     }
 }
