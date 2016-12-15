@@ -1,6 +1,6 @@
 //
 //  UIColor+CDMarkdownKit.swift
-//  Pods
+//  CDMarkdownKit
 //
 //  Created by Chris De Haan on 12/12/16.
 //

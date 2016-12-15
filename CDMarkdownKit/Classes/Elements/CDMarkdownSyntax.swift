@@ -1,6 +1,6 @@
 //
 //  CDMarkdownCode.swift
-//  Pods
+//  CDMarkdownKit
 //
 //  Created by Chris De Haan on 11/10/16.
 //

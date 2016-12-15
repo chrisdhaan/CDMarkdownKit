@@ -1,6 +1,6 @@
 //
 //  CDMarkdownUnescaping.swift
-//  Pods
+//  CDMarkdownKit
 //
 //  Created by Chris De Haan on 11/7/16.
 //

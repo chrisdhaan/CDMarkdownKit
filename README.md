@@ -148,9 +148,7 @@ label.attributedText = markdownParser.parse(markdown)
 [Link](url)
 ```
 
-### UI Objects
-
-#### CDMarkdownTextView
+### CDMarkdownTextView
 
 **It is recommended that any CDMarkdownTextView objects be initialized programmatically** as it uses custom text drawing objects to render attributed strings.
 
@@ -162,7 +160,7 @@ A CDMarkdownTextView object will still render when initialized via a storyboard 
 
 **These defaults are set to avoid crashes. There still may be unforeseen crashes that occur when initializing a CDMarkdownTextView object via a storyboard.**
 
-##### Programmatic Example
+#### Programmatic Example
 
 ```swift
 let size = self.frame.size
@@ -181,15 +179,15 @@ let textView = CDMarkdownTextView(frame: rect,
                                   layoutManager: layoutManager)
 textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 /// Standard markdown UI formatting
-self.textView.roundCodeCorners = true
-self.textView.roundSyntaxCorners = true
+textView.roundCodeCorners = true
+textView.roundSyntaxCorners = true
 /// Custom markdown UI formatting
-self.textView.roundAllCorners = true
+textView.roundAllCorners = true
 
 self.view.addSubview(textView)
 ```
 
-##### Storyboard Example
+#### Storyboard Example
 
 ```swift
 /// Initialization
@@ -199,6 +197,40 @@ self.textView.roundCodeCorners = true
 self.textView.roundSyntaxCorners = true
 /// Custom markdown UI formatting
 self.textView.roundAllCorners = true
+```
+
+### CDMarkdownLabel
+
+#### Programmatic Example
+
+```swift
+let size = self.frame.size
+let rect = CGRect(x: 10, 
+                  y: 10, 
+                  width: CGFloat(size.width - 20), 
+                  height: CGFloat(size.height - 20))
+/// Initialization
+let label = CDMarkdownLabel(frame: rect)
+label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+/// Standard markdown UI formatting
+label.roundCodeCorners = true
+label.roundSyntaxCorners = true
+/// Custom markdown UI formatting
+label.roundAllCorners = true
+
+self.view.addSubview(label)
+```
+
+#### Storyboard Example
+
+```swift
+/// Initialization
+@IBOutlet fileprivate weak var label: CDMarkdownLabel!
+/// Standard markdown UI formatting
+self.label.roundCodeCorners = true
+self.label.roundSyntaxCorners = true
+/// Custom markdown UI formatting
+self.label.roundAllCorners = true
 ```
 
 ---

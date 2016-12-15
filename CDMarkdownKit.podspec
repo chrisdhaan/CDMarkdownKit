@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CDMarkdownKit'
-  s.version          = '0.9.4'
+  s.version          = '0.9.5'
   s.summary          = 'An extensive Swift framework providing simple and customizable markdown parsing.'
   s.description      = <<-DESC
 This Swift frameworks handles standard markdown parsing along with the ability to parse custom elements.

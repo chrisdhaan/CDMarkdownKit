@@ -1,6 +1,6 @@
 //
 //  CDMarkdownTextView.swift
-//  Pods
+//  CDMarkdownKit
 //
 //  Created by Chris De Haan on 12/8/16.
 //
@@ -33,17 +33,23 @@ open class CDMarkdownTextView: UITextView {
     open var customTextStorage: NSTextStorage!
     open var roundAllCorners: Bool = false {
         didSet {
-            self.customLayoutManager.roundAllCorners = roundAllCorners
+            if let layoutManager = self.customLayoutManager {
+                layoutManager.roundAllCorners = roundAllCorners
+            }
         }
     }
     open var roundCodeCorners: Bool = false {
         didSet {
-            self.customLayoutManager.roundCodeCorners = roundCodeCorners
+            if let layoutManager = self.customLayoutManager {
+                layoutManager.roundCodeCorners = roundCodeCorners
+            }
         }
     }
     open var roundSyntaxCorners: Bool = false {
         didSet {
-            self.customLayoutManager.roundSyntaxCorners = roundSyntaxCorners
+            if let layoutManager = self.customLayoutManager {
+                layoutManager.roundSyntaxCorners = roundSyntaxCorners
+            }
         }
     }
     
@@ -55,10 +61,6 @@ open class CDMarkdownTextView: UITextView {
             self.customTextStorage = NSTextStorage(attributedString: newValue)
             if let layoutManager = self.customLayoutManager {
                 self.customTextStorage.addLayoutManager(layoutManager)
-            } else {
-                self.configure()
-                
-                self.customTextStorage.addLayoutManager(self.customLayoutManager)
             }
         }
     }
@@ -75,6 +77,7 @@ open class CDMarkdownTextView: UITextView {
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        self.configure()
     }
     
     open func configure() {
