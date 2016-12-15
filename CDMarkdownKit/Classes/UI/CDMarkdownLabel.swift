@@ -81,7 +81,7 @@ open class CDMarkdownLabel: UILabel {
             return super.attributedText
         }
         set {
-            if let textContainer = self.customTextContainer,
+            if let _ = self.customTextContainer,
                 let layoutManager = self.customLayoutManager {
                 self.customTextStorage = NSTextStorage(attributedString: newValue)
                 self.customTextStorage.addLayoutManager(layoutManager)
