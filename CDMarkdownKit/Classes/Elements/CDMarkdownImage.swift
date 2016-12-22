@@ -1,8 +1,8 @@
 //
-//  CDMarkdownLink.swift
+//  CDMarkdownImage.swift
 //  CDMarkdownKit
 //
-//  Created by Chris De Haan on 11/7/16.
+//  Created by Chris De Haan on 12/15/16.
 //
 //  Copyright (c) 2016 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -27,16 +27,16 @@
 
 import UIKit
 
-open class CDMarkdownLink: CDMarkdownLinkElement {
+open class CDMarkdownImage: CDMarkdownLinkElement {
     
-    fileprivate static let regex = "[^!]\\[[^\\[]*?\\]\\([^\\)]*\\)"
+    fileprivate static let regex = "[!]\\[[^\\[]*?\\]\\([^\\)]*\\)"
     
     open var font: UIFont?
     open var color: UIColor?
     open var backgroundColor: UIColor?
     
     open var regex: String {
-        return CDMarkdownLink.regex
+        return CDMarkdownImage.regex
     }
     
     open func regularExpression() throws -> NSRegularExpression {
@@ -71,14 +71,26 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
         
         // deleting trailing markdown
         // needs to be called before formattingBlock to support modification of length
-        attributedString.deleteCharacters(in: NSRange(location: linkRange.location - 1,
+        attributedString.deleteCharacters(in: NSRange(location: match.range.location,
                                                       length: linkRange.length + 2))
         
-        // deleting leading markdown
-        // needs to be called before formattingBlock to provide a stable range
-        attributedString.deleteCharacters(in: NSRange(location: match.range.location + 1, length: 1))
-        let formatRange = NSRange(location: match.range.location + 1,
-                                  length: linkStartInResult - match.range.location - 3)
+        // load image
+        let textAttachment = NSTextAttachment()
+        if let url = URL(string: linkURLString) {
+            let data = try? Data(contentsOf: url)
+            if let data = data,
+                let image = UIImage(data: data) {
+                textAttachment.image = image
+            }
+        }
+        
+        // replace text with image
+        let textAttachmentAttributedString = NSAttributedString(attachment: textAttachment)
+        attributedString.replaceCharacters(in: NSRange(location: match.range.location, length: linkStartInResult - match.range.location - 1), with: textAttachmentAttributedString)
+        
+        let formatRange = NSRange(location: match.range.location,
+                                  length: 0)
+        
         formatText(attributedString, range: formatRange, link: linkURLString)
         addAttributes(attributedString, range: formatRange, link: linkURLString)
     }

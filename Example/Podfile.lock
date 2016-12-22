@@ -1,5 +1,5 @@
 PODS:
-  - CDMarkdownKit (0.9.5)
+  - CDMarkdownKit (0.9.6)
 
 DEPENDENCIES:
   - CDMarkdownKit (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  CDMarkdownKit: ddbca6bfadac97117b7ec220cf6a2f0bc4f620ce
+  CDMarkdownKit: 8238bd6ba2513e98fc3c17faaee513e4a7420e88
 
 PODFILE CHECKSUM: f2dbf598da137dcf7c7de1f44af84ba6524a9830
 

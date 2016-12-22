@@ -46,6 +46,7 @@ open class CDMarkdownParser {
     open let italic: CDMarkdownItalic
     open let code: CDMarkdownCode
     open let syntax: CDMarkdownSyntax
+    open let image: CDMarkdownImage
     
     // MARK: - Escaping Elements
     fileprivate var codeEscaping = CDMarkdownCodeEscaping()
@@ -80,10 +81,11 @@ open class CDMarkdownParser {
         italic = CDMarkdownItalic(font: font, customItalicFont: italicFont)
         code = CDMarkdownCode(font: font)
         syntax = CDMarkdownSyntax(font: font)
+        image = CDMarkdownImage(font: font)
         
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.escapingElements = [codeEscaping, escaping]
-        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic]
+        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic, image]
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
     }

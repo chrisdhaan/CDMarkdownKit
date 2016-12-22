@@ -146,6 +146,7 @@ label.attributedText = markdownParser.parse(markdown)
 ```syntax```
 
 [Link](url)
+![Image](url)
 ```
 
 ### CDMarkdownTextView
