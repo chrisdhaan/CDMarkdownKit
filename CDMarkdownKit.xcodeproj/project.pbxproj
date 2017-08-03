@@ -1,0 +1,455 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B2B366041F324CF10078B962 /* CDMarkdownKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B2B366021F324CF10078B962 /* CDMarkdownKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B2B366201F324DE90078B962 /* CDMarkdownImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366071F324DE90078B962 /* CDMarkdownImage.swift */; };
+		B2B366211F324DE90078B962 /* CDMarkdownLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366081F324DE90078B962 /* CDMarkdownLink.swift */; };
+		B2B366221F324DE90078B962 /* CDMarkdownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366091F324DE90078B962 /* CDMarkdownParser.swift */; };
+		B2B366231F324DE90078B962 /* CDMarkdownLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3660A1F324DE90078B962 /* CDMarkdownLabel.swift */; };
+		B2B366241F324DE90078B962 /* CDMarkdownAutomaticLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3660B1F324DE90078B962 /* CDMarkdownAutomaticLink.swift */; };
+		B2B366251F324DE90078B962 /* CDMarkdownBold.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3660C1F324DE90078B962 /* CDMarkdownBold.swift */; };
+		B2B366261F324DE90078B962 /* CDMarkdownCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3660D1F324DE90078B962 /* CDMarkdownCode.swift */; };
+		B2B366271F324DE90078B962 /* CDMarkdownHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3660E1F324DE90078B962 /* CDMarkdownHeader.swift */; };
+		B2B366281F324DE90078B962 /* CDMarkdownItalic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3660F1F324DE90078B962 /* CDMarkdownItalic.swift */; };
+		B2B366291F324DE90078B962 /* CDMarkdownList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366101F324DE90078B962 /* CDMarkdownList.swift */; };
+		B2B3662A1F324DE90078B962 /* CDMarkdownTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366111F324DE90078B962 /* CDMarkdownTextView.swift */; };
+		B2B3662B1F324DE90078B962 /* CDMarkdownCodeEscaping.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366121F324DE90078B962 /* CDMarkdownCodeEscaping.swift */; };
+		B2B3662C1F324DE90078B962 /* CDMarkdownCommonElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366131F324DE90078B962 /* CDMarkdownCommonElement.swift */; };
+		B2B3662D1F324DE90078B962 /* CDMarkdownElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366141F324DE90078B962 /* CDMarkdownElement.swift */; };
+		B2B3662E1F324DE90078B962 /* CDMarkdownEscaping.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366151F324DE90078B962 /* CDMarkdownEscaping.swift */; };
+		B2B3662F1F324DE90078B962 /* CDMarkdownLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366161F324DE90078B962 /* CDMarkdownLayoutManager.swift */; };
+		B2B366301F324DE90078B962 /* CDMarkdownLevelElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366171F324DE90078B962 /* CDMarkdownLevelElement.swift */; };
+		B2B366311F324DE90078B962 /* CDMarkdownLinkElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366181F324DE90078B962 /* CDMarkdownLinkElement.swift */; };
+		B2B366321F324DE90078B962 /* CDMarkdownQuote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366191F324DE90078B962 /* CDMarkdownQuote.swift */; };
+		B2B366331F324DE90078B962 /* CDMarkdownStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3661A1F324DE90078B962 /* CDMarkdownStyle.swift */; };
+		B2B366341F324DE90078B962 /* CDMarkdownSyntax.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3661B1F324DE90078B962 /* CDMarkdownSyntax.swift */; };
+		B2B366351F324DE90078B962 /* CDMarkdownUnescaping.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3661C1F324DE90078B962 /* CDMarkdownUnescaping.swift */; };
+		B2B366361F324DE90078B962 /* String+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3661D1F324DE90078B962 /* String+CDMarkdownKit.swift */; };
+		B2B366371F324DE90078B962 /* UIColor+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3661E1F324DE90078B962 /* UIColor+CDMarkdownKit.swift */; };
+		B2B366381F324DE90078B962 /* UIFont+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3661F1F324DE90078B962 /* UIFont+CDMarkdownKit.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B2B365B71F3245800078B962 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2B366021F324CF10078B962 /* CDMarkdownKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMarkdownKit.h; sourceTree = "<group>"; };
+		B2B366031F324CF10078B962 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B2B366071F324DE90078B962 /* CDMarkdownImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownImage.swift; sourceTree = "<group>"; };
+		B2B366081F324DE90078B962 /* CDMarkdownLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownLink.swift; sourceTree = "<group>"; };
+		B2B366091F324DE90078B962 /* CDMarkdownParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownParser.swift; sourceTree = "<group>"; };
+		B2B3660A1F324DE90078B962 /* CDMarkdownLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownLabel.swift; sourceTree = "<group>"; };
+		B2B3660B1F324DE90078B962 /* CDMarkdownAutomaticLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownAutomaticLink.swift; sourceTree = "<group>"; };
+		B2B3660C1F324DE90078B962 /* CDMarkdownBold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownBold.swift; sourceTree = "<group>"; };
+		B2B3660D1F324DE90078B962 /* CDMarkdownCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownCode.swift; sourceTree = "<group>"; };
+		B2B3660E1F324DE90078B962 /* CDMarkdownHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownHeader.swift; sourceTree = "<group>"; };
+		B2B3660F1F324DE90078B962 /* CDMarkdownItalic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownItalic.swift; sourceTree = "<group>"; };
+		B2B366101F324DE90078B962 /* CDMarkdownList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownList.swift; sourceTree = "<group>"; };
+		B2B366111F324DE90078B962 /* CDMarkdownTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownTextView.swift; sourceTree = "<group>"; };
+		B2B366121F324DE90078B962 /* CDMarkdownCodeEscaping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownCodeEscaping.swift; sourceTree = "<group>"; };
+		B2B366131F324DE90078B962 /* CDMarkdownCommonElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownCommonElement.swift; sourceTree = "<group>"; };
+		B2B366141F324DE90078B962 /* CDMarkdownElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownElement.swift; sourceTree = "<group>"; };
+		B2B366151F324DE90078B962 /* CDMarkdownEscaping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownEscaping.swift; sourceTree = "<group>"; };
+		B2B366161F324DE90078B962 /* CDMarkdownLayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownLayoutManager.swift; sourceTree = "<group>"; };
+		B2B366171F324DE90078B962 /* CDMarkdownLevelElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownLevelElement.swift; sourceTree = "<group>"; };
+		B2B366181F324DE90078B962 /* CDMarkdownLinkElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownLinkElement.swift; sourceTree = "<group>"; };
+		B2B366191F324DE90078B962 /* CDMarkdownQuote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownQuote.swift; sourceTree = "<group>"; };
+		B2B3661A1F324DE90078B962 /* CDMarkdownStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownStyle.swift; sourceTree = "<group>"; };
+		B2B3661B1F324DE90078B962 /* CDMarkdownSyntax.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownSyntax.swift; sourceTree = "<group>"; };
+		B2B3661C1F324DE90078B962 /* CDMarkdownUnescaping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownUnescaping.swift; sourceTree = "<group>"; };
+		B2B3661D1F324DE90078B962 /* String+CDMarkdownKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+CDMarkdownKit.swift"; sourceTree = "<group>"; };
+		B2B3661E1F324DE90078B962 /* UIColor+CDMarkdownKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+CDMarkdownKit.swift"; sourceTree = "<group>"; };
+		B2B3661F1F324DE90078B962 /* UIFont+CDMarkdownKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+CDMarkdownKit.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B2B365B31F3245800078B962 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B2B365AD1F3245800078B962 = {
+			isa = PBXGroup;
+			children = (
+				B2B366011F324CF10078B962 /* Source */,
+				B2B365B81F3245800078B962 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B2B365B81F3245800078B962 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B2B365B71F3245800078B962 /* CDMarkdownKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B2B366011F324CF10078B962 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				B2B366091F324DE90078B962 /* CDMarkdownParser.swift */,
+				B2B366391F324DF50078B962 /* Elements */,
+				B2B3663B1F324E5D0078B962 /* Extensions */,
+				B2B3663C1F324E750078B962 /* Protocols */,
+				B2B3663D1F324E940078B962 /* UI */,
+				B2B366061F324D2A0078B962 /* Supporting Files */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		B2B366061F324D2A0078B962 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B2B366021F324CF10078B962 /* CDMarkdownKit.h */,
+				B2B366031F324CF10078B962 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B2B366391F324DF50078B962 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				B2B3660B1F324DE90078B962 /* CDMarkdownAutomaticLink.swift */,
+				B2B3660C1F324DE90078B962 /* CDMarkdownBold.swift */,
+				B2B3660D1F324DE90078B962 /* CDMarkdownCode.swift */,
+				B2B3660E1F324DE90078B962 /* CDMarkdownHeader.swift */,
+				B2B366071F324DE90078B962 /* CDMarkdownImage.swift */,
+				B2B3660F1F324DE90078B962 /* CDMarkdownItalic.swift */,
+				B2B366081F324DE90078B962 /* CDMarkdownLink.swift */,
+				B2B366101F324DE90078B962 /* CDMarkdownList.swift */,
+				B2B366191F324DE90078B962 /* CDMarkdownQuote.swift */,
+				B2B3661B1F324DE90078B962 /* CDMarkdownSyntax.swift */,
+				B2B3663A1F324E040078B962 /* Escaping */,
+			);
+			name = Elements;
+			sourceTree = "<group>";
+		};
+		B2B3663A1F324E040078B962 /* Escaping */ = {
+			isa = PBXGroup;
+			children = (
+				B2B366121F324DE90078B962 /* CDMarkdownCodeEscaping.swift */,
+				B2B366151F324DE90078B962 /* CDMarkdownEscaping.swift */,
+				B2B3661C1F324DE90078B962 /* CDMarkdownUnescaping.swift */,
+			);
+			name = Escaping;
+			sourceTree = "<group>";
+		};
+		B2B3663B1F324E5D0078B962 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B2B3661D1F324DE90078B962 /* String+CDMarkdownKit.swift */,
+				B2B3661E1F324DE90078B962 /* UIColor+CDMarkdownKit.swift */,
+				B2B3661F1F324DE90078B962 /* UIFont+CDMarkdownKit.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		B2B3663C1F324E750078B962 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				B2B366131F324DE90078B962 /* CDMarkdownCommonElement.swift */,
+				B2B366141F324DE90078B962 /* CDMarkdownElement.swift */,
+				B2B366171F324DE90078B962 /* CDMarkdownLevelElement.swift */,
+				B2B366181F324DE90078B962 /* CDMarkdownLinkElement.swift */,
+				B2B3661A1F324DE90078B962 /* CDMarkdownStyle.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		B2B3663D1F324E940078B962 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B2B3660A1F324DE90078B962 /* CDMarkdownLabel.swift */,
+				B2B366161F324DE90078B962 /* CDMarkdownLayoutManager.swift */,
+				B2B366111F324DE90078B962 /* CDMarkdownTextView.swift */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		B2B365B41F3245800078B962 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2B366041F324CF10078B962 /* CDMarkdownKit.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		B2B365B61F3245800078B962 /* CDMarkdownKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B2B365BF1F3245800078B962 /* Build configuration list for PBXNativeTarget "CDMarkdownKit" */;
+			buildPhases = (
+				B2B365B21F3245800078B962 /* Sources */,
+				B2B365B31F3245800078B962 /* Frameworks */,
+				B2B365B41F3245800078B962 /* Headers */,
+				B2B365B51F3245800078B962 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CDMarkdownKit;
+			productName = CDMarkdownKit;
+			productReference = B2B365B71F3245800078B962 /* CDMarkdownKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B2B365AE1F3245800078B962 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "Christopher de Haan";
+				TargetAttributes = {
+					B2B365B61F3245800078B962 = {
+						CreatedOnToolsVersion = 8.3.3;
+						LastSwiftMigration = 0830;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B2B365B11F3245800078B962 /* Build configuration list for PBXProject "CDMarkdownKit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B2B365AD1F3245800078B962;
+			productRefGroup = B2B365B81F3245800078B962 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B2B365B61F3245800078B962 /* CDMarkdownKit */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B2B365B51F3245800078B962 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B2B365B21F3245800078B962 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2B3662D1F324DE90078B962 /* CDMarkdownElement.swift in Sources */,
+				B2B366251F324DE90078B962 /* CDMarkdownBold.swift in Sources */,
+				B2B3662A1F324DE90078B962 /* CDMarkdownTextView.swift in Sources */,
+				B2B366221F324DE90078B962 /* CDMarkdownParser.swift in Sources */,
+				B2B366201F324DE90078B962 /* CDMarkdownImage.swift in Sources */,
+				B2B366291F324DE90078B962 /* CDMarkdownList.swift in Sources */,
+				B2B366351F324DE90078B962 /* CDMarkdownUnescaping.swift in Sources */,
+				B2B366261F324DE90078B962 /* CDMarkdownCode.swift in Sources */,
+				B2B366271F324DE90078B962 /* CDMarkdownHeader.swift in Sources */,
+				B2B3662C1F324DE90078B962 /* CDMarkdownCommonElement.swift in Sources */,
+				B2B366241F324DE90078B962 /* CDMarkdownAutomaticLink.swift in Sources */,
+				B2B366301F324DE90078B962 /* CDMarkdownLevelElement.swift in Sources */,
+				B2B366331F324DE90078B962 /* CDMarkdownStyle.swift in Sources */,
+				B2B366361F324DE90078B962 /* String+CDMarkdownKit.swift in Sources */,
+				B2B366231F324DE90078B962 /* CDMarkdownLabel.swift in Sources */,
+				B2B3662F1F324DE90078B962 /* CDMarkdownLayoutManager.swift in Sources */,
+				B2B366371F324DE90078B962 /* UIColor+CDMarkdownKit.swift in Sources */,
+				B2B3662E1F324DE90078B962 /* CDMarkdownEscaping.swift in Sources */,
+				B2B366321F324DE90078B962 /* CDMarkdownQuote.swift in Sources */,
+				B2B366341F324DE90078B962 /* CDMarkdownSyntax.swift in Sources */,
+				B2B366211F324DE90078B962 /* CDMarkdownLink.swift in Sources */,
+				B2B3662B1F324DE90078B962 /* CDMarkdownCodeEscaping.swift in Sources */,
+				B2B366311F324DE90078B962 /* CDMarkdownLinkElement.swift in Sources */,
+				B2B366281F324DE90078B962 /* CDMarkdownItalic.swift in Sources */,
+				B2B366381F324DE90078B962 /* UIFont+CDMarkdownKit.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B2B365BD1F3245800078B962 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B2B365BE1F3245800078B962 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B2B365C01F3245800078B962 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		B2B365C11F3245800078B962 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B2B365B11F3245800078B962 /* Build configuration list for PBXProject "CDMarkdownKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B2B365BD1F3245800078B962 /* Debug */,
+				B2B365BE1F3245800078B962 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B2B365BF1F3245800078B962 /* Build configuration list for PBXNativeTarget "CDMarkdownKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B2B365C01F3245800078B962 /* Debug */,
+				B2B365C11F3245800078B962 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B2B365AE1F3245800078B962 /* Project object */;
+}
