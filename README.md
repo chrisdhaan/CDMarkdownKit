@@ -329,6 +329,15 @@ Christopher de Haan, contact@christopherdehaan.me
 
 CDMarkdownKit was influenced by [MarkdownKit](https://github.com/ivanbruel/MarkdownKit), a markdown parsing library developed by Ivan Bruel.
 
+CDMarkdownKit adds the following functionalities:
+- Fixed header element parsing
+- Image element parsing
+- Ability to customize font for all elements
+- Ability to customize color for all elements
+- Ability to customize background color for all elements
+- UITextView with the ability to round background text color corners for code, syntax, or all elements
+- UILabel with the ability to round background text color corners for code, syntax, or all elements
+
 ## License
 
 CDMarkdownKit is available under the MIT license. See the LICENSE file for more info.
