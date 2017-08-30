@@ -29,7 +29,7 @@ import UIKit
 
 open class CDMarkdownList: CDMarkdownLevelElement {
     
-    fileprivate static let regex = "^([\\*\\+\\-]{1,%@})\\s+(.+)$"
+    fileprivate static let regex = "^\\s*([\\*\\+\\-]{1,%@})\\s+(.+)$"
     
     open var maxLevel: Int
     open var font: UIFont?
@@ -59,5 +59,14 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         }
         string = "\(string)\(indicator) "
         attributedString.replaceCharacters(in: range, with: string)
+    }
+    
+    open func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange, level: Int) {
+        attributedString.addAttributes(attributesForLevel(level - 1), range: range)
+        let string = attributedString.mutableString
+        let remainder = min(string.length - (range.location+range.length), 4)
+        if (remainder > 2) {
+            string.replaceOccurrences(of: "\n+", with: "\n", options:.regularExpression, range: NSRange(location: range.location+range.length,length: remainder))
+        }
     }
 }

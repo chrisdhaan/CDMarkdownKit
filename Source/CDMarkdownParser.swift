@@ -85,7 +85,7 @@ open class CDMarkdownParser {
         
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.escapingElements = [codeEscaping, escaping]
-        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic, image]
+        self.defaultElements = [header, list, quote, image, link, automaticLink, bold, italic]
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
     }
@@ -111,6 +111,9 @@ open class CDMarkdownParser {
     
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
+        let mutableString = attributedString.mutableString
+        mutableString.replaceOccurrences(of: "\n\n+", with: "\n", options:.regularExpression, range:NSRange(location:0, length:mutableString.length))
+        mutableString.replaceOccurrences(of: "&nbsp;", with: " ", range: NSRange(location:0, length:mutableString.length))
         attributedString.addAttribute(NSFontAttributeName, value: font,
                                       range: NSRange(location: 0, length: attributedString.length))
         attributedString.addAttribute(NSForegroundColorAttributeName, value: fontColor,

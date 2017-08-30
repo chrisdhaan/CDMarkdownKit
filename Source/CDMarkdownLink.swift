@@ -29,7 +29,7 @@ import UIKit
 
 open class CDMarkdownLink: CDMarkdownLinkElement {
     
-    fileprivate static let regex = "[^!]\\[[^\\[]*?\\]\\([^\\)]*\\)"
+    fileprivate static let regex = "\\[[^\\[]*?\\]\\([^\\)]*\\)"
     
     open var font: UIFont?
     open var color: UIColor?
@@ -62,7 +62,7 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
     open func match(_ match: NSTextCheckingResult, attributedString: NSMutableAttributedString) {
         let nsString = attributedString.string as NSString
         let linkStartInResult = nsString
-            .range(of: "(", options: .backwards, range: match.range).location
+            .range(of: "(", range: match.range).location
         let linkRange =
             NSRange(location: linkStartInResult,
                     length: match.range.length + match.range.location - linkStartInResult - 1)
@@ -76,15 +76,15 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
         
         // deleting leading markdown
         // needs to be called before formattingBlock to provide a stable range
-        attributedString.deleteCharacters(in: NSRange(location: match.range.location + 1, length: 1))
-        let formatRange = NSRange(location: match.range.location + 1,
-                                  length: linkStartInResult - match.range.location - 3)
+        attributedString.deleteCharacters(in: NSRange(location: match.range.location, length: 1))
+        let formatRange = NSRange(location: match.range.location,
+                                  length: linkStartInResult - match.range.location - 2)
         formatText(attributedString, range: formatRange, link: linkURLString)
         addAttributes(attributedString, range: formatRange, link: linkURLString)
     }
     
     open func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange,
                             link: String) {
-        attributedString.addAttributes(attributes, range: range)
+        //Use surrounding font/color attributes on a link
     }
 }

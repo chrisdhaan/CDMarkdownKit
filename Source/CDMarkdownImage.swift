@@ -29,7 +29,7 @@ import UIKit
 
 open class CDMarkdownImage: CDMarkdownLinkElement {
     
-    fileprivate static let regex = "[!]\\[[^\\[]*?\\]\\([^\\)]*\\)"
+    fileprivate static let regex = "!{1}\\[[^\\[]*?\\]\\([^\\)]*\\)"
     
     open var font: UIFont?
     open var color: UIColor?
