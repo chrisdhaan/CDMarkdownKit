@@ -114,12 +114,21 @@ open class CDMarkdownParser {
         let mutableString = attributedString.mutableString
         mutableString.replaceOccurrences(of: "\n\n+", with: "\n", options:.regularExpression, range:NSRange(location:0, length:mutableString.length))
         mutableString.replaceOccurrences(of: "&nbsp;", with: " ", range: NSRange(location:0, length:mutableString.length))
-        attributedString.addAttribute(NSFontAttributeName, value: font,
-                                      range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(NSForegroundColorAttributeName, value: fontColor,
-                                      range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(NSBackgroundColorAttributeName, value: backgroundColor,
-                                      range: NSRange(location: 0, length: attributedString.length))
+        
+        let regExp = try? NSRegularExpression(pattern: "^\\s+", options: .anchorsMatchLines)
+        if let regExp = regExp {
+            regExp.replaceMatches(in: mutableString, options: [], range: NSRange(location:0, length:mutableString.length), withTemplate: "")
+        }
+    
+        let range = NSRange(location: 0, length: attributedString.length)
+        attributedString.addAttribute(NSFontAttributeName, value: font,range: range)
+        attributedString.addAttribute(NSForegroundColorAttributeName, value: fontColor, range: range)
+        attributedString.addAttribute(NSBackgroundColorAttributeName, value: backgroundColor, range: range)
+        let paraStyle = NSMutableParagraphStyle()
+        paraStyle.paragraphSpacing = 2
+        paraStyle.paragraphSpacingBefore = 0
+        paraStyle.lineSpacing = 1.38
+        attributedString.addAttribute(NSParagraphStyleAttributeName, value: paraStyle, range: range)
         var elements: [CDMarkdownElement] = escapingElements
         elements.append(contentsOf: defaultElements)
         elements.append(contentsOf: customElements)

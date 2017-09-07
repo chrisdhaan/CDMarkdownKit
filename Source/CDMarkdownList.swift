@@ -61,12 +61,21 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         attributedString.replaceCharacters(in: range, with: string)
     }
     
+    open func addFullAttributes(_ attributedString: NSMutableAttributedString, range: NSRange, level: Int) {
+        
+        let paraStyle = NSMutableParagraphStyle()
+        paraStyle.paragraphSpacing = 2
+        paraStyle.paragraphSpacingBefore = 0
+        paraStyle.firstLineHeadIndent = 0
+        let indSize = "\(indicator) ".size(attributes:attributes)
+        let sepSize = separator.size(attributes:attributes)
+        let floatLevel = CGFloat(level)
+        paraStyle.headIndent = indSize.width + (sepSize.width * floatLevel)
+        paraStyle.lineSpacing = 1.0
+        attributedString.addAttribute(NSParagraphStyleAttributeName, value: paraStyle, range: range)
+    }
+    
     open func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange, level: Int) {
-        attributedString.addAttributes(attributesForLevel(level - 1), range: range)
-        let string = attributedString.mutableString
-        let remainder = min(string.length - (range.location+range.length), 4)
-        if (remainder > 2) {
-            string.replaceOccurrences(of: "\n+", with: "\n", options:.regularExpression, range: NSRange(location: range.location+range.length,length: remainder))
-        }
+        attributedString.addAttributes(attributesForLevel(level-1), range: range)
     }
 }
