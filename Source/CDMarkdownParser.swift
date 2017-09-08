@@ -125,7 +125,7 @@ open class CDMarkdownParser {
         attributedString.addAttribute(NSForegroundColorAttributeName, value: fontColor, range: range)
         attributedString.addAttribute(NSBackgroundColorAttributeName, value: backgroundColor, range: range)
         let paraStyle = NSMutableParagraphStyle()
-        paraStyle.paragraphSpacing = 2
+        paraStyle.paragraphSpacing = 3
         paraStyle.paragraphSpacingBefore = 0
         paraStyle.lineSpacing = 1.38
         attributedString.addAttribute(NSParagraphStyleAttributeName, value: paraStyle, range: range)
