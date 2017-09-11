@@ -29,7 +29,7 @@ import UIKit
 
 open class CDMarkdownCode: CDMarkdownCommonElement {
     
-    fileprivate static let regex = "(\\s+|^)(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)"
+    fileprivate static let regex = "(\\s+|^|\\()(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)(\\)?)"
     
     open var font: UIFont?
     open var color: UIColor?
