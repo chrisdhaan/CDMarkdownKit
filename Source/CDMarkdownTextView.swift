@@ -86,6 +86,8 @@ open class CDMarkdownTextView: UITextView {
         
         self.isScrollEnabled = true
         self.isSelectable = false
-        self.isEditable = false
+        #if os(iOS)
+            self.isEditable = false
+        #endif
     }
 }

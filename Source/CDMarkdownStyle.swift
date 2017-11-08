@@ -26,6 +26,8 @@
 //
 
 // Styling protocol for all MarkdownElements
+import UIKit
+
 public protocol CDMarkdownStyle {
     
     var font: UIFont? { get }

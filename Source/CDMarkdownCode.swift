@@ -39,9 +39,18 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
         return CDMarkdownCode.regex
     }
     
-    public init(font: UIFont? = UIFont(name: "Menlo-Regular", size: UIFont.smallSystemFontSize),
+    public init(font: UIFont?,
                 color: UIColor? = UIColor.codeTextRed(),
                 backgroundColor: UIColor? = UIColor.codeBackgroundRed()) {
+        if let defaultFont = font {
+            self.font = defaultFont;
+        } else {
+            #if os(iOS)
+                self.font = UIFont(name: "Menlo-Regular", size: UIFont.smallSystemFontSize)
+            #else
+                self.font = UIFont(name: "Menlo-Regular", size: 20)
+            #endif
+        }
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor

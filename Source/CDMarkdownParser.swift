@@ -61,14 +61,22 @@ open class CDMarkdownParser {
     open let backgroundColor: UIColor
     
     // MARK: - Initializer
-    public init(font: UIFont = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize),
+    public init(font: UIFont?,
                 boldFont: UIFont? = nil,
                 italicFont: UIFont? = nil,
                 fontColor: UIColor = UIColor.black,
                 backgroundColor: UIColor = UIColor.clear,
                 automaticLinkDetectionEnabled: Bool = true,
                 customElements: [CDMarkdownElement] = []) {
-        self.font = font
+        if let defaultFont = font {
+            self.font = defaultFont
+        } else {
+            #if os(iOS)
+                self.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+            #else
+                self.font = UIFont.systemFont(ofSize: 20)
+            #endif
+        }
         self.fontColor = fontColor
         self.backgroundColor = backgroundColor
         

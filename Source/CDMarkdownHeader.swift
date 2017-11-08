@@ -51,9 +51,20 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         return String(format: CDMarkdownHeader.regex, level)
     }
     
-    public init(font: UIFont? = UIFont.boldSystemFont(ofSize: UIFont.smallSystemFontSize),
-                maxLevel: Int = 0, fontIncrease: Int = 2, color: UIColor? = nil,
+    public init(font: UIFont?,
+                maxLevel: Int = 0,
+                fontIncrease: Int = 2,
+                color: UIColor? = nil,
                 backgroundColor: UIColor? = nil) {
+        if let defaultFont = font {
+            self.font = defaultFont;
+        } else {
+            #if os(iOS)
+                self.font = UIFont.boldSystemFont(ofSize: UIFont.smallSystemFontSize)
+            #else
+                self.font = UIFont.boldSystemFont(ofSize: 20)
+            #endif
+        }
         self.maxLevel = maxLevel
         self.font = font
         self.color = color
