@@ -29,7 +29,7 @@ import UIKit
 
 open class CDMarkdownList: CDMarkdownLevelElement {
     
-    fileprivate static let regex = "^\\s*([\\*\\+\\-]{1,%@})\\s+(.+)$"
+    fileprivate static let regex = "^\\s*([\\*\\+\\-]{1,%@})[ \t]+(.+)$"
     
     open var maxLevel: Int
     open var font: UIFont?
