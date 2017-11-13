@@ -28,7 +28,7 @@
 import UIKit
 
 open class CDMarkdownHeader: CDMarkdownLevelElement {
-    
+
     fileprivate static let regex = "^\\s*(#{1,%@})\\s*(.+)$\n*"
     fileprivate struct CDMarkdownHeadingHashes {
         static let one      = 3
@@ -39,25 +39,25 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         static let six      = -2
         static let zero     = -3
     }
-    
+
     open var maxLevel: Int
     open var font: UIFont?
     open var color: UIColor?
     open var backgroundColor: UIColor?
     open var fontIncrease: Int
-    
+
     open var regex: String {
         let level: String = maxLevel > 0 ? "\(maxLevel)" : ""
         return String(format: CDMarkdownHeader.regex, level)
     }
-    
+
     public init(font: UIFont?,
                 maxLevel: Int = 0,
                 fontIncrease: Int = 2,
                 color: UIColor? = nil,
                 backgroundColor: UIColor? = nil) {
         if let defaultFont = font {
-            self.font = defaultFont;
+            self.font = defaultFont
         } else {
             #if os(iOS)
                 self.font = UIFont.boldSystemFont(ofSize: UIFont.smallSystemFontSize)
@@ -71,16 +71,16 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         self.backgroundColor = backgroundColor
         self.fontIncrease = fontIncrease
     }
-    
+
     open func formatText(_ attributedString: NSMutableAttributedString, range: NSRange, level: Int) {
         attributedString.deleteCharacters(in: range)
-        
+
         let string = attributedString.mutableString
-        if range.location-2 > 0 && string.substring(with:NSRange(location:range.location-2, length:2)) == "\n\n" {
-            string.deleteCharacters(in: NSRange(location:range.location-1, length:1))
+        if range.location-2 > 0 && string.substring(with: NSRange(location: range.location-2, length: 2)) == "\n\n" {
+            string.deleteCharacters(in: NSRange(location: range.location-1, length: 1))
         }
     }
-    
+
     open func attributesForLevel(_ level: Int) -> [String: AnyObject] {
         var attributes = self.attributes
         var fontMultiplier: CGFloat

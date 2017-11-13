@@ -53,7 +53,7 @@ open class CDMarkdownLabel: UILabel {
             }
         }
     }
-    
+
     open override var frame: CGRect {
         get {
             return super.frame
@@ -81,7 +81,7 @@ open class CDMarkdownLabel: UILabel {
             return super.attributedText
         }
         set {
-            if let _ = self.customTextContainer,
+            if self.customTextContainer != nil,
                 let layoutManager = self.customLayoutManager {
                 self.customTextStorage = NSTextStorage(attributedString: newValue)
                 self.customTextStorage.addLayoutManager(layoutManager)
@@ -90,28 +90,28 @@ open class CDMarkdownLabel: UILabel {
             self.setNeedsDisplay()
         }
     }
-    
+
     public override init(frame: CGRect) {
         super.init(frame: frame)
         self.configure()
     }
-    
+
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.configure()
     }
-    
+
     open override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         self.customTextContainer.size = self.bounds.size
     }
-    
+
     open func configure() {
         self.isUserInteractionEnabled = true
-        
+
         self.customLayoutManager = CDMarkdownLayoutManager()
-        
+
         if let textContainer = self.customTextContainer {
             self.customLayoutManager.addTextContainer(textContainer)
         } else {
@@ -120,11 +120,11 @@ open class CDMarkdownLabel: UILabel {
             self.customTextContainer.maximumNumberOfLines = self.numberOfLines
             self.customTextContainer.lineBreakMode = self.lineBreakMode
             self.customTextContainer.size = self.frame.size
-            
+
             self.customLayoutManager.addTextContainer(self.customTextContainer)
         }
     }
-    
+
     // MARK: - Layout And Rendering
     open override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
         // Use our text container to calculate the bounds required. First save our
@@ -148,10 +148,10 @@ open class CDMarkdownLabel: UILabel {
         // Restore the old container state before we exit under any circumstances
         self.customTextContainer.size = savedTextContainerSize
         self.customTextContainer.maximumNumberOfLines = savedTextContainerNumberOfLines
-        
+
         return textBounds
     }
-    
+
     open override func drawText(in rect: CGRect) {
         // Calculate the offset of the text in the view
         let glyphRange = self.customLayoutManager.glyphRange(for: self.customTextContainer)
@@ -160,32 +160,33 @@ open class CDMarkdownLabel: UILabel {
         self.customLayoutManager.drawBackground(forGlyphRange: glyphRange, at: glyphsPosition)
         self.customLayoutManager.drawGlyphs(forGlyphRange: glyphRange, at: glyphsPosition)
     }
-    
+
     fileprivate func calculateGlyphsPositionInView() -> CGPoint {
         // Returns the XY offset of the range of glyphs from the view's origin
         var textOffset = CGPoint.zero
-        
+
         var textBounds = self.customLayoutManager.usedRect(for: self.customTextContainer)
-        
+
         textBounds.size.width = ceil(textBounds.width)
         textBounds.size.height = ceil(textBounds.height)
-        
+
         if textBounds.size.height < self.bounds.size.height {
             let paddingHeight = (self.bounds.height - textBounds.size.height) / 2
             textOffset.y = paddingHeight
         }
-        
+
         return textOffset
     }
 }
 
 // MARK: - LayoutManager Delegate
 extension CDMarkdownLabel: NSLayoutManagerDelegate {
-    public func layoutManager(_ layoutManager: NSLayoutManager, shouldBreakLineByWordBeforeCharacterAt charIndex: Int) -> Bool {
+    public func layoutManager(_ layoutManager: NSLayoutManager,
+                              shouldBreakLineByWordBeforeCharacterAt charIndex: Int) -> Bool {
         var range = NSRange()
         // Don't allow line breaks on URL's
         let linkURL = layoutManager.textStorage?.attribute(NSLinkAttributeName, at: charIndex, effectiveRange: &range)
-        
+
         return !((linkURL != nil) && (charIndex > range.location) && (charIndex <= NSMaxRange(range)))
     }
 }

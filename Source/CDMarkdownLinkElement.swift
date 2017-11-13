@@ -29,7 +29,7 @@ import UIKit
 
 // The base to all Link parsing elements.
 public protocol CDMarkdownLinkElement: CDMarkdownElement, CDMarkdownStyle {
-    
+
     func formatText(_ attributedString: NSMutableAttributedString, range: NSRange, link: String)
     func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange, link: String)
 }

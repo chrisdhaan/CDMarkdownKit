@@ -28,17 +28,17 @@
 import UIKit
 
 open class CDMarkdownItalic: CDMarkdownCommonElement {
-    
+
     fileprivate static let regex = "(\\s+|^)(\\*|_)(.+?)(\\2)"
-    
+
     open var font: UIFont?
     open var color: UIColor?
     open var backgroundColor: UIColor?
-    
+
     open var regex: String {
         return CDMarkdownItalic.regex
     }
-    
+
     public init(font: UIFont? = nil, customItalicFont: UIFont? = nil, color: UIColor? = nil,
                 backgroundColor: UIColor? = nil) {
         if let customItalicFont = customItalicFont {

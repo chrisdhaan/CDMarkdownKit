@@ -28,17 +28,17 @@
 import UIKit
 
 open class CDMarkdownBold: CDMarkdownCommonElement {
-    
+
     fileprivate static let regex = "(\\s+|^)(\\*\\*|__)(.+?)(\\2)"
-    
+
     open var font: UIFont?
     open var color: UIColor?
     open var backgroundColor: UIColor?
-    
+
     open var regex: String {
         return CDMarkdownBold.regex
     }
-    
+
     public init(font: UIFont? = nil, customBoldFont: UIFont? = nil, color: UIColor? = nil,
                 backgroundColor: UIColor? = nil) {
         if let customBoldFont = customBoldFont {

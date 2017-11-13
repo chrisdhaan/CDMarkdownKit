@@ -28,22 +28,22 @@
 import UIKit
 
 open class CDMarkdownCode: CDMarkdownCommonElement {
-    
+
     fileprivate static let regex = "(\\s+|^|\\()(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)(\\)?)"
-    
+
     open var font: UIFont?
     open var color: UIColor?
     open var backgroundColor: UIColor?
-    
+
     open var regex: String {
         return CDMarkdownCode.regex
     }
-    
+
     public init(font: UIFont?,
                 color: UIColor? = UIColor.codeTextRed(),
                 backgroundColor: UIColor? = UIColor.codeBackgroundRed()) {
         if let defaultFont = font {
-            self.font = defaultFont;
+            self.font = defaultFont
         } else {
             #if os(iOS)
                 self.font = UIFont(name: "Menlo-Regular", size: UIFont.smallSystemFontSize)
@@ -55,11 +55,12 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
         self.color = color
         self.backgroundColor = backgroundColor
     }
-    
+
     open func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange) {
         let matchString: String = attributedString.attributedSubstring(from: range).string
         guard let unescapedString = matchString.unescapeUTF16() else { return }
         attributedString.replaceCharacters(in: range, with: unescapedString)
-        attributedString.addAttributes(attributes, range: NSRange(location: range.location, length: unescapedString.characters.count))
+        attributedString.addAttributes(attributes, range: NSRange(location: range.location,
+                                                                  length: unescapedString.characters.count))
     }
 }

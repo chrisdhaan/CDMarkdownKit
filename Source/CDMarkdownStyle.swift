@@ -29,7 +29,7 @@
 import UIKit
 
 public protocol CDMarkdownStyle {
-    
+
     var font: UIFont? { get }
     var color: UIColor? { get }
     var backgroundColor: UIColor? { get }
@@ -37,7 +37,7 @@ public protocol CDMarkdownStyle {
 }
 
 public extension CDMarkdownStyle {
-    
+
     var attributes: [String: AnyObject] {
         var attributes = [String: AnyObject]()
         if let font = font {

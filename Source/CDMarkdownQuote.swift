@@ -28,21 +28,21 @@
 import UIKit
 
 open class CDMarkdownQuote: CDMarkdownLevelElement {
-    
+
     fileprivate static let regex = "^(\\>{1,%@})\\s*(.+)$"
-    
+
     open var maxLevel: Int
     open var font: UIFont?
     open var color: UIColor?
     open var backgroundColor: UIColor?
     open var separator: String
     open var indicator: String
-    
+
     open var regex: String {
         let level: String = maxLevel > 0 ? "\(maxLevel)" : ""
         return String(format: CDMarkdownQuote.regex, level)
     }
-    
+
     public init(font: UIFont? = nil, maxLevel: Int = 0, indicator: String = ">",
                 separator: String = "  ", color: UIColor? = nil, backgroundColor: UIColor? = nil) {
         self.maxLevel = maxLevel
@@ -52,7 +52,7 @@ open class CDMarkdownQuote: CDMarkdownLevelElement {
         self.color = color
         self.backgroundColor = backgroundColor
     }
-    
+
     open func formatText(_ attributedString: NSMutableAttributedString, range: NSRange, level: Int) {
         var string = (0..<level).reduce("") { (string: String, _: Int) -> String in
             return "\(string)\(separator)"

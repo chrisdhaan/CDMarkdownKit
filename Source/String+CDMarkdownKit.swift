@@ -28,7 +28,7 @@
 import Foundation
 
 internal extension String {
-    
+
     // Converts each character to its UTF16 form in hexadecimal value (e.g. "H" -> "0048")
     func escapeUTF16() -> String {
         return Array(utf16).map {
@@ -37,7 +37,7 @@ internal extension String {
                 return $0 + $1
         }
     }
-    
+
     // Converts each 4 digit characters to its String form  (e.g. "0048" -> "H")
     func unescapeUTF16() -> String? {
         var utf16Array = [UInt16]()
@@ -46,13 +46,13 @@ internal extension String {
             if ($0 + 4) <= characters.count {
                 let endIndex = characters.index(characters.startIndex, offsetBy: $0 + 4)
                 let hex4 = substring(with: startIndex..<endIndex)
-                
+
                 if let utf16 = UInt16(hex4, radix: 16) {
                     utf16Array.append(utf16)
                 }
             }
         }
-        
+
         return String(utf16CodeUnits: utf16Array, count: utf16Array.count)
     }
 }

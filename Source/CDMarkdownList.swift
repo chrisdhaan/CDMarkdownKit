@@ -28,21 +28,21 @@
 import UIKit
 
 open class CDMarkdownList: CDMarkdownLevelElement {
-    
+
     fileprivate static let regex = "^\\s*([\\*\\+\\-]{1,%@})[ \t]+(.+)$"
-    
+
     open var maxLevel: Int
     open var font: UIFont?
     open var color: UIColor?
     open var backgroundColor: UIColor?
     open var separator: String
     open var indicator: String
-    
+
     open var regex: String {
         let level: String = maxLevel > 0 ? "\(maxLevel)" : ""
         return String(format: CDMarkdownList.regex, level)
     }
-    
+
     public init(font: UIFont? = nil, maxLevel: Int = 0, indicator: String = "•", separator: String = "  ",
                 color: UIColor? = nil, backgroundColor: UIColor? = nil) {
         self.maxLevel = maxLevel
@@ -52,7 +52,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         self.color = color
         self.backgroundColor = backgroundColor
     }
-    
+
     open func formatText(_ attributedString: NSMutableAttributedString, range: NSRange, level: Int) {
         var string = (0..<level).reduce("") { (string, _) -> String in
             return "\(string)\(separator)"
@@ -60,21 +60,21 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         string = "\(string)\(indicator) "
         attributedString.replaceCharacters(in: range, with: string)
     }
-    
+
     open func addFullAttributes(_ attributedString: NSMutableAttributedString, range: NSRange, level: Int) {
-        
+
         let paraStyle = NSMutableParagraphStyle()
         paraStyle.paragraphSpacing = 2
         paraStyle.paragraphSpacingBefore = 0
         paraStyle.firstLineHeadIndent = 0
-        let indSize = "\(indicator) ".size(attributes:attributes)
-        let sepSize = separator.size(attributes:attributes)
+        let indSize = "\(indicator) ".size(attributes: attributes)
+        let sepSize = separator.size(attributes: attributes)
         let floatLevel = CGFloat(level)
         paraStyle.headIndent = indSize.width + (sepSize.width * floatLevel)
         paraStyle.lineSpacing = 1.0
         attributedString.addAttribute(NSParagraphStyleAttributeName, value: paraStyle, range: range)
     }
-    
+
     open func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange, level: Int) {
         attributedString.addAttributes(attributesForLevel(level-1), range: range)
     }
