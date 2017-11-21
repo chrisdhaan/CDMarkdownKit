@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let markdownString = NSLocalizedString("Markdown", tableName: nil, bundle: Bundle.main, value: "", comment: "")
+        let markdownString = NSLocalizedString("Markdown3", tableName: nil, bundle: Bundle.main, value: "", comment: "")
         let attributedString = NSAttributedString(string: markdownString)
         
         // Example of a markdown parser with default properties
@@ -78,9 +78,9 @@ class ViewController: UIViewController {
         
         let attributedText = markdownParser.parse(attributedString)
         self.textView.attributedText = attributedText
-        self.textView.isHidden = true
+        self.textView.isHidden = false
         self.label.attributedText = attributedText
-        self.label.isHidden = false
+        self.label.isHidden = true
     }
     
     override func didReceiveMemoryWarning() {

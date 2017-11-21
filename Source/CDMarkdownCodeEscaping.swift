@@ -28,22 +28,22 @@
 import UIKit
 
 open class CDMarkdownCodeEscaping: CDMarkdownElement {
-    
+
     fileprivate static let regex = "(?<!\\\\)(?:\\\\\\\\)*+(`+)(.*?[^`].*?)(\\1)(?!`)"
-    
+
     open var regex: String {
         return CDMarkdownCodeEscaping.regex
     }
-    
+
     open func regularExpression() throws -> NSRegularExpression {
         return try NSRegularExpression(pattern: regex, options: .dotMatchesLineSeparators)
     }
-    
+
     open func match(_ match: NSTextCheckingResult, attributedString: NSMutableAttributedString) {
-        let range = match.rangeAt(2)
+        let range = match.range(at: 2)
         // escaping all characters
         let matchString = attributedString.attributedSubstring(from: range).string
-        let escapedString = Array<UInt16>(matchString.utf16)
+        let escapedString = [UInt16](matchString.utf16)
             .map { (value: UInt16) -> String in String(format: "%04x", value) }
             .reduce("") { (string: String, character: String) -> String in
                 return "\(string)\(character)"

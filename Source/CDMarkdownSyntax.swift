@@ -28,29 +28,42 @@
 import UIKit
 
 open class CDMarkdownSyntax: CDMarkdownCommonElement {
-    
+
     fileprivate static let regex = "(\\s+|^)(`{3})(\\s*[^`]*?\\s*)(\\2)(?!`)"
-    
+
     open var font: UIFont?
     open var color: UIColor?
     open var backgroundColor: UIColor?
-    
+
     open var regex: String {
         return CDMarkdownSyntax.regex
     }
-    
-    public init(font: UIFont? = UIFont(name: "Menlo-Regular", size: UIFont.smallSystemFontSize),
+
+    public init(font: UIFont?,
                 color: UIColor? = UIColor.syntaxTextGray(),
                 backgroundColor: UIColor? = UIColor.syntaxBackgroundGray()) {
+        if let defaultFont = font {
+            self.font = defaultFont
+        } else {
+            #if os(iOS)
+                self.font = UIFont(name: "Menlo-Regular", size: UIFont.smallSystemFontSize)
+            #else
+                self.font = UIFont(name: "Menlo-Regular", size: 20)
+            #endif
+        }
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
     }
-    
+
     open func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange) {
         let matchString: String = attributedString.attributedSubstring(from: range).string
         guard let unescapedString = matchString.unescapeUTF16() else { return }
         attributedString.replaceCharacters(in: range, with: unescapedString)
-        attributedString.addAttributes(attributes, range: NSRange(location: range.location, length: unescapedString.characters.count))
+        let replacedRange = NSRange(location: range.location, length: unescapedString.count)
+        attributedString.addAttributes(attributes, range: replacedRange)
+        let mutableString = attributedString.mutableString
+        let range = NSRange(location: replacedRange.location, length: 1)
+        mutableString.replaceOccurrences(of: "\n", with: "", options: [], range: range)
     }
 }

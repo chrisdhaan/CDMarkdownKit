@@ -28,14 +28,14 @@
 import UIKit
 
 open class CDMarkdownParser {
-    
+
     // MARK: - Element Arrays
     fileprivate var escapingElements: [CDMarkdownElement]
     fileprivate var defaultElements: [CDMarkdownElement]
     fileprivate var unescapingElements: [CDMarkdownElement]
-    
+
     open var customElements: [CDMarkdownElement]
-    
+
     // MARK: - Basic Elements
     open let header: CDMarkdownHeader
     open let list: CDMarkdownList
@@ -47,31 +47,39 @@ open class CDMarkdownParser {
     open let code: CDMarkdownCode
     open let syntax: CDMarkdownSyntax
     open let image: CDMarkdownImage
-    
+
     // MARK: - Escaping Elements
     fileprivate var codeEscaping = CDMarkdownCodeEscaping()
     fileprivate var escaping = CDMarkdownEscaping()
     fileprivate var unescaping = CDMarkdownUnescaping()
-    
+
     // MARK: - Configuration
     // Enables or disables detection of URLs even without Markdown format
     open var automaticLinkDetectionEnabled: Bool = true
     open let font: UIFont
     open let fontColor: UIColor
     open let backgroundColor: UIColor
-    
+
     // MARK: - Initializer
-    public init(font: UIFont = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize),
+    public init(font: UIFont? = nil,
                 boldFont: UIFont? = nil,
                 italicFont: UIFont? = nil,
                 fontColor: UIColor = UIColor.black,
                 backgroundColor: UIColor = UIColor.clear,
                 automaticLinkDetectionEnabled: Bool = true,
                 customElements: [CDMarkdownElement] = []) {
-        self.font = font
+        if let defaultFont = font {
+            self.font = defaultFont
+        } else {
+            #if os(iOS)
+                self.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+            #else
+                self.font = UIFont.systemFont(ofSize: 20)
+            #endif
+        }
         self.fontColor = fontColor
         self.backgroundColor = backgroundColor
-        
+
         header = CDMarkdownHeader(font: font)
         list = CDMarkdownList(font: font)
         quote = CDMarkdownQuote(font: font)
@@ -82,19 +90,19 @@ open class CDMarkdownParser {
         code = CDMarkdownCode(font: font)
         syntax = CDMarkdownSyntax(font: font)
         image = CDMarkdownImage(font: font)
-        
+
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.escapingElements = [codeEscaping, escaping]
-        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic, image]
+        self.defaultElements = [header, list, quote, image, link, automaticLink, bold, italic]
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
     }
-    
+
     // MARK: - Element Extensibility
     open func addCustomElement(_ element: CDMarkdownElement) {
         customElements.append(element)
     }
-    
+
     open func removeCustomElement(_ element: CDMarkdownElement) {
         guard let index = customElements.index(where: { someElement -> Bool in
             return element === someElement
@@ -103,20 +111,37 @@ open class CDMarkdownParser {
         }
         customElements.remove(at: index)
     }
-    
+
     // MARK: - Parsing
     open func parse(_ markdown: String) -> NSAttributedString {
         return parse(NSAttributedString(string: markdown))
     }
-    
+
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
-        attributedString.addAttribute(NSFontAttributeName, value: font,
-                                      range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(NSForegroundColorAttributeName, value: fontColor,
-                                      range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(NSBackgroundColorAttributeName, value: backgroundColor,
-                                      range: NSRange(location: 0, length: attributedString.length))
+        let mutableString = attributedString.mutableString
+        mutableString.replaceOccurrences(of: "\n\n+", with: "\n",
+                                         options: .regularExpression,
+                                         range: NSRange(location: 0, length: mutableString.length))
+        mutableString.replaceOccurrences(of: "&nbsp;", with: " ",
+                                         range: NSRange(location: 0, length: mutableString.length))
+
+        let regExp = try? NSRegularExpression(pattern: "^\\s+", options: .anchorsMatchLines)
+        if let regExp = regExp {
+            regExp.replaceMatches(in: mutableString, options: [],
+                                  range: NSRange(location: 0, length: mutableString.length),
+                                  withTemplate: "")
+        }
+
+        let range = NSRange(location: 0, length: attributedString.length)
+        attributedString.addAttribute(NSAttributedStringKey.font, value: font, range: range)
+        attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: fontColor, range: range)
+        attributedString.addAttribute(NSAttributedStringKey.backgroundColor, value: backgroundColor, range: range)
+        let paraStyle = NSMutableParagraphStyle()
+        paraStyle.paragraphSpacing = 3
+        paraStyle.paragraphSpacingBefore = 0
+        paraStyle.lineSpacing = 1.38
+        attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value: paraStyle, range: range)
         var elements: [CDMarkdownElement] = escapingElements
         elements.append(contentsOf: defaultElements)
         elements.append(contentsOf: customElements)

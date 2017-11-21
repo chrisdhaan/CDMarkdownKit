@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD402A4B1F573AE400E14766 /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = AD402A4A1F573AE400E14766 /* en.lproj */; };
 		B2B365EA1F324BDA0078B962 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B365E81F324BDA0078B962 /* AppDelegate.swift */; };
 		B2B365EB1F324BDA0078B962 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B365E91F324BDA0078B962 /* ViewController.swift */; };
 		B2B365F81F324C0C0078B962 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2B365F71F324C0C0078B962 /* Assets.xcassets */; };
@@ -16,6 +17,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		AD0B41A91FC4E84500B10C15 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B2B3663E1F324FAA0078B962 /* CDMarkdownKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ADADFC851FACE1CB008C8654;
+			remoteInfo = CDMarkdownKitTV;
+		};
 		B2B366421F324FAA0078B962 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B2B3663E1F324FAA0078B962 /* CDMarkdownKit.xcodeproj */;
@@ -47,6 +55,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AD402A4A1F573AE400E14766 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Resources/en.lproj; sourceTree = SOURCE_ROOT; };
 		B2B365CB1F324A930078B962 /* iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B365E81F324BDA0078B962 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2B365E91F324BDA0078B962 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +108,7 @@
 		B2B365EC1F324BDF0078B962 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				AD402A4A1F573AE400E14766 /* en.lproj */,
 				B2B365F71F324C0C0078B962 /* Assets.xcassets */,
 				B2B365F91F324C170078B962 /* LaunchScreen.storyboard */,
 				B2B365FB1F324C170078B962 /* Main.storyboard */,
@@ -118,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				B2B366431F324FAA0078B962 /* CDMarkdownKit.framework */,
+				AD0B41AA1FC4E84500B10C15 /* CDMarkdownKitTV.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -156,6 +167,7 @@
 				TargetAttributes = {
 					B2B365CA1F324A930078B962 = {
 						CreatedOnToolsVersion = 8.3.3;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -185,6 +197,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		AD0B41AA1FC4E84500B10C15 /* CDMarkdownKitTV.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CDMarkdownKitTV.framework;
+			remoteRef = AD0B41A91FC4E84500B10C15 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		B2B366431F324FAA0078B962 /* CDMarkdownKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -199,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD402A4B1F573AE400E14766 /* en.lproj in Resources */,
 				B2B365FD1F324C170078B962 /* LaunchScreen.storyboard in Resources */,
 				B2B365F81F324C0C0078B962 /* Assets.xcassets in Resources */,
 				B2B365FE1F324C170078B962 /* Main.storyboard in Resources */,
@@ -349,7 +369,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.christopherdehaan.iOS-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -362,7 +383,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.christopherdehaan.iOS-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
