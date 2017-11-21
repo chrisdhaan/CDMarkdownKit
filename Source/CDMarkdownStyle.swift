@@ -33,21 +33,21 @@ public protocol CDMarkdownStyle {
     var font: UIFont? { get }
     var color: UIColor? { get }
     var backgroundColor: UIColor? { get }
-    var attributes: [String: AnyObject] { get }
+    var attributes: [NSAttributedStringKey: AnyObject] { get }
 }
 
 public extension CDMarkdownStyle {
 
-    var attributes: [String: AnyObject] {
-        var attributes = [String: AnyObject]()
+    var attributes: [NSAttributedStringKey: AnyObject] {
+        var attributes = [NSAttributedStringKey: AnyObject]()
         if let font = font {
-            attributes[NSFontAttributeName] = font
+            attributes[NSAttributedStringKey.font] = font
         }
         if let color = color {
-            attributes[NSForegroundColorAttributeName] = color
+            attributes[NSAttributedStringKey.foregroundColor] = color
         }
         if let backgroundColor = backgroundColor {
-            attributes[NSBackgroundColorAttributeName] = backgroundColor
+            attributes[NSAttributedStringKey.backgroundColor] = backgroundColor
         }
         return attributes
     }

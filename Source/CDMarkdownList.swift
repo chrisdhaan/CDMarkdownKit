@@ -67,12 +67,12 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         paraStyle.paragraphSpacing = 2
         paraStyle.paragraphSpacingBefore = 0
         paraStyle.firstLineHeadIndent = 0
-        let indSize = "\(indicator) ".size(attributes: attributes)
-        let sepSize = separator.size(attributes: attributes)
+        let indSize = "\(indicator) ".size(withAttributes: attributes)
+        let sepSize = separator.size(withAttributes: attributes)
         let floatLevel = CGFloat(level)
         paraStyle.headIndent = indSize.width + (sepSize.width * floatLevel)
         paraStyle.lineSpacing = 1.0
-        attributedString.addAttribute(NSParagraphStyleAttributeName, value: paraStyle, range: range)
+        attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value: paraStyle, range: range)
     }
 
     open func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange, level: Int) {

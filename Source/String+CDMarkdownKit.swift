@@ -41,11 +41,11 @@ internal extension String {
     // Converts each 4 digit characters to its String form  (e.g. "0048" -> "H")
     func unescapeUTF16() -> String? {
         var utf16Array = [UInt16]()
-        stride(from: 0, to: characters.count, by: 4).forEach {
-            let startIndex = characters.index(characters.startIndex, offsetBy: $0)
-            if ($0 + 4) <= characters.count {
-                let endIndex = characters.index(characters.startIndex, offsetBy: $0 + 4)
-                let hex4 = substring(with: startIndex..<endIndex)
+        stride(from: 0, to: count, by: 4).forEach {
+            let startIdx = index(startIndex, offsetBy: $0)
+            if ($0 + 4) <= count {
+                let endIdx = index(startIndex, offsetBy: $0 + 4)
+                let hex4 = self[startIdx..<endIdx]
 
                 if let utf16 = UInt16(hex4, radix: 16) {
                     utf16Array.append(utf16)

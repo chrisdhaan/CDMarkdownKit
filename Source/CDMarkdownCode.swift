@@ -61,6 +61,6 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
         guard let unescapedString = matchString.unescapeUTF16() else { return }
         attributedString.replaceCharacters(in: range, with: unescapedString)
         attributedString.addAttributes(attributes, range: NSRange(location: range.location,
-                                                                  length: unescapedString.characters.count))
+                                                                  length: unescapedString.count))
     }
 }

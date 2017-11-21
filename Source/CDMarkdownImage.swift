@@ -56,7 +56,7 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
                 return
         }
         guard let url = URL(string: link) ?? URL(string: encodedLink) else { return }
-        attributedString.addAttribute(NSLinkAttributeName, value: url, range: range)
+        attributedString.addAttribute(NSAttributedStringKey.link, value: url, range: range)
     }
 
     open func match(_ match: NSTextCheckingResult, attributedString: NSMutableAttributedString) {

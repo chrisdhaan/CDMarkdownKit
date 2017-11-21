@@ -60,7 +60,7 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         let matchString: String = attributedString.attributedSubstring(from: range).string
         guard let unescapedString = matchString.unescapeUTF16() else { return }
         attributedString.replaceCharacters(in: range, with: unescapedString)
-        let replacedRange = NSRange(location: range.location, length: unescapedString.characters.count)
+        let replacedRange = NSRange(location: range.location, length: unescapedString.count)
         attributedString.addAttributes(attributes, range: replacedRange)
         let mutableString = attributedString.mutableString
         let range = NSRange(location: replacedRange.location, length: 1)

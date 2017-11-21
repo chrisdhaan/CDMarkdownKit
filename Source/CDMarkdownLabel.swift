@@ -185,7 +185,7 @@ extension CDMarkdownLabel: NSLayoutManagerDelegate {
                               shouldBreakLineByWordBeforeCharacterAt charIndex: Int) -> Bool {
         var range = NSRange()
         // Don't allow line breaks on URL's
-        let linkURL = layoutManager.textStorage?.attribute(NSLinkAttributeName, at: charIndex, effectiveRange: &range)
+        let linkURL = layoutManager.textStorage?.attribute(NSAttributedStringKey.link, at: charIndex, effectiveRange: &range)
 
         return !((linkURL != nil) && (charIndex > range.location) && (charIndex <= NSMaxRange(range)))
     }

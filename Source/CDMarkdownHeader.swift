@@ -81,7 +81,7 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         }
     }
 
-    open func attributesForLevel(_ level: Int) -> [String: AnyObject] {
+    open func attributesForLevel(_ level: Int) -> [NSAttributedStringKey: AnyObject] {
         var attributes = self.attributes
         var fontMultiplier: CGFloat
         switch level {
@@ -104,11 +104,11 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         }
         if let font = font {
             let headerFontSize: CGFloat = font.pointSize + (CGFloat(fontMultiplier) * CGFloat(fontIncrease))
-            attributes[NSFontAttributeName] = font.withSize(headerFontSize)
+            attributes[NSAttributedStringKey.font] = font.withSize(headerFontSize)
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.paragraphSpacing = 6
             paragraphStyle.paragraphSpacingBefore = 12
-            attributes[NSParagraphStyleAttributeName] = paragraphStyle
+            attributes[NSAttributedStringKey.paragraphStyle] = paragraphStyle
         }
         return attributes
     }

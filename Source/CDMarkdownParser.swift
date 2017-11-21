@@ -61,7 +61,7 @@ open class CDMarkdownParser {
     open let backgroundColor: UIColor
 
     // MARK: - Initializer
-    public init(font: UIFont?,
+    public init(font: UIFont? = nil,
                 boldFont: UIFont? = nil,
                 italicFont: UIFont? = nil,
                 fontColor: UIColor = UIColor.black,
@@ -134,14 +134,14 @@ open class CDMarkdownParser {
         }
 
         let range = NSRange(location: 0, length: attributedString.length)
-        attributedString.addAttribute(NSFontAttributeName, value: font, range: range)
-        attributedString.addAttribute(NSForegroundColorAttributeName, value: fontColor, range: range)
-        attributedString.addAttribute(NSBackgroundColorAttributeName, value: backgroundColor, range: range)
+        attributedString.addAttribute(NSAttributedStringKey.font, value: font, range: range)
+        attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: fontColor, range: range)
+        attributedString.addAttribute(NSAttributedStringKey.backgroundColor, value: backgroundColor, range: range)
         let paraStyle = NSMutableParagraphStyle()
         paraStyle.paragraphSpacing = 3
         paraStyle.paragraphSpacingBefore = 0
         paraStyle.lineSpacing = 1.38
-        attributedString.addAttribute(NSParagraphStyleAttributeName, value: paraStyle, range: range)
+        attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value: paraStyle, range: range)
         var elements: [CDMarkdownElement] = escapingElements
         elements.append(contentsOf: defaultElements)
         elements.append(contentsOf: customElements)

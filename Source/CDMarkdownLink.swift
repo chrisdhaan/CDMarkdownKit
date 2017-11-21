@@ -56,7 +56,7 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
                 return
         }
         guard let url = URL(string: link) ?? URL(string: encodedLink) else { return }
-        attributedString.addAttribute(NSLinkAttributeName, value: url, range: range)
+        attributedString.addAttribute(NSAttributedStringKey.link, value: url, range: range)
     }
 
     open func match(_ match: NSTextCheckingResult, attributedString: NSMutableAttributedString) {
@@ -65,12 +65,12 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
             return
         }
         let nsString = attributedString.string as NSString
-        let textRange = match.rangeAt(1)
+        let textRange = match.range(at: 1)
         let linkText = nsString.substring(with: textRange)
-        let linkURLString = nsString.substring(with: match.rangeAt(2))
+        let linkURLString = nsString.substring(with: match.range(at: 2))
 
         //Replace entire match with linkText first, to provide stable range
-        attributedString.replaceCharacters(in: match.rangeAt(0), with: linkText)
+        attributedString.replaceCharacters(in: match.range(at: 0), with: linkText)
 
         let formatRange = NSRange(location: match.range.location,
                                   length: textRange.length)
