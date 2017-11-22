@@ -25,7 +25,11 @@
 //  THE SOFTWARE.
 //
 
-import UIKit
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
 
 open class CDMarkdownParser {
     
@@ -46,7 +50,9 @@ open class CDMarkdownParser {
     open let italic: CDMarkdownItalic
     open let code: CDMarkdownCode
     open let syntax: CDMarkdownSyntax
+#if os(iOS) || os(macOS) || os(tvOS)
     open let image: CDMarkdownImage
+#endif
     
     // MARK: - Escaping Elements
     fileprivate var codeEscaping = CDMarkdownCodeEscaping()
@@ -56,16 +62,16 @@ open class CDMarkdownParser {
     // MARK: - Configuration
     // Enables or disables detection of URLs even without Markdown format
     open var automaticLinkDetectionEnabled: Bool = true
-    open let font: UIFont
-    open let fontColor: UIColor
-    open let backgroundColor: UIColor
+    open let font: CDFont
+    open let fontColor: CDColor
+    open let backgroundColor: CDColor
     
     // MARK: - Initializer
-    public init(font: UIFont = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize),
-                boldFont: UIFont? = nil,
-                italicFont: UIFont? = nil,
-                fontColor: UIColor = UIColor.black,
-                backgroundColor: UIColor = UIColor.clear,
+    public init(font: CDFont = CDFont.systemFont(ofSize: 12),
+                boldFont: CDFont? = nil,
+                italicFont: CDFont? = nil,
+                fontColor: CDColor = CDColor.black,
+                backgroundColor: CDColor = CDColor.clear,
                 automaticLinkDetectionEnabled: Bool = true,
                 customElements: [CDMarkdownElement] = []) {
         self.font = font
@@ -81,11 +87,17 @@ open class CDMarkdownParser {
         italic = CDMarkdownItalic(font: font, customItalicFont: italicFont)
         code = CDMarkdownCode(font: font)
         syntax = CDMarkdownSyntax(font: font)
+#if os(iOS) || os(macOS) || os(tvOS)
         image = CDMarkdownImage(font: font)
+#endif
         
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.escapingElements = [codeEscaping, escaping]
+#if os(iOS) || os(macOS) || os(tvOS)
         self.defaultElements = [header, list, quote, link, automaticLink, bold, italic, image]
+#else
+        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic]
+#endif
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
     }
@@ -111,12 +123,18 @@ open class CDMarkdownParser {
     
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
-        attributedString.addAttribute(NSFontAttributeName, value: font,
-                                      range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(NSForegroundColorAttributeName, value: fontColor,
-                                      range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(NSBackgroundColorAttributeName, value: backgroundColor,
-                                      range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSFontAttributeName,
+                                      value: font,
+                                      range: NSRange(location: 0,
+                                                     length: attributedString.length))
+        attributedString.addAttribute(NSForegroundColorAttributeName,
+                                      value: fontColor,
+                                      range: NSRange(location: 0,
+                                                     length: attributedString.length))
+        attributedString.addAttribute(NSBackgroundColorAttributeName,
+                                      value: backgroundColor,
+                                      range: NSRange(location: 0,
+                                                     length: attributedString.length))
         var elements: [CDMarkdownElement] = escapingElements
         elements.append(contentsOf: defaultElements)
         elements.append(contentsOf: customElements)

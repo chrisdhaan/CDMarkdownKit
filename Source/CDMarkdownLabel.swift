@@ -25,6 +25,8 @@
 //  THE SOFTWARE.
 //
 
+#if os(iOS) || os(tvOS)
+
 import UIKit
 
 open class CDMarkdownLabel: UILabel {
@@ -126,7 +128,9 @@ open class CDMarkdownLabel: UILabel {
     }
     
     // MARK: - Layout And Rendering
-    open override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+    
+    open override func textRect(forBounds bounds: CGRect,
+                                limitedToNumberOfLines numberOfLines: Int) -> CGRect {
         // Use our text container to calculate the bounds required. First save our
         // current text container setup
         let savedTextContainerSize = self.customTextContainer.size
@@ -157,8 +161,10 @@ open class CDMarkdownLabel: UILabel {
         let glyphRange = self.customLayoutManager.glyphRange(for: self.customTextContainer)
         let glyphsPosition = self.calculateGlyphsPositionInView()
         // Drawing code
-        self.customLayoutManager.drawBackground(forGlyphRange: glyphRange, at: glyphsPosition)
-        self.customLayoutManager.drawGlyphs(forGlyphRange: glyphRange, at: glyphsPosition)
+        self.customLayoutManager.drawBackground(forGlyphRange: glyphRange,
+                                                at: glyphsPosition)
+        self.customLayoutManager.drawGlyphs(forGlyphRange: glyphRange,
+                                            at: glyphsPosition)
     }
     
     fileprivate func calculateGlyphsPositionInView() -> CGPoint {
@@ -179,13 +185,19 @@ open class CDMarkdownLabel: UILabel {
     }
 }
 
-// MARK: - LayoutManager Delegate
+// MARK: - LayoutManagerDelegate Methods
+    
 extension CDMarkdownLabel: NSLayoutManagerDelegate {
-    public func layoutManager(_ layoutManager: NSLayoutManager, shouldBreakLineByWordBeforeCharacterAt charIndex: Int) -> Bool {
+    public func layoutManager(_ layoutManager: NSLayoutManager,
+                              shouldBreakLineByWordBeforeCharacterAt charIndex: Int) -> Bool {
         var range = NSRange()
         // Don't allow line breaks on URL's
-        let linkURL = layoutManager.textStorage?.attribute(NSLinkAttributeName, at: charIndex, effectiveRange: &range)
+        let linkURL = layoutManager.textStorage?.attribute(NSLinkAttributeName,
+                                                           at: charIndex,
+                                                           effectiveRange: &range)
         
         return !((linkURL != nil) && (charIndex > range.location) && (charIndex <= NSMaxRange(range)))
     }
 }
+
+#endif

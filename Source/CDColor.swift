@@ -1,8 +1,8 @@
 //
-//  CDMarkdownKit.h
+//  CDColor.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 8/2/17.
+//  Created by Chris De Haan on 11/18/17.
 //
 //  Copyright (c) 2016-2017 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -22,10 +22,15 @@
 //  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
+//  THE SOFTWARE.istopherdehaan.me>
 //
 
-@import Foundation;
+import Foundation
 
-FOUNDATION_EXPORT double CDMarkdownKitVersionNumber;
-FOUNDATION_EXPORT const unsigned char CDMarkdownKitVersionString[];
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+    public typealias CDColor = UIColor
+#elseif os(macOS)
+    import Cocoa
+    public typealias CDColor = NSColor
+#endif

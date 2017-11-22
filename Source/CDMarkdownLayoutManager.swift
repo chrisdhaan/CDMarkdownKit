@@ -25,6 +25,8 @@
 //  THE SOFTWARE.
 //
 
+#if os(iOS) || os(tvOS)
+
 import UIKit
 
 open class CDMarkdownLayoutManager: NSLayoutManager {
@@ -48,26 +50,36 @@ open class CDMarkdownLayoutManager: NSLayoutManager {
         if rectCount == 1 ||
             rectCount == 2 && (rectArray[1].maxX < rectArray[0].minX) {
             // 1 rect or 2 rects without edges in contact
-            path.addRect(rectArray[0].insetBy(dx: cornerRadius, dy: cornerRadius))
+            path.addRect(rectArray[0].insetBy(dx: cornerRadius,
+                                              dy: cornerRadius))
             if rectCount == 2 {
-                path.addRect(rectArray[1].insetBy(dx: cornerRadius, dy: cornerRadius))
+                path.addRect(rectArray[1].insetBy(dx: cornerRadius,
+                                                  dy: cornerRadius))
             }
         } else {
             // 2 or 3 rects
             let lastRect: Int = rectCount - 1
             
-            path.move(to: CGPoint(x: rectArray[0].minX + cornerRadius, y: rectArray[0].maxY + cornerRadius))
+            path.move(to: CGPoint(x: rectArray[0].minX + cornerRadius,
+                                  y: rectArray[0].maxY + cornerRadius))
             
-            path.addLine(to: CGPoint(x: rectArray[0].minX + cornerRadius, y: rectArray[0].minY + cornerRadius))
-            path.addLine(to: CGPoint(x: rectArray[0].maxX - cornerRadius, y: rectArray[0].minY + cornerRadius))
+            path.addLine(to: CGPoint(x: rectArray[0].minX + cornerRadius,
+                                     y: rectArray[0].minY + cornerRadius))
+            path.addLine(to: CGPoint(x: rectArray[0].maxX - cornerRadius,
+                                     y: rectArray[0].minY + cornerRadius))
             
-            path.addLine(to: CGPoint(x: rectArray[0].maxX - cornerRadius, y: rectArray[lastRect].minY - cornerRadius))
-            path.addLine(to: CGPoint(x: rectArray[lastRect].maxX - cornerRadius, y: rectArray[lastRect].minY - cornerRadius))
+            path.addLine(to: CGPoint(x: rectArray[0].maxX - cornerRadius,
+                                     y: rectArray[lastRect].minY - cornerRadius))
+            path.addLine(to: CGPoint(x: rectArray[lastRect].maxX - cornerRadius,
+                                     y: rectArray[lastRect].minY - cornerRadius))
             
-            path.addLine(to: CGPoint(x: rectArray[lastRect].maxX - cornerRadius, y: rectArray[lastRect].maxY - cornerRadius))
-            path.addLine(to: CGPoint(x: rectArray[lastRect].minX + cornerRadius, y: rectArray[lastRect].maxY - cornerRadius))
+            path.addLine(to: CGPoint(x: rectArray[lastRect].maxX - cornerRadius,
+                                     y: rectArray[lastRect].maxY - cornerRadius))
+            path.addLine(to: CGPoint(x: rectArray[lastRect].minX + cornerRadius,
+                                     y: rectArray[lastRect].maxY - cornerRadius))
             
-            path.addLine(to: CGPoint(x: rectArray[lastRect].minX + cornerRadius, y: rectArray[0].maxY + cornerRadius))
+            path.addLine(to: CGPoint(x: rectArray[lastRect].minX + cornerRadius,
+                                     y: rectArray[0].maxY + cornerRadius))
             
             path.closeSubpath()
         }
@@ -86,3 +98,5 @@ open class CDMarkdownLayoutManager: NSLayoutManager {
         ctx?.drawPath(using: .fillStroke)
     }
 }
+
+#endif

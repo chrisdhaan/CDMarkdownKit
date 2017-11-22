@@ -25,11 +25,19 @@
 //  THE SOFTWARE.
 //
 
-import UIKit
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
 
 // The base to all Link parsing elements.
 public protocol CDMarkdownLinkElement: CDMarkdownElement, CDMarkdownStyle {
     
-    func formatText(_ attributedString: NSMutableAttributedString, range: NSRange, link: String)
-    func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange, link: String)
+    func formatText(_ attributedString: NSMutableAttributedString,
+                    range: NSRange,
+                    link: String)
+    func addAttributes(_ attributedString: NSMutableAttributedString,
+                       range: NSRange,
+                       link: String)
 }

@@ -25,7 +25,11 @@
 //  THE SOFTWARE.
 //
 
-import UIKit
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
 
 open class CDMarkdownCodeEscaping: CDMarkdownElement {
     
@@ -36,18 +40,22 @@ open class CDMarkdownCodeEscaping: CDMarkdownElement {
     }
     
     open func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex, options: .dotMatchesLineSeparators)
+        return try NSRegularExpression(pattern: regex,
+                                       options: .dotMatchesLineSeparators)
     }
     
-    open func match(_ match: NSTextCheckingResult, attributedString: NSMutableAttributedString) {
+    open func match(_ match: NSTextCheckingResult,
+                    attributedString: NSMutableAttributedString) {
         let range = match.rangeAt(2)
         // escaping all characters
         let matchString = attributedString.attributedSubstring(from: range).string
         let escapedString = Array<UInt16>(matchString.utf16)
-            .map { (value: UInt16) -> String in String(format: "%04x", value) }
+            .map { (value: UInt16) -> String in String(format: "%04x",
+                                                       value) }
             .reduce("") { (string: String, character: String) -> String in
                 return "\(string)\(character)"
         }
-        attributedString.replaceCharacters(in: range, with: escapedString)
+        attributedString.replaceCharacters(in: range,
+                                           with: escapedString)
     }
 }

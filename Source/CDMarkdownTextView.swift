@@ -25,6 +25,8 @@
 //  THE SOFTWARE.
 //
 
+#if os(iOS) || os(tvOS)
+
 import UIKit
 
 open class CDMarkdownTextView: UITextView {
@@ -65,14 +67,19 @@ open class CDMarkdownTextView: UITextView {
         }
     }
     
-    public init(frame: CGRect, textContainer: NSTextContainer, layoutManager: CDMarkdownLayoutManager) {
-        super.init(frame: frame, textContainer: textContainer)
+    public init(frame: CGRect,
+                textContainer: NSTextContainer,
+                layoutManager: CDMarkdownLayoutManager) {
+        super.init(frame: frame,
+                   textContainer: textContainer)
         
         self.customLayoutManager = layoutManager
     }
     
-    public override init(frame: CGRect, textContainer: NSTextContainer?) {
-        super.init(frame: frame, textContainer: textContainer)
+    public override init(frame: CGRect,
+                         textContainer: NSTextContainer?) {
+        super.init(frame: frame,
+                   textContainer: textContainer)
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -86,6 +93,10 @@ open class CDMarkdownTextView: UITextView {
         
         self.isScrollEnabled = true
         self.isSelectable = false
+#if os(iOS)
         self.isEditable = false
+#endif
     }
 }
+
+#endif

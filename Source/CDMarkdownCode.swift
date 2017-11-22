@@ -25,32 +25,40 @@
 //  THE SOFTWARE.
 //
 
-import UIKit
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
 
 open class CDMarkdownCode: CDMarkdownCommonElement {
     
     fileprivate static let regex = "(\\s+|^)(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)"
     
-    open var font: UIFont?
-    open var color: UIColor?
-    open var backgroundColor: UIColor?
+    open var font: CDFont?
+    open var color: CDColor?
+    open var backgroundColor: CDColor?
     
     open var regex: String {
         return CDMarkdownCode.regex
     }
     
-    public init(font: UIFont? = UIFont(name: "Menlo-Regular", size: UIFont.smallSystemFontSize),
-                color: UIColor? = UIColor.codeTextRed(),
-                backgroundColor: UIColor? = UIColor.codeBackgroundRed()) {
+    public init(font: CDFont? = CDFont(name: "Menlo-Regular", size: 12),
+                color: CDColor? = CDColor.codeTextRed(),
+                backgroundColor: CDColor? = CDColor.codeBackgroundRed()) {
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
     }
     
-    open func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange) {
+    open func addAttributes(_ attributedString: NSMutableAttributedString,
+                            range: NSRange) {
         let matchString: String = attributedString.attributedSubstring(from: range).string
         guard let unescapedString = matchString.unescapeUTF16() else { return }
-        attributedString.replaceCharacters(in: range, with: unescapedString)
-        attributedString.addAttributes(attributes, range: NSRange(location: range.location, length: unescapedString.characters.count))
+        attributedString.replaceCharacters(in: range,
+                                           with: unescapedString)
+        attributedString.addAttributes(attributes,
+                                       range: NSRange(location: range.location,
+                                                      length: unescapedString.characters.count))
     }
 }

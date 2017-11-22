@@ -25,21 +25,48 @@
 //  THE SOFTWARE.
 //
 
-import UIKit
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
 
-internal extension UIFont {
+#if os(macOS)
     
-    func withTraits(_ traits: UIFontDescriptorSymbolicTraits...) -> UIFont {
-        let descriptor = fontDescriptor
-            .withSymbolicTraits(UIFontDescriptorSymbolicTraits(traits))
-        return UIFont(descriptor: descriptor!, size: 0)
+internal extension CDFont {
+    
+    private func withTraits(_ trait: Int) -> CDFont {
+        let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(UInt32(trait)))
+        return CDFont(descriptor: descriptor,
+                      size: 0)!
     }
     
-    func bold() -> UIFont {
+    func bold() -> CDFont {
+        return withTraits(NSFontBoldTrait)
+    }
+    
+    func italic() -> CDFont {
+        return withTraits(NSFontItalicTrait)
+    }
+}
+
+#else
+
+internal extension CDFont {
+    
+    private func withTraits(_ traits: CDFontDescriptorSymbolicTraits...) -> CDFont {
+        let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(traits))
+        return CDFont(descriptor: descriptor!,
+                      size: 0)
+    }
+    
+    func bold() -> CDFont {
         return withTraits(.traitBold)
     }
     
-    func italic() -> UIFont {
+    func italic() -> CDFont {
         return withTraits(.traitItalic)
     }
 }
+
+#endif

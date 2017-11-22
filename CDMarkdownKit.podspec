@@ -12,7 +12,9 @@ This Swift framework handles standard markdown parsing along with the ability to
   s.social_media_url = 'https://twitter.com/dehaan_solo'
 
   s.ios.deployment_target = '8.0'
-  s.requires_arc = true
+  s.osx.deployment_target = '10.11'
+  s.tvos.deployment_target = '9.0'
+  s.watchos.deployment_target = '2.0'
 
   s.source_files = 'Source/*.swift'
 end

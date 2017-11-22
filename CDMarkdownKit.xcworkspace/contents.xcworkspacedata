@@ -5,6 +5,6 @@
       location = "group:CDMarkdownKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:iOS Example/iOS Example.xcodeproj">
+      location = "group:Example/iOS Example.xcodeproj">
    </FileRef>
 </Workspace>

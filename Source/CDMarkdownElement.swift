@@ -34,7 +34,8 @@ public protocol CDMarkdownElement: class {
     
     func regularExpression() throws -> NSRegularExpression
     func parse(_ attributedString: NSMutableAttributedString)
-    func match(_ match: NSTextCheckingResult, attributedString: NSMutableAttributedString)
+    func match(_ match: NSTextCheckingResult,
+               attributedString: NSMutableAttributedString)
 }
 
 public extension CDMarkdownElement {
@@ -50,7 +51,8 @@ public extension CDMarkdownElement {
                                                 length: attributedString.length - location))
             {
                 let oldLength = attributedString.length
-                match(regexMatch, attributedString: attributedString)
+                match(regexMatch,
+                      attributedString: attributedString)
                 let newLength = attributedString.length
                 location = regexMatch.range.location + regexMatch.range.length + newLength - oldLength
             }

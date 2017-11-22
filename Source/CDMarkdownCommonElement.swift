@@ -25,23 +25,31 @@
 //  THE SOFTWARE.
 //
 
-import UIKit
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
 
 // MarkdownCommentElement represent the default Markdown elements which only manipulate content
 // visually, (e.g. Bold or Italic)
 public protocol CDMarkdownCommonElement: CDMarkdownElement, CDMarkdownStyle {
     
-    func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange)
+    func addAttributes(_ attributedString: NSMutableAttributedString,
+                       range: NSRange)
 }
 
 public extension CDMarkdownCommonElement {
     
     func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex, options: [])
+        return try NSRegularExpression(pattern: regex,
+                                       options: [])
     }
     
-    func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange) {
-        attributedString.addAttributes(attributes, range: range)
+    func addAttributes(_ attributedString: NSMutableAttributedString,
+                       range: NSRange) {
+        attributedString.addAttributes(attributes,
+                                       range: range)
     }
     
     func match(_ match: NSTextCheckingResult, attributedString: NSMutableAttributedString) {

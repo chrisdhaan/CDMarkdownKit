@@ -25,12 +25,18 @@
 //  THE SOFTWARE.
 //
 
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
+
 // Styling protocol for all MarkdownElements
 public protocol CDMarkdownStyle {
     
-    var font: UIFont? { get }
-    var color: UIColor? { get }
-    var backgroundColor: UIColor? { get }
+    var font: CDFont? { get }
+    var color: CDColor? { get }
+    var backgroundColor: CDColor? { get }
     var attributes: [String: AnyObject] { get }
 }
 

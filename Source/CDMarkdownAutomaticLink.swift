@@ -25,7 +25,11 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
 
 open class CDMarkdownAutomaticLink: CDMarkdownLink {
     
@@ -36,7 +40,11 @@ open class CDMarkdownAutomaticLink: CDMarkdownLink {
     open override func match(_ match: NSTextCheckingResult,
                              attributedString: NSMutableAttributedString) {
         let linkURLString = attributedString.attributedSubstring(from: match.range).string
-        formatText(attributedString, range: match.range, link: linkURLString)
-        addAttributes(attributedString, range: match.range, link: linkURLString)
+        formatText(attributedString,
+                   range: match.range,
+                   link: linkURLString)
+        addAttributes(attributedString,
+                      range: match.range,
+                      link: linkURLString)
     }
 }

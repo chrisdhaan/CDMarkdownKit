@@ -25,26 +25,35 @@
 //  THE SOFTWARE.
 //
 
-import UIKit
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
 
 open class CDMarkdownList: CDMarkdownLevelElement {
     
     fileprivate static let regex = "^([\\*\\+\\-]{1,%@})\\s+(.+)$"
     
     open var maxLevel: Int
-    open var font: UIFont?
-    open var color: UIColor?
-    open var backgroundColor: UIColor?
+    open var font: CDFont?
+    open var color: CDColor?
+    open var backgroundColor: CDColor?
     open var separator: String
     open var indicator: String
     
     open var regex: String {
         let level: String = maxLevel > 0 ? "\(maxLevel)" : ""
-        return String(format: CDMarkdownList.regex, level)
+        return String(format: CDMarkdownList.regex,
+                      level)
     }
     
-    public init(font: UIFont? = nil, maxLevel: Int = 0, indicator: String = "•", separator: String = "  ",
-                color: UIColor? = nil, backgroundColor: UIColor? = nil) {
+    public init(font: CDFont? = nil,
+                maxLevel: Int = 0,
+                indicator: String = "•",
+                separator: String = "  ",
+                color: CDColor? = nil,
+                backgroundColor: CDColor? = nil) {
         self.maxLevel = maxLevel
         self.indicator = indicator
         self.separator = separator
@@ -53,11 +62,14 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         self.backgroundColor = backgroundColor
     }
     
-    open func formatText(_ attributedString: NSMutableAttributedString, range: NSRange, level: Int) {
+    open func formatText(_ attributedString: NSMutableAttributedString,
+                         range: NSRange,
+                         level: Int) {
         var string = (0..<level).reduce("") { (string, _) -> String in
             return "\(string)\(separator)"
         }
         string = "\(string)\(indicator) "
-        attributedString.replaceCharacters(in: range, with: string)
+        attributedString.replaceCharacters(in: range,
+                                           with: string)
     }
 }

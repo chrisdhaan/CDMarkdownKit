@@ -25,22 +25,28 @@
 //  THE SOFTWARE.
 //
 
-import UIKit
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
 
 open class CDMarkdownBold: CDMarkdownCommonElement {
     
     fileprivate static let regex = "(\\s+|^)(\\*\\*|__)(.+?)(\\2)"
     
-    open var font: UIFont?
-    open var color: UIColor?
-    open var backgroundColor: UIColor?
+    open var font: CDFont?
+    open var color: CDColor?
+    open var backgroundColor: CDColor?
     
     open var regex: String {
         return CDMarkdownBold.regex
     }
     
-    public init(font: UIFont? = nil, customBoldFont: UIFont? = nil, color: UIColor? = nil,
-                backgroundColor: UIColor? = nil) {
+    public init(font: CDFont? = nil,
+                customBoldFont: CDFont? = nil,
+                color: CDColor? = nil,
+                backgroundColor: CDColor? = nil) {
         if let customBoldFont = customBoldFont {
             self.font = customBoldFont
         } else {

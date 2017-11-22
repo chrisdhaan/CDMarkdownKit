@@ -1,8 +1,8 @@
 //
-//  CDMarkdownKit.h
+//  CDImage.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 8/2/17.
+//  Created by Chris De Haan on 11/18/17.
 //
 //  Copyright (c) 2016-2017 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -25,7 +25,12 @@
 //  THE SOFTWARE.
 //
 
-@import Foundation;
+import Foundation
 
-FOUNDATION_EXPORT double CDMarkdownKitVersionNumber;
-FOUNDATION_EXPORT const unsigned char CDMarkdownKitVersionString[];
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+    public typealias CDImage = UIImage
+#elseif os(macOS)
+    import Cocoa
+    public typealias CDImage = NSImage
+#endif

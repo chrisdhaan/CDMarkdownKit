@@ -1,10 +1,37 @@
-# CDMarkdownKit
+<p align="center">
+    <a href="https://github.com/chrisdhaan/CDMarkdownKit">
+        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/Documentation/cdmarkdownkit.png" alt="CDMarkdownKit" width="850" />
+    </a>
+</p>
 
-[![CI Status](http://img.shields.io/travis/chrisdhaan/CDMarkdownKit.svg?style=flat)](https://travis-ci.org/chrisdhaan/CDMarkdownKit)
-[![Version](https://img.shields.io/cocoapods/v/CDMarkdownKit.svg?style=flat)](http://cocoapods.org/pods/CDMarkdownKit)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![License](https://img.shields.io/cocoapods/l/CDMarkdownKit.svg?style=flat)](http://cocoapods.org/pods/CDMarkdownKit)
-[![Platform](https://img.shields.io/cocoapods/p/CDMarkdownKit.svg?style=flat)](http://cocoapods.org/pods/CDMarkdownKit)
+<p align="center">
+    <a href="https://github.com/chrisdhaan/CDMarkdownKit">
+        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/Documentation/github.png" alt="Star CDMarkdownKit On Github" />
+    </a>
+    <a href="http://stackoverflow.com/questions/tagged/cdmarkdownkit">
+        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/Documentation/stackoverflow.png" alt="Stack Overflow" />
+    </a>
+</p>
+
+<p align="center">
+    <a href="https://travis-ci.org/chrisdhaan/CDMarkdownKit">
+        <img src="http://img.shields.io/travis/chrisdhaan/CDMarkdownKit.svg?style=flat" alt="CI Status">
+    </a>
+    <a href="http://cocoapods.org/pods/CDMarkdownKit">
+        <img src="https://img.shields.io/cocoapods/v/CDMarkdownKit.svg?style=flat" alt="Version">
+    </a>
+    <a href="https://github.com/Carthage/Carthage">
+        <img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible">
+    </a>
+    <a href="http://cocoapods.org/pods/CDMarkdownKit">
+        <img src="https://img.shields.io/cocoapods/l/CDMarkdownKit.svg?style=flat" alt="License">
+    </a>
+    <a href="http://cocoapods.org/pods/CDMarkdownKit">
+        <img src="https://img.shields.io/cocoapods/p/CDMarkdownKit.svg?style=flat" alt="Platform">
+    </a>
+</p>
+
+<br>
 
 This Swift framework handles standard markdown parsing along with the ability to parse custom elements.
 
@@ -43,13 +70,18 @@ This framework is currently in development. As of release 0.9.0 the code is stab
     - [x] Image
 - [x] UITextView With Markdown Formatting
 - [ ] UILabel With Markdown Formatting
+- [x] OS Support
+  - [x] iOS
+  - [x] macOS
+  - [x] tvOS
+  - [x] watchOS
 - [ ] Documentation
 
 ---
 
 ## Requirements
 
-- iOS 8.0+
+- iOS 8.0+ / macOS 10.11+ / tvOS 9.0+ / watchOS 2.0+
 - Xcode 8.1+
 - Swift 3.0+
 
@@ -69,9 +101,9 @@ To integrate CDMarkdownKit into your Xcode project using CocoaPods, simply add t
 
 ```ruby
 # use this line to install CDMarkdownKit while in development
-pod "CDMarkdownKit", :git => "https://github.com/chrisdhaan/CDMarkdownKit"
+pod 'CDMarkdownKit', :git => 'https://github.com/chrisdhaan/CDMarkdownKit'
 # this line will eventually be used upon the 1.0.0 release of CDMarkdownKit and can be disregarded for now
-pod "CDMarkdownKit" "~> 1.0.0"
+pod 'CDMarkdownKit', '1.0.0'
 ```
 
 Afterwards, run the following command:
@@ -97,7 +129,7 @@ To integrate CDMarkdownKit into your Xcode project using Carthage, simply add th
 # use this line to install CDMarkdownKit while in development
 github "chrisdhaan/CDMarkdownKit"
 # this line will eventually be used upon the 1.0.0 release of CDMarkdownKit and can be disregarded for now
-github "chrisdhaan/CDMarkdownKit" ~> 1.0.0
+github "chrisdhaan/CDMarkdownKit" == 1.0.0
 ```
 
 Afterwards, run the following command:
@@ -120,7 +152,7 @@ To integrate CDMarkdownKit into your Xcode project using The Swift Package Manag
 
 ```swift
 dependencies: [
-    .Package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", majorVersion: 1)
+    .Package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", "1.0.0")
 ]
 ```
 
@@ -337,6 +369,7 @@ CDMarkdownKit adds the following functionalities:
 - Ability to customize background color for all elements
 - UITextView with the ability to round background text color corners for code, syntax, or all elements
 - UILabel with the ability to round background text color corners for code, syntax, or all elements
+- macOS, tvOS, and watchOS support
 
 ## License
 

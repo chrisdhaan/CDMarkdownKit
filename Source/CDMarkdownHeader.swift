@@ -25,7 +25,11 @@
 //  THE SOFTWARE.
 //
 
-import UIKit
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
 
 open class CDMarkdownHeader: CDMarkdownLevelElement {
     
@@ -41,9 +45,9 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
     }
     
     open var maxLevel: Int
-    open var font: UIFont?
-    open var color: UIColor?
-    open var backgroundColor: UIColor?
+    open var font: CDFont?
+    open var color: CDColor?
+    open var backgroundColor: CDColor?
     open var fontIncrease: Int
     
     open var regex: String {
@@ -51,9 +55,11 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         return String(format: CDMarkdownHeader.regex, level)
     }
     
-    public init(font: UIFont? = UIFont.boldSystemFont(ofSize: UIFont.smallSystemFontSize),
-                maxLevel: Int = 0, fontIncrease: Int = 2, color: UIColor? = nil,
-                backgroundColor: UIColor? = nil) {
+    public init(font: CDFont? = CDFont.boldSystemFont(ofSize: 12),
+                maxLevel: Int = 0,
+                fontIncrease: Int = 2,
+                color: CDColor? = nil,
+                backgroundColor: CDColor? = nil) {
         self.maxLevel = maxLevel
         self.font = font
         self.color = color
@@ -88,7 +94,9 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         }
         if let font = font {
             let headerFontSize: CGFloat = font.pointSize + (CGFloat(fontMultiplier) * CGFloat(fontIncrease))
-            attributes[NSFontAttributeName] = font.withSize(headerFontSize)
+            let headerFont = CDFont(name: font.fontName,
+                                    size: headerFontSize)
+            attributes[NSFontAttributeName] = headerFont
         }
         return attributes
     }
