@@ -94,7 +94,11 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
             if let data = data,
                 let image = CDImage(data: data) {
                 textAttachment.image = image
-            }
+            } 
+            // local images
+            else if let image = UIImage(named: url.path) {
+                textAttachment.image = image
+              }
         }
         
         // replace text with image
