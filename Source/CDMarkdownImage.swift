@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 12/15/16.
 //
-//  Copyright © 2016-2017 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@
 
 open class CDMarkdownImage: CDMarkdownLinkElement {
     
-    fileprivate static let regex = "[!]\\[[^\\[]*?\\]\\([^\\)]*\\)"
+    fileprivate static let regex = "!{1}\\[[^\\[]*?\\]\\([^\\)]*\\)"
     
     open var font: CDFont?
     open var color: CDColor?

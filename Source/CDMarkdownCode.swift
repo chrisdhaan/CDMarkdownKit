@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2017 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@
 
 open class CDMarkdownCode: CDMarkdownCommonElement {
     
-    fileprivate static let regex = "(\\s+|^)(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)"
+    fileprivate static let regex = "(\\s+|^|\\()(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)(\\)?)"
     
     open var font: CDFont?
     open var color: CDColor?
