@@ -91,8 +91,12 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
         let textAttachment = NSTextAttachment()
         if let url = URL(string: linkURLString) {
             let data = try? Data(contentsOf: url)
+            // Try to load image from url
             if let data = data,
                 let image = CDImage(data: data) {
+                textAttachment.image = image
+            // Try to load image from local file store
+            } else if let image = CDImage(named: url.path) {
                 textAttachment.image = image
             }
         }
