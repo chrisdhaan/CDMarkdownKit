@@ -134,6 +134,25 @@ open class CDMarkdownParser {
     
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
+        let mutableString = attributedString.mutableString
+        mutableString.replaceOccurrences(of: "\n\n+",
+                                         with: "\n",
+                                         options: .regularExpression,
+                                         range: NSRange(location: 0,
+                                                        length: mutableString.length))
+        mutableString.replaceOccurrences(of: "&nbsp;",
+                                         with: " ",
+                                         range: NSRange(location: 0,
+                                                        length: mutableString.length))
+        let regExp = try? NSRegularExpression(pattern: "^\\s+",
+                                              options: .anchorsMatchLines)
+        if let regExp = regExp {
+            regExp.replaceMatches(in: mutableString,
+                                  options: [],
+                                  range: NSRange(location: 0,
+                                                 length: mutableString.length),
+                                  withTemplate: "")
+        }
         let range = NSRange(location: 0,
                             length: attributedString.length)
         attributedString.addAttribute(NSFontAttributeName,
