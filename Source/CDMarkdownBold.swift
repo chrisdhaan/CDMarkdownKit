@@ -38,6 +38,7 @@ open class CDMarkdownBold: CDMarkdownCommonElement {
     open var font: CDFont?
     open var color: CDColor?
     open var backgroundColor: CDColor?
+    open var paragraphStyle: NSParagraphStyle?
     
     open var regex: String {
         return CDMarkdownBold.regex
@@ -46,7 +47,8 @@ open class CDMarkdownBold: CDMarkdownCommonElement {
     public init(font: CDFont? = nil,
                 customBoldFont: CDFont? = nil,
                 color: CDColor? = nil,
-                backgroundColor: CDColor? = nil) {
+                backgroundColor: CDColor? = nil,
+                paragraphStyle: NSParagraphStyle? = nil) {
         if let customBoldFont = customBoldFont {
             self.font = customBoldFont
         } else {
@@ -55,5 +57,6 @@ open class CDMarkdownBold: CDMarkdownCommonElement {
 
         self.color = color
         self.backgroundColor = backgroundColor
+        self.paragraphStyle = paragraphStyle
     }
 }

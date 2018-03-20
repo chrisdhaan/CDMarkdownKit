@@ -201,10 +201,10 @@ label.attributedText = markdownParser.parse(markdown)
 ```swift
 // Create parser
 let markdownParser = CDMarkdownParser(font: UIFont(name: "HelveticaNeue", size: 16),
-boldFont: UIFont(name: "HelveticaNeue-Bold", size: 16),
-italicFont: UIFont(name: "HelveticaNeue-Thin", size: 16),
-fontColor: UIColor.darkGray,
-backgroundColor: UIColor.lightGray)
+                                      boldFont: UIFont(name: "HelveticaNeue-Bold", size: 16),
+                                      italicFont: UIFont(name: "HelveticaNeue-Thin", size: 16),
+                                      fontColor: UIColor.darkGray,
+                                      backgroundColor: UIColor.lightGray)
 // Customize elements
 /// Bold
 markdownParser.bold.color = UIColor.cyan
@@ -221,6 +221,11 @@ markdownParser.quote.backgroundColor = UIColor.clear
 /// Link
 markdownParser.link.color = UIColor.blue
 markdownParser.link.backgroundColor = UIColor.green
+let linkParagraphStyle = NSMutableParagraphStyle()
+linkParagraphStyle.paragraphSpacing = 20
+linkParagraphStyle.paragraphSpacingBefore = 0
+linkParagraphStyle.lineSpacing = 20.38
+markdownParser.link.paragraphStyle = linkParagraphStyle
 markdownParser.automaticLink.color = UIColor.blue
 markdownParser.automaticLink.backgroundColor = UIColor.green
 /// Italic
@@ -282,10 +287,10 @@ A CDMarkdownTextView object will still render when initialized via a storyboard 
 
 ```swift
 let size = self.frame.size
-let rect = CGRect(x: 10, 
-y: 10, 
-width: CGFloat(size.width - 20), 
-height: CGFloat(size.height - 20))
+let rect = CGRect(x: 10,
+                  y: 10,
+                  width: CGFloat(size.width - 20),
+                  height: CGFloat(size.height - 20))
 /// Create custom text container
 let textContainer = NSTextContainer(size: size)
 /// Create custom layout manager
@@ -324,9 +329,9 @@ self.textView.roundAllCorners = true
 ```swift
 let size = self.frame.size
 let rect = CGRect(x: 10, 
-y: 10, 
-width: CGFloat(size.width - 20), 
-height: CGFloat(size.height - 20))
+                  y: 10,
+                  width: CGFloat(size.width - 20),
+                  height: CGFloat(size.height - 20))
 /// Initialization
 let label = CDMarkdownLabel(frame: rect)
 label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -367,6 +372,7 @@ CDMarkdownKit adds the following functionalities:
 - Ability to customize font for all elements
 - Ability to customize color for all elements
 - Ability to customize background color for all elements
+- Ability to customize paragraph style for all elements
 - UITextView with the ability to round background text color corners for code, syntax, or all elements
 - UILabel with the ability to round background text color corners for code, syntax, or all elements
 - macOS, tvOS, and watchOS support

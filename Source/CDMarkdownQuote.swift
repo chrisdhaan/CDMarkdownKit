@@ -39,6 +39,7 @@ open class CDMarkdownQuote: CDMarkdownLevelElement {
     open var font: CDFont?
     open var color: CDColor?
     open var backgroundColor: CDColor?
+    open var paragraphStyle: NSParagraphStyle?
     open var separator: String
     open var indicator: String
     
@@ -53,13 +54,15 @@ open class CDMarkdownQuote: CDMarkdownLevelElement {
                 indicator: String = ">",
                 separator: String = "  ",
                 color: CDColor? = nil,
-                backgroundColor: CDColor? = nil) {
+                backgroundColor: CDColor? = nil,
+                paragraphStyle: NSParagraphStyle? = nil) {
         self.maxLevel = maxLevel
         self.indicator = indicator
         self.separator = separator
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
+        self.paragraphStyle = paragraphStyle
     }
     
     open func formatText(_ attributedString: NSMutableAttributedString,

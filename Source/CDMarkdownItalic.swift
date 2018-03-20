@@ -38,6 +38,7 @@ open class CDMarkdownItalic: CDMarkdownCommonElement {
     open var font: CDFont?
     open var color: CDColor?
     open var backgroundColor: CDColor?
+    open var paragraphStyle: NSParagraphStyle?
     
     open var regex: String {
         return CDMarkdownItalic.regex
@@ -46,7 +47,8 @@ open class CDMarkdownItalic: CDMarkdownCommonElement {
     public init(font: CDFont? = nil,
                 customItalicFont: CDFont? = nil,
                 color: CDColor? = nil,
-                backgroundColor: CDColor? = nil) {
+                backgroundColor: CDColor? = nil,
+                paragraphStyle: NSParagraphStyle? = nil) {
         if let customItalicFont = customItalicFont {
             self.font = customItalicFont
         } else {
@@ -55,5 +57,6 @@ open class CDMarkdownItalic: CDMarkdownCommonElement {
 
         self.color = color
         self.backgroundColor = backgroundColor
+        self.paragraphStyle = paragraphStyle
     }
 }

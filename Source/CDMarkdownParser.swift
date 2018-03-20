@@ -65,6 +65,7 @@ open class CDMarkdownParser {
     open let font: CDFont
     open let fontColor: CDColor
     open let backgroundColor: CDColor
+    open let paragraphStyle: NSParagraphStyle
     
     // MARK: - Initializer
     public init(font: CDFont = CDFont.systemFont(ofSize: 12),
@@ -72,11 +73,21 @@ open class CDMarkdownParser {
                 italicFont: CDFont? = nil,
                 fontColor: CDColor = CDColor.black,
                 backgroundColor: CDColor = CDColor.clear,
+                paragraphStyle: NSParagraphStyle? = nil,
                 automaticLinkDetectionEnabled: Bool = true,
                 customElements: [CDMarkdownElement] = []) {
         self.font = font
         self.fontColor = fontColor
         self.backgroundColor = backgroundColor
+        if let paragraphStyle = paragraphStyle {
+            self.paragraphStyle = paragraphStyle
+        } else {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.paragraphSpacing = 3
+            paragraphStyle.paragraphSpacingBefore = 0
+            paragraphStyle.lineSpacing = 1.38
+            self.paragraphStyle = paragraphStyle
+        }
         
         header = CDMarkdownHeader(font: font)
         list = CDMarkdownList(font: font)
@@ -123,18 +134,20 @@ open class CDMarkdownParser {
     
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
+        let range = NSRange(location: 0,
+                            length: attributedString.length)
         attributedString.addAttribute(NSFontAttributeName,
                                       value: font,
-                                      range: NSRange(location: 0,
-                                                     length: attributedString.length))
+                                      range: range)
         attributedString.addAttribute(NSForegroundColorAttributeName,
                                       value: fontColor,
-                                      range: NSRange(location: 0,
-                                                     length: attributedString.length))
+                                      range: range)
         attributedString.addAttribute(NSBackgroundColorAttributeName,
                                       value: backgroundColor,
-                                      range: NSRange(location: 0,
-                                                     length: attributedString.length))
+                                      range: range)
+        attributedString.addAttribute(NSParagraphStyleAttributeName,
+                                      value: paragraphStyle,
+                                      range: range)
         var elements: [CDMarkdownElement] = escapingElements
         elements.append(contentsOf: defaultElements)
         elements.append(contentsOf: customElements)

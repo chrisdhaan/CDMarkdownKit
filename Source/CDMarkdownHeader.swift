@@ -48,6 +48,7 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
     open var font: CDFont?
     open var color: CDColor?
     open var backgroundColor: CDColor?
+    open var paragraphStyle: NSParagraphStyle?
     open var fontIncrease: Int
     
     open var regex: String {
@@ -59,11 +60,13 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
                 maxLevel: Int = 0,
                 fontIncrease: Int = 2,
                 color: CDColor? = nil,
-                backgroundColor: CDColor? = nil) {
+                backgroundColor: CDColor? = nil,
+                paragraphStyle: NSParagraphStyle? = nil) {
         self.maxLevel = maxLevel
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
+        self.paragraphStyle = paragraphStyle
         self.fontIncrease = fontIncrease
     }
     
