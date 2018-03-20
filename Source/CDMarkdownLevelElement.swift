@@ -39,7 +39,11 @@ public protocol CDMarkdownLevelElement: CDMarkdownElement, CDMarkdownStyle {
     var maxLevel: Int { get }
     
     func formatText(_ attributedString: NSMutableAttributedString,
-                    range: NSRange, level: Int)
+                    range: NSRange,
+                    level: Int)
+    func addFullAttributes(_ attributedString: NSMutableAttributedString,
+                           range: NSRange,
+                           level: Int)
     func addAttributes(_ attributedString: NSMutableAttributedString,
                        range: NSRange,
                        level: Int)
@@ -52,6 +56,10 @@ public extension CDMarkdownLevelElement {
         return try NSRegularExpression(pattern: regex,
                                        options: .anchorsMatchLines)
     }
+    
+    func addFullAttributes(_ attributedString: NSMutableAttributedString,
+                           range: NSRange,
+                           level: Int) {}
     
     func addAttributes(_ attributedString: NSMutableAttributedString,
                        range: NSRange,
@@ -67,6 +75,9 @@ public extension CDMarkdownLevelElement {
     func match(_ match: NSTextCheckingResult,
                attributedString: NSMutableAttributedString) {
         let level = match.rangeAt(1).length
+        addFullAttributes(attributedString,
+                          range: match.rangeAt(0),
+                          level: level)
         addAttributes(attributedString,
                       range: match.rangeAt(2),
                       level: level)
