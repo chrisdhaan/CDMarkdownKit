@@ -60,8 +60,16 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
         guard let unescapedString = matchString.unescapeUTF16() else { return }
         attributedString.replaceCharacters(in: range,
                                            with: unescapedString)
+        let range = NSRange(location: range.location,
+                            length: unescapedString.characters.count)
         attributedString.addAttributes(attributes,
-                                       range: NSRange(location: range.location,
-                                                      length: unescapedString.characters.count))
+                                       range: range)
+        let mutableString = attributedString.mutableString
+        // Remove \n if in string, not valid in Code element
+        // Use Syntax element for \n to parse in string
+        mutableString.replaceOccurrences(of: "\n",
+                                         with: "",
+                                         options: [],
+                                         range: range)
     }
 }
