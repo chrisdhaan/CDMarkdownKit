@@ -60,8 +60,52 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         guard let unescapedString = matchString.unescapeUTF16() else { return }
         attributedString.replaceCharacters(in: range,
                                            with: unescapedString)
+        let range = NSRange(location: range.location,
+                            length: unescapedString.characters.count)
         attributedString.addAttributes(attributes,
-                                       range: NSRange(location: range.location,
-                                                      length: unescapedString.characters.count))
+                                       range: range)
+        // If the previous character was a newline then parser doesn't have to worry about
+        // wrapping the background color from the end of the last element to the newline.
+        if range.location - 4 >= 0,
+            let previousCharacterRange = Range(NSRange(location: range.location - 4,
+                                                       length: 1),
+                                               in: attributedString.string),
+            attributedString.string[previousCharacterRange] == "\n" {
+            // Do nothing
+        } else {
+            // If the first character in a Syntax Markdown element is \n remove the background
+            // color to avoid wrapping the background color from the end of the last element
+            // to the newline.
+            let removeBackgroundColorAttributeRange = NSRange(location: range.location,
+                                                              length: 1)
+            if let firstCharacterRange = Range(removeBackgroundColorAttributeRange,
+                                               in: attributedString.string),
+                attributedString.string[firstCharacterRange] == "\n" {
+                attributedString.removeAttribute(NSBackgroundColorAttributeName,
+                                                 range: removeBackgroundColorAttributeRange)
+            }
+        }
+        // If lthe last character in a Syntax Markdown element is a newline then parser doens't have
+        // to worry about wrapping the background color from the end of the element to the newline.
+        if let lastCharacterRange = Range(NSRange(location: range.location + range.length - 1,
+                                               length: 1),
+                                          in: attributedString.string),
+            attributedString.string[lastCharacterRange] == "\n" {
+            // Do nothing
+        } else {
+            // If the next character in a Syntax Markdown element is \n add the background color
+            // to fully wrap the background color to the end of the current line.
+            let addBackgroundColorAttributeRange = NSRange(location: range.location + range.length,
+                                                           length: 1)
+            if range.location + range.length + 1 < attributedString.length,
+                let nextCharacterRange = Range(addBackgroundColorAttributeRange,
+                                               in: attributedString.string),
+                attributedString.string[nextCharacterRange] == "\n",
+                let backgroundColor = self.backgroundColor {
+                attributedString.addAttribute(NSBackgroundColorAttributeName,
+                                              value: backgroundColor,
+                                              range: addBackgroundColorAttributeRange)
+            }
+        }
     }
 }
