@@ -75,6 +75,7 @@ open class CDMarkdownParser {
                 backgroundColor: CDColor = CDColor.clear,
                 paragraphStyle: NSParagraphStyle? = nil,
                 automaticLinkDetectionEnabled: Bool = true,
+                fitIn frame: CGRect? = nil,
                 customElements: [CDMarkdownElement] = []) {
         self.font = font
         self.fontColor = fontColor
@@ -99,13 +100,13 @@ open class CDMarkdownParser {
         code = CDMarkdownCode(font: font)
         syntax = CDMarkdownSyntax(font: font)
 #if os(iOS) || os(macOS) || os(tvOS)
-        image = CDMarkdownImage(font: font)
+        image = CDMarkdownImage(font: font, fitIn: frame)
 #endif
         
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.escapingElements = [codeEscaping, escaping]
 #if os(iOS) || os(macOS) || os(tvOS)
-        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic, image]
+        self.defaultElements = [header, list, quote, image, link, automaticLink, bold, italic]
 #else
         self.defaultElements = [header, list, quote, link, automaticLink, bold, italic]
 #endif
@@ -168,8 +169,8 @@ open class CDMarkdownParser {
                                       value: paragraphStyle,
                                       range: range)
         var elements: [CDMarkdownElement] = escapingElements
-        elements.append(contentsOf: defaultElements)
         elements.append(contentsOf: customElements)
+        elements.append(contentsOf: defaultElements)
         elements.append(contentsOf: unescapingElements)
         elements.forEach { element in
             if automaticLinkDetectionEnabled || type(of: element) != CDMarkdownAutomaticLink.self {

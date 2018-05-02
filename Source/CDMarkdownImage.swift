@@ -41,6 +41,7 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
+    open var frame: CGRect?
     
     open var regex: String {
         return CDMarkdownImage.regex
@@ -54,11 +55,13 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
     public init(font: CDFont? = nil,
                 color: CDColor? = CDColor.blue,
                 backgroundColor: CDColor? = nil,
-                paragraphStyle: NSParagraphStyle? = nil) {
+                paragraphStyle: NSParagraphStyle? = nil,
+                fitIn frame: CGRect? = nil) {
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
         self.paragraphStyle = paragraphStyle
+        self.frame = frame
     }
     
     open func formatText(_ attributedString: NSMutableAttributedString,
@@ -98,9 +101,11 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
             if let data = data,
                 let image = CDImage(data: data) {
                 textAttachment.image = image
+                adjustAttachmentSize(textAttachment, image: image)
             // Try to load image from local file store
             } else if let image = CDImage(named: url.path) {
                 textAttachment.image = image
+                adjustAttachmentSize(textAttachment, image: image)
             }
         }
         
@@ -126,6 +131,21 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
                             link: String) {
         attributedString.addAttributes(attributes,
                                        range: range)
+    }
+
+    private func adjustAttachmentSize(_ attachment: NSTextAttachment, image: UIImage) {
+        guard let frame = frame else {
+            return
+        }
+
+        // about 10 point padding so the image will fit
+        let preferredWidth = frame.width - 10
+        let widthScalingFactor = image.size.width / preferredWidth
+
+        attachment.bounds = CGRect(x: 0.0,
+                                   y: 0.0,
+                                   width: image.size.width / widthScalingFactor,
+                                   height: image.size.height / widthScalingFactor)
     }
 }
 
