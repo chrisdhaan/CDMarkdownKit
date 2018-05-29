@@ -239,6 +239,9 @@ markdownParser.code.backgroundColor = UIColor.black
 markdownParser.syntax.font = UIFont.systemFont(ofSize: 15)
 markdownParser.syntax.color = UIColor.lightGray
 markdownParser.syntax.backgroundColor = UIColor.black
+/// Image
+markdownParser.image.size = CGSize(width: 100,
+                                   height: 50)
 // Parse markdown
 let markdown = "This *framework* helps **with** parsing `markdown`."
 label.attributedText = markdownParser.parse(markdown)

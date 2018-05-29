@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MgY-ez-k62">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MgY-ez-k62">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,15 +22,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="fCY-jU-W1m">
+                                <rect key="frame" x="127" y="20" width="121" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="29" id="2mI-qX-2QC"/>
+                                    <constraint firstAttribute="width" constant="121" id="IqD-uU-63k"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Default"/>
+                                    <segment title="Custom"/>
+                                </segments>
+                                <connections>
+                                    <action selector="clickedSegmentedControl:" destination="MgY-ez-k62" eventType="valueChanged" id="8BB-V0-14x"/>
+                                </connections>
+                            </segmentedControl>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="b79-oA-rtZ" customClass="CDMarkdownTextView" customModule="CDMarkdownKit">
-                                <rect key="frame" x="16" y="20" width="343" height="627"/>
+                                <rect key="frame" x="16" y="57" width="343" height="590"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uQ0-dT-zk7" customClass="CDMarkdownLabel" customModule="CDMarkdownKit">
-                                <rect key="frame" x="16" y="20" width="343" height="627"/>
+                                <rect key="frame" x="16" y="57" width="343" height="590"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
@@ -42,16 +56,19 @@
                             <constraint firstItem="b79-oA-rtZ" firstAttribute="trailing" secondItem="usI-KZ-1Iq" secondAttribute="trailingMargin" id="8HT-TI-qeC"/>
                             <constraint firstItem="uQ0-dT-zk7" firstAttribute="leading" secondItem="usI-KZ-1Iq" secondAttribute="leadingMargin" id="EPa-U4-20F"/>
                             <constraint firstItem="BFv-OJ-TnO" firstAttribute="top" secondItem="b79-oA-rtZ" secondAttribute="bottom" constant="20" id="EhC-dA-PwS"/>
-                            <constraint firstItem="uQ0-dT-zk7" firstAttribute="top" secondItem="MNN-oQ-bOA" secondAttribute="bottom" id="FAw-NE-Ftl"/>
                             <constraint firstItem="b79-oA-rtZ" firstAttribute="leading" secondItem="usI-KZ-1Iq" secondAttribute="leadingMargin" id="Gl0-so-nuM"/>
                             <constraint firstItem="uQ0-dT-zk7" firstAttribute="trailing" secondItem="usI-KZ-1Iq" secondAttribute="trailingMargin" id="GpS-jN-fps"/>
-                            <constraint firstItem="b79-oA-rtZ" firstAttribute="top" secondItem="MNN-oQ-bOA" secondAttribute="bottom" id="hi2-Qm-Chb"/>
+                            <constraint firstItem="uQ0-dT-zk7" firstAttribute="top" secondItem="fCY-jU-W1m" secondAttribute="bottom" constant="8" id="OSq-DM-xYF"/>
+                            <constraint firstItem="fCY-jU-W1m" firstAttribute="top" secondItem="MNN-oQ-bOA" secondAttribute="bottom" id="RGx-Zc-a3m"/>
+                            <constraint firstItem="fCY-jU-W1m" firstAttribute="centerX" secondItem="usI-KZ-1Iq" secondAttribute="centerX" id="cEL-Id-xcK"/>
+                            <constraint firstItem="b79-oA-rtZ" firstAttribute="top" secondItem="fCY-jU-W1m" secondAttribute="bottom" constant="8" id="sLj-ev-qAY"/>
                             <constraint firstItem="BFv-OJ-TnO" firstAttribute="top" secondItem="uQ0-dT-zk7" secondAttribute="bottom" constant="20" id="sNs-ls-jMc"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="label" destination="uQ0-dT-zk7" id="D4f-py-WJT"/>
-                        <outlet property="textView" destination="b79-oA-rtZ" id="IIS-HJ-BW2"/>
+                        <outlet property="segmentedControl" destination="fCY-jU-W1m" id="8sN-F7-9iL"/>
+                        <outlet property="storyboardLabel" destination="uQ0-dT-zk7" id="QIL-a6-y4Z"/>
+                        <outlet property="storyboardTextView" destination="b79-oA-rtZ" id="0xS-EJ-Sni"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y3g-FB-Vlz" sceneMemberID="firstResponder"/>

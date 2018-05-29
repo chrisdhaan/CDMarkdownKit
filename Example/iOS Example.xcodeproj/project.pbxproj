@@ -13,6 +13,7 @@
 		B2B365FD1F324C170078B962 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2B365F91F324C170078B962 /* LaunchScreen.storyboard */; };
 		B2B365FE1F324C170078B962 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2B365FB1F324C170078B962 /* Main.storyboard */; };
 		B2B366451F324FC80078B962 /* CDMarkdownKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B2B366431F324FAA0078B962 /* CDMarkdownKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B2F8EE912059DD4F00B5B54D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2F8EE902059DD4F00B5B54D /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		B2B365FC1F324C170078B962 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Resources/Base.lproj/Main.storyboard; sourceTree = SOURCE_ROOT; };
 		B2B365FF1F324C2E0078B962 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = SOURCE_ROOT; };
 		B2B3663E1F324FAA0078B962 /* CDMarkdownKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CDMarkdownKit.xcodeproj; path = ../CDMarkdownKit.xcodeproj; sourceTree = "<group>"; };
+		B2F8EE902059DD4F00B5B54D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				B2B365F71F324C0C0078B962 /* Assets.xcassets */,
 				B2B365F91F324C170078B962 /* LaunchScreen.storyboard */,
 				B2B365FB1F324C170078B962 /* Main.storyboard */,
+				B2F8EE902059DD4F00B5B54D /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2B365FD1F324C170078B962 /* LaunchScreen.storyboard in Resources */,
+				B2F8EE912059DD4F00B5B54D /* Localizable.strings in Resources */,
 				B2B365F81F324C0C0078B962 /* Assets.xcassets in Resources */,
 				B2B365FE1F324C170078B962 /* Main.storyboard in Resources */,
 			);

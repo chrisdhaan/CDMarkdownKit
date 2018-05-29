@@ -30,82 +30,144 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet fileprivate weak var textView: CDMarkdownTextView!
-    @IBOutlet fileprivate weak var label: CDMarkdownLabel!
+    @IBOutlet private weak var segmentedControl: UISegmentedControl!
+    @IBOutlet private weak var storyboardTextView: CDMarkdownTextView!
+    @IBOutlet private weak var storyboardLabel: CDMarkdownLabel!
+    
+    private var codeLabel: CDMarkdownLabel!
+    private var codeTextView: CDMarkdownTextView!
+    private let customMarkdownParser = CDMarkdownParser(fontColor: UIColor.brown,
+                                                        backgroundColor: UIColor.yellow)
+    private let defaultMarkdownParser = CDMarkdownParser()
+    private let markdownString = NSLocalizedString("Markdown",
+                                                   tableName: nil,
+                                                   bundle: Bundle.main,
+                                                   value: "",
+                                                   comment: "")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let markdownString = NSLocalizedString("Markdown",
-                                               tableName: nil,
-                                               bundle: Bundle.main,
-                                               value: "",
-                                               comment: "")
-        let attributedString = NSAttributedString(string: markdownString)
+        let screenSize = UIScreen.main.bounds.size
+        let rect = CGRect(x: 10,
+                          y: self.segmentedControl.frame.maxY + 8,
+                          width: CGFloat(screenSize.width - 20),
+                          height: CGFloat(screenSize.height - (self.segmentedControl.frame.maxY + 23)))
         
-        // Example of a markdown parser with default properties
-        let markdownParser = CDMarkdownParser()
-        // Configure text view
-        self.textView.roundCodeCorners = true
-        self.textView.roundSyntaxCorners = true
-        // Configure label
-        self.label.roundCodeCorners = true
-        self.label.roundSyntaxCorners = true
+        let textContainer = NSTextContainer(size: screenSize)
+        let layoutManager = CDMarkdownLayoutManager()
+        layoutManager.addTextContainer(textContainer)
+        
+        // Example initialization of CDMarkdownTextView
+        let codeTextView = CDMarkdownTextView(frame: rect,
+                                              textContainer: textContainer,
+                                              layoutManager: layoutManager)
+        codeTextView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        codeTextView.roundCodeCorners = true
+        codeTextView.roundSyntaxCorners = true
+        codeTextView.roundAllCorners = true
+        self.view.addSubview(codeTextView)
+        self.codeTextView = codeTextView
+        
+        // Example initialization of CDMarkdownLabel
+        let codeLabel = CDMarkdownLabel(frame: rect)
+        codeLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        codeLabel.roundCodeCorners = true
+        codeLabel.roundSyntaxCorners = true
+        codeLabel.roundAllCorners = true
+        self.view.addSubview(codeLabel)
+        self.codeLabel = codeLabel
         
         // Example of a markdown parser with custom properties
-//        let markdownParser = CDMarkdownParser(fontColor: UIColor.brown,
-//                                              backgroundColor: UIColor.yellow)
-//        markdownParser.bold.color = UIColor.cyan
-//        markdownParser.bold.backgroundColor = UIColor.purple
-//        let boldParagraphStyle = NSMutableParagraphStyle()
-//        boldParagraphStyle.paragraphSpacing = 10
-//        boldParagraphStyle.paragraphSpacingBefore = 0
-//        boldParagraphStyle.lineSpacing = 10.38
-//        markdownParser.bold.paragraphStyle = boldParagraphStyle
-//        markdownParser.header.color = UIColor.black
-//        markdownParser.header.backgroundColor = UIColor.orange
-//        markdownParser.list.color = UIColor.black
-//        markdownParser.list.backgroundColor = UIColor.red
-//        let listParagraphStyle = NSMutableParagraphStyle()
-//        listParagraphStyle.paragraphSpacing = 15
-//        listParagraphStyle.paragraphSpacingBefore = 0
-//        listParagraphStyle.lineSpacing = 15.38
-//        markdownParser.list.paragraphStyle = listParagraphStyle
-//        markdownParser.quote.color = UIColor.gray
-//        markdownParser.quote.backgroundColor = UIColor.clear
-//        markdownParser.link.color = UIColor.blue
-//        markdownParser.link.backgroundColor = UIColor.green
-//        let linkParagraphStyle = NSMutableParagraphStyle()
-//        linkParagraphStyle.paragraphSpacing = 20
-//        linkParagraphStyle.paragraphSpacingBefore = 0
-//        linkParagraphStyle.lineSpacing = 20.38
-//        markdownParser.link.paragraphStyle = linkParagraphStyle
-//        markdownParser.automaticLink.color = UIColor.blue
-//        markdownParser.automaticLink.backgroundColor = UIColor.green
-//        markdownParser.italic.color = UIColor.gray
-//        markdownParser.italic.backgroundColor = UIColor.clear
-//        markdownParser.code.font = UIFont.systemFont(ofSize: 17)
-//        markdownParser.code.color = UIColor.red
-//        markdownParser.code.backgroundColor = UIColor.black
-//        markdownParser.syntax.font = UIFont.systemFont(ofSize: 15)
-//        markdownParser.syntax.color = UIColor.lightGray
-//        markdownParser.syntax.backgroundColor = UIColor.black
-        // Configure text view
-//        self.textView.roundAllCorners = true
-        // Configure label
-//        self.label.roundAllCorners = true
+        self.customMarkdownParser.bold.color = UIColor.cyan
+        self.customMarkdownParser.bold.backgroundColor = UIColor.purple
+        let boldParagraphStyle = NSMutableParagraphStyle()
+        boldParagraphStyle.paragraphSpacing = 10
+        boldParagraphStyle.paragraphSpacingBefore = 0
+        boldParagraphStyle.lineSpacing = 10.38
+        self.customMarkdownParser.bold.paragraphStyle = boldParagraphStyle
+        self.customMarkdownParser.header.color = UIColor.black
+        self.customMarkdownParser.header.backgroundColor = UIColor.orange
+        self.customMarkdownParser.list.color = UIColor.black
+        self.customMarkdownParser.list.backgroundColor = UIColor.red
+        let listParagraphStyle = NSMutableParagraphStyle()
+        listParagraphStyle.paragraphSpacing = 15
+        listParagraphStyle.paragraphSpacingBefore = 0
+        listParagraphStyle.lineSpacing = 15.38
+        self.customMarkdownParser.list.paragraphStyle = listParagraphStyle
+        self.customMarkdownParser.quote.color = UIColor.gray
+        self.customMarkdownParser.quote.backgroundColor = UIColor.clear
+        self.customMarkdownParser.link.color = UIColor.blue
+        self.customMarkdownParser.link.backgroundColor = UIColor.green
+        let linkParagraphStyle = NSMutableParagraphStyle()
+        linkParagraphStyle.paragraphSpacing = 20
+        linkParagraphStyle.paragraphSpacingBefore = 0
+        linkParagraphStyle.lineSpacing = 20.38
+        self.customMarkdownParser.link.paragraphStyle = linkParagraphStyle
+        self.customMarkdownParser.automaticLink.color = UIColor.blue
+        self.customMarkdownParser.automaticLink.backgroundColor = UIColor.green
+        self.customMarkdownParser.italic.color = UIColor.gray
+        self.customMarkdownParser.italic.backgroundColor = UIColor.clear
+        self.customMarkdownParser.code.font = UIFont.systemFont(ofSize: 17)
+        self.customMarkdownParser.code.color = UIColor.red
+        self.customMarkdownParser.code.backgroundColor = UIColor.black
+        self.customMarkdownParser.syntax.font = UIFont.systemFont(ofSize: 15)
+        self.customMarkdownParser.syntax.color = UIColor.lightGray
+        self.customMarkdownParser.syntax.backgroundColor = UIColor.black
+        self.customMarkdownParser.image.size = CGSize(width: 100,
+                                                      height: 50)
         
-        let attributedText = markdownParser.parse(attributedString)
-        self.textView.attributedText = attributedText
-        self.textView.isHidden = true
-        self.label.attributedText = attributedText
-        self.label.isHidden = false
+        self.configure()
+        
+        // Set isHidden to false on one element to view markdown in
+        self.storyboardTextView.isHidden = false
+        self.storyboardLabel.isHidden = true
+        self.codeTextView.isHidden = true
+        self.codeLabel.isHidden = true
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
+        self.configure()
+    }
+    
+    private func configure() {
+        let attributedString = NSAttributedString(string: self.markdownString)
+        // Determine whether to show default or custom parsing
+        var attributedText = NSAttributedString(string: "")
+        if self.segmentedControl.selectedSegmentIndex == 0 {
+            // Configure storyboard text view
+            self.storyboardTextView.roundCodeCorners = true
+            self.storyboardTextView.roundSyntaxCorners = true
+            codeTextView.roundCodeCorners = true
+            codeTextView.roundSyntaxCorners = true
+            // Configure storyboard label
+            self.storyboardLabel.roundCodeCorners = true
+            self.storyboardLabel.roundSyntaxCorners = true
+            codeLabel.roundCodeCorners = true
+            codeLabel.roundSyntaxCorners = true
+            // Parse markdown
+            attributedText = self.defaultMarkdownParser.parse(attributedString)
+        } else {
+            // Configure text view
+            self.storyboardTextView.roundAllCorners = true
+            codeTextView.roundAllCorners = true
+            // Configure label
+            self.storyboardLabel.roundAllCorners = true
+            codeLabel.roundAllCorners = true
+            // Parse markdown
+            attributedText = self.customMarkdownParser.parse(attributedString)
+        }
+        
+        self.storyboardTextView.attributedText = attributedText
+        self.storyboardLabel.attributedText = attributedText
+        self.codeTextView.attributedText = attributedText
+        self.codeLabel.attributedText = attributedText
     }
 }
 
