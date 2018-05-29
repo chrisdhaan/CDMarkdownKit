@@ -35,12 +35,13 @@
 
 open class CDMarkdownImage: CDMarkdownLinkElement {
     
-    fileprivate static let regex = "!{1}\\[[^\\[]*?\\]\\([^\\)]*\\)"
+    fileprivate static let regex = "[!{1}]\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"
     
     open var font: CDFont?
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
+    open var size: CGSize?
     
     open var regex: String {
         return CDMarkdownImage.regex
@@ -54,11 +55,13 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
     public init(font: CDFont? = nil,
                 color: CDColor? = CDColor.blue,
                 backgroundColor: CDColor? = nil,
-                paragraphStyle: NSParagraphStyle? = nil) {
+                paragraphStyle: NSParagraphStyle? = nil,
+                size: CGSize? = nil) {
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
         self.paragraphStyle = paragraphStyle
+        self.size = size
     }
     
     open func formatText(_ attributedString: NSMutableAttributedString,
@@ -98,9 +101,13 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
             if let data = data,
                 let image = CDImage(data: data) {
                 textAttachment.image = image
+                adjustTextAttachmentSize(textAttachment,
+                                         forImage: image)
             // Try to load image from local file store
             } else if let image = CDImage(named: url.path) {
                 textAttachment.image = image
+                adjustTextAttachmentSize(textAttachment,
+                                         forImage: image)
             }
         }
         
@@ -126,6 +133,20 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
                             link: String) {
         attributedString.addAttributes(attributes,
                                        range: range)
+    }
+    
+    private func adjustTextAttachmentSize(_ textAttachment: NSTextAttachment,
+                                          forImage image: CDImage) {
+        guard let size = size else { return }
+        
+        // add padding to image
+        let preferredWidth = size.width - 10
+        let widthScalingFactor = image.size.width / preferredWidth
+        
+        textAttachment.bounds = CGRect(x: 0,
+                                       y: 0,
+                                       width: image.size.width / widthScalingFactor,
+                                       height: image.size.height / widthScalingFactor)
     }
 }
 

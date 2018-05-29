@@ -74,6 +74,7 @@ open class CDMarkdownParser {
                 fontColor: CDColor = CDColor.black,
                 backgroundColor: CDColor = CDColor.clear,
                 paragraphStyle: NSParagraphStyle? = nil,
+                imageSize: CGSize? = nil,
                 automaticLinkDetectionEnabled: Bool = true,
                 customElements: [CDMarkdownElement] = []) {
         self.font = font
@@ -99,7 +100,8 @@ open class CDMarkdownParser {
         code = CDMarkdownCode(font: font)
         syntax = CDMarkdownSyntax(font: font)
 #if os(iOS) || os(macOS) || os(tvOS)
-        image = CDMarkdownImage(font: font)
+        image = CDMarkdownImage(font: font,
+                                size: imageSize)
 #endif
         
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
