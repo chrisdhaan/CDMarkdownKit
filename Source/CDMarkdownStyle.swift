@@ -45,6 +45,7 @@ public extension CDMarkdownStyle {
     
     var attributes: [String: AnyObject] {
         var attributes = [String: AnyObject]()
+#if swift(>=4.0)
         if let font = font {
             attributes[NSAttributedStringKey.font] = font
         }
@@ -57,6 +58,20 @@ public extension CDMarkdownStyle {
         if let paragraphStyle = paragraphStyle {
             attributes[NSAttributedStringKey.paragraphStyle] = paragraphStyle
         }
+#else
+        if let font = font {
+            attributes[NSFontAttributeName] = font
+        }
+        if let color = color {
+            attributes[NSForegroundColorAttributeName] = color
+        }
+        if let backgroundColor = backgroundColor {
+            attributes[NSBackgroundColorAttributeName] = backgroundColor
+        }
+        if let paragraphStyle = paragraphStyle {
+            attributes[NSParagraphStyleAttributeName] = paragraphStyle
+        }
+#endif
         return attributes
     }
 }

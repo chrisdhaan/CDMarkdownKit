@@ -79,8 +79,13 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                                                               length: 1)
             if let firstCharacterRange = attributedString.string.range(from: removeBackgroundColorAttributeRange),
                 attributedString.string[firstCharacterRange] == "\n" {
+#if swift(>=4.0)
                 attributedString.removeAttribute(NSAttributedStringKey.backgroundColor,
                                                  range: removeBackgroundColorAttributeRange)
+#else
+                attributedString.removeAttribute(NSBackgroundColorAttributeName,
+                                                 range: removeBackgroundColorAttributeRange)
+#endif
             }
         }
         // If the last character in a Syntax Markdown element is a newline then parser doens't have
@@ -98,9 +103,15 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                 let nextCharacterRange = attributedString.string.range(from: addBackgroundColorAttributeRange),
                 attributedString.string[nextCharacterRange] == "\n",
                 let backgroundColor = self.backgroundColor {
+#if swift(>=4.0)
                 attributedString.addAttribute(NSAttributedStringKey.backgroundColor,
                                               value: backgroundColor,
                                               range: addBackgroundColorAttributeRange)
+#else
+                attributedString.addAttribute(NSBackgroundColorAttributeName,
+                                              value: backgroundColor,
+                                              range: addBackgroundColorAttributeRange)
+#endif
             }
         }
     }

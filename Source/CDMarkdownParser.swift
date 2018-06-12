@@ -157,6 +157,7 @@ open class CDMarkdownParser {
         }
         let range = NSRange(location: 0,
                             length: attributedString.length)
+#if swift(>=4.0)
         attributedString.addAttribute(NSAttributedStringKey.font,
                                       value: font,
                                       range: range)
@@ -169,6 +170,20 @@ open class CDMarkdownParser {
         attributedString.addAttribute(NSAttributedStringKey.paragraphStyle,
                                       value: paragraphStyle,
                                       range: range)
+#else
+        attributedString.addAttribute(NSFontAttributeName,
+                                      value: font,
+                                      range: range)
+        attributedString.addAttribute(NSForegroundColorAttributeName,
+                                      value: fontColor,
+                                      range: range)
+        attributedString.addAttribute(NSBackgroundColorAttributeName,
+                                      value: backgroundColor,
+                                      range: range)
+        attributedString.addAttribute(NSParagraphStyleAttributeName,
+                                      value: paragraphStyle,
+                                      range: range)
+#endif
         var elements: [CDMarkdownElement] = escapingElements
         elements.append(contentsOf: defaultElements)
         elements.append(contentsOf: customElements)

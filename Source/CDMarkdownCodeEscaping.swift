@@ -46,7 +46,11 @@ open class CDMarkdownCodeEscaping: CDMarkdownElement {
     
     open func match(_ match: NSTextCheckingResult,
                     attributedString: NSMutableAttributedString) {
+#if swift(>=4.0)
         let range = match.range(at: 2)
+#else
+        let range = match.rangeAt(2)
+#endif
         // escaping all characters
         let matchString = attributedString.attributedSubstring(from: range).string
         let escapedString = [UInt16](matchString.utf16)
