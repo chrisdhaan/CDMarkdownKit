@@ -50,12 +50,6 @@ For a demonstration of the capabilities of CDMarkdownKit; run the iOS Example pr
 
 ---
 
-## Pre-Release Software
-
-This framework is currently in development. As of release 0.9.0 the code is stable and in a usable state to install in applications. But be aware that breaking changes may occur until 1.0.0 is released.
-
----
-
 ## Features
 
 - [x] Markdown Parsing
@@ -69,13 +63,13 @@ This framework is currently in development. As of release 0.9.0 the code is stab
     - [x] Link
     - [x] Image
 - [x] UITextView With Markdown Formatting
-- [ ] UILabel With Markdown Formatting
-- [x] OS Support
+- [x] UILabel With Markdown Formatting
+- [x] Platform Support
   - [x] iOS
   - [x] macOS
   - [x] tvOS
   - [x] watchOS
-- [ ] Documentation
+- [x] Documentation
 
 ---
 
@@ -100,9 +94,6 @@ gem install cocoapods
 To integrate CDMarkdownKit into your Xcode project using CocoaPods, simply add the following line to your Podfile:
 
 ```ruby
-# use this line to install CDMarkdownKit while in development
-pod 'CDMarkdownKit', :git => 'https://github.com/chrisdhaan/CDMarkdownKit'
-# this line will eventually be used upon the 1.0.0 release of CDMarkdownKit and can be disregarded for now
 pod 'CDMarkdownKit', '1.0.0'
 ```
 
@@ -126,9 +117,6 @@ brew install carthage
 To integrate CDMarkdownKit into your Xcode project using Carthage, simply add the following line to your Cartfile:
 
 ```ruby
-# use this line to install CDMarkdownKit while in development
-github "chrisdhaan/CDMarkdownKit"
-# this line will eventually be used upon the 1.0.0 release of CDMarkdownKit and can be disregarded for now
 github "chrisdhaan/CDMarkdownKit" == 1.0.0
 ```
 
