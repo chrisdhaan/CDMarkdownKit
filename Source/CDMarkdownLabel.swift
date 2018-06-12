@@ -25,15 +25,28 @@
 //  THE SOFTWARE.
 //
 
+#if os(iOS)
+
+import SafariServices
+
+#endif
+
 #if os(iOS) || os(tvOS)
 
 import UIKit
 
-open class CDMarkdownLabel: UILabel {
+public protocol CDMarkdownLabelDelegate: class {
+    func didSelect(_ url: URL)
+}
 
+typealias URLRange = (url: URL, range: NSRange)
+
+open class CDMarkdownLabel: UILabel {
+    
     open var customLayoutManager: CDMarkdownLayoutManager!
     open var customTextContainer: NSTextContainer!
     open var customTextStorage: NSTextStorage!
+    open weak var delegate: CDMarkdownLabelDelegate?
     open var roundAllCorners: Bool = false {
         didSet {
             if let layoutManager = self.customLayoutManager {
@@ -85,6 +98,7 @@ open class CDMarkdownLabel: UILabel {
         set {
             if let _ = self.customTextContainer,
                 let layoutManager = self.customLayoutManager {
+                self.parseTextAndExtractURLRanges(newValue)
                 self.customTextStorage = NSTextStorage(attributedString: newValue)
                 self.customTextStorage.addLayoutManager(layoutManager)
                 layoutManager.textStorage = self.customTextStorage
@@ -92,6 +106,9 @@ open class CDMarkdownLabel: UILabel {
             self.setNeedsDisplay()
         }
     }
+    
+    private var selectedURLRange: URLRange?
+    private lazy var urlRanges = [URLRange]()
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -167,7 +184,7 @@ open class CDMarkdownLabel: UILabel {
                                             at: glyphsPosition)
     }
     
-    fileprivate func calculateGlyphsPositionInView() -> CGPoint {
+    private func calculateGlyphsPositionInView() -> CGPoint {
         // Returns the XY offset of the range of glyphs from the view's origin
         var textOffset = CGPoint.zero
         
@@ -183,10 +200,173 @@ open class CDMarkdownLabel: UILabel {
         
         return textOffset
     }
+    
+    // MARK: - UI Responder Methods
+    
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        if self.onTouch(touch) { return }
+        super.touchesBegan(touches, with: event)
+    }
+    
+    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        if self.onTouch(touch) { return }
+        super.touchesMoved(touches, with: event)
+    }
+    
+    open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        _ = self.onTouch(touch)
+        super.touchesCancelled(touches, with: event)
+    }
+    
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        if self.onTouch(touch) { return }
+        super.touchesEnded(touches, with: event)
+    }
+    
+    // MARK: - Private Methods
+    
+    private func displayActionController(forUrl url: URL) {
+        var parentViewController: UIViewController? = nil
+        var parentResponder: UIResponder? = self
+        while parentResponder != nil {
+            parentResponder = parentResponder!.next
+            if let viewController = parentResponder as? UIViewController {
+                parentViewController = viewController
+            }
+        }
+        
+        let actionController = UIAlertController(title: nil,
+                                                 message: nil,
+                                                 preferredStyle: .actionSheet)
+        
+        actionController.addAction(UIAlertAction(title: "Open",
+                                                 style: .default,
+                                                 handler: { action in
+                                                    if let delegate = self.delegate {
+                                                        delegate.didSelect(url)
+                                                    }
+        }))
+#if os(iOS)
+        if SSReadingList.supportsURL(url) {
+            actionController.addAction(UIAlertAction(title: "Add to Reading List",
+                                                     style: .default,
+                                                     handler: { action in
+                                                        do {
+                                                            try SSReadingList.default()?.addItem(with: url,
+                                                                                                 title: nil,
+                                                                                                 previewText: nil)
+                                                        } catch {
+                                                            print("Error adding item to reading list.")
+                                                        }
+            }))
+        }
+        actionController.addAction(UIAlertAction(title: "Copy",
+                                                 style: .default,
+                                                 handler: { action in
+                                                    UIPasteboard.general.string = url.absoluteString
+        }))
+        actionController.addAction(UIAlertAction(title: "Share...",
+                                                 style: .default,
+                                                 handler: { action in
+                                                    let activityViewController = UIActivityViewController(activityItems: [url],
+                                                                                                          applicationActivities: [])
+                                                    if parentViewController != nil {
+                                                        activityViewController.dismiss(animated: true,
+                                                                                       completion: nil)
+                                                        parentViewController?.present(activityViewController,
+                                                                                      animated: true,
+                                                                                      completion: nil)
+                                                    }
+        }))
+#endif
+        actionController.addAction(UIAlertAction(title: "Cancel",
+                                                 style: .cancel,
+                                                 handler: nil))
+
+        if parentViewController != nil {
+            parentViewController?.present(actionController,
+                                          animated: true,
+                                          completion: nil)
+        }
+    }
+    
+    private func onTouch(_ touch: UITouch) -> Bool {
+        let location = touch.location(in: self)
+        var avoidSuperCall = false
+        
+        switch touch.phase {
+        case .began,
+             .moved:
+            if let urlRange = self.urlRange(at: location) {
+                if urlRange.range.location != self.selectedURLRange?.range.location || urlRange.range.length != self.selectedURLRange?.range.length {
+                    self.selectedURLRange = urlRange
+                }
+                avoidSuperCall = true
+            } else {
+                self.selectedURLRange = nil
+            }
+        case .ended:
+            guard let selectedRange = self.selectedURLRange else { return avoidSuperCall }
+            
+            self.displayActionController(forUrl: selectedRange.url)
+            
+            let when = DispatchTime.now() + Double(Int64(0.25 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                self.selectedURLRange = nil
+            }
+            avoidSuperCall = true
+        case .cancelled:
+            self.selectedURLRange = nil
+        case .stationary:
+            break
+        }
+        
+        return avoidSuperCall
+    }
+    
+    private func parseTextAndExtractURLRanges(_ attrString: NSAttributedString) {
+        attrString.enumerateAttribute(NSLinkAttributeName,
+                                      in: NSMakeRange(0,
+                                                      attrString.length),
+                                      options: [.longestEffectiveRangeNotRequired]) { value, range, isStop in
+                                        
+                                        if let value = value as? NSURL,
+                                            let urlString = value.absoluteString,
+                                            let url = URL(string: urlString) {
+                                            self.urlRanges.append((url, range))
+                                        }
+        }
+    }
+    
+    private func urlRange(at location: CGPoint) -> URLRange? {
+        guard self.customTextStorage.length > 0 else { return nil }
+        
+        let correctLocation = location
+        let boundingRect = customLayoutManager.boundingRect(forGlyphRange: NSRange(location: 0,
+                                                                                   length: self.customTextStorage.length),
+                                                            in: self.customTextContainer)
+        
+        guard boundingRect.contains(correctLocation) else { return nil }
+        
+        let index = self.customLayoutManager.glyphIndex(for: correctLocation,
+                                                        in: self.customTextContainer)
+        
+        for urlRange in urlRanges {
+            if index >= urlRange.range.location && index <= urlRange.range.location + urlRange.range.length {
+                return urlRange
+            }
+        }
+        
+        return nil
+    }
 }
 
 // MARK: - LayoutManagerDelegate Methods
-    
+
 extension CDMarkdownLabel: NSLayoutManagerDelegate {
     public func layoutManager(_ layoutManager: NSLayoutManager,
                               shouldBreakLineByWordBeforeCharacterAt charIndex: Int) -> Bool {
@@ -197,6 +377,26 @@ extension CDMarkdownLabel: NSLayoutManagerDelegate {
                                                            effectiveRange: &range)
         
         return !((linkURL != nil) && (charIndex > range.location) && (charIndex <= NSMaxRange(range)))
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate Methods
+
+extension CDMarkdownLabel: UIGestureRecognizerDelegate {
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                  shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                  shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                  shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
 
