@@ -8,11 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		B2B365EA1F324BDA0078B962 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B365E81F324BDA0078B962 /* AppDelegate.swift */; };
-		B2B365EB1F324BDA0078B962 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B365E91F324BDA0078B962 /* ViewController.swift */; };
+		B2B365EB1F324BDA0078B962 /* CodeTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B365E91F324BDA0078B962 /* CodeTextViewController.swift */; };
 		B2B365F81F324C0C0078B962 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2B365F71F324C0C0078B962 /* Assets.xcassets */; };
 		B2B365FD1F324C170078B962 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2B365F91F324C170078B962 /* LaunchScreen.storyboard */; };
 		B2B365FE1F324C170078B962 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2B365FB1F324C170078B962 /* Main.storyboard */; };
 		B2B366451F324FC80078B962 /* CDMarkdownKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B2B366431F324FAA0078B962 /* CDMarkdownKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B2D61BC720CF4A950091BFFF /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D61BC620CF4A950091BFFF /* BaseViewController.swift */; };
+		B2D61BCC20CF4C390091BFFF /* CodeLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D61BCB20CF4C390091BFFF /* CodeLabelViewController.swift */; };
+		B2D61BCE20CF4C470091BFFF /* StoryboardTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D61BCD20CF4C470091BFFF /* StoryboardTextViewController.swift */; };
+		B2D61BD020CF4C510091BFFF /* StoryboardLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D61BCF20CF4C510091BFFF /* StoryboardLabelViewController.swift */; };
 		B2F8EE912059DD4F00B5B54D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2F8EE902059DD4F00B5B54D /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
@@ -71,12 +75,16 @@
 /* Begin PBXFileReference section */
 		B2B365CB1F324A930078B962 /* iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B365E81F324BDA0078B962 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B2B365E91F324BDA0078B962 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B2B365E91F324BDA0078B962 /* CodeTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeTextViewController.swift; sourceTree = "<group>"; };
 		B2B365F71F324C0C0078B962 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Resources/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		B2B365FA1F324C170078B962 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Resources/Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		B2B365FC1F324C170078B962 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Resources/Base.lproj/Main.storyboard; sourceTree = SOURCE_ROOT; };
 		B2B365FF1F324C2E0078B962 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/Info.plist; sourceTree = SOURCE_ROOT; };
 		B2B3663E1F324FAA0078B962 /* CDMarkdownKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CDMarkdownKit.xcodeproj; path = ../CDMarkdownKit.xcodeproj; sourceTree = "<group>"; };
+		B2D61BC620CF4A950091BFFF /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		B2D61BCB20CF4C390091BFFF /* CodeLabelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeLabelViewController.swift; sourceTree = "<group>"; };
+		B2D61BCD20CF4C470091BFFF /* StoryboardTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardTextViewController.swift; sourceTree = "<group>"; };
+		B2D61BCF20CF4C510091BFFF /* StoryboardLabelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardLabelViewController.swift; sourceTree = "<group>"; };
 		B2F8EE902059DD4F00B5B54D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,7 +120,11 @@
 			isa = PBXGroup;
 			children = (
 				B2B365E81F324BDA0078B962 /* AppDelegate.swift */,
-				B2B365E91F324BDA0078B962 /* ViewController.swift */,
+				B2D61BC620CF4A950091BFFF /* BaseViewController.swift */,
+				B2D61BCB20CF4C390091BFFF /* CodeLabelViewController.swift */,
+				B2B365E91F324BDA0078B962 /* CodeTextViewController.swift */,
+				B2D61BCF20CF4C510091BFFF /* StoryboardLabelViewController.swift */,
+				B2D61BCD20CF4C470091BFFF /* StoryboardTextViewController.swift */,
 				B2B365EC1F324BDF0078B962 /* Resources */,
 				B2B365ED1F324BE40078B962 /* Supporting Files */,
 			);
@@ -261,8 +273,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2B365EB1F324BDA0078B962 /* ViewController.swift in Sources */,
+				B2B365EB1F324BDA0078B962 /* CodeTextViewController.swift in Sources */,
 				B2B365EA1F324BDA0078B962 /* AppDelegate.swift in Sources */,
+				B2D61BD020CF4C510091BFFF /* StoryboardLabelViewController.swift in Sources */,
+				B2D61BCC20CF4C390091BFFF /* CodeLabelViewController.swift in Sources */,
+				B2D61BC720CF4A950091BFFF /* BaseViewController.swift in Sources */,
+				B2D61BCE20CF4C470091BFFF /* StoryboardTextViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

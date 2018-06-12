@@ -1,8 +1,8 @@
 //
-//  ViewController.swift
+//  BaseViewController.swift
 //  iOS Example
 //
-//  Created by Christopher de Haan on 8/2/17.
+//  Created by Christopher de Haan on 6/11/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -28,14 +28,18 @@
 import CDMarkdownKit
 import UIKit
 
-class ViewController: UIViewController {
+class BaseViewController: UIViewController {
 
-    @IBOutlet private weak var segmentedControl: UISegmentedControl!
-    @IBOutlet private weak var storyboardTextView: CDMarkdownTextView!
-    @IBOutlet private weak var storyboardLabel: CDMarkdownLabel!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
-    private var codeLabel: CDMarkdownLabel!
-    private var codeTextView: CDMarkdownTextView!
+    var onCustomParser: (() -> ())?
+    var onDefaultParser: (() -> ())?
+    var rect = CGRect(x: 0,
+                      y: 0,
+                      width: 0,
+                      height: 0)
+    let screenSize = UIScreen.main.bounds.size
+    
     private let customMarkdownParser = CDMarkdownParser(fontColor: UIColor.brown,
                                                         backgroundColor: UIColor.yellow)
     private let defaultMarkdownParser = CDMarkdownParser()
@@ -47,37 +51,13 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        // Do any additional setup after loading the view.
         
-        let screenSize = UIScreen.main.bounds.size
-        let rect = CGRect(x: 10,
-                          y: self.segmentedControl.frame.maxY + 8,
-                          width: CGFloat(screenSize.width - 20),
-                          height: CGFloat(screenSize.height - (self.segmentedControl.frame.maxY + 23)))
         
-        let textContainer = NSTextContainer(size: screenSize)
-        let layoutManager = CDMarkdownLayoutManager()
-        layoutManager.addTextContainer(textContainer)
-        
-        // Example initialization of CDMarkdownTextView
-        let codeTextView = CDMarkdownTextView(frame: rect,
-                                              textContainer: textContainer,
-                                              layoutManager: layoutManager)
-        codeTextView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        codeTextView.roundCodeCorners = true
-        codeTextView.roundSyntaxCorners = true
-        codeTextView.roundAllCorners = true
-        self.view.addSubview(codeTextView)
-        self.codeTextView = codeTextView
-        
-        // Example initialization of CDMarkdownLabel
-        let codeLabel = CDMarkdownLabel(frame: rect)
-        codeLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        codeLabel.roundCodeCorners = true
-        codeLabel.roundSyntaxCorners = true
-        codeLabel.roundAllCorners = true
-        self.view.addSubview(codeLabel)
-        self.codeLabel = codeLabel
+        self.rect = CGRect(x: 20,
+                           y: self.segmentedControl.frame.maxY + 7,
+                           width: CGFloat(self.screenSize.width - 40),
+                           height: CGFloat(self.screenSize.height - (self.segmentedControl.frame.maxY + 7) - 69))
         
         // Example of a markdown parser with custom properties
         self.customMarkdownParser.bold.color = UIColor.cyan
@@ -117,14 +97,6 @@ class ViewController: UIViewController {
         self.customMarkdownParser.syntax.backgroundColor = UIColor.black
         self.customMarkdownParser.image.size = CGSize(width: 100,
                                                       height: 50)
-        
-        self.configure()
-        
-        // Set isHidden to false on one element to view markdown in
-        self.storyboardTextView.isHidden = false
-        self.storyboardLabel.isHidden = true
-        self.codeTextView.isHidden = true
-        self.codeLabel.isHidden = true
     }
     
     override func didReceiveMemoryWarning() {
@@ -132,42 +104,22 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
-        self.configure()
-    }
+    // MARK: - Internal Methods
     
-    private func configure() {
+    func configure() -> NSAttributedString {
         let attributedString = NSAttributedString(string: self.markdownString)
         // Determine whether to show default or custom parsing
         var attributedText = NSAttributedString(string: "")
         if self.segmentedControl.selectedSegmentIndex == 0 {
-            // Configure storyboard text view
-            self.storyboardTextView.roundCodeCorners = true
-            self.storyboardTextView.roundSyntaxCorners = true
-            codeTextView.roundCodeCorners = true
-            codeTextView.roundSyntaxCorners = true
-            // Configure storyboard label
-            self.storyboardLabel.roundCodeCorners = true
-            self.storyboardLabel.roundSyntaxCorners = true
-            codeLabel.roundCodeCorners = true
-            codeLabel.roundSyntaxCorners = true
+            self.onDefaultParser?()
             // Parse markdown
             attributedText = self.defaultMarkdownParser.parse(attributedString)
         } else {
-            // Configure text view
-            self.storyboardTextView.roundAllCorners = true
-            codeTextView.roundAllCorners = true
-            // Configure label
-            self.storyboardLabel.roundAllCorners = true
-            codeLabel.roundAllCorners = true
+            self.onCustomParser?()
             // Parse markdown
             attributedText = self.customMarkdownParser.parse(attributedString)
         }
         
-        self.storyboardTextView.attributedText = attributedText
-        self.storyboardLabel.attributedText = attributedText
-        self.codeTextView.attributedText = attributedText
-        self.codeLabel.attributedText = attributedText
+        return attributedText
     }
 }
-
