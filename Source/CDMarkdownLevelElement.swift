@@ -74,15 +74,15 @@ public extension CDMarkdownLevelElement {
     
     func match(_ match: NSTextCheckingResult,
                attributedString: NSMutableAttributedString) {
-        let level = match.rangeAt(1).length
+        let level = match.range(at: 1).length
         addFullAttributes(attributedString,
-                          range: match.rangeAt(0),
+                          range: match.range(at: 0),
                           level: level)
         addAttributes(attributedString,
-                      range: match.rangeAt(2),
+                      range: match.range(at: 2),
                       level: level)
-        let range = NSRange(location: match.rangeAt(1).location,
-                            length: match.rangeAt(2).location - match.rangeAt(1).location)
+        let range = NSRange(location: match.range(at: 1).location,
+                            length: match.range(at: 2).location - match.range(at: 1).location)
         formatText(attributedString,
                    range: range,
                    level: level)

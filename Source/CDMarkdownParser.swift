@@ -157,16 +157,16 @@ open class CDMarkdownParser {
         }
         let range = NSRange(location: 0,
                             length: attributedString.length)
-        attributedString.addAttribute(NSFontAttributeName,
+        attributedString.addAttribute(NSAttributedStringKey.font,
                                       value: font,
                                       range: range)
-        attributedString.addAttribute(NSForegroundColorAttributeName,
+        attributedString.addAttribute(NSAttributedStringKey.foregroundColor,
                                       value: fontColor,
                                       range: range)
-        attributedString.addAttribute(NSBackgroundColorAttributeName,
+        attributedString.addAttribute(NSAttributedStringKey.backgroundColor,
                                       value: backgroundColor,
                                       range: range)
-        attributedString.addAttribute(NSParagraphStyleAttributeName,
+        attributedString.addAttribute(NSAttributedStringKey.paragraphStyle,
                                       value: paragraphStyle,
                                       range: range)
         var elements: [CDMarkdownElement] = escapingElements

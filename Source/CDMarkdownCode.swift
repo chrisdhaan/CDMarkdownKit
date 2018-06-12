@@ -61,7 +61,7 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
         attributedString.replaceCharacters(in: range,
                                            with: unescapedString)
         let range = NSRange(location: range.location,
-                            length: unescapedString.characters.count)
+                            length: unescapedString.count)
         attributedString.addAttributes(attributes,
                                        range: range)
         let mutableString = attributedString.mutableString

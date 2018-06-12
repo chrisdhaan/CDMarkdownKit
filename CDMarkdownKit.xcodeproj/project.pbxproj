@@ -471,7 +471,7 @@
 					};
 					B2B365B61F3245800078B962 = {
 						CreatedOnToolsVersion = 8.3.3;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0940;
 						ProvisioningStyle = Automatic;
 					};
 				};

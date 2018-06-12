@@ -1,3 +1,13 @@
+## [1.1.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/1.1.0)
+## SDK Support
+Released on 2018-06-12.
+
+### Added
+
+- [x] Swift 4.0
+
+---
+
 ## [1.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/1.0.0)
 ## Markdown Parsing, UITextView With Markdown Formatting, UILabel With Markdown Formatting, and Platform Support
 Released on 2018-06-11.

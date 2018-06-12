@@ -61,7 +61,7 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         attributedString.replaceCharacters(in: range,
                                            with: unescapedString)
         let range = NSRange(location: range.location,
-                            length: unescapedString.characters.count)
+                            length: unescapedString.count)
         attributedString.addAttributes(attributes,
                                        range: range)
         // If the previous character was a newline then parser doesn't have to worry about
@@ -79,7 +79,7 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                                                               length: 1)
             if let firstCharacterRange = attributedString.string.range(from: removeBackgroundColorAttributeRange),
                 attributedString.string[firstCharacterRange] == "\n" {
-                attributedString.removeAttribute(NSBackgroundColorAttributeName,
+                attributedString.removeAttribute(NSAttributedStringKey.backgroundColor,
                                                  range: removeBackgroundColorAttributeRange)
             }
         }
@@ -98,7 +98,7 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                 let nextCharacterRange = attributedString.string.range(from: addBackgroundColorAttributeRange),
                 attributedString.string[nextCharacterRange] == "\n",
                 let backgroundColor = self.backgroundColor {
-                attributedString.addAttribute(NSBackgroundColorAttributeName,
+                attributedString.addAttribute(NSAttributedStringKey.backgroundColor,
                                               value: backgroundColor,
                                               range: addBackgroundColorAttributeRange)
             }
