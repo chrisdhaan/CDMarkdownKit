@@ -1,15 +1,15 @@
 <p align="center">
     <a href="https://github.com/chrisdhaan/CDMarkdownKit">
-        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/Documentation/cdmarkdownkit.png" alt="CDMarkdownKit" width="850" />
+        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/.github/cdmarkdownkit.png" alt="CDMarkdownKit" width="850" />
     </a>
 </p>
 
 <p align="center">
     <a href="https://github.com/chrisdhaan/CDMarkdownKit">
-        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/Documentation/github.png" alt="Star CDMarkdownKit On Github" />
+        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/.github/github.png" alt="Star CDMarkdownKit On Github" />
     </a>
     <a href="http://stackoverflow.com/questions/tagged/cdmarkdownkit">
-        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/Documentation/stackoverflow.png" alt="Stack Overflow" />
+        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/.github/stackoverflow.png" alt="Stack Overflow" />
     </a>
 </p>
 

@@ -132,11 +132,8 @@
 		B27A77FF1FC13F7D001491C6 /* CDMarkdownKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CDMarkdownKit.podspec; sourceTree = "<group>"; };
 		B27A78001FC13F7D001491C6 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		B27A78011FC13F7D001491C6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		B27A78051FC13F87001491C6 /* ISSUE_TEMPLATE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ISSUE_TEMPLATE.md; sourceTree = "<group>"; };
 		B27A78061FC13F87001491C6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		B27A78071FC13F87001491C6 /* PULL_REQUEST_TEMPLATE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = PULL_REQUEST_TEMPLATE.md; sourceTree = "<group>"; };
 		B27A78081FC13F87001491C6 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
-		B27A78091FC13F88001491C6 /* CONTRIBUTING.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
 		B2ACA0771FBF93ED00EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2ACA0841FBF940700EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2ACA0911FBF941B00EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -169,6 +166,9 @@
 		B2B3661D1F324DE90078B962 /* String+CDMarkdownKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+CDMarkdownKit.swift"; sourceTree = "<group>"; };
 		B2B3661E1F324DE90078B962 /* UIColor+CDMarkdownKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+CDMarkdownKit.swift"; sourceTree = "<group>"; };
 		B2B3661F1F324DE90078B962 /* UIFont+CDMarkdownKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+CDMarkdownKit.swift"; sourceTree = "<group>"; };
+		B2D61BD220CF62F70091BFFF /* CONTRIBUTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CONTRIBUTING.md; path = .github/CONTRIBUTING.md; sourceTree = "<group>"; };
+		B2D61BD320CF62F80091BFFF /* ISSUE_TEMPLATE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = ISSUE_TEMPLATE.md; path = .github/ISSUE_TEMPLATE.md; sourceTree = "<group>"; };
+		B2D61BD420CF62F80091BFFF /* PULL_REQUEST_TEMPLATE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = PULL_REQUEST_TEMPLATE.md; path = .github/PULL_REQUEST_TEMPLATE.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,9 +217,9 @@
 			isa = PBXGroup;
 			children = (
 				B27A78081FC13F87001491C6 /* CHANGELOG.md */,
-				B27A78091FC13F88001491C6 /* CONTRIBUTING.md */,
-				B27A78051FC13F87001491C6 /* ISSUE_TEMPLATE.md */,
-				B27A78071FC13F87001491C6 /* PULL_REQUEST_TEMPLATE.md */,
+				B2D61BD220CF62F70091BFFF /* CONTRIBUTING.md */,
+				B2D61BD320CF62F80091BFFF /* ISSUE_TEMPLATE.md */,
+				B2D61BD420CF62F80091BFFF /* PULL_REQUEST_TEMPLATE.md */,
 				B27A78061FC13F87001491C6 /* README.md */,
 			);
 			name = Documentation;
