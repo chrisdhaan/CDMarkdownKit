@@ -42,7 +42,7 @@ internal extension String {
     // Converts each 4 digit characters to its String form  (e.g. "0048" -> "H")
     func unescapeUTF16() -> String? {
         var utf16Array = [UInt16]()
-#if swift(>=4.0)
+#if swift(>=3.2)
         stride(from: 0,
                to: count,
                by: 4).forEach {
