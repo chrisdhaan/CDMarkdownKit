@@ -60,8 +60,13 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         guard let unescapedString = matchString.unescapeUTF16() else { return }
         attributedString.replaceCharacters(in: range,
                                            with: unescapedString)
+#if swift(>=4.0)
         let range = NSRange(location: range.location,
                             length: unescapedString.count)
+#else
+        let range = NSRange(location: range.location,
+                            length: unescapedString.characters.count)
+#endif
         attributedString.addAttributes(attributes,
                                        range: range)
         // If the previous character was a newline then parser doesn't have to worry about
