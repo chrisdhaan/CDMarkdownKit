@@ -47,7 +47,7 @@ public protocol CDMarkdownLevelElement: CDMarkdownElement, CDMarkdownStyle {
     func addAttributes(_ attributedString: NSMutableAttributedString,
                        range: NSRange,
                        level: Int)
-    func attributesForLevel(_ level: Int) -> [String: AnyObject]
+    func attributesForLevel(_ level: Int) -> [CDAttributesKey: AnyObject]
 }
 
 public extension CDMarkdownLevelElement {
@@ -67,8 +67,8 @@ public extension CDMarkdownLevelElement {
         attributedString.addAttributes(attributesForLevel(level - 1),
                                        range: range)
     }
-    func attributesForLevel(_ level: Int) -> [String: AnyObject] {
 
+    func attributesForLevel(_ level: Int) -> [CDAttributesKey: AnyObject] {
         return self.attributes
     }
 

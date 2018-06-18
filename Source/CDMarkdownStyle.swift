@@ -38,13 +38,13 @@ public protocol CDMarkdownStyle {
     var color: CDColor? { get }
     var backgroundColor: CDColor? { get }
     var paragraphStyle: NSParagraphStyle? { get }
-    var attributes: [String: AnyObject] { get }
+    var attributes: [CDAttributesKey: AnyObject] { get }
 }
 
 public extension CDMarkdownStyle {
-    var attributes: [String: AnyObject] {
-        var attributes = [String: AnyObject]()
 
+    var attributes: [CDAttributesKey: AnyObject] {
+        var attributes = [CDAttributesKey: AnyObject]()
 #if swift(>=4.0)
         if let font = font {
             attributes[NSAttributedStringKey.font] = font
