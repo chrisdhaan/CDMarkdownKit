@@ -52,7 +52,7 @@ class CodeTextViewController: BaseViewController {
         }
         
         // Initialize textContainer and layoutManager for CDMarkdownTextView
-        let textContainer = NSTextContainer(size: self.screenSize)
+        let textContainer = NSTextContainer(size: self.rect.size)
         let layoutManager = CDMarkdownLayoutManager()
         layoutManager.addTextContainer(textContainer)
         
@@ -60,8 +60,43 @@ class CodeTextViewController: BaseViewController {
         let codeTextView = CDMarkdownTextView(frame: self.rect,
                                               textContainer: textContainer,
                                               layoutManager: layoutManager)
-        codeTextView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        codeTextView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(codeTextView)
+        
+        // Add constraints so intrinsic content size is set correctly
+        let topConstraint = NSLayoutConstraint(item: codeTextView,
+                                               attribute: NSLayoutAttribute.top,
+                                               relatedBy: NSLayoutRelation.equal,
+                                               toItem: self.segmentedControl,
+                                               attribute: NSLayoutAttribute.bottom,
+                                               multiplier: 1,
+                                               constant: 8)
+        let leadingConstraint = NSLayoutConstraint(item: codeTextView,
+                                                   attribute: NSLayoutAttribute.leading,
+                                                   relatedBy: NSLayoutRelation.equal,
+                                                   toItem: codeTextView.superview,
+                                                   attribute: NSLayoutAttribute.leadingMargin,
+                                                   multiplier: 1,
+                                                   constant: 0)
+        let trailingConstraint = NSLayoutConstraint(item: codeTextView,
+                                                    attribute: NSLayoutAttribute.trailing,
+                                                    relatedBy: NSLayoutRelation.equal,
+                                                    toItem: codeTextView.superview,
+                                                    attribute: NSLayoutAttribute.trailingMargin,
+                                                    multiplier: 1,
+                                                    constant: 0)
+        let bottomConstraint = NSLayoutConstraint(item: self.bottomLayoutGuide,
+                                                  attribute: NSLayoutAttribute.top,
+                                                  relatedBy: NSLayoutRelation.equal,
+                                                  toItem: codeTextView,
+                                                  attribute: NSLayoutAttribute.bottom,
+                                                  multiplier: 1,
+                                                  constant: 20)
+        self.view.addConstraints([topConstraint,
+                                  leadingConstraint,
+                                  trailingConstraint,
+                                  bottomConstraint])
+        
         self.codeTextView = codeTextView
     }
     
