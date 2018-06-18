@@ -42,7 +42,7 @@ public protocol CDMarkdownLabelDelegate: class {
 typealias URLRange = (url: URL, range: NSRange)
 
 open class CDMarkdownLabel: UILabel {
-    
+
     open var customLayoutManager: CDMarkdownLayoutManager!
     open var customTextContainer: NSTextContainer!
     open var customTextStorage: NSTextStorage!
@@ -68,7 +68,7 @@ open class CDMarkdownLabel: UILabel {
             }
         }
     }
-    
+
     open override var frame: CGRect {
         get {
             return super.frame
@@ -96,7 +96,7 @@ open class CDMarkdownLabel: UILabel {
             return super.attributedText
         }
         set {
-            if let _ = self.customTextContainer,
+            if self.customTextContainer != nil,
                 let layoutManager = self.customLayoutManager {
                 self.parseTextAndExtractURLRanges(newValue)
                 self.customTextStorage = NSTextStorage(attributedString: newValue)
@@ -106,31 +106,31 @@ open class CDMarkdownLabel: UILabel {
             self.setNeedsDisplay()
         }
     }
-    
+
     private var selectedURLRange: URLRange?
     private lazy var urlRanges = [URLRange]()
-    
+
     public override init(frame: CGRect) {
         super.init(frame: frame)
         self.configure()
     }
-    
+
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.configure()
     }
-    
+
     open override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         self.customTextContainer.size = self.bounds.size
     }
-    
+
     open func configure() {
         self.isUserInteractionEnabled = true
-        
+
         self.customLayoutManager = CDMarkdownLayoutManager()
-        
+
         if let textContainer = self.customTextContainer {
             self.customLayoutManager.addTextContainer(textContainer)
         } else {
@@ -139,13 +139,13 @@ open class CDMarkdownLabel: UILabel {
             self.customTextContainer.maximumNumberOfLines = self.numberOfLines
             self.customTextContainer.lineBreakMode = self.lineBreakMode
             self.customTextContainer.size = self.frame.size
-            
+
             self.customLayoutManager.addTextContainer(self.customTextContainer)
         }
     }
-    
+
     // MARK: - Layout And Rendering
-    
+
     open override func textRect(forBounds bounds: CGRect,
                                 limitedToNumberOfLines numberOfLines: Int) -> CGRect {
         // Use our text container to calculate the bounds required. First save our
@@ -169,10 +169,10 @@ open class CDMarkdownLabel: UILabel {
         // Restore the old container state before we exit under any circumstances
         self.customTextContainer.size = savedTextContainerSize
         self.customTextContainer.maximumNumberOfLines = savedTextContainerNumberOfLines
-        
+
         return textBounds
     }
-    
+
     open override func drawText(in rect: CGRect) {
         // Calculate the offset of the text in the view
         let glyphRange = self.customLayoutManager.glyphRange(for: self.customTextContainer)
@@ -183,52 +183,52 @@ open class CDMarkdownLabel: UILabel {
         self.customLayoutManager.drawGlyphs(forGlyphRange: glyphRange,
                                             at: glyphsPosition)
     }
-    
+
     private func calculateGlyphsPositionInView() -> CGPoint {
         // Returns the XY offset of the range of glyphs from the view's origin
         var textOffset = CGPoint.zero
-        
+
         var textBounds = self.customLayoutManager.usedRect(for: self.customTextContainer)
-        
+
         textBounds.size.width = ceil(textBounds.width)
         textBounds.size.height = ceil(textBounds.height)
-        
+
         if textBounds.size.height < self.bounds.size.height {
             let paddingHeight = (self.bounds.height - textBounds.size.height) / 2
             textOffset.y = paddingHeight
         }
-        
+
         return textOffset
     }
-    
+
     // MARK: - UI Responder Methods
-    
+
     open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         if self.onTouch(touch) { return }
         super.touchesBegan(touches, with: event)
     }
-    
+
     open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         if self.onTouch(touch) { return }
         super.touchesMoved(touches, with: event)
     }
-    
+
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         _ = self.onTouch(touch)
         super.touchesCancelled(touches, with: event)
     }
-    
+
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         if self.onTouch(touch) { return }
         super.touchesEnded(touches, with: event)
     }
-    
+
     // MARK: - Private Methods
-    
+
     private func displayActionController(forUrl url: URL) {
         var parentViewController: UIViewController? = nil
         var parentResponder: UIResponder? = self
@@ -238,14 +238,14 @@ open class CDMarkdownLabel: UILabel {
                 parentViewController = viewController
             }
         }
-        
+
         let actionController = UIAlertController(title: nil,
                                                  message: nil,
                                                  preferredStyle: .actionSheet)
-        
+
         actionController.addAction(UIAlertAction(title: "Open",
                                                  style: .default,
-                                                 handler: { action in
+                                                 handler: { _ in
                                                     if let delegate = self.delegate {
                                                         delegate.didSelect(url)
                                                     }
@@ -254,7 +254,7 @@ open class CDMarkdownLabel: UILabel {
         if SSReadingList.supportsURL(url) {
             actionController.addAction(UIAlertAction(title: "Add to Reading List",
                                                      style: .default,
-                                                     handler: { action in
+                                                     handler: { _ in
                                                         do {
                                                             try SSReadingList.default()?.addItem(with: url,
                                                                                                  title: nil,
@@ -266,12 +266,12 @@ open class CDMarkdownLabel: UILabel {
         }
         actionController.addAction(UIAlertAction(title: "Copy",
                                                  style: .default,
-                                                 handler: { action in
+                                                 handler: { _ in
                                                     UIPasteboard.general.string = url.absoluteString
         }))
         actionController.addAction(UIAlertAction(title: "Share...",
                                                  style: .default,
-                                                 handler: { action in
+                                                 handler: { _ in
                                                     let activityViewController = UIActivityViewController(activityItems: [url],
                                                                                                           applicationActivities: [])
                                                     if parentViewController != nil {
@@ -293,11 +293,11 @@ open class CDMarkdownLabel: UILabel {
                                           completion: nil)
         }
     }
-    
+
     private func onTouch(_ touch: UITouch) -> Bool {
         let location = touch.location(in: self)
         var avoidSuperCall = false
-        
+
         switch touch.phase {
         case .began,
              .moved:
@@ -311,9 +311,9 @@ open class CDMarkdownLabel: UILabel {
             }
         case .ended:
             guard let selectedRange = self.selectedURLRange else { return avoidSuperCall }
-            
+
             self.displayActionController(forUrl: selectedRange.url)
-            
+
             let when = DispatchTime.now() + Double(Int64(0.25 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
             DispatchQueue.main.asyncAfter(deadline: when) {
                 self.selectedURLRange = nil
@@ -324,17 +324,17 @@ open class CDMarkdownLabel: UILabel {
         case .stationary:
             break
         }
-        
+
         return avoidSuperCall
     }
-    
+
     private func parseTextAndExtractURLRanges(_ attrString: NSAttributedString) {
 #if swift(>=4.0)
         attrString.enumerateAttribute(NSAttributedStringKey.link,
-                                      in: NSMakeRange(0,
-                                                      attrString.length),
-                                      options: [.longestEffectiveRangeNotRequired]) { value, range, isStop in
-                                        
+                                      in: NSRange(location: 0,
+                                                  length: attrString.length),
+                                      options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
+
                                         if let value = value as? NSURL,
                                             let urlString = value.absoluteString,
                                             let url = URL(string: urlString) {
@@ -343,10 +343,10 @@ open class CDMarkdownLabel: UILabel {
         }
 #else
         attrString.enumerateAttribute(NSLinkAttributeName,
-                                      in: NSMakeRange(0,
-                                                      attrString.length),
-                                      options: [.longestEffectiveRangeNotRequired]) { value, range, isStop in
-                                        
+                                      in: NSRange(location: 0,
+                                                  length: attrString.length),
+                                      options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
+
                                         if let value = value as? NSURL,
                                             let urlString = value.absoluteString,
                                             let url = URL(string: urlString) {
@@ -355,26 +355,26 @@ open class CDMarkdownLabel: UILabel {
         }
 #endif
     }
-    
+
     private func urlRange(at location: CGPoint) -> URLRange? {
         guard self.customTextStorage.length > 0 else { return nil }
-        
+
         let correctLocation = location
         let boundingRect = customLayoutManager.boundingRect(forGlyphRange: NSRange(location: 0,
                                                                                    length: self.customTextStorage.length),
                                                             in: self.customTextContainer)
-        
+
         guard boundingRect.contains(correctLocation) else { return nil }
-        
+
         let index = self.customLayoutManager.glyphIndex(for: correctLocation,
                                                         in: self.customTextContainer)
-        
+
         for urlRange in urlRanges {
             if index >= urlRange.range.location && index <= urlRange.range.location + urlRange.range.length {
                 return urlRange
             }
         }
-        
+
         return nil
     }
 }
@@ -395,7 +395,7 @@ extension CDMarkdownLabel: NSLayoutManagerDelegate {
                                                            at: charIndex,
                                                            effectiveRange: &range)
 #endif
-        
+
         return !((linkURL != nil) && (charIndex > range.location) && (charIndex <= NSMaxRange(range)))
     }
 }
@@ -403,17 +403,17 @@ extension CDMarkdownLabel: NSLayoutManagerDelegate {
 // MARK: - UIGestureRecognizerDelegate Methods
 
 extension CDMarkdownLabel: UIGestureRecognizerDelegate {
-    
+
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                                   shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
+
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                                   shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
+
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                                   shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true

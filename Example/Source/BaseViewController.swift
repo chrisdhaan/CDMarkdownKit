@@ -31,15 +31,15 @@ import UIKit
 class BaseViewController: UIViewController {
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
-    
-    var onCustomParser: (() -> ())?
-    var onDefaultParser: (() -> ())?
+
+    var onCustomParser: (() -> Void)?
+    var onDefaultParser: (() -> Void)?
     var rect = CGRect(x: 0,
                       y: 0,
                       width: 0,
                       height: 0)
     let screenSize = UIScreen.main.bounds.size
-    
+
     private let customMarkdownParser = CDMarkdownParser(fontColor: UIColor.brown,
                                                         backgroundColor: UIColor.yellow)
     private let defaultMarkdownParser = CDMarkdownParser()
@@ -48,17 +48,16 @@ class BaseViewController: UIViewController {
                                                    bundle: Bundle.main,
                                                    value: "",
                                                    comment: "")
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
-        
+
         self.rect = CGRect(x: 20,
                            y: self.segmentedControl.frame.maxY + 7,
                            width: CGFloat(self.screenSize.width - 40),
                            height: CGFloat(self.screenSize.height - (self.segmentedControl.frame.maxY + 7) - 69))
-        
+
         // Example of a markdown parser with custom properties
         self.customMarkdownParser.bold.color = UIColor.cyan
         self.customMarkdownParser.bold.backgroundColor = UIColor.purple
@@ -98,14 +97,14 @@ class BaseViewController: UIViewController {
         self.customMarkdownParser.image.size = CGSize(width: 100,
                                                       height: 50)
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     // MARK: - Internal Methods
-    
+
     func configure() -> NSAttributedString {
         let attributedString = NSAttributedString(string: self.markdownString)
         // Determine whether to show default or custom parsing
@@ -119,7 +118,7 @@ class BaseViewController: UIViewController {
             // Parse markdown
             attributedText = self.customMarkdownParser.parse(attributedString)
         }
-        
+
         return attributedText
     }
 }

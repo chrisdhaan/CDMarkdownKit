@@ -32,9 +32,9 @@
 #endif
 
 open class CDMarkdownList: CDMarkdownLevelElement {
-    
+
     fileprivate static let regex = "^\\s*([\\*\\+\\-]{1,%@})[ \t]+(.+)$"
-    
+
     open var maxLevel: Int
     open var font: CDFont?
     open var color: CDColor?
@@ -42,13 +42,13 @@ open class CDMarkdownList: CDMarkdownLevelElement {
     open var paragraphStyle: NSParagraphStyle?
     open var separator: String
     open var indicator: String
-    
+
     open var regex: String {
         let level: String = maxLevel > 0 ? "\(maxLevel)" : ""
         return String(format: CDMarkdownList.regex,
                       level)
     }
-    
+
     public init(font: CDFont? = nil,
                 maxLevel: Int = 0,
                 indicator: String = "•",
@@ -73,7 +73,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
             self.paragraphStyle = paragraphStyle
         }
     }
-    
+
     open func formatText(_ attributedString: NSMutableAttributedString,
                          range: NSRange,
                          level: Int) {
@@ -84,7 +84,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         attributedString.replaceCharacters(in: range,
                                            with: string)
     }
-    
+
     open func addFullAttributes(_ attributedString: NSMutableAttributedString,
                                 range: NSRange,
                                 level: Int) {
@@ -102,7 +102,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
 #endif
         let floatLevel = CGFloat(level)
         guard let paragraphStyle = self.paragraphStyle else { return }
-        let updatedParagraphStyle = paragraphStyle.mutableCopy() as! NSMutableParagraphStyle
+        let updatedParagraphStyle = paragraphStyle.mutableCopy() as? NSMutableParagraphStyle ?? NSMutableParagraphStyle()
         updatedParagraphStyle.headIndent = indicatorSize.width + (separatorSize.width * floatLevel)
 #if swift(>=4.0)
         attributedString.addAttribute(NSAttributedStringKey.paragraphStyle,
@@ -114,7 +114,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
                                       range: range)
 #endif
     }
-    
+
     open func addAttributes(_ attributedString: NSMutableAttributedString,
                             range: NSRange,
                             level: Int) {

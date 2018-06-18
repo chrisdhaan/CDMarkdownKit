@@ -32,19 +32,19 @@
 #endif
 
 #if os(macOS)
-    
+
 internal extension CDFont {
-    
+
     private func withTraits(_ trait: Int) -> CDFont {
         let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(UInt32(trait)))
         return CDFont(descriptor: descriptor,
                       size: 0)!
     }
-    
+
     func bold() -> CDFont {
         return withTraits(NSFontBoldTrait)
     }
-    
+
     func italic() -> CDFont {
         return withTraits(NSFontItalicTrait)
     }
@@ -53,17 +53,17 @@ internal extension CDFont {
 #else
 
 internal extension CDFont {
-    
+
     private func withTraits(_ traits: CDFontDescriptorSymbolicTraits...) -> CDFont {
         let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(traits))
         return CDFont(descriptor: descriptor!,
                       size: 0)
     }
-    
+
     func bold() -> CDFont {
         return withTraits(.traitBold)
     }
-    
+
     func italic() -> CDFont {
         return withTraits(.traitItalic)
     }

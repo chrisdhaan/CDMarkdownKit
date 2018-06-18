@@ -31,43 +31,43 @@ import UIKit
 class StoryboardLabelViewController: BaseViewController {
 
     @IBOutlet fileprivate weak var storyboardLabel: CDMarkdownLabel!
-    
+
     // MARK: - Lifecycle Methods
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+
         self.onCustomParser = {
             [weak self] in
             // Configure label
             self?.storyboardLabel.roundAllCorners = true
         }
-        
+
         self.onDefaultParser = {
             [weak self] in
             // Configure label
             self?.storyboardLabel.roundCodeCorners = true
             self?.storyboardLabel.roundSyntaxCorners = true
         }
-        
+
         // Set delegate of CDMarkdownLabel
         self.storyboardLabel.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         self.storyboardLabel.attributedText = self.configure()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     // MARK: - Action Methods
-    
+
     @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
         self.storyboardLabel.attributedText = self.configure()
     }
@@ -76,7 +76,7 @@ class StoryboardLabelViewController: BaseViewController {
 // MARK: - CDMarkdownLabelDelegate Methods
 
 extension StoryboardLabelViewController: CDMarkdownLabelDelegate {
-    
+
     func didSelect(_ url: URL) {
         UIApplication.shared.openURL(url)
     }

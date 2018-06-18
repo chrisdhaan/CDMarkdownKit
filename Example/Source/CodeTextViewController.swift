@@ -29,40 +29,40 @@ import CDMarkdownKit
 import UIKit
 
 class CodeTextViewController: BaseViewController {
-    
+
     fileprivate var codeTextView: CDMarkdownTextView!
-    
+
     // MARK: - Lifecycle Methods
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+
         self.onCustomParser = {
             [weak self] in
             // Configure text view
             self?.codeTextView.roundAllCorners = true
         }
-        
+
         self.onDefaultParser = {
             [weak self] in
             // Configure text view
             self?.codeTextView.roundCodeCorners = true
             self?.codeTextView.roundSyntaxCorners = true
         }
-        
+
         // Initialize textContainer and layoutManager for CDMarkdownTextView
         let textContainer = NSTextContainer(size: self.rect.size)
         let layoutManager = CDMarkdownLayoutManager()
         layoutManager.addTextContainer(textContainer)
-        
+
         // Example initialization of CDMarkdownTextView
         let codeTextView = CDMarkdownTextView(frame: self.rect,
                                               textContainer: textContainer,
                                               layoutManager: layoutManager)
         codeTextView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(codeTextView)
-        
+
         // Add constraints so intrinsic content size is set correctly
         let topConstraint = NSLayoutConstraint(item: codeTextView,
                                                attribute: NSLayoutAttribute.top,
@@ -96,23 +96,23 @@ class CodeTextViewController: BaseViewController {
                                   leadingConstraint,
                                   trailingConstraint,
                                   bottomConstraint])
-        
+
         self.codeTextView = codeTextView
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         self.codeTextView.attributedText = self.configure()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     // MARK: - Action Methods
-    
+
     @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
         self.codeTextView.attributedText = self.configure()
     }

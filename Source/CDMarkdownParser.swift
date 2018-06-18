@@ -32,14 +32,14 @@
 #endif
 
 open class CDMarkdownParser {
-    
+
     // MARK: - Element Arrays
     fileprivate var escapingElements: [CDMarkdownElement]
     fileprivate var defaultElements: [CDMarkdownElement]
     fileprivate var unescapingElements: [CDMarkdownElement]
-    
+
     open var customElements: [CDMarkdownElement]
-    
+
     // MARK: - Basic Elements
     open let header: CDMarkdownHeader
     open let list: CDMarkdownList
@@ -53,12 +53,12 @@ open class CDMarkdownParser {
 #if os(iOS) || os(macOS) || os(tvOS)
     open let image: CDMarkdownImage
 #endif
-    
+
     // MARK: - Escaping Elements
     fileprivate var codeEscaping = CDMarkdownCodeEscaping()
     fileprivate var escaping = CDMarkdownEscaping()
     fileprivate var unescaping = CDMarkdownUnescaping()
-    
+
     // MARK: - Configuration
     // Enables or disables detection of URLs even without Markdown format
     open var automaticLinkDetectionEnabled: Bool = true
@@ -66,7 +66,7 @@ open class CDMarkdownParser {
     open let fontColor: CDColor
     open let backgroundColor: CDColor
     open let paragraphStyle: NSParagraphStyle
-    
+
     // MARK: - Initializer
     public init(font: CDFont = CDFont.systemFont(ofSize: 12),
                 boldFont: CDFont? = nil,
@@ -89,7 +89,7 @@ open class CDMarkdownParser {
             paragraphStyle.lineSpacing = 1.38
             self.paragraphStyle = paragraphStyle
         }
-        
+
         header = CDMarkdownHeader(font: font)
         list = CDMarkdownList(font: font)
         quote = CDMarkdownQuote(font: font)
@@ -103,7 +103,7 @@ open class CDMarkdownParser {
         image = CDMarkdownImage(font: font,
                                 size: imageSize)
 #endif
-        
+
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.escapingElements = [codeEscaping, escaping]
 #if os(iOS) || os(macOS) || os(tvOS)
@@ -114,12 +114,12 @@ open class CDMarkdownParser {
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
     }
-    
+
     // MARK: - Element Extensibility
     open func addCustomElement(_ element: CDMarkdownElement) {
         customElements.append(element)
     }
-    
+
     open func removeCustomElement(_ element: CDMarkdownElement) {
         guard let index = customElements.index(where: { someElement -> Bool in
             return element === someElement
@@ -128,12 +128,12 @@ open class CDMarkdownParser {
         }
         customElements.remove(at: index)
     }
-    
+
     // MARK: - Parsing
     open func parse(_ markdown: String) -> NSAttributedString {
         return parse(NSAttributedString(string: markdown))
     }
-    
+
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         let mutableString = attributedString.mutableString

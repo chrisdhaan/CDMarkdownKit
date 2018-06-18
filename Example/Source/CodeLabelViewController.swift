@@ -31,26 +31,26 @@ import UIKit
 class CodeLabelViewController: BaseViewController {
 
     fileprivate var codeLabel: CDMarkdownLabel!
-    
+
     // MARK: - Lifecycle Methods
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+
         self.onCustomParser = {
             [weak self] in
             // Configure label
             self?.codeLabel.roundAllCorners = true
         }
-        
+
         self.onDefaultParser = {
             [weak self] in
             // Configure label
             self?.codeLabel.roundCodeCorners = true
             self?.codeLabel.roundSyntaxCorners = true
         }
-        
+
         // Example initialization of CDMarkdownLabel
         let codeLabel = CDMarkdownLabel(frame: self.rect)
         codeLabel.delegate = self
@@ -61,17 +61,17 @@ class CodeLabelViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         self.codeLabel.attributedText = self.configure()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     // MARK: - Action Methods
-    
+
     @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
         self.codeLabel.attributedText = self.configure()
     }
@@ -80,7 +80,7 @@ class CodeLabelViewController: BaseViewController {
 // MARK: - CDMarkdownLabelDelegate Methods
 
 extension CodeLabelViewController: CDMarkdownLabelDelegate {
-    
+
     func didSelect(_ url: URL) {
         UIApplication.shared.openURL(url)
     }

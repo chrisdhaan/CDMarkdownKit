@@ -32,18 +32,18 @@
 #endif
 
 open class CDMarkdownCode: CDMarkdownCommonElement {
-    
+
     fileprivate static let regex = "(\\s+|^|\\()(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)(\\)?)"
-    
+
     open var font: CDFont?
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
-    
+
     open var regex: String {
         return CDMarkdownCode.regex
     }
-    
+
     public init(font: CDFont? = CDFont(name: "Menlo-Regular", size: 12),
                 color: CDColor? = CDColor.codeTextRed(),
                 backgroundColor: CDColor? = CDColor.codeBackgroundRed(),
@@ -53,7 +53,7 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
         self.backgroundColor = backgroundColor
         self.paragraphStyle = paragraphStyle
     }
-    
+
     open func addAttributes(_ attributedString: NSMutableAttributedString,
                             range: NSRange) {
         let matchString: String = attributedString.attributedSubstring(from: range).string

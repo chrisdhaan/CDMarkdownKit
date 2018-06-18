@@ -30,7 +30,7 @@
 import UIKit
 
 open class CDMarkdownTextView: UITextView {
-    
+
     open var customLayoutManager: CDMarkdownLayoutManager!
     open var customTextStorage: NSTextStorage!
     open var roundAllCorners: Bool = false {
@@ -54,7 +54,7 @@ open class CDMarkdownTextView: UITextView {
             }
         }
     }
-    
+
     open override var attributedText: NSAttributedString! {
         get {
             return super.attributedText
@@ -66,31 +66,31 @@ open class CDMarkdownTextView: UITextView {
             }
         }
     }
-    
+
     public init(frame: CGRect,
                 textContainer: NSTextContainer,
                 layoutManager: CDMarkdownLayoutManager) {
         super.init(frame: frame,
                    textContainer: textContainer)
-        
+
         self.customLayoutManager = layoutManager
     }
-    
+
     public override init(frame: CGRect,
                          textContainer: NSTextContainer?) {
         super.init(frame: frame,
                    textContainer: textContainer)
     }
-    
+
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.configure()
     }
-    
+
     open func configure() {
         self.customLayoutManager = CDMarkdownLayoutManager()
         self.customLayoutManager.addTextContainer(self.textContainer)
-        
+
         self.isScrollEnabled = true
         self.isSelectable = false
 #if os(iOS)

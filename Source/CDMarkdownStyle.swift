@@ -33,7 +33,7 @@
 
 // Styling protocol for all MarkdownElements
 public protocol CDMarkdownStyle {
-    
+
     var font: CDFont? { get }
     var color: CDColor? { get }
     var backgroundColor: CDColor? { get }
@@ -42,9 +42,9 @@ public protocol CDMarkdownStyle {
 }
 
 public extension CDMarkdownStyle {
-    
     var attributes: [String: AnyObject] {
         var attributes = [String: AnyObject]()
+
 #if swift(>=4.0)
         if let font = font {
             attributes[NSAttributedStringKey.font] = font

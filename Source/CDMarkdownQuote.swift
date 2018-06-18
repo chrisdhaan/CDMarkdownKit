@@ -32,9 +32,9 @@
 #endif
 
 open class CDMarkdownQuote: CDMarkdownLevelElement {
-    
+
     fileprivate static let regex = "^(\\>{1,%@})\\s*(.+)$"
-    
+
     open var maxLevel: Int
     open var font: CDFont?
     open var color: CDColor?
@@ -42,13 +42,13 @@ open class CDMarkdownQuote: CDMarkdownLevelElement {
     open var paragraphStyle: NSParagraphStyle?
     open var separator: String
     open var indicator: String
-    
+
     open var regex: String {
         let level: String = maxLevel > 0 ? "\(maxLevel)" : ""
         return String(format: CDMarkdownQuote.regex,
                       level)
     }
-    
+
     public init(font: CDFont? = nil,
                 maxLevel: Int = 0,
                 indicator: String = ">",
@@ -64,7 +64,7 @@ open class CDMarkdownQuote: CDMarkdownLevelElement {
         self.backgroundColor = backgroundColor
         self.paragraphStyle = paragraphStyle
     }
-    
+
     open func formatText(_ attributedString: NSMutableAttributedString,
                          range: NSRange,
                          level: Int) {

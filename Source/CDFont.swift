@@ -2,7 +2,7 @@
 //  CDFont.swift
 //  CDMarkdownKit
 //
-//  Created by Chris De Haan on 11/18/17.
+//  Created by Christopher de Haan on 11/18/17.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //

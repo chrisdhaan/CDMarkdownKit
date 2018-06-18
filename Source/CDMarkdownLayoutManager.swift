@@ -34,22 +34,22 @@ open class CDMarkdownLayoutManager: NSLayoutManager {
     open var roundAllCorners: Bool = false
     open var roundCodeCorners: Bool = false
     open var roundSyntaxCorners: Bool = false
-    
+
     override open func fillBackgroundRectArray(_ rectArray: UnsafePointer<CGRect>,
                                                count rectCount: Int,
                                                forCharacterRange charRange: NSRange,
                                                color: UIColor) {
-        
+
         var cornerRadius: CGFloat = 0
         if (self.roundCodeCorners == true && color.isEqualTo(otherColor: UIColor.codeBackgroundRed())) ||
             (self.roundSyntaxCorners == true && color.isEqualTo(otherColor: UIColor.syntaxBackgroundGray())) ||
             self.roundAllCorners == true {
-            
+
             cornerRadius = 3
         }
-        
+
         let path = CGMutablePath()
-        
+
         if rectCount == 1 ||
             rectCount == 2 && (rectArray[1].maxX < rectArray[0].minX) {
             // 1 rect or 2 rects without edges in contact
@@ -62,42 +62,42 @@ open class CDMarkdownLayoutManager: NSLayoutManager {
         } else {
             // 2 or 3 rects
             let lastRect: Int = rectCount - 1
-            
+
             path.move(to: CGPoint(x: rectArray[0].minX + cornerRadius,
                                   y: rectArray[0].maxY + cornerRadius))
-            
+
             path.addLine(to: CGPoint(x: rectArray[0].minX + cornerRadius,
                                      y: rectArray[0].minY + cornerRadius))
             path.addLine(to: CGPoint(x: rectArray[0].maxX - cornerRadius,
                                      y: rectArray[0].minY + cornerRadius))
-            
+
             path.addLine(to: CGPoint(x: rectArray[0].maxX - cornerRadius,
                                      y: rectArray[lastRect].minY - cornerRadius))
             path.addLine(to: CGPoint(x: rectArray[lastRect].maxX - cornerRadius,
                                      y: rectArray[lastRect].minY - cornerRadius))
-            
+
             path.addLine(to: CGPoint(x: rectArray[lastRect].maxX - cornerRadius,
                                      y: rectArray[lastRect].maxY - cornerRadius))
             path.addLine(to: CGPoint(x: rectArray[lastRect].minX + cornerRadius,
                                      y: rectArray[lastRect].maxY - cornerRadius))
-            
+
             path.addLine(to: CGPoint(x: rectArray[lastRect].minX + cornerRadius,
                                      y: rectArray[0].maxY + cornerRadius))
-            
+
             path.closeSubpath()
         }
         // set fill and stroke color
         color.set()
-        
+
         let ctx = UIGraphicsGetCurrentContext()
         ctx?.setAllowsAntialiasing(true)
         ctx?.setShouldAntialias(true)
-        
+
         ctx?.setLineWidth(cornerRadius * 2)
         ctx?.setLineJoin(.round)
-        
+
         ctx?.addPath(path)
-        
+
         ctx?.drawPath(using: .fillStroke)
     }
 }

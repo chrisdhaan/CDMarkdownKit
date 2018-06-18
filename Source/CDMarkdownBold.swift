@@ -32,18 +32,18 @@
 #endif
 
 open class CDMarkdownBold: CDMarkdownCommonElement {
-    
+
     fileprivate static let regex = "(\\s+|^)(\\*\\*|__)(.+?)(\\2)"
-    
+
     open var font: CDFont?
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
-    
+
     open var regex: String {
         return CDMarkdownBold.regex
     }
-    
+
     public init(font: CDFont? = nil,
                 customBoldFont: CDFont? = nil,
                 color: CDColor? = nil,
