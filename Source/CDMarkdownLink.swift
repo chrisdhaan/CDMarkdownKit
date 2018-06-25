@@ -32,23 +32,23 @@
 #endif
 
 open class CDMarkdownLink: CDMarkdownLinkElement {
-    
+
     fileprivate static let regex = "[^!{1}]\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"
-    
+
     open var font: CDFont?
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
-    
+
     open var regex: String {
         return CDMarkdownLink.regex
     }
-    
+
     open func regularExpression() throws -> NSRegularExpression {
         return try NSRegularExpression(pattern: regex,
                                        options: .dotMatchesLineSeparators)
     }
-    
+
     public init(font: CDFont? = nil,
                 color: CDColor? = CDColor.blue,
                 backgroundColor: CDColor? = nil,
@@ -58,7 +58,7 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
         self.backgroundColor = backgroundColor
         self.paragraphStyle = paragraphStyle
     }
-    
+
     open func formatText(_ attributedString: NSMutableAttributedString,
                          range: NSRange,
                          link: String) {
@@ -77,11 +77,11 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
                                       range: range)
 #endif
     }
-    
+
     open func match(_ match: NSTextCheckingResult,
                     attributedString: NSMutableAttributedString) {
         guard match.numberOfRanges == 3 else { return }
-        
+
         let nsString = attributedString.string as NSString
         let linkStartInResult = nsString.range(of: "(",
                                                options: .backwards,
@@ -110,7 +110,7 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
                       range: formatRange,
                       link: linkURLString)
     }
-    
+
     open func addAttributes(_ attributedString: NSMutableAttributedString,
                             range: NSRange,
                             link: String) {

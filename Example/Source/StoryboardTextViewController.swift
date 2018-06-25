@@ -31,19 +31,19 @@ import UIKit
 class StoryboardTextViewController: BaseViewController {
 
     @IBOutlet fileprivate weak var storyboardTextView: CDMarkdownTextView!
-    
+
     // MARK: - Lifecycle Methods
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+
         self.onCustomParser = {
             [weak self] in
             // Configure text view
             self?.storyboardTextView.roundAllCorners = true
         }
-        
+
         self.onDefaultParser = {
             [weak self] in
             // Configure text view
@@ -54,17 +54,17 @@ class StoryboardTextViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         self.storyboardTextView.attributedText = self.configure()
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     // MARK: - Action Methods
-    
+
     @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
         self.storyboardTextView.attributedText = self.configure()
     }

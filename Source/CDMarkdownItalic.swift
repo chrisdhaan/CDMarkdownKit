@@ -39,11 +39,11 @@ open class CDMarkdownItalic: CDMarkdownCommonElement {
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
-    
+
     open var regex: String {
         return CDMarkdownItalic.regex
     }
-    
+
     public init(font: CDFont? = nil,
                 customItalicFont: CDFont? = nil,
                 color: CDColor? = nil,

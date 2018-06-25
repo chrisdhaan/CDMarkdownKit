@@ -39,35 +39,35 @@ public extension CDColor {
                        blue: 58/255.0,
                        alpha: 1.0)
     }
-    
+
     static func codeBackgroundRed() -> CDColor {
         return CDColor(red: 247/255.0,
                        green: 238/255.0,
                        blue: 241/255.0,
                        alpha: 1.0)
     }
-    
+
     static func syntaxTextGray() -> CDColor {
         return CDColor(red: 57/255.0,
                        green: 57/255.0,
                        blue: 57/255.0,
                        alpha: 1.0)
     }
-    
+
     static func syntaxBackgroundGray() -> CDColor {
         return CDColor(red: 235/255.0,
                        green: 235/255.0,
                        blue: 235/255.0,
                        alpha: 1.0)
     }
-    
-    func isEqualTo(otherColor : CDColor) -> Bool {
+
+    func isEqualTo(otherColor: CDColor) -> Bool {
         if self == otherColor {
             return true
         }
-        
+
         let colorSpaceRGB = CGColorSpaceCreateDeviceRGB()
-        let convertColorToRGBSpace: ((_ color : CDColor) -> CDColor?) = { (color) -> CDColor? in
+        let convertColorToRGBSpace: ((_ color: CDColor) -> CDColor?) = { (color) -> CDColor? in
             if color.cgColor.colorSpace?.model == CGColorSpaceModel.monochrome {
                 let oldComponents = color.cgColor.components
                 let components: [CGFloat] = [oldComponents![0], oldComponents![0], oldComponents![0], oldComponents![1]]
@@ -75,15 +75,14 @@ public extension CDColor {
                                        components: components)
                 let colorOut = CDColor(cgColor: colorRef!)
                 return colorOut
-            }
-            else {
-                return color;
+            } else {
+                return color
             }
         }
-        
+
         let selfColor = convertColorToRGBSpace(self)
         let otherColor = convertColorToRGBSpace(otherColor)
-        
+
         if let selfColor = selfColor,
             let otherColor = otherColor {
             return selfColor.isEqual(otherColor)

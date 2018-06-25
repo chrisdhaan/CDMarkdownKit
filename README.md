@@ -277,27 +277,59 @@ A CDMarkdownTextView object will still render when initialized via a storyboard 
 #### Programmatic Example
 
 ```swift
-let size = self.frame.size
-let rect = CGRect(x: 10,
+let rect = CGRect(x: 20,
                   y: 10,
-                  width: CGFloat(size.width - 20),
-                  height: CGFloat(size.height - 20))
+                  width: CGFloat(self.frame.size.width - 40),
+                  height: CGFloat(self.frame.size.height - 30))
 /// Create custom text container
-let textContainer = NSTextContainer(size: size)
+let textContainer = NSTextContainer(size: rect.size)
 /// Create custom layout manager
 let layoutManager = CDMarkdownLayoutManager()
 layoutManager.addTextContainer(textContainer)
 /// Initialization
 let textView = CDMarkdownTextView(frame: rect, 
-textContainer: textContainer, 
-layoutManager: layoutManager)
-textView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                                  textContainer: textContainer, 
+                                  layoutManager: layoutManager)
+textView.translatesAutoresizingMaskIntoConstraints = false
 /// Standard markdown UI formatting
 textView.roundCodeCorners = true
 textView.roundSyntaxCorners = true
 /// Custom markdown UI formatting
 textView.roundAllCorners = true
-
+/// Add constraints so intrinsic content size is set correctly
+let topConstraint = NSLayoutConstraint(item: textView,
+                                       attribute: NSLayoutAttribute.top,
+                                       relatedBy: NSLayoutRelation.equal,
+                                       toItem: textView.superview,
+                                       attribute: NSLayoutAttribute.bottom,
+                                       multiplier: 1,
+                                       constant: 10)
+let leadingConstraint = NSLayoutConstraint(item: textView,
+                                           attribute: NSLayoutAttribute.leading,
+                                           relatedBy: NSLayoutRelation.equal,
+                                           toItem: textView.superview,
+                                           attribute: NSLayoutAttribute.leadingMargin,
+                                           multiplier: 1,
+                                           constant: 0)
+let trailingConstraint = NSLayoutConstraint(item: textView,
+                                            attribute: NSLayoutAttribute.trailing,
+                                            relatedBy: NSLayoutRelation.equal,
+                                            toItem: textView.superview,
+                                            attribute: NSLayoutAttribute.trailingMargin,
+                                            multiplier: 1,
+                                            constant: 0)
+let bottomConstraint = NSLayoutConstraint(item: self.bottomLayoutGuide,
+                                          attribute: NSLayoutAttribute.top,
+                                          relatedBy: NSLayoutRelation.equal,
+                                          toItem: textView,
+                                          attribute: NSLayoutAttribute.bottom,
+                                          multiplier: 1,
+                                          constant: 20)
+self.view.addConstraints([topConstraint,
+                          leadingConstraint,
+                          trailingConstraint,
+                          bottomConstraint])
+/// Add to view hierarchy
 self.view.addSubview(textView)
 ```
 

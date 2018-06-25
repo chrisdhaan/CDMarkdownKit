@@ -32,18 +32,18 @@
 #endif
 
 open class CDMarkdownCodeEscaping: CDMarkdownElement {
-    
+
     fileprivate static let regex = "(?<!\\\\)(?:\\\\\\\\)*+(`+)(.*?[^`].*?)(\\1)(?!`)"
-    
+
     open var regex: String {
         return CDMarkdownCodeEscaping.regex
     }
-    
+
     open func regularExpression() throws -> NSRegularExpression {
         return try NSRegularExpression(pattern: regex,
                                        options: .dotMatchesLineSeparators)
     }
-    
+
     open func match(_ match: NSTextCheckingResult,
                     attributedString: NSMutableAttributedString) {
 #if swift(>=4.0)

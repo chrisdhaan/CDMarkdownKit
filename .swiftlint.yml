@@ -1,0 +1,20 @@
+included: # paths to include during linting. `--path` is ignored if present.
+  - Source
+  - Example/Source
+
+# number of lines allowed in a file
+file_length: 423
+# number of lines allowed in a function
+function_body_length: 56
+# rules related to vars/lets
+identifier_name:
+  excluded:
+    - to
+# number of characters allowed in a line
+line_length:
+  error: 200
+  ignores_comments: true
+  ignores_function_declarations: true
+  warning: 149
+# number of lines allowed in a type body
+type_body_length: 218

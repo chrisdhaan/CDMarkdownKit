@@ -29,9 +29,9 @@ import Foundation
 
 // The base protocol for all Markdown Elements, it handles parsing through regex.
 public protocol CDMarkdownElement: class {
-    
+
     var regex: String { get }
-    
+
     func regularExpression() throws -> NSRegularExpression
     func parse(_ attributedString: NSMutableAttributedString)
     func match(_ match: NSTextCheckingResult,
@@ -39,7 +39,7 @@ public protocol CDMarkdownElement: class {
 }
 
 public extension CDMarkdownElement {
-    
+
     func parse(_ attributedString: NSMutableAttributedString) {
         var location = 0
         do {
@@ -48,8 +48,7 @@ public extension CDMarkdownElement {
                 regex.firstMatch(in: attributedString.string,
                                  options: .withoutAnchoringBounds,
                                  range: NSRange(location: location,
-                                                length: attributedString.length - location))
-            {
+                                                length: attributedString.length - location)) {
                 let oldLength = attributedString.length
                 match(regexMatch,
                       attributedString: attributedString)

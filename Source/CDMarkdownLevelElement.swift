@@ -34,10 +34,10 @@
 // MarkdownLevelElement serves the purpose of handling Elements which may have more than one
 // representation (e.g. Headers or Lists)
 public protocol CDMarkdownLevelElement: CDMarkdownElement, CDMarkdownStyle {
-    
+
     // The maximum level of elements we should parse (e.g. limit the headers to 6 #s)
     var maxLevel: Int { get }
-    
+
     func formatText(_ attributedString: NSMutableAttributedString,
                     range: NSRange,
                     level: Int)
@@ -47,31 +47,31 @@ public protocol CDMarkdownLevelElement: CDMarkdownElement, CDMarkdownStyle {
     func addAttributes(_ attributedString: NSMutableAttributedString,
                        range: NSRange,
                        level: Int)
-    func attributesForLevel(_ level: Int) -> [String: AnyObject]
+    func attributesForLevel(_ level: Int) -> [CDAttributesKey: AnyObject]
 }
 
 public extension CDMarkdownLevelElement {
-    
+
     func regularExpression() throws -> NSRegularExpression {
         return try NSRegularExpression(pattern: regex,
                                        options: .anchorsMatchLines)
     }
-    
+
     func addFullAttributes(_ attributedString: NSMutableAttributedString,
                            range: NSRange,
                            level: Int) {}
-    
+
     func addAttributes(_ attributedString: NSMutableAttributedString,
                        range: NSRange,
                        level: Int) {
         attributedString.addAttributes(attributesForLevel(level - 1),
                                        range: range)
     }
-    
-    func attributesForLevel(_ level: Int) -> [String: AnyObject] {
+
+    func attributesForLevel(_ level: Int) -> [CDAttributesKey: AnyObject] {
         return self.attributes
     }
-    
+
     func match(_ match: NSTextCheckingResult,
                attributedString: NSMutableAttributedString) {
 #if swift(>=4.0)

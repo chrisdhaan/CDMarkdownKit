@@ -34,24 +34,24 @@
 #if os(iOS) || os(macOS) || os(tvOS)
 
 open class CDMarkdownImage: CDMarkdownLinkElement {
-    
+
     fileprivate static let regex = "[!{1}]\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"
-    
+
     open var font: CDFont?
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
     open var size: CGSize?
-    
+
     open var regex: String {
         return CDMarkdownImage.regex
     }
-    
+
     open func regularExpression() throws -> NSRegularExpression {
         return try NSRegularExpression(pattern: regex,
                                        options: .dotMatchesLineSeparators)
     }
-    
+
     public init(font: CDFont? = nil,
                 color: CDColor? = CDColor.blue,
                 backgroundColor: CDColor? = nil,
@@ -63,7 +63,7 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
         self.paragraphStyle = paragraphStyle
         self.size = size
     }
-    
+
     open func formatText(_ attributedString: NSMutableAttributedString,
                          range: NSRange,
                          link: String) {
@@ -82,7 +82,7 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
                                       range: range)
 #endif
     }
-    
+
     open func match(_ match: NSTextCheckingResult,
                     attributedString: NSMutableAttributedString) {
         let nsString = attributedString.string as NSString
@@ -93,12 +93,12 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
                                 length: match.range.length + match.range.location - linkStartInResult - 1)
         let linkURLString = nsString.substring(with: NSRange(location: linkRange.location + 1,
                                                              length: linkRange.length - 1))
-        
+
         // deleting trailing markdown
         // needs to be called before formattingBlock to support modification of length
         attributedString.deleteCharacters(in: NSRange(location: match.range.location,
                                                       length: linkRange.length + 2))
-        
+
         // load image
         let textAttachment = NSTextAttachment()
         if let url = URL(string: linkURLString) {
@@ -116,16 +116,16 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
                                          forImage: image)
             }
         }
-        
+
         // replace text with image
         let textAttachmentAttributedString = NSAttributedString(attachment: textAttachment)
         attributedString.replaceCharacters(in: NSRange(location: match.range.location,
                                                        length: linkStartInResult - match.range.location - 1),
                                            with: textAttachmentAttributedString)
-        
+
         let formatRange = NSRange(location: match.range.location,
                                   length: 0)
-        
+
         formatText(attributedString,
                    range: formatRange,
                    link: linkURLString)
@@ -133,22 +133,22 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
                       range: formatRange,
                       link: linkURLString)
     }
-    
+
     open func addAttributes(_ attributedString: NSMutableAttributedString,
                             range: NSRange,
                             link: String) {
         attributedString.addAttributes(attributes,
                                        range: range)
     }
-    
+
     private func adjustTextAttachmentSize(_ textAttachment: NSTextAttachment,
                                           forImage image: CDImage) {
         guard let size = size else { return }
-        
+
         // add padding to image
         let preferredWidth = size.width - 10
         let widthScalingFactor = image.size.width / preferredWidth
-        
+
         textAttachment.bounds = CGRect(x: 0,
                                        y: 0,
                                        width: image.size.width / widthScalingFactor,

@@ -32,18 +32,18 @@
 #endif
 
 open class CDMarkdownEscaping: CDMarkdownElement {
-    
+
     fileprivate static let regex = "\\\\."
-    
+
     open var regex: String {
         return CDMarkdownEscaping.regex
     }
-    
+
     open func regularExpression() throws -> NSRegularExpression {
         return try NSRegularExpression(pattern: regex,
                                        options: .dotMatchesLineSeparators)
     }
-    
+
     open func match(_ match: NSTextCheckingResult,
                     attributedString: NSMutableAttributedString) {
         let range = NSRange(location: match.range.location + 1,
