@@ -33,4 +33,12 @@ import Foundation
 #elseif os(macOS)
     import Cocoa
     public typealias CDImage = NSImage
+
+    #if swift(>=4.0)
+    extension NSImage {
+        convenience init?(named name: String) {
+            self.init(named: NSImage.Name(rawValue: name))
+        }
+    }
+    #endif
 #endif
