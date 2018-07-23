@@ -1,8 +1,8 @@
 //
-//  CDFont.swift
+//  CDImage+CDMarkdownKit.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 11/18/17.
+//  Created by Christopher de Haan on 7/23/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -25,18 +25,24 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
-
 #if os(iOS) || os(tvOS) || os(watchOS)
-    import UIKit
-    public typealias CDFont = UIFont
-    public typealias CDFontDescriptorSymbolicTraits = UIFontDescriptorSymbolicTraits
+import UIKit
 #elseif os(macOS)
-    import Cocoa
-    public typealias CDFont = NSFont
-#if swift(>=4.0)
-    public typealias CDFontDescriptorSymbolicTraits = NSFontDescriptor.SymbolicTraits
-#else
-    public typealias CDFontDescriptorSymbolicTraits = NSFontSymbolicTraits
+import Cocoa
 #endif
+
+#if os(macOS)
+
+internal extension CDImage {
+
+#if swift(>=4.0)
+
+    convenience init?(named name: String) {
+        self.init(named: CDImage.Name(rawValue: name))
+    }
+
+#endif
+
+}
+
 #endif

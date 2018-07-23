@@ -50,6 +50,16 @@ internal extension CDFont {
     }
 }
 
+#if swift(>=4.0)
+
+internal extension CDFontDescriptorSymbolicTraits {
+    init(_ rawValue: UInt32) {
+        self.init(rawValue: rawValue)
+    }
+}
+
+#endif
+
 #else
 
 internal extension CDFont {
