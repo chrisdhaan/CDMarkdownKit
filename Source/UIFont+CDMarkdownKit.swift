@@ -41,12 +41,24 @@ internal extension CDFont {
                       size: 0)!
     }
 
+    private var fontManager: NSFontManager {
+        #if swift(>=4.0)
+        return NSFontManager.shared
+        #else
+        return NSFontManager.shared()
+        #endif
+    }
+
     func bold() -> CDFont {
         return withTraits(NSFontBoldTrait)
     }
 
     func italic() -> CDFont {
         return withTraits(NSFontItalicTrait)
+    }
+
+    func withSize(_ fontSize: CGFloat) -> NSFont {
+        return fontManager.convert(self, toSize: fontSize)
     }
 }
 
