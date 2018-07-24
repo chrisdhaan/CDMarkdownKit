@@ -35,30 +35,26 @@
 
 internal extension CDFont {
 
-    private func withTraits(_ trait: Int) -> CDFont {
-        let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(UInt32(trait)))
-        return CDFont(descriptor: descriptor,
-                      size: 0)!
-    }
-
     func bold() -> CDFont {
-        return withTraits(NSFontBoldTrait)
+#if swift(>=4.0)
+        return NSFontManager.shared.convert(self,
+                                            toHaveTrait: .boldFontMask)
+#else
+        return NSFontManager.shared().convert(self,
+                                              toHaveTrait: .boldFontMask)
+#endif
     }
 
     func italic() -> CDFont {
-        return withTraits(NSFontItalicTrait)
-    }
-}
-
 #if swift(>=4.0)
-
-internal extension CDFontDescriptorSymbolicTraits {
-    init(_ rawValue: UInt32) {
-        self.init(rawValue: rawValue)
+        return NSFontManager.shared.convert(self,
+                                            toHaveTrait: .italicFontMask)
+#else
+        return NSFontManager.shared().convert(self,
+                                              toHaveTrait: .italicFontMask)
+#endif
     }
 }
-
-#endif
 
 #else
 
@@ -67,7 +63,7 @@ internal extension CDFont {
     private func withTraits(_ traits: CDFontDescriptorSymbolicTraits...) -> CDFont {
         let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(traits))
         return CDFont(descriptor: descriptor!,
-                      size: 0)
+                      size: self.pointSize)
     }
 
     func bold() -> CDFont {
