@@ -90,17 +90,50 @@ open class CDMarkdownParser {
             self.paragraphStyle = paragraphStyle
         }
 
-        header = CDMarkdownHeader(font: font, color: fontColor, backgroundColor: backgroundColor, paragraphStyle: paragraphStyle)
-        list = CDMarkdownList(font: font, color: fontColor, backgroundColor: backgroundColor, paragraphStyle: paragraphStyle)
-        quote = CDMarkdownQuote(font: font, color: fontColor, backgroundColor: backgroundColor, paragraphStyle: paragraphStyle)
-        link = CDMarkdownLink(font: font, color: fontColor, backgroundColor: backgroundColor, paragraphStyle: paragraphStyle)
-        automaticLink = CDMarkdownAutomaticLink(font: font, color: fontColor, backgroundColor: backgroundColor, paragraphStyle: paragraphStyle)
-        bold = CDMarkdownBold(font: font, customBoldFont: boldFont, color: fontColor, backgroundColor: backgroundColor, paragraphStyle: paragraphStyle)
-        italic = CDMarkdownItalic(font: font, customItalicFont: italicFont, color: fontColor, backgroundColor: backgroundColor, paragraphStyle: paragraphStyle)
-        code = CDMarkdownCode(font: font, color: fontColor, backgroundColor: backgroundColor, paragraphStyle: paragraphStyle)
-        syntax = CDMarkdownSyntax(font: font, color: fontColor, backgroundColor: backgroundColor, paragraphStyle: paragraphStyle)
+        header = CDMarkdownHeader(font: font,
+                                  color: fontColor,
+                                  backgroundColor: backgroundColor,
+                                  paragraphStyle: paragraphStyle)
+        list = CDMarkdownList(font: font,
+                              color: fontColor,
+                              backgroundColor: backgroundColor,
+                              paragraphStyle: paragraphStyle)
+        quote = CDMarkdownQuote(font: font,
+                                color: fontColor,
+                                backgroundColor: backgroundColor,
+                                paragraphStyle: paragraphStyle)
+        link = CDMarkdownLink(font: font,
+                              color: fontColor,
+                              backgroundColor: backgroundColor,
+                              paragraphStyle: paragraphStyle)
+        automaticLink = CDMarkdownAutomaticLink(font: font,
+                                                color: fontColor,
+                                                backgroundColor: backgroundColor,
+                                                paragraphStyle: paragraphStyle)
+        bold = CDMarkdownBold(font: font,
+                              customBoldFont: boldFont,
+                              color: fontColor,
+                              backgroundColor: backgroundColor,
+                              paragraphStyle: paragraphStyle)
+        italic = CDMarkdownItalic(font: font,
+                                  customItalicFont: italicFont,
+                                  color: fontColor,
+                                  backgroundColor: backgroundColor,
+                                  paragraphStyle: paragraphStyle)
+        code = CDMarkdownCode(font: font,
+                              color: fontColor,
+                              backgroundColor: backgroundColor,
+                              paragraphStyle: paragraphStyle)
+        syntax = CDMarkdownSyntax(font: font,
+                                  color: fontColor,
+                                  backgroundColor: backgroundColor,
+                                  paragraphStyle: paragraphStyle)
 #if os(iOS) || os(macOS) || os(tvOS)
-        image = CDMarkdownImage(font: font, color: fontColor, backgroundColor: backgroundColor, paragraphStyle: paragraphStyle, size: imageSize)
+        image = CDMarkdownImage(font: font,
+                                color: fontColor,
+                                backgroundColor: backgroundColor,
+                                paragraphStyle: paragraphStyle,
+                                size: imageSize)
 #endif
 
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
