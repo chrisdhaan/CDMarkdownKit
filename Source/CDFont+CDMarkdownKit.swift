@@ -31,9 +31,9 @@
     import Cocoa
 #endif
 
-#if os(macOS)
-
 internal extension CDFont {
+
+#if os(macOS)
 
     func bold() -> CDFont {
 #if swift(>=4.0)
@@ -54,11 +54,18 @@ internal extension CDFont {
                                               toHaveTrait: .italicFontMask)
 #endif
     }
-}
+
+    func withSize(_ fontSize: CGFloat) -> CDFont {
+#if swift(>=4.0)
+        return NSFontManager.shared.convert(self,
+                                            toSize: fontSize)
+#else
+        return NSFontManager.shared().convert(self,
+                                              toSize: fontSize)
+#endif
+    }
 
 #else
-
-internal extension CDFont {
 
     private func withTraits(_ traits: CDFontDescriptorSymbolicTraits...) -> CDFont {
         let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(traits))
@@ -73,6 +80,6 @@ internal extension CDFont {
     func italic() -> CDFont {
         return withTraits(.traitItalic)
     }
-}
 
 #endif
+}

@@ -113,8 +113,13 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         }
         if let font = font {
             let headerFontSize: CGFloat = font.pointSize + (CGFloat(fontMultiplier) * CGFloat(fontIncrease))
+#if os(macOS)
+            let headerFont = font.withSize(headerFontSize)
+#else
             let headerFont = CDFont(name: font.fontName,
                                     size: headerFontSize)
+#endif
+
 #if swift(>=4.0)
             attributes[NSAttributedStringKey.font] = headerFont
 #else
