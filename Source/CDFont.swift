@@ -34,5 +34,4 @@ import Foundation
 #elseif os(macOS)
     import Cocoa
     public typealias CDFont = NSFont
-    public typealias CDFontDescriptorSymbolicTraits = NSFontSymbolicTraits
 #endif

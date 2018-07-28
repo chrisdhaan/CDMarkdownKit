@@ -90,17 +90,49 @@ open class CDMarkdownParser {
             self.paragraphStyle = paragraphStyle
         }
 
-        header = CDMarkdownHeader(font: font)
-        list = CDMarkdownList(font: font)
-        quote = CDMarkdownQuote(font: font)
-        link = CDMarkdownLink(font: font)
-        automaticLink = CDMarkdownAutomaticLink(font: font)
-        bold = CDMarkdownBold(font: font, customBoldFont: boldFont)
-        italic = CDMarkdownItalic(font: font, customItalicFont: italicFont)
-        code = CDMarkdownCode(font: font)
-        syntax = CDMarkdownSyntax(font: font)
+        header = CDMarkdownHeader(font: font,
+                                  color: fontColor,
+                                  backgroundColor: backgroundColor,
+                                  paragraphStyle: paragraphStyle)
+        list = CDMarkdownList(font: font,
+                              color: fontColor,
+                              backgroundColor: backgroundColor,
+                              paragraphStyle: paragraphStyle)
+        quote = CDMarkdownQuote(font: font,
+                                color: fontColor,
+                                backgroundColor: backgroundColor,
+                                paragraphStyle: paragraphStyle)
+        link = CDMarkdownLink(font: font,
+                              color: fontColor,
+                              backgroundColor: backgroundColor,
+                              paragraphStyle: paragraphStyle)
+        automaticLink = CDMarkdownAutomaticLink(font: font,
+                                                color: fontColor,
+                                                backgroundColor: backgroundColor,
+                                                paragraphStyle: paragraphStyle)
+        bold = CDMarkdownBold(font: font,
+                              customBoldFont: boldFont,
+                              color: fontColor,
+                              backgroundColor: backgroundColor,
+                              paragraphStyle: paragraphStyle)
+        italic = CDMarkdownItalic(font: font,
+                                  customItalicFont: italicFont,
+                                  color: fontColor,
+                                  backgroundColor: backgroundColor,
+                                  paragraphStyle: paragraphStyle)
+        code = CDMarkdownCode(font: font,
+                              color: fontColor,
+                              backgroundColor: backgroundColor,
+                              paragraphStyle: paragraphStyle)
+        syntax = CDMarkdownSyntax(font: font,
+                                  color: fontColor,
+                                  backgroundColor: backgroundColor,
+                                  paragraphStyle: paragraphStyle)
 #if os(iOS) || os(macOS) || os(tvOS)
         image = CDMarkdownImage(font: font,
+                                color: fontColor,
+                                backgroundColor: backgroundColor,
+                                paragraphStyle: paragraphStyle,
                                 size: imageSize)
 #endif
 

@@ -1,8 +1,8 @@
 //
-//  UIFont+CDMarkdownKit.swift
+//  CDImage+CDMarkdownKit.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 11/7/16.
+//  Created by Christopher de Haan on 7/23/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -26,47 +26,23 @@
 //
 
 #if os(iOS) || os(tvOS) || os(watchOS)
-    import UIKit
+import UIKit
 #elseif os(macOS)
-    import Cocoa
+import Cocoa
 #endif
 
 #if os(macOS)
 
-internal extension CDFont {
+internal extension CDImage {
 
-    private func withTraits(_ trait: Int) -> CDFont {
-        let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(UInt32(trait)))
-        return CDFont(descriptor: descriptor,
-                      size: 0)!
+#if swift(>=4.0)
+
+    convenience init?(named name: String) {
+        self.init(named: CDImage.Name(rawValue: name))
     }
 
-    func bold() -> CDFont {
-        return withTraits(NSFontBoldTrait)
-    }
+#endif
 
-    func italic() -> CDFont {
-        return withTraits(NSFontItalicTrait)
-    }
-}
-
-#else
-
-internal extension CDFont {
-
-    private func withTraits(_ traits: CDFontDescriptorSymbolicTraits...) -> CDFont {
-        let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(traits))
-        return CDFont(descriptor: descriptor!,
-                      size: 0)
-    }
-
-    func bold() -> CDFont {
-        return withTraits(.traitBold)
-    }
-
-    func italic() -> CDFont {
-        return withTraits(.traitItalic)
-    }
 }
 
 #endif

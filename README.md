@@ -94,7 +94,7 @@ gem install cocoapods
 To integrate CDMarkdownKit into your Xcode project using CocoaPods, simply add the following line to your Podfile:
 
 ```ruby
-pod 'CDMarkdownKit', '1.1.0'
+pod 'CDMarkdownKit', '1.2.0'
 ```
 
 Afterwards, run the following command:
@@ -117,7 +117,7 @@ brew install carthage
 To integrate CDMarkdownKit into your Xcode project using Carthage, simply add the following line to your Cartfile:
 
 ```ruby
-github "chrisdhaan/CDMarkdownKit" == 1.1.0
+github "chrisdhaan/CDMarkdownKit" == 1.2.0
 ```
 
 Afterwards, run the following command:
@@ -140,7 +140,7 @@ To integrate CDMarkdownKit into your Xcode project using The Swift Package Manag
 
 ```swift
 dependencies: [
-    .Package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", "1.1.0")
+    .Package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", "1.2.0")
 ]
 ```
 
