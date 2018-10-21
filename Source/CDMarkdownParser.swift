@@ -41,17 +41,17 @@ open class CDMarkdownParser {
     open var customElements: [CDMarkdownElement]
 
     // MARK: - Basic Elements
-    open let header: CDMarkdownHeader
-    open let list: CDMarkdownList
-    open let quote: CDMarkdownQuote
-    open let link: CDMarkdownLink
-    open let automaticLink: CDMarkdownAutomaticLink
-    open let bold: CDMarkdownBold
-    open let italic: CDMarkdownItalic
-    open let code: CDMarkdownCode
-    open let syntax: CDMarkdownSyntax
+    public let header: CDMarkdownHeader
+    public let list: CDMarkdownList
+    public let quote: CDMarkdownQuote
+    public let link: CDMarkdownLink
+    public let automaticLink: CDMarkdownAutomaticLink
+    public let bold: CDMarkdownBold
+    public let italic: CDMarkdownItalic
+    public let code: CDMarkdownCode
+    public let syntax: CDMarkdownSyntax
 #if os(iOS) || os(macOS) || os(tvOS)
-    open let image: CDMarkdownImage
+    public let image: CDMarkdownImage
 #endif
 
     // MARK: - Escaping Elements
@@ -62,10 +62,10 @@ open class CDMarkdownParser {
     // MARK: - Configuration
     // Enables or disables detection of URLs even without Markdown format
     open var automaticLinkDetectionEnabled: Bool = true
-    open let font: CDFont
-    open let fontColor: CDColor
-    open let backgroundColor: CDColor
-    open let paragraphStyle: NSParagraphStyle
+    public let font: CDFont
+    public let fontColor: CDColor
+    public let backgroundColor: CDColor
+    public let paragraphStyle: NSParagraphStyle
 
     // MARK: - Initializer
     public init(font: CDFont = CDFont.systemFont(ofSize: 12),
