@@ -230,7 +230,7 @@ open class CDMarkdownLabel: UILabel {
     // MARK: - Private Methods
 
     private func displayActionController(forUrl url: URL) {
-        var parentViewController: UIViewController? = nil
+        var parentViewController: UIViewController?
         var parentResponder: UIResponder? = self
         while parentResponder != nil {
             parentResponder = parentResponder!.next
