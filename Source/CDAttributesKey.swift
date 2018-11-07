@@ -27,7 +27,9 @@
 
 import Foundation
 
-#if swift(>=4.0)
+#if swift(>=4.2)
+    public typealias CDAttributesKey = NSAttributedString.Key
+#elseif swift(>=4.0)
     public typealias CDAttributesKey = NSAttributedStringKey
 #else
     public typealias CDAttributesKey = String

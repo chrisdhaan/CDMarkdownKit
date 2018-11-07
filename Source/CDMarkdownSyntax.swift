@@ -84,7 +84,10 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                                                               length: 1)
             if let firstCharacterRange = attributedString.string.range(from: removeBackgroundColorAttributeRange),
                 attributedString.string[firstCharacterRange] == "\n" {
-#if swift(>=4.0)
+#if swift(>=4.2)
+                attributedString.removeAttribute(NSAttributedString.Key.backgroundColor,
+                                 range: removeBackgroundColorAttributeRange)
+#elseif swift(>=4.0)
                 attributedString.removeAttribute(NSAttributedStringKey.backgroundColor,
                                                  range: removeBackgroundColorAttributeRange)
 #else
@@ -108,7 +111,11 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                 let nextCharacterRange = attributedString.string.range(from: addBackgroundColorAttributeRange),
                 attributedString.string[nextCharacterRange] == "\n",
                 let backgroundColor = self.backgroundColor {
-#if swift(>=4.0)
+#if swift(>=4.2)
+                attributedString.addAttribute(NSAttributedString.Key.backgroundColor,
+                              value: backgroundColor,
+                              range: addBackgroundColorAttributeRange)
+#elseif swift(>=4.0)
                 attributedString.addAttribute(NSAttributedStringKey.backgroundColor,
                                               value: backgroundColor,
                                               range: addBackgroundColorAttributeRange)

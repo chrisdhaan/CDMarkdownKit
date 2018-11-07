@@ -72,7 +72,11 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
                 return
         }
         guard let url = URL(string: link) ?? URL(string: encodedLink) else { return }
-#if swift(>=4.0)
+#if swift(>=4.2)
+        attributedString.addAttribute(NSAttributedString.Key.link,
+                              value: url,
+                              range: range)
+#elseif swift(>=4.0)
         attributedString.addAttribute(NSAttributedStringKey.link,
                                       value: url,
                                       range: range)

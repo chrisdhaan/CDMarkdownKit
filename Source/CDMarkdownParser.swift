@@ -189,7 +189,20 @@ open class CDMarkdownParser {
         }
         let range = NSRange(location: 0,
                             length: attributedString.length)
-#if swift(>=4.0)
+#if swift(>=4.2)
+        attributedString.addAttribute(NSAttributedString.Key.font,
+                                      value: font,
+                                      range: range)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor,
+                                      value: fontColor,
+                                      range: range)
+        attributedString.addAttribute(NSAttributedString.Key.backgroundColor,
+                                      value: backgroundColor,
+                                      range: range)
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle,
+                                      value: paragraphStyle,
+                                      range: range)
+#elseif swift(>=4.0)
         attributedString.addAttribute(NSAttributedStringKey.font,
                                       value: font,
                                       range: range)

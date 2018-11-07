@@ -30,7 +30,12 @@ import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)
     import UIKit
     public typealias CDFont = UIFont
-    public typealias CDFontDescriptorSymbolicTraits = UIFontDescriptorSymbolicTraits
+
+    #if swift(>=4.2)
+        public typealias CDFontDescriptorSymbolicTraits = UIFontDescriptor.SymbolicTraits
+    #else
+        public typealias CDFontDescriptorSymbolicTraits = UIFontDescriptorSymbolicTraits
+    #endif
 #elseif os(macOS)
     import Cocoa
     public typealias CDFont = NSFont

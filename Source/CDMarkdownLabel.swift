@@ -329,7 +329,19 @@ open class CDMarkdownLabel: UILabel {
     }
 
     private func parseTextAndExtractURLRanges(_ attrString: NSAttributedString) {
-#if swift(>=4.0)
+#if swift(>=4.2)
+        attrString.enumerateAttribute(NSAttributedString.Key.link,
+                                      in: NSRange(location: 0,
+                                                  length: attrString.length),
+                                      options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
+
+                                        if let value = value as? NSURL,
+                                            let urlString = value.absoluteString,
+                                            let url = URL(string: urlString) {
+                                            self.urlRanges.append((url, range))
+                                        }
+}
+#elseif swift(>=4.0)
         attrString.enumerateAttribute(NSAttributedStringKey.link,
                                       in: NSRange(location: 0,
                                                   length: attrString.length),
@@ -386,7 +398,11 @@ extension CDMarkdownLabel: NSLayoutManagerDelegate {
                               shouldBreakLineByWordBeforeCharacterAt charIndex: Int) -> Bool {
         var range = NSRange()
         // Don't allow line breaks on URL's
-#if swift(>=4.0)
+#if swift(>=4.2)
+        let linkURL = layoutManager.textStorage?.attribute(NSAttributedString.Key.link,
+                                                   at: charIndex,
+                                                   effectiveRange: &range)
+#elseif swift(>=4.0)
         let linkURL = layoutManager.textStorage?.attribute(NSAttributedStringKey.link,
                                                            at: charIndex,
                                                            effectiveRange: &range)
