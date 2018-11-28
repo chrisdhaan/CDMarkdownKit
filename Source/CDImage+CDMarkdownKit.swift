@@ -35,7 +35,9 @@ import Cocoa
 
 internal extension CDImage {
 
-#if swift(>=4.0)
+#if swift(>=4.2)
+
+#elseif swift(>=4.0)
 
     convenience init?(named name: String) {
         self.init(named: CDImage.Name(rawValue: name))

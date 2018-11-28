@@ -104,7 +104,12 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         guard let paragraphStyle = self.paragraphStyle else { return }
         let updatedParagraphStyle = paragraphStyle.mutableCopy() as? NSMutableParagraphStyle ?? NSMutableParagraphStyle()
         updatedParagraphStyle.headIndent = indicatorSize.width + (separatorSize.width * floatLevel)
-#if swift(>=4.0)
+
+#if swift(>=4.2)
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle,
+                                      value: updatedParagraphStyle,
+                                      range: range)
+#elseif swift(>=4.0)
         attributedString.addAttribute(NSAttributedStringKey.paragraphStyle,
                                       value: updatedParagraphStyle,
                                       range: range)

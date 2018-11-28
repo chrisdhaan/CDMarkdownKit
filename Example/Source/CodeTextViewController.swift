@@ -28,6 +28,14 @@
 import CDMarkdownKit
 import UIKit
 
+#if swift(>=4.2)
+    public typealias CDLayoutConstraintAttribute = NSLayoutConstraint.Attribute
+    public typealias CDLayoutConstraintRelation = NSLayoutConstraint.Relation
+#else
+    public typealias CDLayoutConstraintAttribute = NSLayoutAttribute
+    public typealias CDLayoutConstraintRelation = NSLayoutRelation
+#endif
+
 class CodeTextViewController: BaseViewController {
 
     fileprivate var codeTextView: CDMarkdownTextView!
@@ -65,31 +73,31 @@ class CodeTextViewController: BaseViewController {
 
         // Add constraints so intrinsic content size is set correctly
         let topConstraint = NSLayoutConstraint(item: codeTextView,
-                                               attribute: NSLayoutAttribute.top,
-                                               relatedBy: NSLayoutRelation.equal,
+                                               attribute: CDLayoutConstraintAttribute.top,
+                                               relatedBy: CDLayoutConstraintRelation.equal,
                                                toItem: self.segmentedControl,
-                                               attribute: NSLayoutAttribute.bottom,
+                                               attribute: CDLayoutConstraintAttribute.bottom,
                                                multiplier: 1,
                                                constant: 8)
         let leadingConstraint = NSLayoutConstraint(item: codeTextView,
-                                                   attribute: NSLayoutAttribute.leading,
-                                                   relatedBy: NSLayoutRelation.equal,
+                                                   attribute: CDLayoutConstraintAttribute.leading,
+                                                   relatedBy: CDLayoutConstraintRelation.equal,
                                                    toItem: codeTextView.superview,
-                                                   attribute: NSLayoutAttribute.leadingMargin,
+                                                   attribute: CDLayoutConstraintAttribute.leadingMargin,
                                                    multiplier: 1,
                                                    constant: 0)
         let trailingConstraint = NSLayoutConstraint(item: codeTextView,
-                                                    attribute: NSLayoutAttribute.trailing,
-                                                    relatedBy: NSLayoutRelation.equal,
+                                                    attribute: CDLayoutConstraintAttribute.trailing,
+                                                    relatedBy: CDLayoutConstraintRelation.equal,
                                                     toItem: codeTextView.superview,
-                                                    attribute: NSLayoutAttribute.trailingMargin,
+                                                    attribute: CDLayoutConstraintAttribute.trailingMargin,
                                                     multiplier: 1,
                                                     constant: 0)
         let bottomConstraint = NSLayoutConstraint(item: self.bottomLayoutGuide,
-                                                  attribute: NSLayoutAttribute.top,
-                                                  relatedBy: NSLayoutRelation.equal,
+                                                  attribute: CDLayoutConstraintAttribute.top,
+                                                  relatedBy: CDLayoutConstraintRelation.equal,
                                                   toItem: codeTextView,
-                                                  attribute: NSLayoutAttribute.bottom,
+                                                  attribute: CDLayoutConstraintAttribute.bottom,
                                                   multiplier: 1,
                                                   constant: 20)
         self.view.addConstraints([topConstraint,

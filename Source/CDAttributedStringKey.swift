@@ -1,5 +1,5 @@
 //
-//  CDAttributesKey.swift
+//  CDAttributedStringKey.swift
 //  CDMarkdownKit
 //
 //  Created by Christopher de Haan on 6/18/18.
@@ -27,8 +27,10 @@
 
 import Foundation
 
-#if swift(>=4.0)
-    public typealias CDAttributesKey = NSAttributedStringKey
+#if swift(>=4.2)
+    public typealias CDAttributedStringKey = NSAttributedString.Key
+#elseif swift(>=4.0)
+    public typealias CDAttributedStringKey = NSAttributedStringKey
 #else
-    public typealias CDAttributesKey = String
+    public typealias CDAttributedStringKey = String
 #endif
