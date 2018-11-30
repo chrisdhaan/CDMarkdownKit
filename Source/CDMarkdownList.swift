@@ -88,36 +88,15 @@ open class CDMarkdownList: CDMarkdownLevelElement {
     open func addFullAttributes(_ attributedString: NSMutableAttributedString,
                                 range: NSRange,
                                 level: Int) {
-#if os(macOS)
-        let indicatorSize = "\(indicator) ".size(withAttributes: attributes)
-        let separatorSize = separator.size(withAttributes: attributes)
-#else
-        #if swift(>=4.0)
-            let indicatorSize = "\(indicator) ".size(withAttributes: attributes)
-            let separatorSize = separator.size(withAttributes: attributes)
-        #else
-            let indicatorSize = "\(indicator) ".size(attributes: attributes)
-            let separatorSize = separator.size(attributes: attributes)
-        #endif
-#endif
+        let indicatorSize = "\(indicator) ".sizeWithAttributes(attributes)
+        let separatorSize = separator.sizeWithAttributes(attributes)
         let floatLevel = CGFloat(level)
         guard let paragraphStyle = self.paragraphStyle else { return }
         let updatedParagraphStyle = paragraphStyle.mutableCopy() as? NSMutableParagraphStyle ?? NSMutableParagraphStyle()
         updatedParagraphStyle.headIndent = indicatorSize.width + (separatorSize.width * floatLevel)
 
-#if swift(>=4.2)
-        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle,
-                                      value: updatedParagraphStyle,
-                                      range: range)
-#elseif swift(>=4.0)
-        attributedString.addAttribute(NSAttributedStringKey.paragraphStyle,
-                                      value: updatedParagraphStyle,
-                                      range: range)
-#else
-        attributedString.addAttribute(NSParagraphStyleAttributeName,
-                                      value: updatedParagraphStyle,
-                                      range: range)
-#endif
+        attributedString.addParagraphStyle(updatedParagraphStyle,
+                                           toRange: range)
     }
 
     open func addAttributes(_ attributedString: NSMutableAttributedString,

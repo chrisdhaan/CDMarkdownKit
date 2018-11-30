@@ -1,8 +1,8 @@
 //
-//  CDMarkdownCodeEscaping.swift
+//  NSTextStorage+CDMarkdownKit.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 11/7/16.
+//  Created by Christopher de Haan on 11/30/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -26,38 +26,28 @@
 //
 
 #if os(iOS) || os(tvOS) || os(watchOS)
-    import UIKit
+import UIKit
 #elseif os(macOS)
-    import Cocoa
+import Cocoa
 #endif
 
-open class CDMarkdownCodeEscaping: CDMarkdownElement {
+internal extension NSTextStorage {
 
-    fileprivate static let regex = "(?<!\\\\)(?:\\\\\\\\)*+(`+)(.*?[^`].*?)(\\1)(?!`)"
+    func linkAttribute(at location: Int,
+                       effectiveRange range: NSRangePointer?) -> Any? {
+#if swift(>=4.2)
+        return self.attribute(NSAttributedString.Key.link,
+                              at: location,
+                              effectiveRange: range)
+#elseif swift(>=4.0)
+        return self.attribute(NSAttributedStringKey.link,
+                              at: location,
+                              effectiveRange: range)
+#else
+        return self.attribute(NSLinkAttributeName,
+                              at: location,
+                              effectiveRange: range)
+        #endif
 
-    open var regex: String {
-        return CDMarkdownCodeEscaping.regex
-    }
-
-    open func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex,
-                                       options: .dotMatchesLineSeparators)
-    }
-
-    open func match(_ match: NSTextCheckingResult,
-                    attributedString: NSMutableAttributedString) {
-
-        let range = match.range(atIndex: 2)
-
-        // escaping all characters
-        let matchString = attributedString.attributedSubstring(from: range).string
-        let escapedString = [UInt16](matchString.utf16)
-            .map { (value: UInt16) -> String in String(format: "%04x",
-                                                       value) }
-            .reduce("") { (string: String, character: String) -> String in
-                return "\(string)\(character)"
-        }
-        attributedString.replaceCharacters(in: range,
-                                           with: escapedString)
     }
 }

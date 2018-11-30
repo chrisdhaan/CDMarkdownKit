@@ -330,43 +330,16 @@ open class CDMarkdownLabel: UILabel {
 
     private func parseTextAndExtractURLRanges(_ attrString: NSAttributedString) {
 
-#if swift(>=4.2)
-        attrString.enumerateAttribute(NSAttributedString.Key.link,
-                                      in: NSRange(location: 0,
-                                      length: attrString.length),
-                                      options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
+        attrString.enumerateLinkAttribute(in: NSRange(location: 0,
+                                                      length: attrString.length),
+                                          options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
 
-                                        if let value = value as? NSURL,
-                                            let urlString = value.absoluteString,
-                                            let url = URL(string: urlString) {
-                                            self.urlRanges.append((url, range))
-                                        }
+                                            if let value = value as? NSURL,
+                                                let urlString = value.absoluteString,
+                                                let url = URL(string: urlString) {
+                                                self.urlRanges.append((url, range))
+                                            }
         }
-#elseif swift(>=4.0)
-        attrString.enumerateAttribute(NSAttributedStringKey.link,
-                                      in: NSRange(location: 0,
-                                                  length: attrString.length),
-                                      options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
-
-                                        if let value = value as? NSURL,
-                                            let urlString = value.absoluteString,
-                                            let url = URL(string: urlString) {
-                                            self.urlRanges.append((url, range))
-                                        }
-        }
-#else
-        attrString.enumerateAttribute(NSLinkAttributeName,
-                                      in: NSRange(location: 0,
-                                                  length: attrString.length),
-                                      options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
-
-                                        if let value = value as? NSURL,
-                                            let urlString = value.absoluteString,
-                                            let url = URL(string: urlString) {
-                                            self.urlRanges.append((url, range))
-                                        }
-        }
-#endif
     }
 
     private func urlRange(at location: CGPoint) -> URLRange? {
@@ -400,19 +373,8 @@ extension CDMarkdownLabel: NSLayoutManagerDelegate {
         var range = NSRange()
         // Don't allow line breaks on URL's
 
-#if swift(>=4.2)
-        let linkURL = layoutManager.textStorage?.attribute(NSAttributedString.Key.link,
-                                                           at: charIndex,
-                                                           effectiveRange: &range)
-#elseif swift(>=4.0)
-        let linkURL = layoutManager.textStorage?.attribute(NSAttributedStringKey.link,
-                                                           at: charIndex,
-                                                           effectiveRange: &range)
-#else
-        let linkURL = layoutManager.textStorage?.attribute(NSLinkAttributeName,
-                                                           at: charIndex,
-                                                           effectiveRange: &range)
-#endif
+        let linkURL = layoutManager.textStorage?.linkAttribute(at: charIndex,
+                                                               effectiveRange: &range)
 
         return !((linkURL != nil) && (charIndex > range.location) && (charIndex <= NSMaxRange(range)))
     }

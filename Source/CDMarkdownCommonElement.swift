@@ -53,20 +53,11 @@ public extension CDMarkdownCommonElement {
     }
 
     func match(_ match: NSTextCheckingResult, attributedString: NSMutableAttributedString) {
-#if swift(>=4.0)
         // deleting trailing markdown
-        attributedString.deleteCharacters(in: match.range(at: 4))
+        attributedString.deleteCharacters(in: match.range(atIndex: 4))
         // formatting string (may alter the length)
-        addAttributes(attributedString, range: match.range(at: 3))
+        addAttributes(attributedString, range: match.range(atIndex: 3))
         // deleting leading markdown
-        attributedString.deleteCharacters(in: match.range(at: 2))
-#else
-        // deleting trailing markdown
-        attributedString.deleteCharacters(in: match.rangeAt(4))
-        // formatting string (may alter the length)
-        addAttributes(attributedString, range: match.rangeAt(3))
-        // deleting leading markdown
-        attributedString.deleteCharacters(in: match.rangeAt(2))
-#endif
+        attributedString.deleteCharacters(in: match.range(atIndex: 2))
     }
 }
