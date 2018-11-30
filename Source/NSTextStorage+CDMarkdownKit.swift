@@ -31,6 +31,8 @@ import UIKit
 import Cocoa
 #endif
 
+#if os(iOS) || os(tvOS)
+
 internal extension NSTextStorage {
 
     func linkAttribute(at location: Int,
@@ -51,3 +53,5 @@ internal extension NSTextStorage {
 
     }
 }
+
+#endif
