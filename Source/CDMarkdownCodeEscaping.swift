@@ -47,7 +47,7 @@ open class CDMarkdownCodeEscaping: CDMarkdownElement {
     open func match(_ match: NSTextCheckingResult,
                     attributedString: NSMutableAttributedString) {
 
-        let range = match.range(atIndex: 2)
+        let range = match.nsRange(atIndex: 2)
 
         // escaping all characters
         let matchString = attributedString.attributedSubstring(from: range).string

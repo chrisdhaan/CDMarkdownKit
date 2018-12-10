@@ -33,7 +33,7 @@ import Cocoa
 
 internal extension NSTextCheckingResult {
 
-    func range(atIndex index: Int) -> NSRange {
+    func nsRange(atIndex index: Int) -> NSRange {
 #if swift(>=4.0)
         return self.range(at: index)
 #else
