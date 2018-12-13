@@ -1,5 +1,5 @@
 //
-//  NSTextCheckResult+CDMarkdownKit.swift
+//  NSTextCheckingResult+CDMarkdownKit.swift
 //  CDMarkdownKit
 //
 //  Created by Christopher de Haan on 11/30/18.
