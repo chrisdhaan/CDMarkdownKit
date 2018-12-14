@@ -1,8 +1,8 @@
 //
-//  Package.swift
+//  Package@swift-4.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 05/07/2017.
+//  Created by Christopher de Haan on 12/14/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //

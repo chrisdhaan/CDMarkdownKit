@@ -76,8 +76,8 @@ For a demonstration of the capabilities of CDMarkdownKit; run the iOS Example pr
 ## Requirements
 
 - iOS 8.0+ / macOS 10.11+ / tvOS 9.0+ / watchOS 2.0+
-- Xcode 8.1+
-- Swift 3.0+
+- Xcode 8.3+
+- Swift 3.1+
 
 ---
 

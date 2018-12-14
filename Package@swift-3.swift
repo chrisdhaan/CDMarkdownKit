@@ -1,8 +1,8 @@
 //
-//  Package.swift
+//  Package@swift-3.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 05/07/2017.
+//  Created by Christopher de Haan on 12/14/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -29,15 +29,6 @@ import PackageDescription
 
 let package = Package(
     name: "CDMarkdownKit",
-    products: [
-        .library(
-            name: "CDMarkdownKit",
-            targets: ["CDMarkdownKit"])
-    ],
-    targets: [
-        .target(
-            name: "CDMarkdownKit",
-            path: "Source")
-    ],
-    swiftLanguageVersions: [3, 4]
+    dependencies : [],
+    exclude: []
 )

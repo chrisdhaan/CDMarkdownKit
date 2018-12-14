@@ -1,17 +1,18 @@
 ## [1.2.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/1.2.1)
 ## SDK Support
-Released on 2018-12-13.
+Released on 2018-12-14.
 
 ### Added
 
 - [x] Swift 4.2
-    - [x] `Dictionary+CDMarkdownKit`, `NSAttributedString+CDMarkdownKit`, `NSMutableAttributedString+CDMarkdownKit`, `NSTextCheckResult+CDMarkdownKit`, `NSTextStorage+CDMarkdownKit`extensions
+- [x] Swift 4.0
+    - [x] `Dictionary+CDMarkdownKit`, `NSAttributedString+CDMarkdownKit`, `NSMutableAttributedString+CDMarkdownKit`, `NSTextCheckResult+CDMarkdownKit`, and `NSTextStorage+CDMarkdownKit`extensions
 - [x] iOS Example
     - [x] `CDApplicationLaunchOptionsKey`, `CDLayoutConstraintAttribute`, and `CDLayoutConstraintRelation` typealias'
 
 ### Changed
 
-- [x] Swift 4.2
+- [x] Swift 4.0
     - [x] Extensions assume responsibility for `switft()` macro from classes
     - [x] `CDAttributesKey` becomes `CDAttributedStringKey`
 
