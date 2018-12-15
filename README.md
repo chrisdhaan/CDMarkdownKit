@@ -17,6 +17,9 @@
     <a href="https://travis-ci.org/chrisdhaan/CDMarkdownKit">
         <img src="http://img.shields.io/travis/chrisdhaan/CDMarkdownKit.svg?style=flat" alt="CI Status">
     </a>
+    <a href="https://github.com/chrisdhaan/CDMarkdownKit/releases">
+        <img src="https://img.shields.io/github/release/chrisdhaan/CDMarkdownKit.svg" alt="GitHub Release">
+    </a>
     <a href="http://cocoapods.org/pods/CDMarkdownKit">
         <img src="https://img.shields.io/cocoapods/v/CDMarkdownKit.svg?style=flat" alt="Version">
     </a>
@@ -138,9 +141,19 @@ The Swift Package Manager is integrated into the Swift compiler.
 
 To integrate CDMarkdownKit into your Xcode project using The Swift Package Manager, simply add the following line to your Package.swift file:
 
+#### Swift 3
+
 ```swift
 dependencies: [
     .Package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", "1.2.1")
+]
+```
+
+#### Swift 4
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", "1.2.1")
 ]
 ```
 
