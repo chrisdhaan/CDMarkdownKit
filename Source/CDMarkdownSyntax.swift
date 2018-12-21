@@ -60,13 +60,9 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         guard let unescapedString = matchString.unescapeUTF16() else { return }
         attributedString.replaceCharacters(in: range,
                                            with: unescapedString)
-#if swift(>=3.2)
+
         let range = NSRange(location: range.location,
-                            length: unescapedString.count)
-#else
-        let range = NSRange(location: range.location,
-                            length: unescapedString.characters.count)
-#endif
+                            length: unescapedString.characterCount())
         attributedString.addAttributes(attributes,
                                        range: range)
         // If the previous character was a newline then parser doesn't have to worry about
@@ -84,13 +80,8 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                                                               length: 1)
             if let firstCharacterRange = attributedString.string.range(from: removeBackgroundColorAttributeRange),
                 attributedString.string[firstCharacterRange] == "\n" {
-#if swift(>=4.0)
-                attributedString.removeAttribute(NSAttributedStringKey.backgroundColor,
-                                                 range: removeBackgroundColorAttributeRange)
-#else
-                attributedString.removeAttribute(NSBackgroundColorAttributeName,
-                                                 range: removeBackgroundColorAttributeRange)
-#endif
+
+                attributedString.removeBackgroundColor(atRange: removeBackgroundColorAttributeRange)
             }
         }
         // If the last character in a Syntax Markdown element is a newline then parser doens't have
@@ -108,15 +99,9 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                 let nextCharacterRange = attributedString.string.range(from: addBackgroundColorAttributeRange),
                 attributedString.string[nextCharacterRange] == "\n",
                 let backgroundColor = self.backgroundColor {
-#if swift(>=4.0)
-                attributedString.addAttribute(NSAttributedStringKey.backgroundColor,
-                                              value: backgroundColor,
-                                              range: addBackgroundColorAttributeRange)
-#else
-                attributedString.addAttribute(NSBackgroundColorAttributeName,
-                                              value: backgroundColor,
-                                              range: addBackgroundColorAttributeRange)
-#endif
+
+                attributedString.addBackgroundColor(backgroundColor,
+                                                    toRange: addBackgroundColorAttributeRange)
             }
         }
     }

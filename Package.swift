@@ -29,6 +29,15 @@ import PackageDescription
 
 let package = Package(
     name: "CDMarkdownKit",
-    dependencies: [],
-    exclude: []
+    products: [
+        .library(
+            name: "CDMarkdownKit",
+            targets: ["CDMarkdownKit"])
+    ],
+    targets: [
+        .target(
+            name: "CDMarkdownKit",
+            path: "Source")
+    ],
+    swiftLanguageVersions: [3, 4]
 )

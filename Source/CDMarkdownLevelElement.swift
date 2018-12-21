@@ -47,7 +47,7 @@ public protocol CDMarkdownLevelElement: CDMarkdownElement, CDMarkdownStyle {
     func addAttributes(_ attributedString: NSMutableAttributedString,
                        range: NSRange,
                        level: Int)
-    func attributesForLevel(_ level: Int) -> [CDAttributesKey: AnyObject]
+    func attributesForLevel(_ level: Int) -> [CDAttributedStringKey: AnyObject]
 }
 
 public extension CDMarkdownLevelElement {
@@ -68,33 +68,21 @@ public extension CDMarkdownLevelElement {
                                        range: range)
     }
 
-    func attributesForLevel(_ level: Int) -> [CDAttributesKey: AnyObject] {
+    func attributesForLevel(_ level: Int) -> [CDAttributedStringKey: AnyObject] {
         return self.attributes
     }
 
     func match(_ match: NSTextCheckingResult,
                attributedString: NSMutableAttributedString) {
-#if swift(>=4.0)
-        let level = match.range(at: 1).length
+        let level = match.nsRange(atIndex: 1).length
         addFullAttributes(attributedString,
-                          range: match.range(at: 0),
+                          range: match.nsRange(atIndex: 0),
                           level: level)
         addAttributes(attributedString,
-                      range: match.range(at: 2),
+                      range: match.nsRange(atIndex: 2),
                       level: level)
-        let range = NSRange(location: match.range(at: 1).location,
-                            length: match.range(at: 2).location - match.range(at: 1).location)
-#else
-        let level = match.rangeAt(1).length
-        addFullAttributes(attributedString,
-                          range: match.rangeAt(0),
-                          level: level)
-        addAttributes(attributedString,
-                      range: match.rangeAt(2),
-                      level: level)
-        let range = NSRange(location: match.rangeAt(1).location,
-                            length: match.rangeAt(2).location - match.rangeAt(1).location)
-#endif
+        let range = NSRange(location: match.nsRange(atIndex: 1).location,
+                            length: match.nsRange(atIndex: 2).location - match.nsRange(atIndex: 1).location)
         formatText(attributedString,
                    range: range,
                    level: level)

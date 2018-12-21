@@ -230,7 +230,7 @@ open class CDMarkdownLabel: UILabel {
     // MARK: - Private Methods
 
     private func displayActionController(forUrl url: URL) {
-        var parentViewController: UIViewController? = nil
+        var parentViewController: UIViewController?
         var parentResponder: UIResponder? = self
         while parentResponder != nil {
             parentResponder = parentResponder!.next
@@ -329,31 +329,17 @@ open class CDMarkdownLabel: UILabel {
     }
 
     private func parseTextAndExtractURLRanges(_ attrString: NSAttributedString) {
-#if swift(>=4.0)
-        attrString.enumerateAttribute(NSAttributedStringKey.link,
-                                      in: NSRange(location: 0,
-                                                  length: attrString.length),
-                                      options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
 
-                                        if let value = value as? NSURL,
-                                            let urlString = value.absoluteString,
-                                            let url = URL(string: urlString) {
-                                            self.urlRanges.append((url, range))
-                                        }
-        }
-#else
-        attrString.enumerateAttribute(NSLinkAttributeName,
-                                      in: NSRange(location: 0,
-                                                  length: attrString.length),
-                                      options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
+        attrString.enumerateLinkAttribute(in: NSRange(location: 0,
+                                                      length: attrString.length),
+                                          options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
 
-                                        if let value = value as? NSURL,
-                                            let urlString = value.absoluteString,
-                                            let url = URL(string: urlString) {
-                                            self.urlRanges.append((url, range))
-                                        }
+                                            if let value = value as? NSURL,
+                                                let urlString = value.absoluteString,
+                                                let url = URL(string: urlString) {
+                                                self.urlRanges.append((url, range))
+                                            }
         }
-#endif
     }
 
     private func urlRange(at location: CGPoint) -> URLRange? {
@@ -386,15 +372,9 @@ extension CDMarkdownLabel: NSLayoutManagerDelegate {
                               shouldBreakLineByWordBeforeCharacterAt charIndex: Int) -> Bool {
         var range = NSRange()
         // Don't allow line breaks on URL's
-#if swift(>=4.0)
-        let linkURL = layoutManager.textStorage?.attribute(NSAttributedStringKey.link,
-                                                           at: charIndex,
-                                                           effectiveRange: &range)
-#else
-        let linkURL = layoutManager.textStorage?.attribute(NSLinkAttributeName,
-                                                           at: charIndex,
-                                                           effectiveRange: &range)
-#endif
+
+        let linkURL = layoutManager.textStorage?.linkAttribute(at: charIndex,
+                                                               effectiveRange: &range)
 
         return !((linkURL != nil) && (charIndex > range.location) && (charIndex <= NSMaxRange(range)))
     }

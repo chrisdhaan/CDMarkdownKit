@@ -1,8 +1,8 @@
 //
-//  CDImage+CDMarkdownKit.swift
+//  CDAttributedStringKey.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 7/23/18.
+//  Created by Christopher de Haan on 6/18/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -25,26 +25,12 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
-import UIKit
-#elseif os(macOS)
-import Cocoa
-#endif
-
-#if os(macOS)
-
-internal extension CDImage {
+import Foundation
 
 #if swift(>=4.2)
-
+    public typealias CDAttributedStringKey = NSAttributedString.Key
 #elseif swift(>=4.0)
-
-    convenience init?(named name: String) {
-        self.init(named: CDImage.Name(rawValue: name))
-    }
-
-#endif
-
-}
-
+    public typealias CDAttributedStringKey = NSAttributedStringKey
+#else
+    public typealias CDAttributedStringKey = String
 #endif

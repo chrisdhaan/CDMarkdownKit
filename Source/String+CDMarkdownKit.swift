@@ -26,6 +26,11 @@
 //
 
 import Foundation
+#if os(iOS) || os(tvOS) || os(watchOS)
+import UIKit
+#elseif os(macOS)
+import Cocoa
+#endif
 
 internal extension String {
 
@@ -93,5 +98,25 @@ internal extension String {
             let to = to16.samePosition(in: self)
             else { return nil }
         return from ..< to
+    }
+
+    func characterCount() -> Int {
+#if swift(>=3.2)
+        return self.count
+#else
+        return self.characters.count
+#endif
+    }
+
+    func sizeWithAttributes(_ attributes: [CDAttributedStringKey: Any]? = nil) -> CGSize {
+#if os(macOS)
+        return self.size(withAttributes: attributes)
+#else
+    #if swift(>=4.0)
+            return self.size(withAttributes: attributes)
+    #else
+            return self.size(attributes: attributes)
+    #endif
+#endif
     }
 }

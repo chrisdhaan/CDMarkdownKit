@@ -1,8 +1,8 @@
 //
-//  CDImage+CDMarkdownKit.swift
+//  Dictionary+CDMarkdownKit.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 7/23/18.
+//  Created by Christopher de Haan on 11/28/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -31,20 +31,45 @@ import UIKit
 import Cocoa
 #endif
 
-#if os(macOS)
+internal extension Dictionary where Key == CDAttributedStringKey {
 
-internal extension CDImage {
-
+    mutating func addFont(_ font: Value) {
 #if swift(>=4.2)
-
+        self[NSAttributedString.Key.font] = font
 #elseif swift(>=4.0)
-
-    convenience init?(named name: String) {
-        self.init(named: CDImage.Name(rawValue: name))
+        self[NSAttributedStringKey.font] = font
+#else
+        self[NSFontAttributeName] = font
+#endif
     }
 
+    mutating func addForegroundColor(_ foregroundColor: Value) {
+#if swift(>=4.2)
+        self[NSAttributedString.Key.foregroundColor] = foregroundColor
+#elseif swift(>=4.0)
+        self[NSAttributedStringKey.foregroundColor] = foregroundColor
+#else
+        self[NSForegroundColorAttributeName] = foregroundColor
 #endif
+    }
 
+    mutating func addBackgroundColor(_ backgroundColor: Value) {
+#if swift(>=4.2)
+        self[NSAttributedString.Key.backgroundColor] = backgroundColor
+#elseif swift(>=4.0)
+        self[NSAttributedStringKey.backgroundColor] = backgroundColor
+#else
+        self[NSBackgroundColorAttributeName] = backgroundColor
+#endif
+    }
+
+    mutating func addParagraphStyle(_ paragraphStyle: Value) {
+#if swift(>=4.2)
+        self[NSAttributedString.Key.paragraphStyle] = paragraphStyle
+#elseif swift(>=4.0)
+        self[NSAttributedStringKey.paragraphStyle] = paragraphStyle
+#else
+        self[NSParagraphStyleAttributeName] = paragraphStyle
+#endif
+    }
 }
-
-#endif

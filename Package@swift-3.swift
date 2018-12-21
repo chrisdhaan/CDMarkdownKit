@@ -1,8 +1,8 @@
 //
-//  CDImage+CDMarkdownKit.swift
+//  Package@swift-3.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 7/23/18.
+//  Created by Christopher de Haan on 12/14/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -25,26 +25,10 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
-import UIKit
-#elseif os(macOS)
-import Cocoa
-#endif
+import PackageDescription
 
-#if os(macOS)
-
-internal extension CDImage {
-
-#if swift(>=4.2)
-
-#elseif swift(>=4.0)
-
-    convenience init?(named name: String) {
-        self.init(named: CDImage.Name(rawValue: name))
-    }
-
-#endif
-
-}
-
-#endif
+let package = Package(
+    name: "CDMarkdownKit",
+    dependencies : [],
+    exclude: []
+)

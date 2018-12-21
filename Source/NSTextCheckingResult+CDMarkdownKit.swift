@@ -1,8 +1,8 @@
 //
-//  CDImage+CDMarkdownKit.swift
+//  NSTextCheckingResult+CDMarkdownKit.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 7/23/18.
+//  Created by Christopher de Haan on 11/30/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -31,20 +31,13 @@ import UIKit
 import Cocoa
 #endif
 
-#if os(macOS)
+internal extension NSTextCheckingResult {
 
-internal extension CDImage {
-
-#if swift(>=4.2)
-
-#elseif swift(>=4.0)
-
-    convenience init?(named name: String) {
-        self.init(named: CDImage.Name(rawValue: name))
+    func nsRange(atIndex index: Int) -> NSRange {
+#if swift(>=4.0)
+        return self.range(at: index)
+#else
+        return self.rangeAt(index)
+#endif
     }
-
-#endif
-
 }
-
-#endif

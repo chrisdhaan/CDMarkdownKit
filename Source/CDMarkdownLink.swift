@@ -67,15 +67,9 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
                 return
         }
         guard let url = URL(string: link) ?? URL(string: encodedLink) else { return }
-#if swift(>=4.0)
-        attributedString.addAttribute(NSAttributedStringKey.link,
-                                      value: url,
-                                      range: range)
-#else
-        attributedString.addAttribute(NSLinkAttributeName,
-                                      value: url,
-                                      range: range)
-#endif
+
+        attributedString.addLink(url,
+                                 toRange: range)
     }
 
     open func match(_ match: NSTextCheckingResult,

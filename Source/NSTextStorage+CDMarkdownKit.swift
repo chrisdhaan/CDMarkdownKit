@@ -1,8 +1,8 @@
 //
-//  CDImage+CDMarkdownKit.swift
+//  NSTextStorage+CDMarkdownKit.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 7/23/18.
+//  Created by Christopher de Haan on 11/30/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -31,20 +31,27 @@ import UIKit
 import Cocoa
 #endif
 
-#if os(macOS)
+#if os(iOS) || os(tvOS)
 
-internal extension CDImage {
+internal extension NSTextStorage {
 
+    func linkAttribute(at location: Int,
+                       effectiveRange range: NSRangePointer?) -> Any? {
 #if swift(>=4.2)
-
+        return self.attribute(NSAttributedString.Key.link,
+                              at: location,
+                              effectiveRange: range)
 #elseif swift(>=4.0)
+        return self.attribute(NSAttributedStringKey.link,
+                              at: location,
+                              effectiveRange: range)
+#else
+        return self.attribute(NSLinkAttributeName,
+                              at: location,
+                              effectiveRange: range)
+        #endif
 
-    convenience init?(named name: String) {
-        self.init(named: CDImage.Name(rawValue: name))
     }
-
-#endif
-
 }
 
 #endif

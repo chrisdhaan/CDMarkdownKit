@@ -90,7 +90,7 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         }
     }
 
-    open func attributesForLevel(_ level: Int) -> [CDAttributesKey: AnyObject] {
+    open func attributesForLevel(_ level: Int) -> [CDAttributedStringKey: AnyObject] {
         var attributes = self.attributes
         var fontMultiplier: CGFloat
         switch level {
@@ -114,11 +114,8 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         if let font = font {
             let headerFontSize: CGFloat = font.pointSize + (CGFloat(fontMultiplier) * CGFloat(fontIncrease))
             let headerFont = font.withSize(headerFontSize)
-#if swift(>=4.0)
-            attributes[NSAttributedStringKey.font] = headerFont
-#else
-            attributes[NSFontAttributeName] = headerFont
-#endif
+
+            attributes.addFont(headerFont)
         }
         return attributes
     }

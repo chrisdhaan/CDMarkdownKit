@@ -23,10 +23,30 @@
 		B205C6711FC135DF00E74CBA /* CDImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B205C66F1FC135DF00E74CBA /* CDImage.swift */; };
 		B205C6721FC135DF00E74CBA /* CDImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B205C66F1FC135DF00E74CBA /* CDImage.swift */; };
 		B205C6731FC135DF00E74CBA /* CDImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B205C66F1FC135DF00E74CBA /* CDImage.swift */; };
-		B255AD8620D8000A00E8044D /* CDAttributesKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255AD8520D8000A00E8044D /* CDAttributesKey.swift */; };
-		B255AD8720D8000A00E8044D /* CDAttributesKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255AD8520D8000A00E8044D /* CDAttributesKey.swift */; };
-		B255AD8820D8000A00E8044D /* CDAttributesKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255AD8520D8000A00E8044D /* CDAttributesKey.swift */; };
-		B255AD8920D8000A00E8044D /* CDAttributesKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255AD8520D8000A00E8044D /* CDAttributesKey.swift */; };
+		B22C0E8121B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8021B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift */; };
+		B22C0E8221B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8021B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift */; };
+		B22C0E8321B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8021B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift */; };
+		B22C0E8421B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8021B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift */; };
+		B22C0E8621B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8521B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift */; };
+		B22C0E8721B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8521B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift */; };
+		B22C0E8821B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8521B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift */; };
+		B22C0E8921B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8521B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift */; };
+		B22C0E8E21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8D21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift */; };
+		B22C0E8F21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8D21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift */; };
+		B22C0E9021B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8D21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift */; };
+		B22C0E9121B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E8D21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift */; };
+		B22C0E9321B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E9221B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift */; };
+		B22C0E9421B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E9221B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift */; };
+		B22C0E9521B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E9221B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift */; };
+		B22C0E9621B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B22C0E9221B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift */; };
+		B255AD8620D8000A00E8044D /* CDAttributedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255AD8520D8000A00E8044D /* CDAttributedStringKey.swift */; };
+		B255AD8720D8000A00E8044D /* CDAttributedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255AD8520D8000A00E8044D /* CDAttributedStringKey.swift */; };
+		B255AD8820D8000A00E8044D /* CDAttributedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255AD8520D8000A00E8044D /* CDAttributedStringKey.swift */; };
+		B255AD8920D8000A00E8044D /* CDAttributedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B255AD8520D8000A00E8044D /* CDAttributedStringKey.swift */; };
+		B29FE73C21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29FE73B21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift */; };
+		B29FE73D21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29FE73B21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift */; };
+		B29FE73E21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29FE73B21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift */; };
+		B29FE73F21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B29FE73B21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift */; };
 		B2ACA09B1FBF953A00EABEF6 /* CDMarkdownKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B2B366021F324CF10078B962 /* CDMarkdownKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B2ACA09C1FBF954600EABEF6 /* CDMarkdownKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B2B366021F324CF10078B962 /* CDMarkdownKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B2ACA09D1FBF955400EABEF6 /* CDMarkdownKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B2B366021F324CF10078B962 /* CDMarkdownKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -138,13 +158,20 @@
 		B205C6651FC129EB00E74CBA /* CDColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDColor.swift; sourceTree = "<group>"; };
 		B205C66A1FC129FC00E74CBA /* CDFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDFont.swift; sourceTree = "<group>"; };
 		B205C66F1FC135DF00E74CBA /* CDImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDImage.swift; sourceTree = "<group>"; };
+		B2153A0E21C3E2A9008F5B78 /* Package@swift-4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Package@swift-4.swift"; sourceTree = "<group>"; };
+		B2153A1321C3E321008F5B78 /* Package@swift-3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Package@swift-3.swift"; sourceTree = "<group>"; };
+		B22C0E8021B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+CDMarkdownKit.swift"; sourceTree = "<group>"; };
+		B22C0E8521B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextCheckingResult+CDMarkdownKit.swift"; sourceTree = "<group>"; };
+		B22C0E8D21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextStorage+CDMarkdownKit.swift"; sourceTree = "<group>"; };
+		B22C0E9221B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+CDMarkdownKit.swift"; sourceTree = "<group>"; };
 		B255AD8120D7FADF00E8044D /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
-		B255AD8520D8000A00E8044D /* CDAttributesKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDAttributesKey.swift; sourceTree = "<group>"; };
+		B255AD8520D8000A00E8044D /* CDAttributedStringKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDAttributedStringKey.swift; sourceTree = "<group>"; };
 		B27A77FF1FC13F7D001491C6 /* CDMarkdownKit.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CDMarkdownKit.podspec; sourceTree = "<group>"; };
 		B27A78001FC13F7D001491C6 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		B27A78011FC13F7D001491C6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B27A78061FC13F87001491C6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B27A78081FC13F87001491C6 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		B29FE73B21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+CDMarkdownKit.swift"; sourceTree = "<group>"; };
 		B2ACA0771FBF93ED00EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2ACA0841FBF940700EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2ACA0911FBF941B00EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -219,7 +246,7 @@
 		B205C6641FC129D200E74CBA /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				B255AD8520D8000A00E8044D /* CDAttributesKey.swift */,
+				B255AD8520D8000A00E8044D /* CDAttributedStringKey.swift */,
 				B205C6651FC129EB00E74CBA /* CDColor.swift */,
 				B205C66A1FC129FC00E74CBA /* CDFont.swift */,
 				B205C66F1FC135DF00E74CBA /* CDImage.swift */,
@@ -248,6 +275,8 @@
 				B27A77FF1FC13F7D001491C6 /* CDMarkdownKit.podspec */,
 				B27A78011FC13F7D001491C6 /* LICENSE */,
 				B27A78001FC13F7D001491C6 /* Package.swift */,
+				B2153A1321C3E321008F5B78 /* Package@swift-3.swift */,
+				B2153A0E21C3E2A9008F5B78 /* Package@swift-4.swift */,
 			);
 			name = Deployment;
 			sourceTree = "<group>";
@@ -331,6 +360,11 @@
 				B2B3661E1F324DE90078B962 /* CDColor+CDMarkdownKit.swift */,
 				B2B3661F1F324DE90078B962 /* CDFont+CDMarkdownKit.swift */,
 				5F0AD09421063D36007B718F /* CDImage+CDMarkdownKit.swift */,
+				B29FE73B21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift */,
+				B22C0E9221B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift */,
+				B22C0E8021B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift */,
+				B22C0E8521B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift */,
+				B22C0E8D21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift */,
 				B2B3661D1F324DE90078B962 /* String+CDMarkdownKit.swift */,
 			);
 			name = Extensions;
@@ -630,13 +664,17 @@
 				B2ACA0A21FBF95A400EABEF6 /* CDMarkdownHeader.swift in Sources */,
 				B2ACA0A31FBF95A400EABEF6 /* CDMarkdownImage.swift in Sources */,
 				B2ACA0A41FBF95A400EABEF6 /* CDMarkdownItalic.swift in Sources */,
+				B29FE73D21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0B41FBF95A400EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0B51FBF95A400EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
 				B2ACA0B11FBF95A400EABEF6 /* CDMarkdownLevelElement.swift in Sources */,
 				B2ACA0A51FBF95A400EABEF6 /* CDMarkdownLink.swift in Sources */,
 				B2ACA0B21FBF95A400EABEF6 /* CDMarkdownLinkElement.swift in Sources */,
-				B255AD8720D8000A00E8044D /* CDAttributesKey.swift in Sources */,
+				B255AD8720D8000A00E8044D /* CDAttributedStringKey.swift in Sources */,
 				B2ACA0A61FBF95A400EABEF6 /* CDMarkdownList.swift in Sources */,
+				B22C0E8F21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */,
+				B22C0E9421B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */,
+				B22C0E8721B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */,
 				B2ACA09E1FBF95A400EABEF6 /* CDMarkdownParser.swift in Sources */,
 				B2ACA0A71FBF95A400EABEF6 /* CDMarkdownQuote.swift in Sources */,
 				B2ACA0B31FBF95A400EABEF6 /* CDMarkdownStyle.swift in Sources */,
@@ -646,6 +684,7 @@
 				B2ACA0AC1FBF95A400EABEF6 /* String+CDMarkdownKit.swift in Sources */,
 				B2ACA0AD1FBF95A400EABEF6 /* CDColor+CDMarkdownKit.swift in Sources */,
 				B2ACA0AE1FBF95A400EABEF6 /* CDFont+CDMarkdownKit.swift in Sources */,
+				B22C0E8221B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -667,13 +706,17 @@
 				B2ACA0BB1FBF960A00EABEF6 /* CDMarkdownHeader.swift in Sources */,
 				B2ACA0BC1FBF960A00EABEF6 /* CDMarkdownImage.swift in Sources */,
 				B2ACA0BD1FBF960A00EABEF6 /* CDMarkdownItalic.swift in Sources */,
+				B29FE73E21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0CD1FBF960A00EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0CE1FBF960A00EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
 				B2ACA0CA1FBF960A00EABEF6 /* CDMarkdownLevelElement.swift in Sources */,
 				B2ACA0BE1FBF960A00EABEF6 /* CDMarkdownLink.swift in Sources */,
 				B2ACA0CB1FBF960A00EABEF6 /* CDMarkdownLinkElement.swift in Sources */,
-				B255AD8820D8000A00E8044D /* CDAttributesKey.swift in Sources */,
+				B255AD8820D8000A00E8044D /* CDAttributedStringKey.swift in Sources */,
 				B2ACA0BF1FBF960A00EABEF6 /* CDMarkdownList.swift in Sources */,
+				B22C0E9021B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */,
+				B22C0E9521B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */,
+				B22C0E8821B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */,
 				B2ACA0C01FBF960A00EABEF6 /* CDMarkdownQuote.swift in Sources */,
 				B2ACA0B71FBF960A00EABEF6 /* CDMarkdownParser.swift in Sources */,
 				B2ACA0CC1FBF960A00EABEF6 /* CDMarkdownStyle.swift in Sources */,
@@ -683,6 +726,7 @@
 				B2ACA0C51FBF960A00EABEF6 /* String+CDMarkdownKit.swift in Sources */,
 				B2ACA0C61FBF960A00EABEF6 /* CDColor+CDMarkdownKit.swift in Sources */,
 				B2ACA0C71FBF960A00EABEF6 /* CDFont+CDMarkdownKit.swift in Sources */,
+				B22C0E8321B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -704,13 +748,17 @@
 				B2ACA0D41FBF967800EABEF6 /* CDMarkdownHeader.swift in Sources */,
 				B2ACA0D51FBF967800EABEF6 /* CDMarkdownImage.swift in Sources */,
 				B2ACA0D61FBF967800EABEF6 /* CDMarkdownItalic.swift in Sources */,
+				B29FE73F21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0E61FBF967800EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0E71FBF967800EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
 				B2ACA0E31FBF967800EABEF6 /* CDMarkdownLevelElement.swift in Sources */,
 				B2ACA0D71FBF967800EABEF6 /* CDMarkdownLink.swift in Sources */,
 				B2ACA0E41FBF967800EABEF6 /* CDMarkdownLinkElement.swift in Sources */,
-				B255AD8920D8000A00E8044D /* CDAttributesKey.swift in Sources */,
+				B255AD8920D8000A00E8044D /* CDAttributedStringKey.swift in Sources */,
 				B2ACA0D81FBF967800EABEF6 /* CDMarkdownList.swift in Sources */,
+				B22C0E9121B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */,
+				B22C0E9621B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */,
+				B22C0E8921B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */,
 				B2ACA0D01FBF967800EABEF6 /* CDMarkdownParser.swift in Sources */,
 				B2ACA0D91FBF967800EABEF6 /* CDMarkdownQuote.swift in Sources */,
 				B2ACA0E51FBF967800EABEF6 /* CDMarkdownStyle.swift in Sources */,
@@ -720,6 +768,7 @@
 				B2ACA0DE1FBF967800EABEF6 /* String+CDMarkdownKit.swift in Sources */,
 				B2ACA0DF1FBF967800EABEF6 /* CDColor+CDMarkdownKit.swift in Sources */,
 				B2ACA0E01FBF967800EABEF6 /* CDFont+CDMarkdownKit.swift in Sources */,
+				B22C0E8421B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -741,13 +790,17 @@
 				B2B366271F324DE90078B962 /* CDMarkdownHeader.swift in Sources */,
 				B2B366201F324DE90078B962 /* CDMarkdownImage.swift in Sources */,
 				B2B366281F324DE90078B962 /* CDMarkdownItalic.swift in Sources */,
+				B29FE73C21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2B366231F324DE90078B962 /* CDMarkdownLabel.swift in Sources */,
 				B2B3662F1F324DE90078B962 /* CDMarkdownLayoutManager.swift in Sources */,
 				B2B366301F324DE90078B962 /* CDMarkdownLevelElement.swift in Sources */,
 				B2B366211F324DE90078B962 /* CDMarkdownLink.swift in Sources */,
 				B2B366311F324DE90078B962 /* CDMarkdownLinkElement.swift in Sources */,
-				B255AD8620D8000A00E8044D /* CDAttributesKey.swift in Sources */,
+				B255AD8620D8000A00E8044D /* CDAttributedStringKey.swift in Sources */,
 				B2B366291F324DE90078B962 /* CDMarkdownList.swift in Sources */,
+				B22C0E8E21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */,
+				B22C0E9321B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */,
+				B22C0E8621B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */,
 				B2B366321F324DE90078B962 /* CDMarkdownQuote.swift in Sources */,
 				B2B366221F324DE90078B962 /* CDMarkdownParser.swift in Sources */,
 				B2B366331F324DE90078B962 /* CDMarkdownStyle.swift in Sources */,
@@ -757,6 +810,7 @@
 				B2B366361F324DE90078B962 /* String+CDMarkdownKit.swift in Sources */,
 				B2B366371F324DE90078B962 /* CDColor+CDMarkdownKit.swift in Sources */,
 				B2B366381F324DE90078B962 /* CDFont+CDMarkdownKit.swift in Sources */,
+				B22C0E8121B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -935,7 +989,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -995,7 +1049,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;

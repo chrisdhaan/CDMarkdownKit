@@ -1,8 +1,8 @@
 //
-//  CDImage+CDMarkdownKit.swift
+//  NSAttributedString+CDMarkdownKit.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 7/23/18.
+//  Created by Christopher de Haan on 11/30/18.
 //
 //  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -31,20 +31,32 @@ import UIKit
 import Cocoa
 #endif
 
-#if os(macOS)
+internal extension NSAttributedString {
 
-internal extension CDImage {
-
+    func enumerateLinkAttribute(in enumerationRange: NSRange,
+                                options opts: NSAttributedString.EnumerationOptions = [],
+                                using block: (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void) {
 #if swift(>=4.2)
+        return self.enumerateAttribute(NSAttributedString.Key.link,
+                                       in: enumerationRange,
+                                       options: opts) { value, range, bool in
 
+                                        block(value, range, bool)
+        }
 #elseif swift(>=4.0)
+        return self.enumerateAttribute(NSAttributedStringKey.link,
+                                       in: enumerationRange,
+                                       options: opts) { value, range, bool in
 
-    convenience init?(named name: String) {
-        self.init(named: CDImage.Name(rawValue: name))
+                                        block(value, range, bool)
+        }
+#else
+        return self.enumerateAttribute(NSLinkAttributeName,
+                                      in: enumerationRange,
+                                      options: opts) { value, range, bool in
+
+                                        block(value, range, bool)
+        }
+#endif
     }
-
-#endif
-
 }
-
-#endif
