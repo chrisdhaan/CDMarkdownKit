@@ -39,5 +39,5 @@ let package = Package(
             name: "CDMarkdownKit",
             path: "Source")
     ],
-    swiftLanguageVersions: [3, 4]
+    swiftLanguageVersions: [3, 4, 5]
 )
