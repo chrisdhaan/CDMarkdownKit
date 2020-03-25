@@ -33,6 +33,7 @@ let package = Package(
     products: [
         .library(
             name: "CDMarkdownKit",
+            type: .dynamic,
             targets: ["CDMarkdownKit"])
     ],
     targets: [
