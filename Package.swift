@@ -1,3 +1,4 @@
+// swift-tools-version:5.2
 //
 //  Package.swift
 //  CDMarkdownKit
@@ -38,6 +39,5 @@ let package = Package(
         .target(
             name: "CDMarkdownKit",
             path: "Source")
-    ],
-    swiftLanguageVersions: [3, 4]
+    ]
 )

@@ -153,7 +153,7 @@ open class CDMarkdownParser {
     }
 
     open func removeCustomElement(_ element: CDMarkdownElement) {
-        guard let index = customElements.index(where: { someElement -> Bool in
+        guard let index = customElements.firstIndex(where: { someElement -> Bool in
             return element === someElement
         }) else {
             return
