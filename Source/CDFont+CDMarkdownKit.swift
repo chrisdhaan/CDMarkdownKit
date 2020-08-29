@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -36,33 +36,18 @@ internal extension CDFont {
 #if os(macOS)
 
     func bold() -> CDFont {
-#if swift(>=4.0)
         return NSFontManager.shared.convert(self,
-                                            toHaveTrait: .boldFontMask)
-#else
-        return NSFontManager.shared().convert(self,
-                                              toHaveTrait: .boldFontMask)
-#endif
+                                           toHaveTrait: .boldFontMask)
     }
 
     func italic() -> CDFont {
-#if swift(>=4.0)
         return NSFontManager.shared.convert(self,
                                             toHaveTrait: .italicFontMask)
-#else
-        return NSFontManager.shared().convert(self,
-                                              toHaveTrait: .italicFontMask)
-#endif
     }
 
     func withSize(_ fontSize: CGFloat) -> CDFont {
-#if swift(>=4.0)
         return NSFontManager.shared.convert(self,
                                             toSize: fontSize)
-#else
-        return NSFontManager.shared().convert(self,
-                                              toSize: fontSize)
-#endif
     }
 
 #else

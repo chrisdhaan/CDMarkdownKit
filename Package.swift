@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 05/07/2017.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -29,15 +29,23 @@ import PackageDescription
 
 let package = Package(
     name: "CDMarkdownKit",
+    platforms: [
+        .macOS(.v10_12),
+        .iOS(.v10),
+        .tvOS(.v10),
+        .watchOS(.v3)
+    ],
     products: [
         .library(
             name: "CDMarkdownKit",
-            targets: ["CDMarkdownKit"])
+            targets: ["CDMarkdownKit"]
+        )
     ],
     targets: [
         .target(
             name: "CDMarkdownKit",
-            path: "Source")
+            path: "Source"
+        )
     ],
-    swiftLanguageVersions: [3, 4]
+    swiftLanguageVersions: [.v5])
 )

@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,6 @@ internal extension String {
     // Converts each 4 digit characters to its String form  (e.g. "0048" -> "H")
     func unescapeUTF16() -> String? {
         var utf16Array = [UInt16]()
-#if swift(>=3.2)
         stride(from: 0,
                to: count,
                by: 4).forEach {
@@ -67,27 +66,6 @@ internal extension String {
 
         return String(utf16CodeUnits: utf16Array,
                       count: utf16Array.count)
-#else
-        stride(from: 0,
-               to: characters.count,
-               by: 4).forEach {
-                let startIdx = index(startIndex,
-                                     offsetBy: $0)
-                if ($0 + 4) <= characters.count {
-                    let endIdx = index(startIndex,
-                                       offsetBy: $0 + 4)
-                    let hex4 = self[startIdx..<endIdx]
-
-                    if let utf16 = UInt16(hex4,
-                                          radix: 16) {
-                        utf16Array.append(utf16)
-                    }
-                }
-        }
-
-        return String(utf16CodeUnits: utf16Array,
-                      count: utf16Array.count)
-#endif
     }
 
     func range(from nsRange: NSRange) -> Range<String.Index>? {
@@ -101,22 +79,14 @@ internal extension String {
     }
 
     func characterCount() -> Int {
-#if swift(>=3.2)
         return self.count
-#else
-        return self.characters.count
-#endif
     }
 
     func sizeWithAttributes(_ attributes: [CDAttributedStringKey: Any]? = nil) -> CGSize {
 #if os(macOS)
         return self.size(withAttributes: attributes)
 #else
-    #if swift(>=4.0)
-            return self.size(withAttributes: attributes)
-    #else
-            return self.size(attributes: attributes)
-    #endif
+        return self.size(withAttributes: attributes)
 #endif
     }
 }

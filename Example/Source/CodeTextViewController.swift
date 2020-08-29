@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 8/2/17.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +28,8 @@
 import CDMarkdownKit
 import UIKit
 
-#if swift(>=4.2)
-    public typealias CDLayoutConstraintAttribute = NSLayoutConstraint.Attribute
-    public typealias CDLayoutConstraintRelation = NSLayoutConstraint.Relation
-#else
-    public typealias CDLayoutConstraintAttribute = NSLayoutAttribute
-    public typealias CDLayoutConstraintRelation = NSLayoutRelation
-#endif
+public typealias CDLayoutConstraintAttribute = NSLayoutConstraint.Attribute
+public typealias CDLayoutConstraintRelation = NSLayoutConstraint.Relation
 
 class CodeTextViewController: BaseViewController {
 

@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/28/18.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -34,42 +34,18 @@ import Cocoa
 internal extension Dictionary where Key == CDAttributedStringKey {
 
     mutating func addFont(_ font: Value) {
-#if swift(>=4.2)
         self[NSAttributedString.Key.font] = font
-#elseif swift(>=4.0)
-        self[NSAttributedStringKey.font] = font
-#else
-        self[NSFontAttributeName] = font
-#endif
     }
 
     mutating func addForegroundColor(_ foregroundColor: Value) {
-#if swift(>=4.2)
         self[NSAttributedString.Key.foregroundColor] = foregroundColor
-#elseif swift(>=4.0)
-        self[NSAttributedStringKey.foregroundColor] = foregroundColor
-#else
-        self[NSForegroundColorAttributeName] = foregroundColor
-#endif
     }
 
     mutating func addBackgroundColor(_ backgroundColor: Value) {
-#if swift(>=4.2)
         self[NSAttributedString.Key.backgroundColor] = backgroundColor
-#elseif swift(>=4.0)
-        self[NSAttributedStringKey.backgroundColor] = backgroundColor
-#else
-        self[NSBackgroundColorAttributeName] = backgroundColor
-#endif
     }
 
     mutating func addParagraphStyle(_ paragraphStyle: Value) {
-#if swift(>=4.2)
         self[NSAttributedString.Key.paragraphStyle] = paragraphStyle
-#elseif swift(>=4.0)
-        self[NSAttributedStringKey.paragraphStyle] = paragraphStyle
-#else
-        self[NSParagraphStyleAttributeName] = paragraphStyle
-#endif
     }
 }

@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/30/18.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -34,10 +34,6 @@ import Cocoa
 internal extension NSTextCheckingResult {
 
     func nsRange(atIndex index: Int) -> NSRange {
-#if swift(>=4.0)
         return self.range(at: index)
-#else
-        return self.rangeAt(index)
-#endif
     }
 }

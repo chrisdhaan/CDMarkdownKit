@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/30/18.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -37,19 +37,9 @@ internal extension NSTextStorage {
 
     func linkAttribute(at location: Int,
                        effectiveRange range: NSRangePointer?) -> Any? {
-#if swift(>=4.2)
         return self.attribute(NSAttributedString.Key.link,
                               at: location,
                               effectiveRange: range)
-#elseif swift(>=4.0)
-        return self.attribute(NSAttributedStringKey.link,
-                              at: location,
-                              effectiveRange: range)
-#else
-        return self.attribute(NSLinkAttributeName,
-                              at: location,
-                              effectiveRange: range)
-        #endif
 
     }
 }
