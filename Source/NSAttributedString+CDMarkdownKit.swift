@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/30/18.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -36,27 +36,10 @@ internal extension NSAttributedString {
     func enumerateLinkAttribute(in enumerationRange: NSRange,
                                 options opts: NSAttributedString.EnumerationOptions = [],
                                 using block: (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void) {
-#if swift(>=4.2)
         return self.enumerateAttribute(NSAttributedString.Key.link,
                                        in: enumerationRange,
                                        options: opts) { value, range, bool in
-
                                         block(value, range, bool)
         }
-#elseif swift(>=4.0)
-        return self.enumerateAttribute(NSAttributedStringKey.link,
-                                       in: enumerationRange,
-                                       options: opts) { value, range, bool in
-
-                                        block(value, range, bool)
-        }
-#else
-        return self.enumerateAttribute(NSLinkAttributeName,
-                                      in: enumerationRange,
-                                      options: opts) { value, range, bool in
-
-                                        block(value, range, bool)
-        }
-#endif
     }
 }

@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 6/18/18.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,10 +27,4 @@
 
 import Foundation
 
-#if swift(>=4.2)
-    public typealias CDAttributedStringKey = NSAttributedString.Key
-#elseif swift(>=4.0)
-    public typealias CDAttributedStringKey = NSAttributedStringKey
-#else
-    public typealias CDAttributedStringKey = String
-#endif
+public typealias CDAttributedStringKey = NSAttributedString.Key

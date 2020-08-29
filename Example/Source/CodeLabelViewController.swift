@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 6/11/18.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -82,6 +82,8 @@ class CodeLabelViewController: BaseViewController {
 extension CodeLabelViewController: CDMarkdownLabelDelegate {
 
     func didSelect(_ url: URL) {
-        UIApplication.shared.openURL(url)
+        UIApplication.shared.open(url,
+                                  options: [:],
+                                  completionHandler: nil)
     }
 }

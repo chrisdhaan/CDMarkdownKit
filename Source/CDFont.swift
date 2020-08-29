@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/18/17.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -30,11 +30,7 @@ import Foundation
 #if os(iOS) || os(tvOS) || os(watchOS)
     import UIKit
     public typealias CDFont = UIFont
-#if swift(>=4.2)
     public typealias CDFontDescriptorSymbolicTraits = UIFontDescriptor.SymbolicTraits
-#else
-    public typealias CDFontDescriptorSymbolicTraits = UIFontDescriptorSymbolicTraits
-#endif
 #elseif os(macOS)
     import Cocoa
     public typealias CDFont = NSFont

@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2018 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -153,7 +153,7 @@ open class CDMarkdownParser {
     }
 
     open func removeCustomElement(_ element: CDMarkdownElement) {
-        guard let index = customElements.index(where: { someElement -> Bool in
+        guard let index = customElements.firstIndex(where: { someElement -> Bool in
             return element === someElement
         }) else {
             return
