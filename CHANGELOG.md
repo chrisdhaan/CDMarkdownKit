@@ -3,12 +3,23 @@ All notable changes to this project will be documented in this file.
 `CDMarkdownKit` adheres to [Semantic Versioning](https://semver.org/).
 
 #### 2.x Releases
+- `2.1.x` Releases - [2.1.0](#210)
 - `2.0.x` Releases - [2.0.0](#200)
 
 #### 1.x Releases
 - `1.2.x` Releases - [1.2.0](#120) | [1.2.1](#121)
 - `1.1.x` Releases - [1.1.0](#110)
 - `1.0.x` Releases - [1.0.0](#100)
+
+---
+
+## [2.1.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.1.0)
+## SDK Support
+Released on 2020-08-30.
+
+#### Added
+
+- [x] Swift 5.1
 
 ---
 

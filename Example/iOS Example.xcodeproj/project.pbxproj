@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B255AD9620D8182500E8044D /* CDMarkdownKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B366431F324FAA0078B962 /* CDMarkdownKit.framework */; };
+		B255AD9620D8182500E8044D /* CMarkdownKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B366431F324FAA0078B962 /* CMarkdownKit.framework */; };
 		B2B365EA1F324BDA0078B962 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B365E81F324BDA0078B962 /* AppDelegate.swift */; };
 		B2B365EB1F324BDA0078B962 /* CodeTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B365E91F324BDA0078B962 /* CodeTextViewController.swift */; };
 		B2B365F81F324C0C0078B962 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2B365F71F324C0C0078B962 /* Assets.xcassets */; };
 		B2B365FD1F324C170078B962 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2B365F91F324C170078B962 /* LaunchScreen.storyboard */; };
 		B2B365FE1F324C170078B962 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2B365FB1F324C170078B962 /* Main.storyboard */; };
-		B2B366451F324FC80078B962 /* CDMarkdownKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B2B366431F324FAA0078B962 /* CDMarkdownKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B2B366451F324FC80078B962 /* CMarkdownKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B2B366431F324FAA0078B962 /* CMarkdownKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B2D61BC720CF4A950091BFFF /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D61BC620CF4A950091BFFF /* BaseViewController.swift */; };
 		B2D61BCC20CF4C390091BFFF /* CodeLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D61BCB20CF4C390091BFFF /* CodeLabelViewController.swift */; };
 		B2D61BCE20CF4C470091BFFF /* StoryboardTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D61BCD20CF4C470091BFFF /* StoryboardTextViewController.swift */; };
@@ -66,7 +66,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B2B366451F324FC80078B962 /* CDMarkdownKit.framework in Copy Frameworks */,
+				B2B366451F324FC80078B962 /* CMarkdownKit.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B255AD9620D8182500E8044D /* CDMarkdownKit.framework in Frameworks */,
+				B255AD9620D8182500E8044D /* CMarkdownKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,7 +155,7 @@
 		B2B3663F1F324FAA0078B962 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B2B366431F324FAA0078B962 /* CDMarkdownKit.framework */,
+				B2B366431F324FAA0078B962 /* CMarkdownKit.framework */,
 				B27A77F31FC13EF5001491C6 /* CMarkdownKit.framework */,
 				B27A77F51FC13EF5001491C6 /* CMarkdownKit.framework */,
 				B27A77F71FC13EF5001491C6 /* CMarkdownKit.framework */,
@@ -230,27 +230,31 @@
 		B27A77F31FC13EF5001491C6 /* CMarkdownKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = CMarkdownKit.framework;
+			name = CMarkdownKit.framework;
+			path = CDMarkdownKit.framework;
 			remoteRef = B27A77F21FC13EF5001491C6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		B27A77F51FC13EF5001491C6 /* CMarkdownKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = CMarkdownKit.framework;
+			name = CMarkdownKit.framework;
+			path = CDMarkdownKit.framework;
 			remoteRef = B27A77F41FC13EF5001491C6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		B27A77F71FC13EF5001491C6 /* CMarkdownKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = CMarkdownKit.framework;
+			name = CMarkdownKit.framework;
+			path = CDMarkdownKit.framework;
 			remoteRef = B27A77F61FC13EF5001491C6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		B2B366431F324FAA0078B962 /* CDMarkdownKit.framework */ = {
+		B2B366431F324FAA0078B962 /* CMarkdownKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
+			name = CMarkdownKit.framework;
 			path = CDMarkdownKit.framework;
 			remoteRef = B2B366421F324FAA0078B962 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -319,8 +323,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
@@ -379,8 +381,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
