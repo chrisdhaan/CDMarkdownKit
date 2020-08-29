@@ -79,8 +79,8 @@ For a demonstration of the capabilities of CDMarkdownKit; run the iOS Example pr
 ## Requirements
 
 - iOS 10.0+ / macOS 10.12+ / tvOS 10.0+ / watchOS 3.0+
-- Xcode 10.2+
-- Swift 5+
+- Xcode 11+
+- Swift 5.1+
 
 ---
 
@@ -91,7 +91,7 @@ For a demonstration of the capabilities of CDMarkdownKit; run the iOS Example pr
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate CDMarkdownKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'CDMarkdownKit', '2.0.0'
+pod 'CDMarkdownKit', '2.1.0'
 ```
 
 ### Carthage
@@ -99,7 +99,7 @@ pod 'CDMarkdownKit', '2.0.0'
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate CDMarkdownKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "chrisdhaan/CDMarkdownKit" == 2.0.0
+github "chrisdhaan/CDMarkdownKit" == 2.1.0
 ```
 
 ### Swift Package Manager

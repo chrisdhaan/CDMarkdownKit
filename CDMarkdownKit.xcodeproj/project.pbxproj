@@ -170,10 +170,10 @@
 		B27A78061FC13F87001491C6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B27A78081FC13F87001491C6 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		B29FE73B21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+CDMarkdownKit.swift"; sourceTree = "<group>"; };
-		B2ACA0771FBF93ED00EABEF6 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2ACA0841FBF940700EABEF6 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2ACA0911FBF941B00EABEF6 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2B365B71F3245800078B962 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2ACA0771FBF93ED00EABEF6 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2ACA0841FBF940700EABEF6 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2ACA0911FBF941B00EABEF6 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2B365B71F3245800078B962 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B366021F324CF10078B962 /* CDMarkdownKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMarkdownKit.h; sourceTree = "<group>"; };
 		B2B366031F324CF10078B962 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2B366071F324DE90078B962 /* CDMarkdownImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownImage.swift; sourceTree = "<group>"; };
@@ -510,22 +510,22 @@
 					B2ACA0761FBF93ED00EABEF6 = {
 						CreatedOnToolsVersion = 9.1;
 						LastSwiftMigration = 0940;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					B2ACA0831FBF940700EABEF6 = {
 						CreatedOnToolsVersion = 9.1;
 						LastSwiftMigration = 0940;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					B2ACA0901FBF941B00EABEF6 = {
 						CreatedOnToolsVersion = 9.1;
 						LastSwiftMigration = 0940;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					B2B365B61F3245800078B962 = {
 						CreatedOnToolsVersion = 8.3.3;
 						LastSwiftMigration = 0940;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -931,7 +931,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -955,7 +955,7 @@
 				INFOPLIST_FILE = Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.1.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
 				PRODUCT_NAME = CDMarkdownKit;
@@ -1000,7 +1000,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1018,7 +1018,7 @@
 				INFOPLIST_FILE = Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
 				PRODUCT_NAME = CDMarkdownKit;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
