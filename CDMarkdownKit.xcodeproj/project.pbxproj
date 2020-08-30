@@ -170,10 +170,10 @@
 		B27A78061FC13F87001491C6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B27A78081FC13F87001491C6 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		B29FE73B21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+CDMarkdownKit.swift"; sourceTree = "<group>"; };
-		B2ACA0771FBF93ED00EABEF6 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2ACA0841FBF940700EABEF6 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2ACA0911FBF941B00EABEF6 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2B365B71F3245800078B962 /* CMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2ACA0771FBF93ED00EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CDMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2ACA0841FBF940700EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CDMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2ACA0911FBF941B00EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CDMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2B365B71F3245800078B962 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CDMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B366021F324CF10078B962 /* CDMarkdownKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMarkdownKit.h; sourceTree = "<group>"; };
 		B2B366031F324CF10078B962 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2B366071F324DE90078B962 /* CDMarkdownImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownImage.swift; sourceTree = "<group>"; };
@@ -287,10 +287,10 @@
 		B2B365B81F3245800078B962 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B2B365B71F3245800078B962 /* CMarkdownKit.framework */,
-				B2ACA0771FBF93ED00EABEF6 /* CMarkdownKit.framework */,
-				B2ACA0841FBF940700EABEF6 /* CMarkdownKit.framework */,
-				B2ACA0911FBF941B00EABEF6 /* CMarkdownKit.framework */,
+				B2B365B71F3245800078B962 /* CDMarkdownKit.framework */,
+				B2ACA0771FBF93ED00EABEF6 /* CDMarkdownKit.framework */,
+				B2ACA0841FBF940700EABEF6 /* CDMarkdownKit.framework */,
+				B2ACA0911FBF941B00EABEF6 /* CDMarkdownKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -438,7 +438,7 @@
 			);
 			name = "CDMarkdownKit macOS";
 			productName = CDMarkdownKit;
-			productReference = B2ACA0771FBF93ED00EABEF6 /* CMarkdownKit.framework */;
+			productReference = B2ACA0771FBF93ED00EABEF6 /* CDMarkdownKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		B2ACA0831FBF940700EABEF6 /* CDMarkdownKit tvOS */ = {
@@ -457,7 +457,7 @@
 			);
 			name = "CDMarkdownKit tvOS";
 			productName = CDMarkdownKit;
-			productReference = B2ACA0841FBF940700EABEF6 /* CMarkdownKit.framework */;
+			productReference = B2ACA0841FBF940700EABEF6 /* CDMarkdownKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		B2ACA0901FBF941B00EABEF6 /* CDMarkdownKit watchOS */ = {
@@ -476,7 +476,7 @@
 			);
 			name = "CDMarkdownKit watchOS";
 			productName = CDMarkdownKit;
-			productReference = B2ACA0911FBF941B00EABEF6 /* CMarkdownKit.framework */;
+			productReference = B2ACA0911FBF941B00EABEF6 /* CDMarkdownKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		B2B365B61F3245800078B962 /* CDMarkdownKit iOS */ = {
@@ -495,7 +495,7 @@
 			);
 			name = "CDMarkdownKit iOS";
 			productName = CDMarkdownKit;
-			productReference = B2B365B71F3245800078B962 /* CMarkdownKit.framework */;
+			productReference = B2B365B71F3245800078B962 /* CDMarkdownKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
