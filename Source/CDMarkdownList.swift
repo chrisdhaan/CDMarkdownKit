@@ -51,7 +51,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
 
     public init(font: CDFont? = nil,
                 maxLevel: Int = 0,
-                indicator: String = "•",
+                indicator: String = "⁃",
                 separator: String = "  ",
                 color: CDColor? = nil,
                 backgroundColor: CDColor? = nil,
