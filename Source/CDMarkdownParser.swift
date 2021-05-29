@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2020 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2021 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -139,7 +139,7 @@ open class CDMarkdownParser {
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.escapingElements = [codeEscaping, escaping]
 #if os(iOS) || os(macOS) || os(tvOS)
-        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic, image]
+        self.defaultElements = [header, list, quote, link, automaticLink, image, bold, italic]
 #else
         self.defaultElements = [header, list, quote, link, automaticLink, bold, italic]
 #endif
