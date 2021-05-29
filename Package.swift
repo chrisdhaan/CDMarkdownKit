@@ -1,3 +1,4 @@
+// swift-tools-version:5.1
 //
 //  Package.swift
 //  CDMarkdownKit
@@ -48,4 +49,3 @@ let package = Package(
         )
     ],
     swiftLanguageVersions: [.v5])
-)
