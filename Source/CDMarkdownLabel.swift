@@ -35,7 +35,7 @@ import SafariServices
 
 import UIKit
 
-public protocol CDMarkdownLabelDelegate: class {
+public protocol CDMarkdownLabelDelegate: AnyObject {
     func didSelect(_ url: URL)
 }
 

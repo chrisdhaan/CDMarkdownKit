@@ -28,7 +28,7 @@
 import Foundation
 
 // The base protocol for all Markdown Elements, it handles parsing through regex.
-public protocol CDMarkdownElement: class {
+public protocol CDMarkdownElement: AnyObject {
 
     var regex: String { get }
 
