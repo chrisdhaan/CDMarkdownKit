@@ -170,10 +170,10 @@
 		B27A78061FC13F87001491C6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B27A78081FC13F87001491C6 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		B29FE73B21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+CDMarkdownKit.swift"; sourceTree = "<group>"; };
-		B2ACA0771FBF93ED00EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CDMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2ACA0841FBF940700EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CDMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2ACA0911FBF941B00EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CDMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2B365B71F3245800078B962 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CDMarkdownKit.framework; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2ACA0771FBF93ED00EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2ACA0841FBF940700EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2ACA0911FBF941B00EABEF6 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2B365B71F3245800078B962 /* CDMarkdownKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B366021F324CF10078B962 /* CDMarkdownKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMarkdownKit.h; sourceTree = "<group>"; };
 		B2B366031F324CF10078B962 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B2B366071F324DE90078B962 /* CDMarkdownImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CDMarkdownImage.swift; sourceTree = "<group>"; };
@@ -822,6 +822,7 @@
 				FRAMEWORK_VERSION = A;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.1.1;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -837,6 +838,7 @@
 				FRAMEWORK_VERSION = A;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.1.1;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -955,7 +957,7 @@
 				INFOPLIST_FILE = Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
 				PRODUCT_NAME = CDMarkdownKit;
@@ -1018,7 +1020,7 @@
 				INFOPLIST_FILE = Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 2.1.0;
+				MARKETING_VERSION = 2.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
 				PRODUCT_NAME = CDMarkdownKit;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1041,6 +1043,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.1.1;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1056,6 +1059,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 2.1.1;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
