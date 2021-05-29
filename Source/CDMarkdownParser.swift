@@ -66,6 +66,7 @@ open class CDMarkdownParser {
     public let fontColor: CDColor
     public let backgroundColor: CDColor
     public let paragraphStyle: NSParagraphStyle
+    private let shouldSquashEndlines: Bool
 
     // MARK: - Initializer
     public init(font: CDFont = CDFont.systemFont(ofSize: 12),
@@ -76,7 +77,9 @@ open class CDMarkdownParser {
                 paragraphStyle: NSParagraphStyle? = nil,
                 imageSize: CGSize? = nil,
                 automaticLinkDetectionEnabled: Bool = true,
-                customElements: [CDMarkdownElement] = []) {
+                customElements: [CDMarkdownElement] = [],
+                shouldSquashEndlines: Bool = false
+                ) {
         self.font = font
         self.fontColor = fontColor
         self.backgroundColor = backgroundColor
@@ -145,6 +148,7 @@ open class CDMarkdownParser {
 #endif
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
+        self.shouldSquashEndlines = shouldSquashEndlines
     }
 
     // MARK: - Element Extensibility
@@ -169,11 +173,13 @@ open class CDMarkdownParser {
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         let mutableString = attributedString.mutableString
-        mutableString.replaceOccurrences(of: "\n\n+",
+        if shouldSquashEndlines {
+            mutableString.replaceOccurrences(of: "\n\n+",
                                          with: "\n",
                                          options: .regularExpression,
                                          range: NSRange(location: 0,
                                                         length: mutableString.length))
+        }
         mutableString.replaceOccurrences(of: "&nbsp;",
                                          with: " ",
                                          range: NSRange(location: 0,
