@@ -250,7 +250,7 @@ open class CDMarkdownLabel: UILabel {
                                                         delegate.didSelect(url)
                                                     }
         }))
-#if os(iOS)
+#if os(iOS) && !targetEnvironment(macCatalyst)
         if SSReadingList.supportsURL(url) {
             actionController.addAction(UIAlertAction(title: "Add to Reading List",
                                                      style: .default,
