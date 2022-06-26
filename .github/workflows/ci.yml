@@ -38,14 +38,6 @@ jobs:
             destination: "OS=8.5,name=Apple Watch Series 7 - 45mm"
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        with:
-          path: Carthage
-          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-carthage-
-      - name: Dependencies
-        run: carthage update --use-submodules --use-xcframeworks --platform ${{ matrix.name }} --cache-builds
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
@@ -62,14 +54,6 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        with:
-          path: Carthage
-          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-carthage-
-      - name: Dependencies
-        run: carthage update --use-submodules --use-xcframeworks --platform ios --cache-builds
       - name: Catalyst - Debug
         run: |
           set -o pipefail
@@ -94,18 +78,10 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
         with:
-          path: Carthage
-          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-carthage-
-      - uses: actions/cache@v3
-        with:
           path: Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
-      - name: Dependencies
-        run: carthage update --use-submodules --use-xcframeworks --platform ios --cache-builds
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
@@ -151,14 +127,6 @@ jobs:
             name: "macOS 10.15, Xcode 12.4, Swift 5.3"
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        with:
-          path: Carthage
-          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-carthage-
-      - name: Dependencies
-        run: carthage update --use-submodules --use-xcframeworks --platform macos --cache-builds
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
@@ -181,14 +149,6 @@ jobs:
             destination: "OS=14.5,name=Apple TV"
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        with:
-          path: Carthage
-          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-carthage-
-      - name: Dependencies
-        run: carthage update --use-submodules --use-xcframeworks --platform tvos --cache-builds
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
@@ -212,14 +172,6 @@ jobs:
             
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v3
-        with:
-          path: Carthage
-          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-carthage-
-      - name: Dependencies
-        run: carthage update --use-submodules --use-xcframeworks --platform watchos --cache-builds
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
