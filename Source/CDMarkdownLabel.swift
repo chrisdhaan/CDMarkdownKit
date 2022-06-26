@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 12/14/16.
 //
-//  Copyright © 2016-2021 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -250,7 +250,7 @@ open class CDMarkdownLabel: UILabel {
                                                         delegate.didSelect(url)
                                                     }
         }))
-#if os(iOS)
+#if os(iOS) && !targetEnvironment(macCatalyst)
         if SSReadingList.supportsURL(url) {
             actionController.addAction(UIAlertAction(title: "Add to Reading List",
                                                      style: .default,

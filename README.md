@@ -1,36 +1,42 @@
 <p align="center">
     <a href="https://github.com/chrisdhaan/CDMarkdownKit">
-        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/.github/cdmarkdownkit.png" alt="CDMarkdownKit" width="850" />
+        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/Documentation/cdmarkdownkit.png" alt="CDMarkdownKit" width="850" />
     </a>
 </p>
 
 <p align="center">
     <a href="https://github.com/chrisdhaan/CDMarkdownKit">
-        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/.github/github.png" alt="Star CDMarkdownKit On Github" />
+        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/Documentation/github.png" alt="Star CDMarkdownKit On Github" />
     </a>
     <a href="http://stackoverflow.com/questions/tagged/cdmarkdownkit">
-        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/.github/stackoverflow.png" alt="Stack Overflow" />
+        <img src="https://raw.githubusercontent.com/chrisdhaan/CDMarkdownKit/master/Documentation/stackoverflow.png" alt="Stack Overflow" />
     </a>
 </p>
 
 <p align="center">
-    <a href="https://travis-ci.org/chrisdhaan/CDMarkdownKit">
-        <img src="http://img.shields.io/travis/chrisdhaan/CDMarkdownKit.svg?style=flat" alt="CI Status">
+    <a href="https://github.com/chrisdhaan/CDMarkdownKit/actions/workflows/ci.yml">
+        <img src="https://github.com/chrisdhaan/CDMarkdownKit/actions/workflows/ci.yml/badge.svg" alt="CI Status">
     </a>
     <a href="https://github.com/chrisdhaan/CDMarkdownKit/releases">
         <img src="https://img.shields.io/github/release/chrisdhaan/CDMarkdownKit.svg" alt="GitHub Release">
     </a>
+    <a href="https://www.swift.org">
+        <img src="https://img.shields.io/badge/Swift-5.3_5.4_5.5_5.6-orange?style=flat" alt="Swift Versions">
+    </a>
     <a href="http://cocoapods.org/pods/CDMarkdownKit">
-        <img src="https://img.shields.io/cocoapods/v/CDMarkdownKit.svg?style=flat" alt="Version">
+        <img src="https://img.shields.io/cocoapods/p/CDMarkdownKit.svg?style=flat" alt="Platforms">
+    </a>
+    <a href="http://cocoapods.org/pods/CDMarkdownKit">
+        <img src="https://img.shields.io/cocoapods/v/CDMarkdownKit.svg?style=flat" alt="CocoaPods Compatible">
     </a>
     <a href="https://github.com/Carthage/Carthage">
         <img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat" alt="Carthage compatible">
     </a>
-    <a href="http://cocoapods.org/pods/CDMarkdownKit">
-        <img src="https://img.shields.io/cocoapods/l/CDMarkdownKit.svg?style=flat" alt="License">
+    <a href="https://www.swift.org/package-manager">
+        <img src="https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat" alt="Swift Package Manager Compatible">
     </a>
     <a href="http://cocoapods.org/pods/CDMarkdownKit">
-        <img src="https://img.shields.io/cocoapods/p/CDMarkdownKit.svg?style=flat" alt="Platform">
+        <img src="https://img.shields.io/cocoapods/l/CDMarkdownKit.svg?style=flat" alt="License">
     </a>
 </p>
 
@@ -43,12 +49,15 @@ For a demonstration of the capabilities of CDMarkdownKit; run the iOS Example pr
 - [Features](#features)
 - [Requirements](#requirements)
 - [Installation](#installation)
+- [Contributing](#contributing)
 - [Usage](#usage)
     - [Initialization](#initialization)
     - [Customization](#customization)
     - [Supported Markdown Elements](#supported-markdown-elements)
     - [CDMarkdownTextView](#cdmarkdowntextview)
     - [CDMarkdownLabel](#cdmarkdownlabel)
+- [Author](#author)
+- [Credits](#credits)
 - [License](#license)
 
 ---
@@ -79,8 +88,7 @@ For a demonstration of the capabilities of CDMarkdownKit; run the iOS Example pr
 ## Requirements
 
 - iOS 10.0+ / macOS 10.12+ / tvOS 10.0+ / watchOS 3.0+
-- Xcode 11+
-- Swift 5.1+
+- Swift 5.3+
 
 ---
 
@@ -91,7 +99,7 @@ For a demonstration of the capabilities of CDMarkdownKit; run the iOS Example pr
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate CDMarkdownKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'CDMarkdownKit', '2.1.1'
+pod 'CDMarkdownKit', '2.2.0'
 ```
 
 ### Carthage
@@ -99,18 +107,18 @@ pod 'CDMarkdownKit', '2.1.1'
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate CDMarkdownKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "chrisdhaan/CDMarkdownKit" == 2.1.1
+github "chrisdhaan/CDMarkdownKit" == 2.2.0
 ```
 
 ### Swift Package Manager
 
-The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler. It is in early development, but CDMarkdownKit does support its use on supported platforms.
+The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is integrated into the `swift` compiler.
 
 Once you have your Swift package set up, adding CDMarkdownKit as a dependency is as easy as adding it to the `dependencies` value of your `Package.swift`.
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", .upToNextMajor(from: "5.0.0"))
+    .package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", .upToNextMajor(from: "2.2.0"))
 ]
 ```
 
@@ -149,6 +157,12 @@ git submodule add https://github.com/chrisdhaan/CDMarkdownKit.git
 - And that's it!
 
   > The `CDMarkdownKit.framework` is automagically added as a target dependency, linked framework and embedded framework in a copy files build phase which is all you need to build on the simulator and a device.
+
+---
+
+## Contributing
+
+Before contributing to CDYelpFusionKit, please read the instructions detailed in our [contribution guide](https://github.com/chrisdhaan/CDYelpFusionKit/blob/master/CONTRIBUTING.md).
 
 ---
 
@@ -365,6 +379,8 @@ self.label.roundAllCorners = true
 
 Christopher de Haan, contact@christopherdehaan.me
 
+---
+
 ## Credits
 
 CDMarkdownKit was influenced by [MarkdownKit](https://github.com/ivanbruel/MarkdownKit), a markdown parsing library developed by Ivan Bruel.
@@ -379,6 +395,8 @@ CDMarkdownKit adds the following functionalities:
 - UITextView with the ability to round background text color corners for code, syntax, or all elements
 - UILabel with the ability to round background text color corners for code, syntax, or all elements
 - macOS, tvOS, and watchOS support
+
+---
 
 ## License
 

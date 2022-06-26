@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'CDMarkdownKit'
-  s.version = '2.1.1'
+  s.version = '2.2.0'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
   s.summary = 'An extensive Swift framework providing simple and customizable markdown parsing.'
   s.description = <<-DESC
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '10.0'
   s.watchos.deployment_target = '3.0'
 
-  s.swift_versions = ['5.1', '5.2']
+  s.swift_versions = ['5.3', '5.4', '5.5']
   
   s.source_files = 'Source/*.swift'
 end

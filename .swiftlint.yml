@@ -2,6 +2,7 @@ included: # paths to include during linting. `--path` is ignored if present.
   - Source
   - Example/Source
 
+# configurable rules can be customized from this configuration file.
 # number of lines allowed in a file
 file_length: 405
 # number of lines allowed in a function

@@ -1,8 +1,8 @@
 //
-//  CDFont.swift
+//  CDMarkdownKit.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 11/18/17.
+//  Created by Christopher de Haan on 6/26/22.
 //
 //  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -27,11 +27,10 @@
 
 import Foundation
 
-#if os(iOS) || os(tvOS) || os(watchOS)
-    import UIKit
-    public typealias CDFont = UIFont
-    public typealias CDFontDescriptorSymbolicTraits = UIFontDescriptor.SymbolicTraits
-#elseif os(macOS)
-    import Cocoa
-    public typealias CDFont = NSFont
+// Enforce minimum Swift version for all platforms and build systems.
+#if swift(<5.3)
+#error("CDMarkdownKit doesn't support Swift versions below 5.3.")
 #endif
+
+/// Current CDYelpFusionKit version. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
+let version = "2.2.0"

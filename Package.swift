@@ -5,7 +5,7 @@
 //
 //  Created by Christopher de Haan on 05/07/2017.
 //
-//  Copyright © 2016-2021 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -39,13 +39,15 @@ let package = Package(
     products: [
         .library(
             name: "CDMarkdownKit",
-            targets: ["CDMarkdownKit"]
-        )
+            targets: ["CDMarkdownKit"])
     ],
     targets: [
         .target(
             name: "CDMarkdownKit",
-            path: "Source"
-        )
+            path: "Source",
+            exclude: ["Info.plist"],
+            linkerSettings: [
+                .linkedFramework("UIKit", .when(platforms: [.iOS, .tvOS]))
+            ])
     ],
     swiftLanguageVersions: [.v5])
