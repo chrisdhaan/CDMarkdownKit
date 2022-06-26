@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 `CDMarkdownKit` adheres to [Semantic Versioning](https://semver.org/).
 
 #### 2.x Releases
+- `2.2.x` Releases - [2.2.0](#220)
 - `2.1.x` Releases - [2.1.0](#210) | [2.1.1](#211)
 - `2.0.x` Releases - [2.0.0](#200)
 
@@ -10,6 +11,25 @@ All notable changes to this project will be documented in this file.
 - `1.2.x` Releases - [1.2.0](#120) | [1.2.1](#121)
 - `1.1.x` Releases - [1.1.0](#110)
 - `1.0.x` Releases - [1.0.0](#100)
+
+---
+
+## [2.2.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.2.0)
+## SDK Support
+Released on 2022-06-26.
+
+#### Added
+
+- [x] Swift 5.4, 5.5, and 5.6
+
+#### Updated
+    
+- [x] Swift Package Manager
+    - [x] Minimum Swift version 5.3
+- [x] CI
+    - [x] Tests device, platform, Xcode, and SDK versions
+
+
 
 ---
 
@@ -21,7 +41,7 @@ Released on 2021-05-29.
 
 - [x] Markdown Parsing
     - [x] Bold and italic parsing by character
-- [x] Switch Package Manager
+- [x] Swift Package Manager
     - [x] Built with `swift-tools-version:5.1`
 
 ---

@@ -13,12 +13,8 @@ Please read it before you start participating.
 
 ## Asking Questions
 
-We don't use GitHub as a support forum.
-For any usage questions that are not specific to the project itself,
-please ask on [Stack Overflow](https://stackoverflow.com) instead.
-By doing so, you'll be more likely to quickly solve your problem,
-and you'll allow anyone else with the same question to find the answer.
-This also allows maintainers to focus on improving the project for others.
+**We don't use GitHub as a support forum.**
+For any usage questions that are not specific to the project itself, please ask on [Stack Overflow](https://stackoverflow.com) instead. By doing so, you'll be more likely to quickly solve your problem, and you'll allow anyone else with the same question to find the answer. This also allows maintainers to focus on improving the project for others.
 
 ## Reporting Security Issues
 
@@ -33,24 +29,15 @@ to any affected parties.
 
 ## Reporting Other Issues
 
-A great way to contribute to the project
-is to send a detailed issue when you encounter an problem.
-We always appreciate a well-written, thorough bug report.
+A great way to contribute to the project is to send a detailed issue when you encounter an problem. We always appreciate a well-written, thorough bug report.
 
-Check that the project issues database
-doesn't already include that problem or suggestion before submitting an issue.
-If you find a match, add a quick "+1" or "I have this problem too."
-Doing this helps prioritize the most common problems and requests.
+Check that the project issues database doesn't already include that problem or suggestion before submitting an issue. If you find a match, feel free to vote for the issue by adding a reaction. Doing this helps prioritize the most common problems and requests.
 
-When reporting issues, please include the following:
+When reporting issues, please fill out our issue template. The information the template asks for will help us review and fix your issue faster.
 
-* The version of Xcode you're using
-* The version of iOS or macOS you're targeting
-* The full output of any stack trace or compiler error
-* A code snippet that reproduces the described behavior, if applicable
-* Any other details that would be useful in understanding the problem
+## Submitting Pull Requests
 
-This information will help us review and fix your issue faster.
+You can contribute by fixing bugs or adding new features. For larger code changes, we recommend first discussing your ideas on our [GitHub Discussions](https://github.com/chrisdhaan/CDMarkdownKit/discussions).
 
 ## Developer's Certificate of Origin 1.1
 
@@ -82,10 +69,7 @@ By making a contribution to this project, I certify that:
 
 The Code of Conduct governs how we behave in public or in private
 whenever the project will be judged by our actions.
-We expect it to be honored by everyone who represents the project
-officially or informally,
-claims affiliation with the project,
-or participates directly.
+We expect it to be honored by everyone who contributes to this project.
 
 We strive to:
 

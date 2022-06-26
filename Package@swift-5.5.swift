@@ -1,8 +1,9 @@
+// swift-tools-version:5.5
 //
-//  CDFont.swift
+//  Package.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 11/18/17.
+//  Created by Christopher de Haan on 6/26/2022.
 //
 //  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -25,13 +26,29 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
+import PackageDescription
 
-#if os(iOS) || os(tvOS) || os(watchOS)
-    import UIKit
-    public typealias CDFont = UIFont
-    public typealias CDFontDescriptorSymbolicTraits = UIFontDescriptor.SymbolicTraits
-#elseif os(macOS)
-    import Cocoa
-    public typealias CDFont = NSFont
-#endif
+let package = Package(
+    name: "CDMarkdownKit",
+    platforms: [
+        .macOS(.v10_12),
+        .iOS(.v10),
+        .tvOS(.v10),
+        .watchOS(.v3)
+    ],
+    products: [
+        .library(
+            name: "CDMarkdownKit",
+            targets: ["CDMarkdownKit"])
+    ],
+    targets: [
+        .target(
+            name: "CDMarkdownKit",
+            path: "Source",
+            exclude: ["Info.plist"],
+            linkerSettings: [
+                .linkedFramework("UIKit", .when(platforms: [.iOS, .tvOS]))
+            ])
+    ],
+    swiftLanguageVersions: [.v5])
+

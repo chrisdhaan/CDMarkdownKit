@@ -1,0 +1,265 @@
+name: "CDMarkdownKit CI"
+
+on: 
+  push:
+    branches: 
+      - master
+    paths:
+      - "Source/**"
+      - ".github/workflows/**"
+      - "Package.swift"
+  pull_request:
+    paths:
+      - "Source/**"
+      - ".github/workflows/**"
+      - "Package.swift"
+
+concurrency: 
+  group: ci
+  cancel-in-progress: true
+jobs:
+  Latest:
+    name: Test Latest (iOS, macOS, tvOS, watchOS)
+    runs-on: macOS-12
+    env:
+      DEVELOPER_DIR: "/Applications/Xcode_13.4.1.app/Contents/Developer"
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "iOS"
+            destination: "OS=15.5,name=iPhone 13 Pro"
+          - name: "macOS"
+            destination: "platform=macOS"
+          - name: "tvOS"
+            destination: "OS=15.4,name=Apple TV"
+          - name: "watchOS"
+            destination: "OS=8.5,name=Apple Watch Series 7 - 45mm"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-carthage-
+      - name: Dependencies
+        run: carthage update --use-submodules --use-xcframeworks --platform ${{ matrix.name }} --cache-builds
+      - name: ${{ matrix.name }} - Debug
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit ${{ matrix.name }}" -destination "${{ matrix.destination }}" -configuration Debug clean build | xcpretty
+      - name: ${{ matrix.name }} - Release
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit ${{ matrix.name }}" -destination "${{ matrix.destination }}" -configuration Release clean build | xcpretty
+  Catalyst:
+    name: Test Catalyst
+    runs-on: macOS-12
+    env:
+      DEVELOPER_DIR: "/Applications/Xcode_13.4.app/Contents/Developer"
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-carthage-
+      - name: Dependencies
+        run: carthage update --use-submodules --use-xcframeworks --platform ios --cache-builds
+      - name: Catalyst - Debug
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "platform=macOS" -configuration Debug clean build | xcpretty
+      - name: Catalyst - Release
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "platform=macOS" -configuration Release clean build | xcpretty
+  iOS:
+    name: Test iOS
+    runs-on: macOS-11
+    env:
+      DEVELOPER_DIR: "/Applications/Xcode_12.5.1.app/Contents/Developer"
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "iOS 14.5"
+            destination: "OS=14.5,name=iPhone 12 Pro"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-carthage-
+      - uses: actions/cache@v3
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+      - name: Dependencies
+        run: carthage update --use-submodules --use-xcframeworks --platform ios --cache-builds
+      - name: ${{ matrix.name }} - Debug
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "${{ matrix.destination }}" -configuration Debug clean build | xcpretty
+      - name: ${{ matrix.name }} - Release
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "${{ matrix.destination }}" -configuration Release clean build | xcpretty
+      - name: Pod Lib Lint
+        run: |
+          gem install cocoapods --no-document --quiet
+          pod lib lint --allow-warnings --use-libraries
+  macOS:
+    name: Test macOS
+    runs-on: ${{ matrix.runsOn }}
+    env:
+      DEVELOPER_DIR: "/Applications/${{ matrix.xcode }}/Contents/Developer"
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runsOn: macOS-12
+            xcode: "Xcode_13.4.1.app"
+            name: "macOS 12, Xcode 13.4.1, Swift 5.6.1"
+          - runsOn: macOS-12
+            xcode: "Xcode_13.3.1.app"
+            name: "macOS 12, Xcode 13.3.1, Swift 5.6"
+          - runsOn: macOS-11
+            xcode: "Xcode_13.2.1.app"
+            name: "macOS 11, Xcode 13.2.1, Swift 5.5.2"
+          - runsOn: macOS-11
+            xcode: "Xcode_13.1.app"
+            name: "macOS 11, Xcode 13.1, Swift 5.5.1"
+          - runsOn: macOS-11
+            xcode: "Xcode_13.0.app"
+            name: "macOS 11, Xcode 13.0, Swift 5.5.0"
+          - runsOn: macOS-11
+            xcode: "Xcode_12.5.1.app"
+            name: "macOS 11, Xcode 12.5.1, Swift 5.4"
+          - runsOn: macOS-10.15
+            xcode: "Xcode_12.4.app"
+            name: "macOS 10.15, Xcode 12.4, Swift 5.3"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-carthage-
+      - name: Dependencies
+        run: carthage update --use-submodules --use-xcframeworks --platform macos --cache-builds
+      - name: ${{ matrix.name }} - Debug
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit macOS" -destination "platform=macOS" -configuration Debug clean build | xcpretty
+      - name: ${{ matrix.name }} - Release
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit macOS" -destination "platform=macOS" -configuration Release clean build | xcpretty
+  tvOS:
+    name: Test tvOS
+    runs-on: macOS-11
+    env:
+      DEVELOPER_DIR: "/Applications/Xcode_12.5.1.app/Contents/Developer"
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "tvOS 14.5"
+            destination: "OS=14.5,name=Apple TV"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-carthage-
+      - name: Dependencies
+        run: carthage update --use-submodules --use-xcframeworks --platform tvos --cache-builds
+      - name: ${{ matrix.name }} - Debug
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit tvOS" -destination "${{ matrix.destination }}" -configuration Debug clean build | xcpretty
+      - name: ${{ matrix.name }} - Release
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit tvOS" -destination "${{ matrix.destination }}" -configuration Release clean build | xcpretty
+  watchOS:
+    name: Test watchOS
+    runs-on: macOS-11
+    env:
+      DEVELOPER_DIR: "/Applications/Xcode_12.5.1.app/Contents/Developer"
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "watchOS 7.4"
+            destination: "OS=7.4,name=Apple Watch Series 6 - 44mm"
+            
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: Carthage
+          key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-carthage-
+      - name: Dependencies
+        run: carthage update --use-submodules --use-xcframeworks --platform watchos --cache-builds
+      - name: ${{ matrix.name }} - Debug
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit watchOS" -destination "${{ matrix.destination }}" -configuration Debug clean build | xcpretty
+      - name: ${{ matrix.name }} - Release
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit watchOS" -destination "${{ matrix.destination }}" -configuration Release clean build | xcpretty
+  SPM:
+    name: Test with SPM
+    runs-on: ${{ matrix.runsOn }}
+    env:
+      DEVELOPER_DIR: "/Applications/${{ matrix.xcode }}/Contents/Developer"
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - xcode: "Xcode_13.4.app"
+            runsOn: macOS-12
+            name: "macOS 12, SPM 5.6.1 Build"
+          - xcode: "Xcode_13.3.1.app"
+            runsOn: macOS-12
+            name: "macOS 12, SPM 5.6 Build"
+          - xcode: "Xcode_13.2.1.app"
+            runsOn: macOS-11
+            name: "macOS 11, SPM 5.5.2 Build"
+          - xcode: "Xcode_13.1.app"
+            runsOn: macOS-11
+            name: "macOS 11, SPM 5.5.1 Build"
+          - xcode: "Xcode_13.0.app"
+            runsOn: macOS-11
+            name: "macOS 11, SPM 5.5 Test"
+          - xcode: "Xcode_12.5.1.app"
+            runsOn: macOS-11
+            name: "macOS 11, SPM 5.4 Build"
+          - xcode: "Xcode_12.4.app"
+            runsOn: macOS-10.15
+            name: "macOS 10.15, SPM 5.3 Build"
+    steps:
+      - uses: actions/checkout@v3
+      - name: ${{ matrix.name }}
+        run: swift build -c debug
