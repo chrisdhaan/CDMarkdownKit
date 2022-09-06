@@ -41,6 +41,8 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
+    open var underlineStyle: NSUnderlineStyle?
+    open var underlineColor: CDColor?
     open var size: CGSize?
 
     open var regex: String {

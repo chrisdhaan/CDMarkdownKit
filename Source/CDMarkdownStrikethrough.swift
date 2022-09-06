@@ -39,7 +39,9 @@ open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
-    open var strikethroughStyle: NSNumber
+    open var underlineStyle: NSUnderlineStyle?
+    open var underlineColor: CDColor?
+    open var strikethroughStyle: NSUnderlineStyle
     open var strikethroughColor: CDColor?
     
     open var regex: String {
@@ -47,7 +49,7 @@ open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
     }
     
     public init(font: CDFont? = nil,
-                customLineStyle: NSNumber? = nil,
+                customLineStyle: NSUnderlineStyle? = nil,
                 strikethroughColor: CDColor? = nil,
                 color: CDColor? = nil,
                 backgroundColor: CDColor? = nil,
@@ -56,7 +58,7 @@ open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
         self.color = color
         self.backgroundColor = backgroundColor
         self.paragraphStyle = paragraphStyle
-        self.strikethroughStyle = customLineStyle ?? 1
+        self.strikethroughStyle = customLineStyle ?? .single
         self.strikethroughColor = strikethroughColor
     }
     

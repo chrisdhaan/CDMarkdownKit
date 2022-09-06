@@ -39,6 +39,8 @@ open class CDMarkdownBold: CDMarkdownCommonElement {
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
+    open var underlineStyle: NSUnderlineStyle?
+    open var underlineColor: CDColor?
 
     open var regex: String {
         return CDMarkdownBold.regex

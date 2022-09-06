@@ -75,10 +75,11 @@ open class CDMarkdownParser {
                 fontColor: CDColor = CDColor.black,
                 backgroundColor: CDColor = CDColor.clear,
                 paragraphStyle: NSParagraphStyle? = nil,
-                strikethroughStyle: NSNumber? = nil,
+                strikethroughStyle: NSUnderlineStyle? = nil,
                 strikethroughColor: CDColor = .black,
                 imageSize: CGSize? = nil,
                 automaticLinkDetectionEnabled: Bool = true,
+                linkUnderlineStyle: NSUnderlineStyle? = .single,
                 customElements: [CDMarkdownElement] = []) {
         self.font = font
         self.fontColor = fontColor
@@ -108,11 +109,13 @@ open class CDMarkdownParser {
         link = CDMarkdownLink(font: font,
                               color: fontColor,
                               backgroundColor: backgroundColor,
-                              paragraphStyle: paragraphStyle)
+                              paragraphStyle: paragraphStyle,
+                              underlineStyle: linkUnderlineStyle)
         automaticLink = CDMarkdownAutomaticLink(font: font,
                                                 color: fontColor,
                                                 backgroundColor: backgroundColor,
-                                                paragraphStyle: paragraphStyle)
+                                                paragraphStyle: paragraphStyle,
+                                                underlineStyle: linkUnderlineStyle)
         bold = CDMarkdownBold(font: font,
                               customBoldFont: boldFont,
                               color: fontColor,

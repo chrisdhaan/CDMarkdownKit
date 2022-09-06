@@ -49,6 +49,8 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
+    open var underlineStyle: NSUnderlineStyle?
+    open var underlineColor: CDColor?
     open var fontIncrease: Int
 
     open var regex: String {
