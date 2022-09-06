@@ -48,4 +48,21 @@ internal extension Dictionary where Key == CDAttributedStringKey {
     mutating func addParagraphStyle(_ paragraphStyle: Value) {
         self[NSAttributedString.Key.paragraphStyle] = paragraphStyle
     }
+    
+    mutating func addStrikethroughStyle(_ strikethroughStyle: Value) {
+        self[NSAttributedString.Key.strikethroughStyle] = strikethroughStyle
+    }
+    
+    mutating func addStrikethroughColor(_ strikethroughColor: Value) {
+        self[NSAttributedString.Key.strikethroughColor] = strikethroughColor
+    }
+    
+    mutating func addUnderlineStyle(_ underlineStyle: Value) {
+        self[NSAttributedString.Key.underlineStyle] = underlineStyle
+    }
+    
+    mutating func addUnderlineColor(_ underlineColor: Value) {
+        self[NSAttributedString.Key.underlineColor] = underlineColor
+    }
 }
+

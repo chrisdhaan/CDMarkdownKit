@@ -151,6 +151,10 @@
 		B2B366361F324DE90078B962 /* String+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3661D1F324DE90078B962 /* String+CDMarkdownKit.swift */; };
 		B2B366371F324DE90078B962 /* CDColor+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3661E1F324DE90078B962 /* CDColor+CDMarkdownKit.swift */; };
 		B2B366381F324DE90078B962 /* CDFont+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3661F1F324DE90078B962 /* CDFont+CDMarkdownKit.swift */; };
+		E438794B28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = E438794A28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift */; };
+		E438794C28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = E438794A28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift */; };
+		E438794D28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = E438794A28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift */; };
+		E438794E28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = E438794A28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -205,6 +209,7 @@
 		B2D61BD320CF62F80091BFFF /* ISSUE_TEMPLATE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = ISSUE_TEMPLATE.md; path = .github/ISSUE_TEMPLATE.md; sourceTree = "<group>"; };
 		B2D61BD420CF62F80091BFFF /* PULL_REQUEST_TEMPLATE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = PULL_REQUEST_TEMPLATE.md; path = .github/PULL_REQUEST_TEMPLATE.md; sourceTree = "<group>"; };
 		B2FD53B520CFACA3004E97B5 /* CONTRIBUTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CONTRIBUTING.md; sourceTree = "<group>"; };
+		E438794A28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownStrikethrough.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,6 +336,7 @@
 				B2B366101F324DE90078B962 /* CDMarkdownList.swift */,
 				B2B366191F324DE90078B962 /* CDMarkdownQuote.swift */,
 				B2B3661B1F324DE90078B962 /* CDMarkdownSyntax.swift */,
+				E438794A28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift */,
 				B2B3663A1F324E040078B962 /* Escaping */,
 			);
 			name = Elements;
@@ -654,6 +660,7 @@
 				B2ACA0AA1FBF95A400EABEF6 /* CDMarkdownEscaping.swift in Sources */,
 				B2ACA0A21FBF95A400EABEF6 /* CDMarkdownHeader.swift in Sources */,
 				B267903B2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
+				E438794C28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift in Sources */,
 				B2ACA0A31FBF95A400EABEF6 /* CDMarkdownImage.swift in Sources */,
 				B2ACA0A41FBF95A400EABEF6 /* CDMarkdownItalic.swift in Sources */,
 				B29FE73D21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
@@ -697,6 +704,7 @@
 				B2ACA0C31FBF960A00EABEF6 /* CDMarkdownEscaping.swift in Sources */,
 				B2ACA0BB1FBF960A00EABEF6 /* CDMarkdownHeader.swift in Sources */,
 				B267903C2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
+				E438794D28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift in Sources */,
 				B2ACA0BC1FBF960A00EABEF6 /* CDMarkdownImage.swift in Sources */,
 				B2ACA0BD1FBF960A00EABEF6 /* CDMarkdownItalic.swift in Sources */,
 				B29FE73E21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
@@ -740,6 +748,7 @@
 				B2ACA0DC1FBF967800EABEF6 /* CDMarkdownEscaping.swift in Sources */,
 				B2ACA0D41FBF967800EABEF6 /* CDMarkdownHeader.swift in Sources */,
 				B267903D2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
+				E438794E28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift in Sources */,
 				B2ACA0D51FBF967800EABEF6 /* CDMarkdownImage.swift in Sources */,
 				B2ACA0D61FBF967800EABEF6 /* CDMarkdownItalic.swift in Sources */,
 				B29FE73F21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
@@ -783,6 +792,7 @@
 				B2B3662E1F324DE90078B962 /* CDMarkdownEscaping.swift in Sources */,
 				B2B366271F324DE90078B962 /* CDMarkdownHeader.swift in Sources */,
 				B267903A2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
+				E438794B28C29DCD00BEE9FE /* CDMarkdownStrikethrough.swift in Sources */,
 				B2B366201F324DE90078B962 /* CDMarkdownImage.swift in Sources */,
 				B2B366281F324DE90078B962 /* CDMarkdownItalic.swift in Sources */,
 				B29FE73C21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,

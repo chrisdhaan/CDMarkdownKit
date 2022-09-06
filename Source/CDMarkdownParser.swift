@@ -50,6 +50,7 @@ open class CDMarkdownParser {
     public let italic: CDMarkdownItalic
     public let code: CDMarkdownCode
     public let syntax: CDMarkdownSyntax
+    public let strikethrough: CDMarkdownStrikethrough
 #if os(iOS) || os(macOS) || os(tvOS)
     public let image: CDMarkdownImage
 #endif
@@ -74,6 +75,8 @@ open class CDMarkdownParser {
                 fontColor: CDColor = CDColor.black,
                 backgroundColor: CDColor = CDColor.clear,
                 paragraphStyle: NSParagraphStyle? = nil,
+                strikethroughStyle: NSNumber? = nil,
+                strikethroughColor: CDColor = .black,
                 imageSize: CGSize? = nil,
                 automaticLinkDetectionEnabled: Bool = true,
                 customElements: [CDMarkdownElement] = []) {
@@ -128,6 +131,12 @@ open class CDMarkdownParser {
                                   color: fontColor,
                                   backgroundColor: backgroundColor,
                                   paragraphStyle: paragraphStyle)
+        strikethrough = CDMarkdownStrikethrough(font: font,
+                                                customLineStyle: strikethroughStyle,
+                                                strikethroughColor: strikethroughColor,
+                                                color: fontColor,
+                                                backgroundColor: backgroundColor,
+                                                paragraphStyle: paragraphStyle)
 #if os(iOS) || os(macOS) || os(tvOS)
         image = CDMarkdownImage(font: font,
                                 color: fontColor,
@@ -139,9 +148,9 @@ open class CDMarkdownParser {
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.escapingElements = [codeEscaping, escaping]
 #if os(iOS) || os(macOS) || os(tvOS)
-        self.defaultElements = [header, list, quote, link, automaticLink, image, bold, italic]
+        self.defaultElements = [header, list, quote, link, automaticLink, image, bold, italic, strikethrough]
 #else
-        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic]
+        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic, strikethrough]
 #endif
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
