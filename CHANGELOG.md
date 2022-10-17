@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 `CDMarkdownKit` adheres to [Semantic Versioning](https://semver.org/).
 
 #### 2.x Releases
+- `2.3.x` Releases - [2.3.0](#220)
 - `2.2.x` Releases - [2.2.0](#220)
 - `2.1.x` Releases - [2.1.0](#210) | [2.1.1](#211)
 - `2.0.x` Releases - [2.0.0](#200)
@@ -11,6 +12,17 @@ All notable changes to this project will be documented in this file.
 - `1.2.x` Releases - [1.2.0](#120) | [1.2.1](#121)
 - `1.1.x` Releases - [1.1.0](#110)
 - `1.0.x` Releases - [1.0.0](#100)
+
+---
+
+## [2.3.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.3.0)
+## Markdown Parsing
+Released on 2022-10-17.
+
+#### Added
+
+- [x] Markdown Parsing
+    - [x] `squashNewlines` parameter
 
 ---
 
