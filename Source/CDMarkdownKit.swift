@@ -32,5 +32,5 @@ import Foundation
 #error("CDMarkdownKit doesn't support Swift versions below 5.3.")
 #endif
 
-/// Current CDYelpFusionKit version. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
+/// Current CDMarkdownKit version. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
 let version = "2.2.0"

@@ -29,8 +29,6 @@ Released on 2022-06-26.
 - [x] CI
     - [x] Tests device, platform, Xcode, and SDK versions
 
-
-
 ---
 
 ## [2.1.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.1.1)

@@ -162,7 +162,7 @@ git submodule add https://github.com/chrisdhaan/CDMarkdownKit.git
 
 ## Contributing
 
-Before contributing to CDYelpFusionKit, please read the instructions detailed in our [contribution guide](https://github.com/chrisdhaan/CDYelpFusionKit/blob/master/CONTRIBUTING.md).
+Before contributing to CDMarkdownKit, please read the instructions detailed in our [contribution guide](https://github.com/chrisdhaan/CDMarkdownKit/blob/master/CONTRIBUTING.md).
 
 ---
 
