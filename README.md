@@ -186,7 +186,8 @@ let markdownParser = CDMarkdownParser(font: UIFont(name: "HelveticaNeue", size: 
                                       boldFont: UIFont(name: "HelveticaNeue-Bold", size: 16),
                                       italicFont: UIFont(name: "HelveticaNeue-Thin", size: 16),
                                       fontColor: UIColor.darkGray,
-                                      backgroundColor: UIColor.lightGray)
+                                      backgroundColor: UIColor.lightGray,
+                                      squashNewlines: false)
 // Customize elements
 /// Bold
 markdownParser.bold.color = UIColor.cyan
