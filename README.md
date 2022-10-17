@@ -99,7 +99,7 @@ For a demonstration of the capabilities of CDMarkdownKit; run the iOS Example pr
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate CDMarkdownKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'CDMarkdownKit', '2.2.0'
+pod 'CDMarkdownKit', '2.3.0'
 ```
 
 ### Carthage
@@ -107,7 +107,7 @@ pod 'CDMarkdownKit', '2.2.0'
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate CDMarkdownKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "chrisdhaan/CDMarkdownKit" == 2.2.0
+github "chrisdhaan/CDMarkdownKit" == 2.3.0
 ```
 
 ### Swift Package Manager
@@ -118,7 +118,7 @@ Once you have your Swift package set up, adding CDMarkdownKit as a dependency is
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", .upToNextMajor(from: "2.2.0"))
+    .package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", .upToNextMajor(from: "2.3.0"))
 ]
 ```
 
@@ -162,7 +162,7 @@ git submodule add https://github.com/chrisdhaan/CDMarkdownKit.git
 
 ## Contributing
 
-Before contributing to CDYelpFusionKit, please read the instructions detailed in our [contribution guide](https://github.com/chrisdhaan/CDYelpFusionKit/blob/master/CONTRIBUTING.md).
+Before contributing to CDMarkdownKit, please read the instructions detailed in our [contribution guide](https://github.com/chrisdhaan/CDMarkdownKit/blob/master/CONTRIBUTING.md).
 
 ---
 
@@ -186,7 +186,8 @@ let markdownParser = CDMarkdownParser(font: UIFont(name: "HelveticaNeue", size: 
                                       boldFont: UIFont(name: "HelveticaNeue-Bold", size: 16),
                                       italicFont: UIFont(name: "HelveticaNeue-Thin", size: 16),
                                       fontColor: UIColor.darkGray,
-                                      backgroundColor: UIColor.lightGray)
+                                      backgroundColor: UIColor.lightGray,
+                                      squashNewlines: false)
 // Customize elements
 /// Bold
 markdownParser.bold.color = UIColor.cyan

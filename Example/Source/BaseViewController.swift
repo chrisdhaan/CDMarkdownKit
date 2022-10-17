@@ -41,7 +41,8 @@ class BaseViewController: UIViewController {
     let screenSize = UIScreen.main.bounds.size
 
     private let customMarkdownParser = CDMarkdownParser(fontColor: UIColor.brown,
-                                                        backgroundColor: UIColor.yellow)
+                                                        backgroundColor: UIColor.yellow,
+                                                        squashNewlines: false)
     private let defaultMarkdownParser = CDMarkdownParser()
     private let markdownString = NSLocalizedString("Markdown",
                                                    tableName: nil,
