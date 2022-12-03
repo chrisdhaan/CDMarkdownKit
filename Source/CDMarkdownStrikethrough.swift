@@ -65,7 +65,9 @@ open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
     public func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange) {
         var adjustedAttributes = attributes
 
-        adjustedAttributes.addStrikethroughStyle(strikethroughStyle)
+        if let strikethroughStyle = strikethroughStyle {
+            adjustedAttributes.addStrikethroughStyle(strikethroughStyle)
+        }
         if let strikethroughColor = strikethroughColor {
             adjustedAttributes.addStrikethroughColor(strikethroughColor)
         }

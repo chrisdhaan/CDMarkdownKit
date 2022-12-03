@@ -38,14 +38,12 @@ class StoryboardLabelViewController: BaseViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 
-        self.onCustomParser = {
-            [weak self] in
+        self.onCustomParser = { [weak self] in
             // Configure label
             self?.storyboardLabel.roundAllCorners = true
         }
 
-        self.onDefaultParser = {
-            [weak self] in
+        self.onDefaultParser = { [weak self] in
             // Configure label
             self?.storyboardLabel.roundCodeCorners = true
             self?.storyboardLabel.roundSyntaxCorners = true

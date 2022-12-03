@@ -38,14 +38,12 @@ class StoryboardTextViewController: BaseViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 
-        self.onCustomParser = {
-            [weak self] in
+        self.onCustomParser = { [weak self] in
             // Configure text view
             self?.storyboardTextView.roundAllCorners = true
         }
 
-        self.onDefaultParser = {
-            [weak self] in
+        self.onDefaultParser = { [weak self] in
             // Configure text view
             self?.storyboardTextView.roundCodeCorners = true
             self?.storyboardTextView.roundSyntaxCorners = true
