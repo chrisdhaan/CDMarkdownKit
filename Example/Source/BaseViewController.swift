@@ -100,7 +100,7 @@ class BaseViewController: UIViewController {
         self.customMarkdownParser.strikethrough.font = UIFont.systemFont(ofSize: 20)
         self.customMarkdownParser.strikethrough.color = UIColor.magenta
         self.customMarkdownParser.strikethrough.strikethroughColor = UIColor.darkGray
-        self.customMarkdownParser.strikethrough.strikethroughStyle = .patternDash
+        self.customMarkdownParser.strikethrough.strikethroughStyle = .double
     }
 
     override func didReceiveMemoryWarning() {
