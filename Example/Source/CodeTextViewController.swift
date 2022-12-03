@@ -41,14 +41,12 @@ class CodeTextViewController: BaseViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
 
-        self.onCustomParser = {
-            [weak self] in
+        self.onCustomParser = { [weak self] in
             // Configure text view
             self?.codeTextView.roundAllCorners = true
         }
 
-        self.onDefaultParser = {
-            [weak self] in
+        self.onDefaultParser = { [weak self] in
             // Configure text view
             self?.codeTextView.roundCodeCorners = true
             self?.codeTextView.roundSyntaxCorners = true

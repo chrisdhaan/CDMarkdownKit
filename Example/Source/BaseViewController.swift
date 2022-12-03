@@ -97,6 +97,10 @@ class BaseViewController: UIViewController {
         self.customMarkdownParser.syntax.backgroundColor = UIColor.black
         self.customMarkdownParser.image.size = CGSize(width: 100,
                                                       height: 50)
+        self.customMarkdownParser.strikethrough.font = UIFont.systemFont(ofSize: 20)
+        self.customMarkdownParser.strikethrough.color = UIColor.magenta
+        self.customMarkdownParser.strikethrough.strikethroughColor = UIColor.darkGray
+        self.customMarkdownParser.strikethrough.strikethroughStyle = .double
     }
 
     override func didReceiveMemoryWarning() {

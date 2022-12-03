@@ -53,6 +53,7 @@ open class CDMarkdownParser {
 #if os(iOS) || os(macOS) || os(tvOS)
     public let image: CDMarkdownImage
 #endif
+    public let strikethrough: CDMarkdownStrikethrough
 
     // MARK: - Escaping Elements
     fileprivate var codeEscaping = CDMarkdownCodeEscaping()
@@ -137,14 +138,18 @@ open class CDMarkdownParser {
                                 paragraphStyle: paragraphStyle,
                                 size: imageSize)
 #endif
+        strikethrough = CDMarkdownStrikethrough(font: font,
+                                                color: fontColor,
+                                                backgroundColor: backgroundColor,
+                                                paragraphStyle: paragraphStyle)
 
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.squashNewlines = squashNewlines
         self.escapingElements = [codeEscaping, escaping]
 #if os(iOS) || os(macOS) || os(tvOS)
-        self.defaultElements = [header, list, quote, link, automaticLink, image, bold, italic]
+        self.defaultElements = [header, list, quote, link, automaticLink, image, bold, italic, strikethrough]
 #else
-        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic]
+        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic, strikethrough]
 #endif
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements

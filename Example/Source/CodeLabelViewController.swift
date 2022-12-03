@@ -38,14 +38,12 @@ class CodeLabelViewController: BaseViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 
-        self.onCustomParser = {
-            [weak self] in
+        self.onCustomParser = { [weak self] in
             // Configure label
             self?.codeLabel.roundAllCorners = true
         }
 
-        self.onDefaultParser = {
-            [weak self] in
+        self.onDefaultParser = { [weak self] in
             // Configure label
             self?.codeLabel.roundCodeCorners = true
             self?.codeLabel.roundSyntaxCorners = true
