@@ -39,6 +39,8 @@ open class CDMarkdownBold: CDMarkdownCommonElement {
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
+    open var underlineColor: CDColor?
+    open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         return CDMarkdownBold.regex
@@ -48,7 +50,9 @@ open class CDMarkdownBold: CDMarkdownCommonElement {
                 customBoldFont: CDFont? = nil,
                 color: CDColor? = nil,
                 backgroundColor: CDColor? = nil,
-                paragraphStyle: NSParagraphStyle? = nil) {
+                paragraphStyle: NSParagraphStyle? = nil,
+                underlineColor: CDColor? = nil,
+                underlineStyle: NSUnderlineStyle? = nil) {
         if let customBoldFont = customBoldFont {
             self.font = customBoldFont
         } else {
@@ -58,5 +62,7 @@ open class CDMarkdownBold: CDMarkdownCommonElement {
         self.color = color
         self.backgroundColor = backgroundColor
         self.paragraphStyle = paragraphStyle
+        self.underlineColor = underlineColor
+        self.underlineStyle = underlineStyle
     }
 }

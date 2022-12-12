@@ -41,8 +41,8 @@ open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
     open var paragraphStyle: NSParagraphStyle?
     open var strikethroughColor: CDColor?
     open var strikethroughStyle: NSUnderlineStyle?
-    open var underlineStyle: NSUnderlineStyle?
     open var underlineColor: CDColor?
+    open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         return CDMarkdownStrikethrough.regex
@@ -52,24 +52,28 @@ open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
                 color: CDColor? = nil,
                 backgroundColor: CDColor? = nil,
                 paragraphStyle: NSParagraphStyle? = nil,
+                strikethroughColor: CDColor? = nil,
                 strikethroughStyle: NSUnderlineStyle? = .single,
-                strikethroughColor: CDColor? = nil) {
+                underlineColor: CDColor? = nil,
+                underlineStyle: NSUnderlineStyle? = nil) {
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
         self.paragraphStyle = paragraphStyle
         self.strikethroughColor = strikethroughColor
         self.strikethroughStyle = strikethroughStyle
+        self.underlineColor = underlineColor
+        self.underlineStyle = underlineStyle
     }
 
     public func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange) {
         var adjustedAttributes = attributes
 
-        if let strikethroughStyle = strikethroughStyle {
-            adjustedAttributes.addStrikethroughStyle(strikethroughStyle)
-        }
         if let strikethroughColor = strikethroughColor {
             adjustedAttributes.addStrikethroughColor(strikethroughColor)
+        }
+        if let strikethroughStyle = strikethroughStyle {
+            adjustedAttributes.addStrikethroughStyle(strikethroughStyle)
         }
 
         attributedString.addAttributes(adjustedAttributes, range: range)

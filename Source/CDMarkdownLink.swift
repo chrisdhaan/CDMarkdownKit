@@ -39,6 +39,8 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
+    open var underlineColor: CDColor?
+    open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         return CDMarkdownLink.regex
@@ -52,11 +54,15 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
     public init(font: CDFont? = nil,
                 color: CDColor? = CDColor.blue,
                 backgroundColor: CDColor? = nil,
-                paragraphStyle: NSParagraphStyle? = nil) {
+                paragraphStyle: NSParagraphStyle? = nil,
+                underlineColor: CDColor? = nil,
+                underlineStyle: NSUnderlineStyle? = nil) {
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
         self.paragraphStyle = paragraphStyle
+        self.underlineColor = underlineColor
+        self.underlineStyle = underlineStyle
     }
 
     open func formatText(_ attributedString: NSMutableAttributedString,

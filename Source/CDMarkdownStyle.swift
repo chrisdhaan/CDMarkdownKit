@@ -38,6 +38,8 @@ public protocol CDMarkdownStyle {
     var color: CDColor? { get }
     var backgroundColor: CDColor? { get }
     var paragraphStyle: NSParagraphStyle? { get }
+    var underlineColor: CDColor? { get }
+    var underlineStyle: NSUnderlineStyle? { get }
     var attributes: [CDAttributedStringKey: AnyObject] { get }
 }
 
@@ -57,6 +59,12 @@ public extension CDMarkdownStyle {
         }
         if let paragraphStyle = paragraphStyle {
             attributes.addParagraphStyle(paragraphStyle)
+        }
+        if let underlineColor = underlineColor {
+            attributes.addUnderlineColor(underlineColor)
+        }
+        if let underlineStyle = underlineStyle {
+            attributes.addUnderlineStyle(underlineStyle)
         }
 
         return attributes
