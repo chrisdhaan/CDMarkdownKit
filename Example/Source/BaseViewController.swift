@@ -62,6 +62,8 @@ class BaseViewController: UIViewController {
         // Example of a markdown parser with custom properties
         self.customMarkdownParser.bold.color = UIColor.cyan
         self.customMarkdownParser.bold.backgroundColor = UIColor.purple
+        self.customMarkdownParser.bold.underlineColor = UIColor.red
+        self.customMarkdownParser.bold.underlineStyle = .double
         let boldParagraphStyle = NSMutableParagraphStyle()
         boldParagraphStyle.paragraphSpacing = 10
         boldParagraphStyle.paragraphSpacingBefore = 0

@@ -99,7 +99,7 @@ For a demonstration of the capabilities of CDMarkdownKit; run the iOS Example pr
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate CDMarkdownKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'CDMarkdownKit', '2.4.0'
+pod 'CDMarkdownKit', '2.5.0'
 ```
 
 ### Carthage
@@ -107,7 +107,7 @@ pod 'CDMarkdownKit', '2.4.0'
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate CDMarkdownKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "chrisdhaan/CDMarkdownKit" == 2.4.0
+github "chrisdhaan/CDMarkdownKit" == 2.5.0
 ```
 
 ### Swift Package Manager
@@ -118,7 +118,7 @@ Once you have your Swift package set up, adding CDMarkdownKit as a dependency is
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", .upToNextMajor(from: "2.4.0"))
+    .package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", .upToNextMajor(from: "2.5.0"))
 ]
 ```
 
@@ -192,6 +192,8 @@ let markdownParser = CDMarkdownParser(font: UIFont(name: "HelveticaNeue", size: 
 /// Bold
 markdownParser.bold.color = UIColor.cyan
 markdownParser.bold.backgroundColor = UIColor.purple
+markdownParser.bold.underlineColor = UIColor.red
+markdownParser.bold.underlineStyle = .double
 /// Header
 markdownParser.header.color = UIColor.black
 markdownParser.header.backgroundColor = UIColor.orange
@@ -225,6 +227,11 @@ markdownParser.syntax.backgroundColor = UIColor.black
 /// Image
 markdownParser.image.size = CGSize(width: 100,
                                    height: 50)
+/// Strikethrough
+markdownParser.strikethrough.font = UIFont.systemFont(ofSize: 20)
+markdownParser.strikethrough.color = UIColor.magenta
+markdownParser.strikethrough.strikethroughColor = UIColor.darkGray
+markdownParser.strikethrough.strikethroughStyle = .double
 // Parse markdown
 let markdown = "This *framework* helps **with** parsing `markdown`."
 label.attributedText = markdownParser.parse(markdown)

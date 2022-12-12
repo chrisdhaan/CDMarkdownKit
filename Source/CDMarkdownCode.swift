@@ -39,6 +39,8 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
+    open var underlineColor: CDColor?
+    open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         return CDMarkdownCode.regex
@@ -47,11 +49,15 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
     public init(font: CDFont? = CDFont(name: "Menlo-Regular", size: 12),
                 color: CDColor? = CDColor.codeTextRed(),
                 backgroundColor: CDColor? = CDColor.codeBackgroundRed(),
-                paragraphStyle: NSParagraphStyle? = nil) {
+                paragraphStyle: NSParagraphStyle? = nil,
+                underlineColor: CDColor? = nil,
+                underlineStyle: NSUnderlineStyle? = nil) {
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
         self.paragraphStyle = paragraphStyle
+        self.underlineColor = underlineColor
+        self.underlineStyle = underlineStyle
     }
 
     open func addAttributes(_ attributedString: NSMutableAttributedString,

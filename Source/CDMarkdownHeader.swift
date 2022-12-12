@@ -44,12 +44,14 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         static let zero  = 0
     }
 
-    open var maxLevel: Int
     open var font: CDFont?
+    open var maxLevel: Int
+    open var fontIncrease: Int
     open var color: CDColor?
     open var backgroundColor: CDColor?
     open var paragraphStyle: NSParagraphStyle?
-    open var fontIncrease: Int
+    open var underlineColor: CDColor?
+    open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         let level: String = maxLevel > 0 ? "\(maxLevel)" : ""
@@ -61,9 +63,12 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
                 fontIncrease: Int = 2,
                 color: CDColor? = nil,
                 backgroundColor: CDColor? = nil,
-                paragraphStyle: NSParagraphStyle? = nil) {
-        self.maxLevel = maxLevel
+                paragraphStyle: NSParagraphStyle? = nil,
+                underlineColor: CDColor? = nil,
+                underlineStyle: NSUnderlineStyle? = nil) {
         self.font = font
+        self.maxLevel = maxLevel
+        self.fontIncrease = fontIncrease
         self.color = color
         self.backgroundColor = backgroundColor
         if let paragraphStyle = paragraphStyle {
@@ -74,7 +79,8 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
             paragraphStyle.paragraphSpacingBefore = 12
             self.paragraphStyle = paragraphStyle
         }
-        self.fontIncrease = fontIncrease
+        self.underlineColor = underlineColor
+        self.underlineStyle = underlineStyle
     }
 
     open func formatText(_ attributedString: NSMutableAttributedString,
