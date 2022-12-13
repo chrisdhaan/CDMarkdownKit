@@ -21,7 +21,7 @@
         <img src="https://img.shields.io/github/release/chrisdhaan/CDMarkdownKit.svg" alt="GitHub Release">
     </a>
     <a href="https://www.swift.org">
-        <img src="https://img.shields.io/badge/Swift-5.3_5.4_5.5_5.6-orange?style=flat" alt="Swift Versions">
+        <img src="https://img.shields.io/badge/Swift-5.3_5.4_5.5_5.6_5.7-orange?style=flat" alt="Swift Versions">
     </a>
     <a href="http://cocoapods.org/pods/CDMarkdownKit">
         <img src="https://img.shields.io/cocoapods/p/CDMarkdownKit.svg?style=flat" alt="Platforms">
@@ -99,7 +99,7 @@ For a demonstration of the capabilities of CDMarkdownKit; run the iOS Example pr
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate CDMarkdownKit into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
-pod 'CDMarkdownKit', '2.5.0'
+pod 'CDMarkdownKit', '2.5.1'
 ```
 
 ### Carthage
@@ -107,7 +107,7 @@ pod 'CDMarkdownKit', '2.5.0'
 [Carthage](https://github.com/Carthage/Carthage) is a decentralized dependency manager that builds your dependencies and provides you with binary frameworks. To integrate CDMarkdownKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "chrisdhaan/CDMarkdownKit" == 2.5.0
+github "chrisdhaan/CDMarkdownKit" == 2.5.1
 ```
 
 ### Swift Package Manager
@@ -118,7 +118,7 @@ Once you have your Swift package set up, adding CDMarkdownKit as a dependency is
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", .upToNextMajor(from: "2.5.0"))
+    .package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", .upToNextMajor(from: "2.5.1"))
 ]
 ```
 
@@ -396,10 +396,13 @@ CDMarkdownKit was influenced by [MarkdownKit](https://github.com/ivanbruel/Markd
 CDMarkdownKit adds the following functionalities:
 - Fixed header element parsing
 - Image element parsing
+- Strikethrough element parsing
 - Ability to customize font for all elements
 - Ability to customize color for all elements
 - Ability to customize background color for all elements
 - Ability to customize paragraph style for all elements
+- Ability to customize underline color style for all elements
+- Ability to customize underline style style for all elements
 - UITextView with the ability to round background text color corners for code, syntax, or all elements
 - UILabel with the ability to round background text color corners for code, syntax, or all elements
 - macOS, tvOS, and watchOS support
