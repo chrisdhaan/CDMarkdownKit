@@ -1,9 +1,9 @@
-// swift-tools-version:5.4
+// swift-tools-version:5.6
 //
 //  Package.swift
 //  CDMarkdownKit
 //
-//  Created by Christopher de Haan on 6/26/2022.
+//  Created by Christopher de Haan on 12/12/2022.
 //
 //  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -50,3 +50,4 @@ let package = Package(name: "CDMarkdownKit",
                                                                                             .tvOS,
                                                                                             .watchOS]))])],
                       swiftLanguageVersions: [.v5])
+

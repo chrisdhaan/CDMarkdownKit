@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.7
 //
 //  Package.swift
 //  CDMarkdownKit
@@ -28,26 +28,25 @@
 
 import PackageDescription
 
-let package = Package(
-    name: "CDMarkdownKit",
-    platforms: [
-        .macOS(.v10_12),
-        .iOS(.v10),
-        .tvOS(.v10),
-        .watchOS(.v3)
-    ],
-    products: [
-        .library(
-            name: "CDMarkdownKit",
-            targets: ["CDMarkdownKit"])
-    ],
-    targets: [
-        .target(
-            name: "CDMarkdownKit",
-            path: "Source",
-            exclude: ["Info.plist"],
-            linkerSettings: [
-                .linkedFramework("UIKit", .when(platforms: [.iOS, .tvOS]))
-            ])
-    ],
-    swiftLanguageVersions: [.v5])
+let package = Package(name: "CDMarkdownKit",
+                      platforms: [.macOS(.v10_13),
+                                  .iOS(.v11),
+                                  .tvOS(.v11),
+                                  .watchOS(.v4)],
+                      products: [.library(name: "CDMarkdownKit",
+                                          targets: ["CDMarkdownKit"])],
+                      targets: [.target(name: "CDMarkdownKit",
+                                        path: "Source",
+                                        exclude: ["Info.plist"],
+                                        linkerSettings: [.linkedFramework("Foundation",
+                                                                          .when(platforms: [.macOS,
+                                                                                            .iOS,
+                                                                                            .tvOS,
+                                                                                            .watchOS])),
+                                                         .linkedFramework("Cocoa",
+                                                                          .when(platforms: [.macOS])),
+                                                         .linkedFramework("UIKit",
+                                                                          .when(platforms: [.iOS,
+                                                                                            .tvOS,
+                                                                                            .watchOS]))])],
+                      swiftLanguageVersions: [.v5])

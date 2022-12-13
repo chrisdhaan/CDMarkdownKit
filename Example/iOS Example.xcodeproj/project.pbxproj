@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5F40591A24FC66A100DBCEF8 /* CDMarkdownKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B2B366431F324FAA0078B962 /* CDMarkdownKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5F40591A24FC66A100DBCEF8 /* CDMarkdownKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B2B366431F324FAA0078B962 /* CDMarkdownKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B2B365EA1F324BDA0078B962 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B365E81F324BDA0078B962 /* AppDelegate.swift */; };
 		B2B365EB1F324BDA0078B962 /* CodeTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B365E91F324BDA0078B962 /* CodeTextViewController.swift */; };
 		B2B365F81F324C0C0078B962 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2B365F71F324C0C0078B962 /* Assets.xcassets */; };
@@ -59,15 +59,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		B2B366481F324FC80078B962 /* Embed Frameworks */ = {
+		B2B366481F324FC80078B962 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5F40591A24FC66A100DBCEF8 /* CDMarkdownKit.framework in Embed Frameworks */,
+				5F40591A24FC66A100DBCEF8 /* CDMarkdownKit.framework in Copy Frameworks */,
 			);
-			name = "Embed Frameworks";
+			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -171,7 +171,7 @@
 				B2B365C71F324A930078B962 /* Sources */,
 				B2B365C81F324A930078B962 /* Frameworks */,
 				B2B365C91F324A930078B962 /* Resources */,
-				B2B366481F324FC80078B962 /* Embed Frameworks */,
+				B2B366481F324FC80078B962 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -416,7 +416,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -434,6 +434,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.christopherdehaan.iOS-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -445,6 +446,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.christopherdehaan.iOS-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;
 		};
