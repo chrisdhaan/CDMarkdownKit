@@ -80,14 +80,6 @@ jobs:
             xcode: "Xcode_12.5.1.app"
             name: "iOS 14.5"
             destination: "OS=14.5,name=iPhone 12 Pro"
-          - runsOn: macOS-11
-            xcode: "Xcode_11.7.app"
-            name: "iOS 13.7"
-            destination: "OS=13.7,name=iPhone 11 Pro"
-          - runsOn: macOS-10.15
-            xcode: "Xcode_10.3.app"
-            name: "iOS 12.4"
-            destination: "OS=12.4,name=iPhone Xs"
     steps:
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
@@ -182,14 +174,6 @@ jobs:
             xcode: "Xcode_12.5.1.app"
             name: "tvOS 14.5"
             destination: "OS=14.5,name=Apple TV"
-          - runsOn: macOS-11
-            xcode: "Xcode_11.7.app"
-            name: "tvOS 13.4"
-            destination: "OS=13.4,name=Apple TV"
-          - runsOn: macOS-10.15
-            xcode: "Xcode_10.3.app"
-            name: "tvOS 12.4"
-            destination: "OS=12.4,name=Apple TV"
     steps:
       - uses: actions/checkout@v3
       - name: ${{ matrix.name }} - Debug
