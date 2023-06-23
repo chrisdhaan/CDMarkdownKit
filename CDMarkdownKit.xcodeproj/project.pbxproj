@@ -11,6 +11,14 @@
 		5F0AD09621063D36007B718F /* CDImage+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AD09421063D36007B718F /* CDImage+CDMarkdownKit.swift */; };
 		5F0AD09721063D36007B718F /* CDImage+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AD09421063D36007B718F /* CDImage+CDMarkdownKit.swift */; };
 		5F0AD09821063D36007B718F /* CDImage+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F0AD09421063D36007B718F /* CDImage+CDMarkdownKit.swift */; };
+		96E4225D2A45F5BA00B2EA17 /* AsyncAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4225C2A45F5BA00B2EA17 /* AsyncAttachment.swift */; };
+		96E4225E2A45F5BA00B2EA17 /* AsyncAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4225C2A45F5BA00B2EA17 /* AsyncAttachment.swift */; };
+		96E4225F2A45F5BA00B2EA17 /* AsyncAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4225C2A45F5BA00B2EA17 /* AsyncAttachment.swift */; };
+		96E422602A45F5BA00B2EA17 /* AsyncAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E4225C2A45F5BA00B2EA17 /* AsyncAttachment.swift */; };
+		96E422622A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E422612A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift */; };
+		96E422632A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E422612A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift */; };
+		96E422642A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E422612A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift */; };
+		96E422652A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E422612A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift */; };
 		B205C6661FC129EB00E74CBA /* CDColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B205C6651FC129EB00E74CBA /* CDColor.swift */; };
 		B205C6671FC129EB00E74CBA /* CDColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B205C6651FC129EB00E74CBA /* CDColor.swift */; };
 		B205C6681FC129EB00E74CBA /* CDColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B205C6651FC129EB00E74CBA /* CDColor.swift */; };
@@ -159,6 +167,8 @@
 
 /* Begin PBXFileReference section */
 		5F0AD09421063D36007B718F /* CDImage+CDMarkdownKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDImage+CDMarkdownKit.swift"; sourceTree = "<group>"; };
+		96E4225C2A45F5BA00B2EA17 /* AsyncAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncAttachment.swift; sourceTree = "<group>"; };
+		96E422612A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutManager+CDMarkdownKit.swift"; sourceTree = "<group>"; };
 		B205C6651FC129EB00E74CBA /* CDColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDColor.swift; sourceTree = "<group>"; };
 		B205C66A1FC129FC00E74CBA /* CDFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDFont.swift; sourceTree = "<group>"; };
 		B205C66F1FC135DF00E74CBA /* CDImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDImage.swift; sourceTree = "<group>"; };
@@ -364,6 +374,7 @@
 				B22C0E8521B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift */,
 				B22C0E8D21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift */,
 				B2B3661D1F324DE90078B962 /* String+CDMarkdownKit.swift */,
+				96E422612A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -383,6 +394,7 @@
 		B2B3663D1F324E940078B962 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				96E4225C2A45F5BA00B2EA17 /* AsyncAttachment.swift */,
 				B2B3660A1F324DE90078B962 /* CDMarkdownLabel.swift */,
 				B2B366161F324DE90078B962 /* CDMarkdownLayoutManager.swift */,
 				B2B366111F324DE90078B962 /* CDMarkdownTextView.swift */,
@@ -635,12 +647,14 @@
 				B29FE73D21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0B41FBF95A400EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0B51FBF95A400EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
+				96E4225E2A45F5BA00B2EA17 /* AsyncAttachment.swift in Sources */,
 				B2ACA0B11FBF95A400EABEF6 /* CDMarkdownLevelElement.swift in Sources */,
 				B2ACA0A51FBF95A400EABEF6 /* CDMarkdownLink.swift in Sources */,
 				B2ACA0B21FBF95A400EABEF6 /* CDMarkdownLinkElement.swift in Sources */,
 				B255AD8720D8000A00E8044D /* CDAttributedStringKey.swift in Sources */,
 				B2ACA0A61FBF95A400EABEF6 /* CDMarkdownList.swift in Sources */,
 				B22C0E8F21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */,
+				96E422632A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift in Sources */,
 				B22C0E9421B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */,
 				B22C0E8721B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */,
 				B2ACA09E1FBF95A400EABEF6 /* CDMarkdownParser.swift in Sources */,
@@ -679,12 +693,14 @@
 				B29FE73E21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0CD1FBF960A00EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0CE1FBF960A00EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
+				96E4225F2A45F5BA00B2EA17 /* AsyncAttachment.swift in Sources */,
 				B2ACA0CA1FBF960A00EABEF6 /* CDMarkdownLevelElement.swift in Sources */,
 				B2ACA0BE1FBF960A00EABEF6 /* CDMarkdownLink.swift in Sources */,
 				B2ACA0CB1FBF960A00EABEF6 /* CDMarkdownLinkElement.swift in Sources */,
 				B255AD8820D8000A00E8044D /* CDAttributedStringKey.swift in Sources */,
 				B2ACA0BF1FBF960A00EABEF6 /* CDMarkdownList.swift in Sources */,
 				B22C0E9021B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */,
+				96E422642A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift in Sources */,
 				B22C0E9521B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */,
 				B22C0E8821B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */,
 				B2ACA0C01FBF960A00EABEF6 /* CDMarkdownQuote.swift in Sources */,
@@ -723,12 +739,14 @@
 				B29FE73F21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0E61FBF967800EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0E71FBF967800EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
+				96E422602A45F5BA00B2EA17 /* AsyncAttachment.swift in Sources */,
 				B2ACA0E31FBF967800EABEF6 /* CDMarkdownLevelElement.swift in Sources */,
 				B2ACA0D71FBF967800EABEF6 /* CDMarkdownLink.swift in Sources */,
 				B2ACA0E41FBF967800EABEF6 /* CDMarkdownLinkElement.swift in Sources */,
 				B255AD8920D8000A00E8044D /* CDAttributedStringKey.swift in Sources */,
 				B2ACA0D81FBF967800EABEF6 /* CDMarkdownList.swift in Sources */,
 				B22C0E9121B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */,
+				96E422652A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift in Sources */,
 				B22C0E9621B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */,
 				B22C0E8921B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */,
 				B2ACA0D01FBF967800EABEF6 /* CDMarkdownParser.swift in Sources */,
@@ -767,12 +785,14 @@
 				B29FE73C21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2B366231F324DE90078B962 /* CDMarkdownLabel.swift in Sources */,
 				B2B3662F1F324DE90078B962 /* CDMarkdownLayoutManager.swift in Sources */,
+				96E4225D2A45F5BA00B2EA17 /* AsyncAttachment.swift in Sources */,
 				B2B366301F324DE90078B962 /* CDMarkdownLevelElement.swift in Sources */,
 				B2B366211F324DE90078B962 /* CDMarkdownLink.swift in Sources */,
 				B2B366311F324DE90078B962 /* CDMarkdownLinkElement.swift in Sources */,
 				B255AD8620D8000A00E8044D /* CDAttributedStringKey.swift in Sources */,
 				B2B366291F324DE90078B962 /* CDMarkdownList.swift in Sources */,
 				B22C0E8E21B1AAD5006CE401 /* NSTextStorage+CDMarkdownKit.swift in Sources */,
+				96E422622A45F5DA00B2EA17 /* NSLayoutManager+CDMarkdownKit.swift in Sources */,
 				B22C0E9321B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift in Sources */,
 				B22C0E8621B195C4006CE401 /* NSTextCheckingResult+CDMarkdownKit.swift in Sources */,
 				B2B366321F324DE90078B962 /* CDMarkdownQuote.swift in Sources */,
