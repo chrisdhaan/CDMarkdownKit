@@ -99,7 +99,11 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
         attributedString.deleteCharacters(in: NSRange(location: match.range.location,
                                                       length: linkRange.length + 2))
 
-        // load image
+        // load image async and apply when download finish
+        #if os(iOS)
+        let textAttachment = AsyncTextAttachment(imageURL: URL(string: linkURLString),delegate: self)
+        textAttachment.maximumDisplayWidth = size?.width
+        #else
         let textAttachment = NSTextAttachment()
         if let url = URL(string: linkURLString) {
             let data = try? Data(contentsOf: url)
@@ -116,6 +120,7 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
                                          forImage: image)
             }
         }
+        #endif
 
         // replace text with image
         let textAttachmentAttributedString = NSAttributedString(attachment: textAttachment)
