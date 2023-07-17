@@ -64,6 +64,10 @@ open class CDMarkdownParser {
     // Enables or disables detection of URLs even without Markdown format
     open var automaticLinkDetectionEnabled: Bool = true
     open var squashNewlines: Bool = true
+
+    // Removes whitespace characters on the beginning of each line
+    open var trimLeadingWhitespaces: Bool = true
+
     public let font: CDFont
     public let fontColor: CDColor
     public let backgroundColor: CDColor
@@ -188,15 +192,19 @@ open class CDMarkdownParser {
                                          with: " ",
                                          range: NSRange(location: 0,
                                                         length: mutableString.length))
-        let regExp = try? NSRegularExpression(pattern: "^\\s+",
-                                              options: .anchorsMatchLines)
-        if let regExp = regExp {
-            regExp.replaceMatches(in: mutableString,
-                                  options: [],
-                                  range: NSRange(location: 0,
-                                                 length: mutableString.length),
-                                  withTemplate: "")
+
+        if trimLeadingWhitespaces {
+            let regExp = try? NSRegularExpression(pattern: "^\\s+",
+                                                  options: .anchorsMatchLines)
+            if let regExp = regExp {
+                regExp.replaceMatches(in: mutableString,
+                                      options: [],
+                                      range: NSRange(location: 0,
+                                                     length: mutableString.length),
+                                      withTemplate: "")
+            }
         }
+
         let range = NSRange(location: 0,
                             length: attributedString.length)
 
