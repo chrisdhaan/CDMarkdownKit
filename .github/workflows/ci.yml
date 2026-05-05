@@ -1,18 +1,20 @@
 name: "CDMarkdownKit CI"
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - master
     paths:
       - ".github/workflows/**"
       - "Package.swift"
       - "Source/**"
+      - "Tests/**"
   pull_request:
     paths:
       - ".github/workflows/**"
       - "Package.swift"
       - "Source/**"
+      - "Tests/**"
 
 concurrency: 
   group: ${{ github.ref_name }}
