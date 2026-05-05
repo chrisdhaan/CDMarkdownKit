@@ -290,4 +290,4 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
       - name: ${{ matrix.name }}
-        run: swift build -c debug
+        run: set -o pipefail && swift build 2>&1 | xcbeautify --renderer github-actions
