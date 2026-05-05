@@ -49,4 +49,4 @@ let package = Package(name: "CDMarkdownKit",
                                                                           .when(platforms: [.iOS,
                                                                                             .tvOS,
                                                                                             .watchOS]))])],
-                      swiftLanguageVersions: [.v5])
+                      swiftLanguageModes: [.v5])
