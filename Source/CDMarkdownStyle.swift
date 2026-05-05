@@ -40,10 +40,15 @@ public protocol CDMarkdownStyle {
     var paragraphStyle: NSParagraphStyle? { get }
     var underlineColor: CDColor? { get }
     var underlineStyle: NSUnderlineStyle? { get }
+    var strikethroughColor: CDColor? { get }
+    var strikethroughStyle: NSUnderlineStyle? { get }
     var attributes: [CDAttributedStringKey: AnyObject] { get }
 }
 
 public extension CDMarkdownStyle {
+
+    var strikethroughColor: CDColor? { return nil }
+    var strikethroughStyle: NSUnderlineStyle? { return nil }
 
     var attributes: [CDAttributedStringKey: AnyObject] {
         var attributes = [CDAttributedStringKey: AnyObject]()
@@ -65,6 +70,12 @@ public extension CDMarkdownStyle {
         }
         if let underlineStyle = underlineStyle {
             attributes.addUnderlineStyle(underlineStyle)
+        }
+        if let strikethroughColor = strikethroughColor {
+            attributes.addStrikethroughColor(strikethroughColor)
+        }
+        if let strikethroughStyle = strikethroughStyle {
+            attributes.addStrikethroughStyle(strikethroughStyle)
         }
 
         return attributes
