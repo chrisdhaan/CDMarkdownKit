@@ -63,7 +63,17 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
     open func addAttributes(_ attributedString: NSMutableAttributedString,
                             range: NSRange) {
         let matchString: String = attributedString.attributedSubstring(from: range).string
-        guard let unescapedString = matchString.unescapeUTF16() else { return }
+        guard var unescapedString = matchString.unescapeUTF16() else { return }
+
+        // Strip optional language hint: first line with no whitespace (e.g. "js", "swift", "python")
+        let newlineCharacters = CharacterSet.newlines
+        if let firstNewline = unescapedString.rangeOfCharacter(from: newlineCharacters) {
+            let hint = String(unescapedString[unescapedString.startIndex..<firstNewline.lowerBound])
+            if !hint.isEmpty && hint.rangeOfCharacter(from: .whitespaces) == nil {
+                unescapedString = String(unescapedString[firstNewline.upperBound...])
+            }
+        }
+
         attributedString.replaceCharacters(in: range,
                                            with: unescapedString)
 
