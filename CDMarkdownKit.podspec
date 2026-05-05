@@ -19,7 +19,8 @@ Pod::Spec.new do |s|
   s.swift_versions = ['5']
   
   s.source_files = 'Source/*.swift'
-  
+  s.resource_bundles = { 'CDMarkdownKit' => ['Source/PrivacyInfo.xcprivacy'] }
+
   s.framework = 'Foundation'
   s.ios.framework  = 'UIKit'
   s.osx.framework  = 'Cocoa'
