@@ -28,3 +28,7 @@
 import Foundation
 
 public typealias CDAttributedStringKey = NSAttributedString.Key
+
+extension NSAttributedString.Key {
+    static let cdMarkdownRoundedBackground = NSAttributedString.Key("CDMarkdownKit.roundedBackground")
+}

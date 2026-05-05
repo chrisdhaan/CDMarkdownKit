@@ -32,8 +32,6 @@ import UIKit
 open class CDMarkdownLayoutManager: NSLayoutManager {
 
     open var roundAllCorners: Bool = false
-    open var roundCodeCorners: Bool = false
-    open var roundSyntaxCorners: Bool = false
 
     override open func fillBackgroundRectArray(_ rectArray: UnsafePointer<CGRect>,
                                                count rectCount: Int,
@@ -41,10 +39,11 @@ open class CDMarkdownLayoutManager: NSLayoutManager {
                                                color: UIColor) {
 
         var cornerRadius: CGFloat = 0
-        if (self.roundCodeCorners == true && color.isEqualTo(otherColor: UIColor.codeBackgroundRed())) ||
-            (self.roundSyntaxCorners == true && color.isEqualTo(otherColor: UIColor.syntaxBackgroundGray())) ||
-            self.roundAllCorners == true {
-
+        let hasRoundedAttribute = self.textStorage?.attribute(
+            .cdMarkdownRoundedBackground,
+            at: charRange.location,
+            effectiveRange: nil) as? Bool == true
+        if hasRoundedAttribute || self.roundAllCorners {
             cornerRadius = 3
         }
 

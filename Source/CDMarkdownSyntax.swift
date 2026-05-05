@@ -71,6 +71,9 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                             length: unescapedString.characterCount())
         attributedString.addAttributes(attributes,
                                        range: range)
+        attributedString.addAttribute(.cdMarkdownRoundedBackground,
+                                      value: true as AnyObject,
+                                      range: range)
         // If the previous character was a newline then parser doesn't have to worry about
         // wrapping the background color from the end of the last element to the newline.
         if range.location - 4 >= 0,

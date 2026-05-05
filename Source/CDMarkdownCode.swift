@@ -70,6 +70,9 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
                             length: unescapedString.characterCount())
         attributedString.addAttributes(attributes,
                                        range: range)
+        attributedString.addAttribute(.cdMarkdownRoundedBackground,
+                                      value: true as AnyObject,
+                                      range: range)
         let mutableString = attributedString.mutableString
         // Remove \n if in string, not valid in Code element
         // Use Syntax element for \n to parse in string

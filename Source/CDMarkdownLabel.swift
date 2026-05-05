@@ -54,20 +54,6 @@ open class CDMarkdownLabel: UILabel {
             }
         }
     }
-    open var roundCodeCorners: Bool = false {
-        didSet {
-            if let layoutManager = self.customLayoutManager {
-                layoutManager.roundCodeCorners = roundCodeCorners
-            }
-        }
-    }
-    open var roundSyntaxCorners: Bool = false {
-        didSet {
-            if let layoutManager = self.customLayoutManager {
-                layoutManager.roundSyntaxCorners = roundSyntaxCorners
-            }
-        }
-    }
 
     open override var frame: CGRect {
         get {
