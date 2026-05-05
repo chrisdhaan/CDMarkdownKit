@@ -34,7 +34,11 @@
 open class CDMarkdownAutomaticLink: CDMarkdownLink {
 
     open override func regularExpression() throws -> NSRegularExpression {
+        #if os(watchOS)
+        return try NSRegularExpression(pattern: "(?!)", options: [])
+        #else
         return try NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+        #endif
     }
 
     open override func match(_ match: NSTextCheckingResult,
