@@ -331,7 +331,7 @@ open class CDMarkdownLabel: UILabel {
     }
 
     private func parseTextAndExtractURLRanges(_ attrString: NSAttributedString) {
-
+        urlRanges.removeAll()
         attrString.enumerateLinkAttribute(in: NSRange(location: 0,
                                                       length: attrString.length),
                                           options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
