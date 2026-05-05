@@ -40,26 +40,14 @@ open class CDMarkdownTextView: UITextView {
             }
         }
     }
-    open var roundCodeCorners: Bool = false {
-        didSet {
-            if let layoutManager = self.customLayoutManager {
-                layoutManager.roundCodeCorners = roundCodeCorners
-            }
-        }
-    }
-    open var roundSyntaxCorners: Bool = false {
-        didSet {
-            if let layoutManager = self.customLayoutManager {
-                layoutManager.roundSyntaxCorners = roundSyntaxCorners
-            }
-        }
-    }
 
     open override var attributedText: NSAttributedString! {
         get {
             return super.attributedText
         }
         set {
+            super.attributedText = newValue
+            guard let newValue = newValue else { return }
             self.customTextStorage = NSTextStorage(attributedString: newValue)
             if let layoutManager = self.customLayoutManager {
                 self.customTextStorage.addLayoutManager(layoutManager)
