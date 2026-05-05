@@ -37,7 +37,7 @@ jobs:
           - name: "watchOS"
             destination: "OS=9.1,name=Apple Watch Series 8 (45mm)"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
@@ -53,7 +53,7 @@ jobs:
       DEVELOPER_DIR: "/Applications/Xcode_14.1.app/Contents/Developer"
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Catalyst - Debug
         run: |
           set -o pipefail
@@ -81,7 +81,7 @@ jobs:
             name: "iOS 14.5"
             destination: "OS=14.5,name=iPhone 12 Pro"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/cache@v3
         with:
           path: Pods
@@ -147,7 +147,7 @@ jobs:
             xcode: "Xcode_12.1.1.app"
             name: "macOS 10.15, Xcode 12.1.1, Swift 5.3.0"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
@@ -175,7 +175,7 @@ jobs:
             name: "tvOS 14.5"
             destination: "OS=14.5,name=Apple TV"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
@@ -204,7 +204,7 @@ jobs:
             destination: "OS=7.4,name=Apple Watch Series 6 - 44mm"
             
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
@@ -260,6 +260,6 @@ jobs:
             runsOn: macOS-10.15
             name: "macOS 10.15, SPM 5.3.0 Build"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: ${{ matrix.name }}
         run: swift build -c debug
