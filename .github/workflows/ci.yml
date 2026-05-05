@@ -110,10 +110,10 @@ jobs:
         run: |
           set -o pipefail
           env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
-      - name: Pod Lib Lint
-        run: |
-          gem install cocoapods --no-document --quiet
-          pod lib lint --allow-warnings --use-libraries
+      - name: Install Gems
+        run: bundle install
+      - name: pod lib lint
+        run: bundle exec pod lib lint --allow-warnings
   macOS:
     name: Test macOS
     runs-on: ${{ matrix.runsOn }}
