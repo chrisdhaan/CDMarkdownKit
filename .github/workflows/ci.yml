@@ -301,3 +301,26 @@ jobs:
         run: brew install swiftlint
       - name: Lint
         run: swiftlint lint --strict
+  codeql:
+    name: CodeQL
+    runs-on: macos-15
+    timeout-minutes: 20
+    permissions:
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: swift
+      - name: Build
+        run: |
+          xcodebuild -project CDMarkdownKit.xcodeproj \
+            -scheme "CDMarkdownKit iOS" \
+            -destination "generic/platform=iOS" \
+            -configuration Debug \
+            clean build
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
