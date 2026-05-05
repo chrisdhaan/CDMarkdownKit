@@ -53,9 +53,10 @@ internal extension CDFont {
 #else
 
     private func withTraits(_ traits: CDFontDescriptorSymbolicTraits...) -> CDFont {
-        let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(traits))
-        return CDFont(descriptor: descriptor!,
-                      size: self.pointSize)
+        guard let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(traits)) else {
+            return self
+        }
+        return CDFont(descriptor: descriptor, size: self.pointSize)
     }
 
     func bold() -> CDFont {
