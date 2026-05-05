@@ -40,14 +40,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+      - name: Install xcbeautify
+        run: brew install xcbeautify
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit ${{ matrix.name }}" -destination "${{ matrix.destination }}" -configuration Debug clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit ${{ matrix.name }}" -destination "${{ matrix.destination }}" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
       - name: ${{ matrix.name }} - Release
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit ${{ matrix.name }}" -destination "${{ matrix.destination }}" -configuration Release clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit ${{ matrix.name }}" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
   Catalyst:
     name: Test Catalyst
     runs-on: macOS-15
@@ -58,14 +60,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+      - name: Install xcbeautify
+        run: brew install xcbeautify
       - name: Catalyst - Debug
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "platform=macOS" -configuration Debug clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "platform=macOS" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
       - name: Catalyst - Release
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "platform=macOS" -configuration Release clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "platform=macOS" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
   iOS:
     name: Test iOS
     runs-on: ${{ matrix.runsOn }}
@@ -88,6 +92,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+      - name: Install xcbeautify
+        run: brew install xcbeautify
       - uses: actions/cache@v3
         with:
           path: Pods
@@ -97,11 +103,11 @@ jobs:
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "${{ matrix.destination }}" -configuration Debug clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "${{ matrix.destination }}" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
       - name: ${{ matrix.name }} - Release
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "${{ matrix.destination }}" -configuration Release clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
       - name: Pod Lib Lint
         run: |
           gem install cocoapods --no-document --quiet
@@ -156,14 +162,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+      - name: Install xcbeautify
+        run: brew install xcbeautify
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit macOS" -destination "platform=macOS" -configuration Debug clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit macOS" -destination "platform=macOS" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
       - name: ${{ matrix.name }} - Release
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit macOS" -destination "platform=macOS" -configuration Release clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit macOS" -destination "platform=macOS" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
   tvOS:
     name: Test tvOS
     runs-on: ${{ matrix.runsOn }}
@@ -186,14 +194,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+      - name: Install xcbeautify
+        run: brew install xcbeautify
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit tvOS" -destination "${{ matrix.destination }}" -configuration Debug clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit tvOS" -destination "${{ matrix.destination }}" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
       - name: ${{ matrix.name }} - Release
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit tvOS" -destination "${{ matrix.destination }}" -configuration Release clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit tvOS" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
   watchOS:
     name: Test watchOS
     runs-on: ${{ matrix.runsOn }}
@@ -217,14 +227,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+      - name: Install xcbeautify
+        run: brew install xcbeautify
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit watchOS" -destination "${{ matrix.destination }}" -configuration Debug clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit watchOS" -destination "${{ matrix.destination }}" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
       - name: ${{ matrix.name }} - Release
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit watchOS" -destination "${{ matrix.destination }}" -configuration Release clean build | xcpretty
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit watchOS" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
   SPM:
     name: Test with SPM
     runs-on: ${{ matrix.runsOn }}
