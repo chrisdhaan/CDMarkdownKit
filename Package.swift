@@ -52,5 +52,9 @@ let package = Package(name: "CDMarkdownKit",
                                                          .linkedFramework("UIKit",
                                                                           .when(platforms: [.iOS,
                                                                                             .tvOS,
-                                                                                            .watchOS]))])],
+                                                                                            .watchOS]))]),
+                                .testTarget(
+                                    name: "CDMarkdownKitTests",
+                                    dependencies: ["CDMarkdownKit"]
+                                )],
                       swiftLanguageModes: [.v5])
