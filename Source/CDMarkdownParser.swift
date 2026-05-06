@@ -34,11 +34,11 @@
 open class CDMarkdownParser {
 
     // MARK: - Element Arrays
-    fileprivate var escapingElements: [CDMarkdownElement]
-    fileprivate var defaultElements: [CDMarkdownElement]
-    fileprivate var unescapingElements: [CDMarkdownElement]
+    fileprivate var escapingElements: [any CDMarkdownElement]
+    fileprivate var defaultElements: [any CDMarkdownElement]
+    fileprivate var unescapingElements: [any CDMarkdownElement]
 
-    open var customElements: [CDMarkdownElement]
+    open var customElements: [any CDMarkdownElement]
 
     // MARK: - Basic Elements
     public let header: CDMarkdownHeader
@@ -79,7 +79,7 @@ open class CDMarkdownParser {
                 imageSize: CGSize? = nil,
                 automaticLinkDetectionEnabled: Bool = true,
                 squashNewlines: Bool = true,
-                customElements: [CDMarkdownElement] = []) {
+                customElements: [any CDMarkdownElement] = []) {
         self.font = font
         self.fontColor = fontColor
         self.backgroundColor = backgroundColor
@@ -156,11 +156,11 @@ open class CDMarkdownParser {
     }
 
     // MARK: - Element Extensibility
-    open func addCustomElement(_ element: CDMarkdownElement) {
+    open func addCustomElement(_ element: any CDMarkdownElement) {
         customElements.append(element)
     }
 
-    open func removeCustomElement(_ element: CDMarkdownElement) {
+    open func removeCustomElement(_ element: any CDMarkdownElement) {
         guard let index = customElements.firstIndex(where: { someElement -> Bool in
             return element === someElement
         }) else {
@@ -209,7 +209,7 @@ open class CDMarkdownParser {
         attributedString.addParagraphStyle(paragraphStyle,
                                            toRange: range)
 
-        var elements: [CDMarkdownElement] = escapingElements
+        var elements: [any CDMarkdownElement] = escapingElements
         elements.append(contentsOf: defaultElements)
         elements.append(contentsOf: customElements)
         elements.append(contentsOf: unescapingElements)
