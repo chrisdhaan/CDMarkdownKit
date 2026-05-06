@@ -31,6 +31,7 @@
     import Cocoa
 #endif
 
+@MainActor
 open class CDMarkdownParser {
 
     // MARK: - Element Arrays
