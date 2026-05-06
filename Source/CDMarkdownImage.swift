@@ -33,6 +33,8 @@
 
 #if os(iOS) || os(macOS) || os(tvOS)
 
+extension CDMarkdownImage: @unchecked Sendable { }
+
 open class CDMarkdownImage: CDMarkdownLinkElement {
 
     fileprivate static let regex = "[!{1}]\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"

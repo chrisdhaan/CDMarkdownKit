@@ -31,6 +31,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownLink: @unchecked Sendable { }
+
 open class CDMarkdownLink: CDMarkdownLinkElement {
 
     fileprivate static let regex = "(?<![!])\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"

@@ -31,6 +31,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownList: @unchecked Sendable { }
+
 open class CDMarkdownList: CDMarkdownLevelElement {
 
     fileprivate static let regex = "^\\s*([\\*\\+\\-]{1,%@})[ \t]+(.+)$"

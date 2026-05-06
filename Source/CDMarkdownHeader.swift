@@ -31,6 +31,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownHeader: @unchecked Sendable { }
+
 open class CDMarkdownHeader: CDMarkdownLevelElement {
 
     fileprivate static let regex = "^\\s*(#{1,%@})\\s*(.+)$\n*"

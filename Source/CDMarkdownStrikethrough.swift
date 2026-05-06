@@ -31,6 +31,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownStrikethrough: @unchecked Sendable { }
+
 open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
 
     fileprivate static let regex = "()(~~)(.*?)(\\2)"

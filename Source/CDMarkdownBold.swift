@@ -31,6 +31,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownBold: @unchecked Sendable { }
+
 open class CDMarkdownBold: CDMarkdownCommonElement {
 
     fileprivate static let regex = "()(\\*\\*|__)(.*?)(\\2)"

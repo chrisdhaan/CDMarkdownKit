@@ -31,6 +31,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownUnescaping: @unchecked Sendable { }
+
 open class CDMarkdownUnescaping: CDMarkdownElement {
 
     fileprivate static let regex = "\\\\[0-9a-z]{4}"

@@ -31,6 +31,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownQuote: @unchecked Sendable { }
+
 open class CDMarkdownQuote: CDMarkdownLevelElement {
 
     fileprivate static let regex = "^(\\>{1,%@})\\s*(.+)$"

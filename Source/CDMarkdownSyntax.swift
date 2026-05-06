@@ -31,6 +31,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownSyntax: @unchecked Sendable { }
+
 open class CDMarkdownSyntax: CDMarkdownCommonElement {
 
     fileprivate static let regex = "(\\s+|^)(`{3})(\\s*[^`]*?\\s*)(\\2)(?!`)"

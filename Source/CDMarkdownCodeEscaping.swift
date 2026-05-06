@@ -31,6 +31,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownCodeEscaping: @unchecked Sendable { }
+
 open class CDMarkdownCodeEscaping: CDMarkdownElement {
 
     fileprivate static let regex = "(?<!\\\\)(?:\\\\\\\\)*+(`+)(.*?[^`].*?)(\\1)(?!`)"

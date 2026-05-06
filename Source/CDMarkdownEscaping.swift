@@ -31,6 +31,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownEscaping: @unchecked Sendable { }
+
 open class CDMarkdownEscaping: CDMarkdownElement {
 
     fileprivate static let regex = "\\\\."

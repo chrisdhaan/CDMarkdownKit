@@ -31,6 +31,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownAutomaticLink: @unchecked Sendable { }
+
 open class CDMarkdownAutomaticLink: CDMarkdownLink {
 
     open override func regularExpression() throws -> NSRegularExpression {
