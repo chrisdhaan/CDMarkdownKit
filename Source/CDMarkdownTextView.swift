@@ -29,6 +29,7 @@
 
 import UIKit
 
+@MainActor
 open class CDMarkdownTextView: UITextView {
 
     open var customLayoutManager: CDMarkdownLayoutManager!

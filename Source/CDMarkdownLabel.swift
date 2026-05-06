@@ -41,6 +41,7 @@ public protocol CDMarkdownLabelDelegate: AnyObject {
 
 typealias URLRange = (url: URL, range: NSRange)
 
+@MainActor
 open class CDMarkdownLabel: UILabel {
 
     open var customLayoutManager: CDMarkdownLayoutManager!
