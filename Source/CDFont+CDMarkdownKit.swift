@@ -68,4 +68,20 @@ internal extension CDFont {
     }
 
 #endif
+
+    var isBold: Bool {
+        #if os(macOS)
+        return NSFontManager.shared.traits(of: self).contains(.boldFontMask)
+        #else
+        return fontDescriptor.symbolicTraits.contains(.traitBold)
+        #endif
+    }
+
+    var isItalic: Bool {
+        #if os(macOS)
+        return NSFontManager.shared.traits(of: self).contains(.italicFontMask)
+        #else
+        return fontDescriptor.symbolicTraits.contains(.traitItalic)
+        #endif
+    }
 }
