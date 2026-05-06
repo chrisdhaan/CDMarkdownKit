@@ -32,7 +32,7 @@
 #endif
 
 // Styling protocol for all MarkdownElements
-public protocol CDMarkdownStyle {
+public protocol CDMarkdownStyle: Sendable {
 
     var font: CDFont? { get }
     var color: CDColor? { get }
