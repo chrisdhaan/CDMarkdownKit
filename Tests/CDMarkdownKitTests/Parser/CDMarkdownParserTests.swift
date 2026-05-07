@@ -1,5 +1,12 @@
 import Testing
 import Foundation
+import CoreGraphics
+import ImageIO
+#if os(iOS) || os(tvOS)
+import UIKit
+#elseif os(macOS)
+import Cocoa
+#endif
 @testable import CDMarkdownKit
 
 @MainActor
@@ -136,5 +143,38 @@ import Foundation
             if let font = value as? CDFont, font.isBold { foundBold = true }
         }
         #expect(foundBold)
+    }
+
+    @Test func asyncParseLoadsLocalImage() async {
+        #if os(iOS) || os(tvOS) || os(macOS)
+        // Build a minimal 1×1 PNG via Core Graphics so no bundle resource is needed
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        guard let ctx = CGContext(data: nil, width: 1, height: 1,
+                                  bitsPerComponent: 8, bytesPerRow: 4,
+                                  space: colorSpace,
+                                  bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue),
+              let cgImage = ctx.makeImage() else { return }
+        let mutableData = NSMutableData()
+        guard let dest = CGImageDestinationCreateWithData(mutableData,
+                                                         "public.png" as CFString, 1, nil) else { return }
+        CGImageDestinationAddImage(dest, cgImage, nil)
+        guard CGImageDestinationFinalize(dest) else { return }
+
+        let tmpURL = URL(fileURLWithPath: NSTemporaryDirectory())
+            .appendingPathComponent(UUID().uuidString + ".png")
+        guard (try? (mutableData as Data).write(to: tmpURL)) != nil else { return }
+        defer { try? FileManager.default.removeItem(at: tmpURL) }
+
+        // When: async parse with an image reference pointing at the local file
+        let input = "![test](\(tmpURL.absoluteString))"
+        let result = await parser.parse(input)
+
+        // Then: resolveImages should have replaced the placeholder with a real attachment
+        var foundAttachment = false
+        result.enumerateAttribute(.attachment, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if v is NSTextAttachment { foundAttachment = true }
+        }
+        #expect(foundAttachment)
+        #endif
     }
 }
