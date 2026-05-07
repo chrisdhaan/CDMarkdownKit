@@ -1,5 +1,5 @@
 //
-//  CDMarkdownCode.swift
+//  CDMarkdownSyntax.swift
 //  CDMarkdownKit
 //
 //  Created by Christopher de Haan on 11/10/16.
