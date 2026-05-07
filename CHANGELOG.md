@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [3.0.0](#300)
 - [2.5.1](#251)
 - [2.5.0](#250)
 - [2.4.0](#240)
@@ -16,6 +17,47 @@ All notable changes to this project will be documented in this file.
 - [1.2.0](#120)
 - [1.1.0](#110)
 - [1.0.0](#100)
+
+---
+
+## [3.0.0](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/3.0.0)
+
+Released on 2026-05-06.
+
+### Added
+
+- Async image loading with `async/await` support via overloaded `parse(_:)` method
+- Swift 6 concurrency safety: `@MainActor` annotations on UI components and `Sendable` conformances
+- Comprehensive unit test suite with Swift Testing framework
+- GFM ordered list support (`1.`, `2.`, `3.`)
+- GFM table support with column alignment
+- Public API documentation with Jazzy
+- GitHub Pages hosted documentation at https://christopherdehaan.github.io/CDMarkdownKit/
+- `Documentation/Usage.md` with comprehensive usage examples and platform-specific notes
+- Privacy manifest (`PrivacyInfo.xcprivacy`) for App Store compliance
+- SwiftLint enforcement in CI
+
+### Updated
+
+- Deployment targets: iOS 15.0+, macOS 12.0+, tvOS 15.0+, watchOS 8.0+
+- CI/CD pipeline: Xcode 16.2, macOS 15, modern GitHub Actions, xcbeautify output formatting
+- Swift Package Manager: Consolidated versioned manifests, added dynamic library product
+- CocoaPods support: Updated deployment targets, added resource bundles, enforced CocoaPods 1.13+
+- Documentation: Restructured README as navigation hub, added migration guide
+- Rounded corner styling: Replaced `roundCodeCorners`/`roundSyntaxCorners` with unified attribute-based approach
+- `CDMarkdownStyle` protocol now includes `strikethroughColor` and `strikethroughStyle`
+
+### Fixed
+
+- URL ranges accumulating across multiple `attributedText` assignments in `CDMarkdownLabel`
+- Hardcoded color comparison breaking custom color support in `CDMarkdownLayoutManager`
+- `CDMarkdownStrikethrough` styling inconsistency by adding properties to `CDMarkdownStyle` protocol
+- `CDMarkdownAutomaticLink` crash on watchOS by returning no-op regex
+- `CDMarkdownLink` regex failing at string position 0 and incorrectly excluding characters with negative lookbehind
+- Force unwrap crash in `CDFont.withTraits(_:)` when fonts lack bold/italic variants
+- `CDMarkdownTextView.shouldInteractWith` delegate method never called due to missing `super.attributedText` assignment
+- Language hints in fenced code blocks rendering as content instead of being silently stripped
+- Missing force unwrap crash protection and graceful fallback for unavailable font traits
 
 ---
 
