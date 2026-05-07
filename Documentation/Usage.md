@@ -1,136 +1,310 @@
 # CDMarkdownKit Usage Guide
 
+A pure-Swift, zero-dependency framework for parsing Markdown text into styled `NSAttributedString`.
+
 ## Basic Setup
 
-Initialize a parser with default settings:
+CDMarkdownKit is distributed via Swift Package Manager, CocoaPods, and Carthage.
+
+### Swift Package Manager
+
+Add to your `Package.swift`:
 
 ```swift
-let parser = CDMarkdownParser()
-let markdown = "Hello **world**"
-let attributed = parser.parse(markdown)
+.package(url: "https://github.com/christopherdehaan/CDMarkdownKit.git", from: "3.0.0")
 ```
+
+Or in Xcode: **File → Add Packages** and enter the repository URL.
+
+### CocoaPods
+
+Add to your `Podfile`:
+
+```ruby
+pod 'CDMarkdownKit', '~> 3.0'
+```
+
+Run `pod install`.
+
+### Carthage
+
+Add to your `Cartfile`:
+
+```
+github "christopherdehaan/CDMarkdownKit" ~> 3.0
+```
+
+Run `carthage update`.
+
+---
 
 ## CDMarkdownParser
 
-`CDMarkdownParser` is the main entry point for parsing Markdown into `NSAttributedString`.
+The main entry point for parsing Markdown into styled `NSAttributedString`.
 
-### Configuration
-
-The parser accepts several configuration options at initialization:
+### Creating a Parser
 
 ```swift
+import CDMarkdownKit
+
+// Basic parser with defaults
+let parser = CDMarkdownParser()
+
+// Parser with custom styling
 let parser = CDMarkdownParser(
     font: UIFont.systemFont(ofSize: 16),
     boldFont: UIFont.boldSystemFont(ofSize: 16),
     italicFont: UIFont.italicSystemFont(ofSize: 16),
     fontColor: UIColor.black,
-    backgroundColor: UIColor.white,
-    paragraphStyle: nil,
-    imageSize: CGSize(width: 320, height: 480),
-    automaticLinkDetectionEnabled: true,
-    squashNewlines: true
+    backgroundColor: UIColor.white
 )
 ```
 
-### Synchronous Parsing
-
-The synchronous `parse(_:)` method is the standard way to parse Markdown:
+### Parsing Markdown
 
 ```swift
-let input = "# Hello\n\nThis is **bold** text."
-let result = parser.parse(input)
-label.attributedText = result
+// Synchronous parsing
+let markdown = "# Hello **World**\n\nThis is *italic* text."
+let attributedString = parser.parse(markdown)
+
+// Asynchronous parsing (v3.0+, for image loading)
+let attributedString = await parser.parse(markdown)
 ```
 
-**⚠️ Note on Image Loading**: When `CDMarkdownImage` elements are present with remote URLs, the synchronous `parse(_:)` method blocks the calling thread for the duration of each network request. For documents with remote images, consider using the async variant to avoid blocking the main thread.
-
-### Async Parsing (v3.0+)
-
-For non-blocking image loading, use the async `parse(_:)` overload. This method defers image loading until after parsing completes, allowing images to be fetched concurrently without blocking:
+### Configuration Options
 
 ```swift
-let input = "# Title\n\n![alt text](https://example.com/image.png)\n\nMore text here."
+// Enable/disable automatic URL detection
+parser.automaticLinkDetectionEnabled = true  // default: true
 
-Task {
-    let result = await parser.parse(input)
-    DispatchQueue.main.async {
-        self.label.attributedText = result
-    }
-}
+// Collapse multiple newlines
+parser.squashNewlines = true  // default: true
+
+// Add custom Markdown elements
+let customElement = MyCustomElement()
+parser.addCustomElement(customElement)
+parser.removeCustomElement(customElement)
 ```
 
-The async variant:
-- Parses Markdown synchronously on the calling thread
-- Defers all image loading (remote URLs) until after parsing
-- Fetches images concurrently via `URLSession.shared.data(from:)`
-- Maintains proper attribution and sizing from the parser configuration
-- Returns to the main thread via the Task context
+### Customizing Element Styling
 
-**When to use async parsing:**
-- Documents with multiple remote images
-- Performance-critical contexts where blocking is unacceptable
-- Loading Markdown from network sources
-- Rendering large documents
+Each element has configurable styling:
 
-**When synchronous parsing is fine:**
-- Simple documents without images
-- Documents with only local/bundled images
-- One-off parsing operations
+```swift
+parser.bold.color = UIColor.red
+parser.italic.font = UIFont.italicSystemFont(ofSize: 18)
+parser.code.backgroundColor = UIColor.lightGray
+parser.link.color = UIColor.blue
+parser.header.fontIncrease = 4
+```
 
 ---
 
 ## Supported Syntax
 
-CDMarkdownKit supports a subset of Markdown syntax:
+CDMarkdownKit supports the following Markdown syntax:
 
-- **Bold**: `**text**` or `__text__`
-- **Italic**: `*text*` or `_text_`
-- **Strikethrough**: `~~text~~`
-- **Headers**: `# H1` through `###### H6`
-- **Lists**: `* item`, `- item`, `+ item`
-- **Blockquotes**: `> quote text`
-- **Inline Code**: `` `code` ``
-- **Fenced Code Blocks**: ` ```language\ncode\n``` `
-- **Links**: `[text](url)`
-- **Automatic Links**: `https://example.com` (detected automatically)
-- **Images**: `![alt](url)` — iOS/macOS/tvOS only
-- **Tables**: GFM-style tables (GitHub Flavored Markdown)
+| Syntax | Example | Output |
+|--------|---------|--------|
+| Bold | `**bold**` or `__bold__` | **bold** text |
+| Italic | `*italic*` or `_italic_` | *italic* text |
+| Strikethrough | `~~crossed~~` | ~~crossed~~ text |
+| Headers | `# H1` through `###### H6` | Scaled font sizes |
+| Unordered Lists | `* item` or `- item` or `+ item` | Bulleted items |
+| Blockquotes | `> quote` | Indented text |
+| Inline Code | `` `code` `` | Monospace text |
+| Fenced Code | ` ```code``` ` | Multi-line code block |
+| Links | `[text](url)` | Clickable URLs |
+| Automatic Links | `https://example.com` | Bare URLs detected |
+| Images | `![alt](url)` | Rendered images |
+
+### Platform Notes
+
+| Feature | iOS | macOS | tvOS | watchOS |
+|---------|-----|-------|------|---------|
+| Bold / Italic / Strikethrough | ✓ | ✓ | ✓ | ✓ |
+| Headers | ✓ | ✓ | ✓ | ✓ |
+| Lists | ✓ | ✓ | ✓ | ✓ |
+| Blockquotes | ✓ | ✓ | ✓ | ✓ |
+| Inline Code / Fenced Blocks | ✓ | ✓ | ✓ | ✓ |
+| Links (tappable) | ✓ | ✓ | ✓ | — |
+| Automatic Links | ✓ | ✓ | ✓ | — |
+| Images | ✓ | ✓ | ✓ | — |
+
+> **watchOS**: Only `WKInterfaceLabel.setAttributedText(_:)` is supported. Tappable links, images, and `CDMarkdownLabel`/`CDMarkdownTextView` UI components are not available on watchOS. All text styling (bold, italic, headers, code, tables, etc.) works because it is applied as `NSAttributedString` attributes, which `WKInterfaceLabel` renders correctly.
 
 ---
 
 ## CDMarkdownLabel
 
-`CDMarkdownLabel` is a `UILabel` subclass that renders Markdown with tap-to-open-URL support:
+A `UILabel` subclass that renders styled Markdown with clickable links.
+
+### Basic Usage
 
 ```swift
-let label = CDMarkdownLabel()
-label.delegate = self
-label.attributedText = parser.parse("Visit [GitHub](https://github.com)")
-```
+import UIKit
+import CDMarkdownKit
 
-Implement `CDMarkdownLabelDelegate` to handle link taps:
-
-```swift
-extension MyViewController: CDMarkdownLabelDelegate {
-    func didSelect(_ url: URL) {
-        UIApplication.shared.open(url)
+class MyViewController: UIViewController {
+    @IBOutlet weak var label: CDMarkdownLabel!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let parser = CDMarkdownParser()
+        let markdown = "Check out [CDMarkdownKit](https://github.com/christopherdehaan/CDMarkdownKit)"
+        label.attributedText = parser.parse(markdown)
     }
 }
+```
+
+### Handling Link Taps
+
+```swift
+class MyViewController: UIViewController, CDMarkdownLabelDelegate {
+    @IBOutlet weak var label: CDMarkdownLabel!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        label.delegate = self
+    }
+    
+    func didSelect(_ url: URL) {
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:])
+        }
+    }
+}
+```
+
+### Customizing Appearance
+
+```swift
+label.roundAllCorners = true  // Round corners on code/syntax backgrounds
+label.numberOfLines = 0       // Allow unlimited lines
+label.lineBreakMode = .byWordWrapping
 ```
 
 ---
 
 ## CDMarkdownTextView
 
-`CDMarkdownTextView` is a `UITextView` subclass with optional rounded-corner backgrounds for code blocks:
+A `UITextView` subclass for rendering styled Markdown with custom layout.
+
+### Basic Usage
 
 ```swift
+import UIKit
+import CDMarkdownKit
+
 let textView = CDMarkdownTextView()
+let parser = CDMarkdownParser()
+let markdown = """
+# Welcome
+
+This is a **rich** markdown document.
+"""
 textView.attributedText = parser.parse(markdown)
-textView.isSelectable = true  // Required for link interaction
 ```
 
-Link interaction is available via `UITextViewDelegate`:
+### Handling Link Interactions
+
+Set `isSelectable = true` and implement the delegate:
+
+```swift
+textView.isSelectable = true
+textView.delegate = self
+
+// MARK: - UITextViewDelegate
+
+func textView(_ textView: UITextView,
+              shouldInteractWith url: URL,
+              in characterRange: NSRange,
+              interaction: UITextItemInteraction) -> Bool {
+    if url.scheme == "http" || url.scheme == "https" {
+        UIApplication.shared.open(url)
+        return false  // Prevent default behavior
+    }
+    return true
+}
+```
+
+### Customizing Appearance
+
+```swift
+textView.roundAllCorners = true
+textView.isScrollEnabled = true
+textView.isEditable = false
+```
+
+---
+
+## Custom Elements
+
+`CDMarkdownParser` accepts an array of `customElements`. Each element must conform to `CDMarkdownElement` and optionally `CDMarkdownStyle`. Custom elements run after all built-in elements in Phase 2 of the parsing pipeline.
+
+### Example: @mention with tap handling
+
+**Step 1 — Define the element:**
+
+```swift
+import CDMarkdownKit
+import UIKit
+
+final class CDMarkdownMention: CDMarkdownElement, CDMarkdownStyle {
+
+    // Matches @username — word characters only, no spaces
+    var regex: String { "(?<![\\w])@(\\w+)" }
+
+    // Visual style
+    var font: CDFont?
+    var color: CDColor? = .systemBlue
+    var backgroundColor: CDColor?
+    var paragraphStyle: NSParagraphStyle?
+    var underlineColor: CDColor?
+    var underlineStyle: NSUnderlineStyle?
+
+    func match(_ match: NSTextCheckingResult,
+               attributedString: NSMutableAttributedString) {
+        let range = match.range   // full @username range
+        var attrs = attributes
+        // Store the username (without @) as a custom link URL so taps are routable
+        let username = (attributedString.string as NSString).substring(with: match.range(at: 1))
+        if let url = URL(string: "mention://\(username)") {
+            attrs[.link] = url
+        }
+        attributedString.addAttributes(attrs, range: range)
+    }
+}
+```
+
+**Step 2 — Register it with the parser:**
+
+```swift
+let parser = CDMarkdownParser(font: UIFont.systemFont(ofSize: 16))
+parser.customElements = [CDMarkdownMention()]
+let attributed = parser.parse("Hello @alice, check this out!")
+textView.attributedText = attributed
+```
+
+**Step 3 — Handle taps in `CDMarkdownLabel`:**
+
+```swift
+extension MyViewController: CDMarkdownLabelDelegate {
+    func didSelect(_ url: URL) {
+        if url.scheme == "mention", let username = url.host {
+            // Navigate to the user's profile
+            showProfile(for: username)
+        }
+    }
+}
+
+// In viewDidLoad:
+markdownLabel.delegate = self
+```
+
+**Step 4 — Handle taps in `CDMarkdownTextView` / `UITextView`:**
 
 ```swift
 extension MyViewController: UITextViewDelegate {
@@ -138,121 +312,95 @@ extension MyViewController: UITextViewDelegate {
                   shouldInteractWith url: URL,
                   in characterRange: NSRange,
                   interaction: UITextItemInteraction) -> Bool {
-        // Handle link tap
-        return false
+        if url.scheme == "mention", let username = url.host {
+            showProfile(for: username)
+            return false   // prevent default URL-open behavior
+        }
+        return true
     }
 }
 ```
+
+> **Tip:** Any `URL` stored in the `.link` attribute will be delivered to both `CDMarkdownLabelDelegate.didSelect(_:)` and the `UITextViewDelegate` method above. Use a custom URL scheme (e.g., `mention://`, `hashtag://`) to distinguish your custom elements from ordinary http/https links.
 
 ---
 
 ## Styling
 
-All elements can be styled by accessing the parser's element properties. Each element conforms to `CDMarkdownStyle`:
+All Markdown elements conform to the `CDMarkdownStyle` protocol, which exposes:
+
+- `font` — The typeface and size
+- `color` — Text foreground color
+- `backgroundColor` — Background color
+- `paragraphStyle` — Line spacing, alignment, indentation
+- `underlineColor` — Color of underlines
+- `underlineStyle` — Style of underlines (.single, .double, etc.)
+- `strikethroughColor` — Color of strikethrough lines
+- `strikethroughStyle` — Style of strikethrough lines
+
+### Styling Individual Elements
 
 ```swift
-parser.bold.color = UIColor.red
-parser.italic.color = UIColor.blue
-parser.header.font = UIFont.preferredFont(forTextStyle: .title1)
+let parser = CDMarkdownParser()
+
+// Style headers
+let headerStyle = NSMutableParagraphStyle()
+headerStyle.paragraphSpacing = 12
+parser.header.color = UIColor.darkBlue
+parser.header.paragraphStyle = headerStyle
+
+// Style code blocks
+parser.code.backgroundColor = UIColor.lightGray
+parser.code.color = UIColor.darkRed
+
+// Style links
+parser.link.color = UIColor.systemBlue
+parser.link.underlineStyle = .single
 ```
 
-Style properties:
-- `font`: Display font
-- `color`: Text color
-- `backgroundColor`: Background color
-- `paragraphStyle`: `NSParagraphStyle` for spacing, alignment, indentation
-- `underlineColor` / `underlineStyle`: Underline appearance
-- `strikethroughColor` / `strikethroughStyle`: Strikethrough appearance (bold/italic/strikethrough)
+### Using Custom Fonts
+
+```swift
+let monoFont = UIFont(name: "Menlo", size: 12) ?? UIFont.systemFont(ofSize: 12)
+let parser = CDMarkdownParser(font: monoFont)
+
+// Or update individual elements
+parser.code.font = monoFont
+parser.syntax.font = monoFont
+```
 
 ---
 
-## Custom Elements
+## Async Parsing (v3.0+)
 
-Register custom Markdown element types with the parser:
+For documents with remote images, use the async `parse(_:)` overload to load images without blocking the main thread.
+
+### Basic Usage
 
 ```swift
-class CDMarkdownHighlight: CDMarkdownElement, CDMarkdownStyle {
-    var regex: String { "==(.+?)==" }
-    var font: CDFont?
-    var color: CDColor? = .yellow
-    var backgroundColor: CDColor?
-    var paragraphStyle: NSParagraphStyle?
-    var underlineColor: CDColor?
-    var underlineStyle: NSUnderlineStyle?
-    
-    func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex)
-    }
-    
-    func match(_ match: NSTextCheckingResult,
-               attributedString: NSMutableAttributedString) {
-        // Handle the match
+// Synchronous (blocks on remote images)
+let attributedString = parser.parse(markdown)
+
+// Asynchronous (loads images in background)
+let attributedString = await parser.parse(markdown)
+```
+
+### With Image Display
+
+```swift
+Task {
+    let attributedString = await parser.parse(markdownWithImages)
+    DispatchQueue.main.async {
+        self.textView.attributedText = attributedString
     }
 }
-
-let highlight = CDMarkdownHighlight()
-parser.customElements = [highlight]
 ```
 
----
+### How It Works
 
-## Platform Notes
+- The async variant first parses without loading images, inserting placeholder attributes
+- Images are then loaded concurrently using `URLSession.shared.data(from:)`
+- Loaded images replace the placeholders in the attributed string
+- The parser respects custom image sizing from `CDMarkdownParser(imageSize:)`
 
-### watchOS
-
-`CDMarkdownKit` on watchOS supports text styling but not tappable links or images:
-- All text styling (bold, italic, headers, code, strikethrough) works
-- Links are styled but not tappable
-- Images are not supported
-- Use `WKInterfaceLabel.setAttributedText(_:)` to display
-
-### macOS
-
-`CDMarkdownKit` on macOS supports all features including images and link interaction through `NSTextViewDelegate`.
-
-### Catalyst
-
-Full support via the iOS code path.
-
----
-
-## Advanced Usage
-
-### Preserving Newlines
-
-By default, consecutive newlines are squashed to a single newline. Disable this:
-
-```swift
-parser.squashNewlines = false
-```
-
-### Automatic Link Detection
-
-Bare URLs like `https://example.com` are detected and converted to tappable links. Disable this:
-
-```swift
-parser.automaticLinkDetectionEnabled = false
-```
-
-### Custom Paragraph Styles
-
-Apply custom spacing and alignment:
-
-```swift
-let style = NSMutableParagraphStyle()
-style.paragraphSpacing = 8
-style.paragraphSpacingBefore = 4
-style.alignment = .center
-
-let parser = CDMarkdownParser(paragraphStyle: style)
-```
-
----
-
-## Troubleshooting
-
-**Images not loading**: Ensure the image URL is valid and reachable. For async parsing, images are loaded via `URLSession.shared.data(from:)`, which requires network access.
-
-**Custom fonts not working**: Some custom fonts may not have bold or italic variants. `CDMarkdownKit` gracefully falls back to the base font if the variant is unavailable.
-
-**Links not tapping on CDMarkdownTextView**: Ensure `isSelectable` is `true` on the text view and a delegate is set.
+> **Note:** The synchronous `parse(_:)` blocks on remote images. Use the async variant when parsing documents with external image URLs to prevent UI freezing.
