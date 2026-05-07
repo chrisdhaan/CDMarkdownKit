@@ -203,12 +203,12 @@ open class CDMarkdownParser {
     }
 
     /// Asynchronously parses a Markdown string with image loading support.
-    public func parse(_ string: String) async -> NSAttributedString {
+    open func parse(_ string: String) async -> NSAttributedString {
         return await parse(NSAttributedString(string: string))
     }
 
     /// Asynchronously parses a Markdown NSAttributedString with image loading support.
-    public func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
+    open func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
         let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))
         await resolveImages(in: result)
         return result
