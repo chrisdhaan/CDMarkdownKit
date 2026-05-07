@@ -31,4 +31,5 @@ public typealias CDAttributedStringKey = NSAttributedString.Key
 
 extension NSAttributedString.Key {
     static let cdMarkdownRoundedBackground = NSAttributedString.Key("CDMarkdownKit.roundedBackground")
+    static let cdMarkdownImageURL = NSAttributedString.Key("CDMarkdownKit.imageURL")
 }

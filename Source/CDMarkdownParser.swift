@@ -176,6 +176,20 @@ open class CDMarkdownParser {
     }
 
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
+        return parse(markdown, loadImages: true)
+    }
+
+    public func parse(_ string: String) async -> NSAttributedString {
+        return await parse(NSAttributedString(string: string))
+    }
+
+    public func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
+        let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))
+        await resolveImages(in: result)
+        return result
+    }
+
+    private func parse(_ markdown: NSAttributedString, loadImages: Bool) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         let mutableString = attributedString.mutableString
         if squashNewlines {
@@ -214,11 +228,55 @@ open class CDMarkdownParser {
         elements.append(contentsOf: defaultElements)
         elements.append(contentsOf: customElements)
         elements.append(contentsOf: unescapingElements)
+
+        #if os(iOS) || os(macOS) || os(tvOS)
+        if !loadImages {
+            image.placeholderOnly = true
+        }
+        #endif
+
         elements.forEach { element in
             if automaticLinkDetectionEnabled || type(of: element) != CDMarkdownAutomaticLink.self {
                 element.parse(attributedString)
             }
         }
+
+        #if os(iOS) || os(macOS) || os(tvOS)
+        if !loadImages {
+            image.placeholderOnly = false
+        }
+        #endif
+
         return attributedString
+    }
+
+    private func resolveImages(in attributedString: NSMutableAttributedString) async {
+        var replacements: [(range: NSRange, url: URL)] = []
+        attributedString.enumerateAttribute(.cdMarkdownImageURL,
+                                            in: NSRange(location: 0, length: attributedString.length)) { value, range, _ in
+            if let url = value as? URL {
+                replacements.append((range, url))
+            }
+        }
+
+        for (range, url) in replacements.reversed() {
+            if let (data, _) = try? await URLSession.shared.data(from: url),
+               let image = CDImage(data: data) {
+                let attachment = NSTextAttachment()
+                attachment.image = image
+                #if os(iOS) || os(macOS) || os(tvOS)
+                if let size = self.image.size {
+                    let preferredWidth = size.width - 10
+                    let widthScalingFactor = image.size.width / preferredWidth
+                    attachment.bounds = CGRect(x: 0,
+                                               y: 0,
+                                               width: image.size.width / widthScalingFactor,
+                                               height: image.size.height / widthScalingFactor)
+                }
+                #endif
+                let replacement = NSAttributedString(attachment: attachment)
+                attributedString.replaceCharacters(in: range, with: replacement)
+            }
+        }
     }
 }

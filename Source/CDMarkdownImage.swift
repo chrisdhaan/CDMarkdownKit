@@ -46,6 +46,7 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
     open var size: CGSize?
     open var underlineColor: CDColor?
     open var underlineStyle: NSUnderlineStyle?
+    internal var placeholderOnly: Bool = false
 
     open var regex: String {
         return CDMarkdownImage.regex
@@ -101,29 +102,40 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
         attributedString.deleteCharacters(in: NSRange(location: match.range.location,
                                                       length: linkRange.length + 2))
 
-        // load image
-        let textAttachment = NSTextAttachment()
-        if let url = URL(string: linkURLString) {
-            let data = try? Data(contentsOf: url)
-            // Try to load image from url
-            if let data = data,
-                let image = CDImage(data: data) {
-                textAttachment.image = image
-                adjustTextAttachmentSize(textAttachment,
-                                         forImage: image)
-            // Try to load image from local file store
-            } else if let image = CDImage(named: url.path) {
-                textAttachment.image = image
-                adjustTextAttachmentSize(textAttachment,
-                                         forImage: image)
+        if placeholderOnly {
+            let placeholderRange = NSRange(location: match.range.location,
+                                          length: linkStartInResult - match.range.location - 1)
+            if let url = URL(string: linkURLString) {
+                let placeholder = NSMutableAttributedString(string: "\u{FFFC}")
+                placeholder.addAttribute(.cdMarkdownImageURL,
+                                        value: url as AnyObject,
+                                        range: NSRange(location: 0, length: 1))
+                attributedString.replaceCharacters(in: placeholderRange, with: placeholder)
             }
-        }
+        } else {
+            let textAttachment = NSTextAttachment()
+            if let url = URL(string: linkURLString) {
+                let data = try? Data(contentsOf: url)
+                // Try to load image from url
+                if let data = data,
+                    let image = CDImage(data: data) {
+                    textAttachment.image = image
+                    adjustTextAttachmentSize(textAttachment,
+                                             forImage: image)
+                // Try to load image from local file store
+                } else if let image = CDImage(named: url.path) {
+                    textAttachment.image = image
+                    adjustTextAttachmentSize(textAttachment,
+                                             forImage: image)
+                }
+            }
 
-        // replace text with image
-        let textAttachmentAttributedString = NSAttributedString(attachment: textAttachment)
-        attributedString.replaceCharacters(in: NSRange(location: match.range.location,
-                                                       length: linkStartInResult - match.range.location - 1),
-                                           with: textAttachmentAttributedString)
+            // replace text with image
+            let textAttachmentAttributedString = NSAttributedString(attachment: textAttachment)
+            attributedString.replaceCharacters(in: NSRange(location: match.range.location,
+                                                           length: linkStartInResult - match.range.location - 1),
+                                               with: textAttachmentAttributedString)
+        }
 
         let formatRange = NSRange(location: match.range.location,
                                   length: 0)
