@@ -3,7 +3,11 @@ author_url: https://christopherdehaan.me
 github_url: https://github.com/christopherdehaan/CDMarkdownKit
 module: CDMarkdownKit
 module_version: 3.0.0
-swift_build_tool: spm
+xcodebuild_arguments:
+  - "-project"
+  - "CDMarkdownKit.xcodeproj"
+  - "-scheme"
+  - "CDMarkdownKit iOS"
 output: docs
 theme: fullwidth
 clean: true

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>CDMarkdownKit  Reference</title>
+    <title>Extensions  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -14,8 +14,9 @@
   </head>
   <body>
 
+    <a name="//apple_ref/swift/Section/Extensions" class="dashAnchor"></a>
 
-    <a title="CDMarkdownKit  Reference"></a>
+    <a title="Extensions  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -42,6 +43,8 @@
 
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">CDMarkdownKit</a>
+      <img class="carat" src="img/carat.png" alt=""/>
+      Extensions  Reference
     </p>
 
     <div class="content-wrapper">
@@ -172,120 +175,48 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            
-            <p align="center">
-    <img src="Documentation/cdmarkdownkit.png" alt="CDMarkdownKit" width="850" />
-</p>
-
-<p align="center">
-    <a href="https://github.com/chrisdhaan/CDMarkdownKit/actions/workflows/ci.yml">
-        <img src="https://github.com/chrisdhaan/CDMarkdownKit/actions/workflows/ci.yml/badge.svg" alt="CI Status">
-    </a>
-    <a href="https://www.swift.org">
-        <img src="https://img.shields.io/badge/Swift-5.3_5.4_5.5_5.6_5.7_5.8-orange?style=flat" alt="Swift Versions">
-    </a>
-    <a href="http://cocoapods.org/pods/CDMarkdownKit">
-        <img src="https://img.shields.io/cocoapods/p/CDMarkdownKit.svg?style=flat" alt="Platforms">
-    </a>
-    <a href="http://cocoapods.org/pods/CDMarkdownKit">
-        <img src="https://img.shields.io/cocoapods/v/CDMarkdownKit.svg?style=flat" alt="CocoaPods Compatible">
-    </a>
-    <a href="https://www.swift.org/package-manager">
-        <img src="https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat" alt="Swift Package Manager Compatible">
-    </a>
-    <a href="http://cocoapods.org/pods/CDMarkdownKit">
-        <img src="https://img.shields.io/cocoapods/l/CDMarkdownKit.svg?style=flat" alt="License">
-    </a>
-</p>
-
-<hr>
-
-<p>A pure-Swift, zero-dependency framework for parsing Markdown text into styled <code>NSAttributedString</code>.</p>
-<h2 id='features' class='heading'>Features</h2>
-
-<ul>
-<li>[x] Parse Markdown to styled <code>NSAttributedString</code></li>
-<li>[x] Support for bold, italic, strikethrough, headers, lists, quotes, code blocks</li>
-<li>[x] Clickable links and automatic URL detection</li>
-<li>[x] Image rendering (iOS, macOS, tvOS)</li>
-<li>[x] Async image loading with <code>async/await</code></li>
-<li>[x] Custom Markdown elements</li>
-<li>[x] <code>UILabel</code> and <code>UITextView</code> subclasses with Markdown support</li>
-<li>[x] Swift 6 concurrency safety</li>
-</ul>
-<h2 id='quick-example' class='heading'>Quick Example</h2>
-<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">CDMarkdownKit</span>
-
-<span class="k">let</span> <span class="nv">parser</span> <span class="o">=</span> <span class="kt">CDMarkdownParser</span><span class="p">()</span>
-<span class="k">let</span> <span class="nv">markdown</span> <span class="o">=</span> <span class="s">"# Hello **World**</span><span class="se">\n\n</span><span class="s">This is *italic* text."</span>
-<span class="k">let</span> <span class="nv">attributedString</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">markdown</span><span class="p">)</span>
-<span class="n">label</span><span class="o">.</span><span class="n">attributedText</span> <span class="o">=</span> <span class="n">attributedString</span>
-</code></pre>
-<h2 id='requirements' class='heading'>Requirements</h2>
-
-<table><thead>
-<tr>
-<th>Platform</th>
-<th>Minimum OS</th>
-<th>Swift</th>
-<th>Installation</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>iOS</td>
-<td>11.0+</td>
-<td>5.3+</td>
-<td>SPM, CocoaPods</td>
-</tr>
-<tr>
-<td>macOS</td>
-<td>10.13+</td>
-<td>5.3+</td>
-<td>SPM, CocoaPods</td>
-</tr>
-<tr>
-<td>tvOS</td>
-<td>11.0+</td>
-<td>5.3+</td>
-<td>SPM, CocoaPods</td>
-</tr>
-<tr>
-<td>watchOS</td>
-<td>4.0+</td>
-<td>5.3+</td>
-<td>SPM, CocoaPods</td>
-</tr>
-</tbody></table>
-<h2 id='installation' class='heading'>Installation</h2>
-<h3 id='swift-package-manager' class='heading'>Swift Package Manager</h3>
-
-<p>Add to your <code>Package.swift</code>:</p>
-<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/christopherdehaan/CDMarkdownKit.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"3.0.0"</span><span class="p">)</span>
-</code></pre>
-
-<p>Or in Xcode: <strong>File → Add Packages</strong> and enter the repository URL.</p>
-<h3 id='cocoapods' class='heading'>CocoaPods</h3>
-
-<p>Add to your <code>Podfile</code>:</p>
-<pre class="highlight ruby"><code><span class="n">pod</span> <span class="s1">'CDMarkdownKit'</span><span class="p">,</span> <span class="s1">'~&gt; 3.0'</span>
-</code></pre>
-
-<p>Run <code>pod install</code>.</p>
-<h2 id='usage' class='heading'>Usage</h2>
-
-<p>For comprehensive usage documentation including styling, custom elements, and platform-specific information, see <a href="Documentation/Usage.md">Documentation/Usage.md</a>.</p>
-<h2 id='contributing' class='heading'>Contributing</h2>
-
-<p>We welcome contributions! Before contributing to CDMarkdownKit, please read the detailed instructions in our <a href="CONTRIBUTING.md">contribution guide</a>. We maintain high standards for code quality and test coverage, and we&rsquo;re happy to help you get your changes integrated.</p>
-
-<hr>
-<h2 id='license' class='heading'>License</h2>
-
-<p>CDMarkdownKit is available under the MIT license. See the <a href="LICENSE">LICENSE</a> file for more info.</p>
+            <h1>Extensions</h1>
+            <p>The following extensions are available globally.</p>
 
           </div>
         </section>
 
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit7CDColora"></a>
+                    <a name="//apple_ref/swift/Extension/CDColor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit7CDColora">CDColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Extensions/CDColor.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt"><a href="Typealiases.html#/s:13CDMarkdownKit7CDColora">CDColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
 
       </article>
     </div>

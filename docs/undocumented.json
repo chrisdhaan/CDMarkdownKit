@@ -1,0 +1,264 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDAttributedStringKey.swift",
+      "line": 30,
+      "symbol": "CDAttributedStringKey",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDColor+CDMarkdownKit.swift",
+      "line": 36,
+      "symbol": "CDColor.codeTextRed()",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDColor+CDMarkdownKit.swift",
+      "line": 43,
+      "symbol": "CDColor.codeBackgroundRed()",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDColor+CDMarkdownKit.swift",
+      "line": 50,
+      "symbol": "CDColor.syntaxTextGray()",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDColor+CDMarkdownKit.swift",
+      "line": 57,
+      "symbol": "CDColor.syntaxBackgroundGray()",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDColor+CDMarkdownKit.swift",
+      "line": 64,
+      "symbol": "CDColor.isEqualTo(otherColor:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDColor.swift",
+      "line": 32,
+      "symbol": "CDColor",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDColor.swift",
+      "line": 34,
+      "symbol": "CDColor",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDFont.swift",
+      "line": 32,
+      "symbol": "CDFont",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDFont.swift",
+      "line": 33,
+      "symbol": "CDFontDescriptorSymbolicTraits",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDImage.swift",
+      "line": 32,
+      "symbol": "CDImage",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownCodeEscaping.swift",
+      "line": 34,
+      "symbol": "CDMarkdownCodeEscaping",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownCodeEscaping.swift",
+      "line": 36,
+      "symbol": "CDMarkdownCodeEscaping",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownEscaping.swift",
+      "line": 34,
+      "symbol": "CDMarkdownEscaping",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownEscaping.swift",
+      "line": 36,
+      "symbol": "CDMarkdownEscaping",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 67,
+      "symbol": "CDMarkdownLabel.frame",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 78,
+      "symbol": "CDMarkdownLabel.bounds",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 89,
+      "symbol": "CDMarkdownLabel.attributedText",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 108,
+      "symbol": "CDMarkdownLabel.init(frame:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 113,
+      "symbol": "CDMarkdownLabel.init(coder:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 118,
+      "symbol": "CDMarkdownLabel.layoutSubviews()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 145,
+      "symbol": "CDMarkdownLabel.textRect(forBounds:limitedToNumberOfLines:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 172,
+      "symbol": "CDMarkdownLabel.drawText(in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 202,
+      "symbol": "CDMarkdownLabel.touchesBegan(_:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 208,
+      "symbol": "CDMarkdownLabel.touchesMoved(_:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 214,
+      "symbol": "CDMarkdownLabel.touchesCancelled(_:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 220,
+      "symbol": "CDMarkdownLabel.touchesEnded(_:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 369,
+      "symbol": "CDMarkdownLabel.layoutManager(_:shouldBreakLineByWordBeforeCharacterAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 385,
+      "symbol": "CDMarkdownLabel.gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 390,
+      "symbol": "CDMarkdownLabel.gestureRecognizer(_:shouldRequireFailureOf:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownLabel.swift",
+      "line": 395,
+      "symbol": "CDMarkdownLabel.gestureRecognizer(_:shouldBeRequiredToFailBy:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownTextView.swift",
+      "line": 49,
+      "symbol": "CDMarkdownTextView.attributedText",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownTextView.swift",
+      "line": 63,
+      "symbol": "CDMarkdownTextView.init(frame:textContainer:layoutManager:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownTextView.swift",
+      "line": 72,
+      "symbol": "CDMarkdownTextView.init(frame:textContainer:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownTextView.swift",
+      "line": 78,
+      "symbol": "CDMarkdownTextView.init(coder:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownUnescaping.swift",
+      "line": 34,
+      "symbol": "CDMarkdownUnescaping",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit/Source/CDMarkdownUnescaping.swift",
+      "line": 36,
+      "symbol": "CDMarkdownUnescaping",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/christopherdehaan/Documents/Workspaces/GitHub/CDMarkdownKit"
+}
