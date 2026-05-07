@@ -1,0 +1,12 @@
+author: Christopher de Haan
+author_url: https://christopherdehaan.me
+github_url: https://github.com/christopherdehaan/CDMarkdownKit
+module: CDMarkdownKit
+module_version: 3.0.0
+swift_build_tool: spm
+output: docs
+theme: fullwidth
+clean: true
+readme: README.md
+skip_undocumented: false
+hide_documentation_coverage: false
