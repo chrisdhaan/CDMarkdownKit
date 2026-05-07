@@ -7,7 +7,7 @@
         <img src="https://github.com/chrisdhaan/CDMarkdownKit/actions/workflows/ci.yml/badge.svg" alt="CI Status">
     </a>
     <a href="https://www.swift.org">
-        <img src="https://img.shields.io/badge/Swift-5.3_5.4_5.5_5.6_5.7_5.8-orange?style=flat" alt="Swift Versions">
+        <img src="https://img.shields.io/badge/Swift-5.3%2B-orange?style=flat" alt="Swift Versions">
     </a>
     <a href="http://cocoapods.org/pods/CDMarkdownKit">
         <img src="https://img.shields.io/cocoapods/p/CDMarkdownKit.svg?style=flat" alt="Platforms">
@@ -53,10 +53,10 @@ label.attributedText = attributedString
 
 | Platform | Minimum OS | Swift | Installation |
 |----------|-----------|-------|--------------|
-| iOS      | 11.0+     | 5.3+  | SPM, CocoaPods |
-| macOS    | 10.13+    | 5.3+  | SPM, CocoaPods |
-| tvOS     | 11.0+     | 5.3+  | SPM, CocoaPods |
-| watchOS  | 4.0+      | 5.3+  | SPM, CocoaPods |
+| iOS      | 15.0+     | 5.3+  | SPM, CocoaPods |
+| macOS    | 12.0+     | 5.3+  | SPM, CocoaPods |
+| tvOS     | 15.0+     | 5.3+  | SPM, CocoaPods |
+| watchOS  | 8.0+      | 5.3+  | SPM, CocoaPods |
 
 ## Installation
 
