@@ -33,21 +33,29 @@
 
 extension CDMarkdownCode: @unchecked Sendable { }
 
+/// Renders inline code using `code` syntax.
 open class CDMarkdownCode: CDMarkdownCommonElement {
 
     fileprivate static let regex = "(\\s+|^|\\()(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)(\\)?)"
 
+    /// The font for code text.
     open var font: CDFont?
+    /// The text color for code.
     open var color: CDColor?
+    /// The background color for code.
     open var backgroundColor: CDColor?
+    /// The paragraph style for code.
     open var paragraphStyle: NSParagraphStyle?
+    /// The underline color for code.
     open var underlineColor: CDColor?
+    /// The underline style for code.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         return CDMarkdownCode.regex
     }
 
+    /// Creates a new code element with optional custom styling.
     public init(font: CDFont? = CDFont(name: "Menlo-Regular", size: 12),
                 color: CDColor? = CDColor.codeTextRed(),
                 backgroundColor: CDColor? = CDColor.codeBackgroundRed(),

@@ -31,6 +31,7 @@
     import Cocoa
 #endif
 
+/// Parser for converting Markdown text into styled NSAttributedString.
 @MainActor
 open class CDMarkdownParser {
 
@@ -39,21 +40,33 @@ open class CDMarkdownParser {
     fileprivate var defaultElements: [any CDMarkdownElement]
     fileprivate var unescapingElements: [any CDMarkdownElement]
 
+    /// Custom Markdown elements to parse in addition to built-in elements.
     open var customElements: [any CDMarkdownElement]
 
     // MARK: - Basic Elements
+    /// Handles heading syntax (#, ##, etc.).
     public let header: CDMarkdownHeader
+    /// Handles unordered list syntax (*, -, +).
     public let list: CDMarkdownList
+    /// Handles blockquote syntax (>).
     public let quote: CDMarkdownQuote
+    /// Handles inline links ([text](url)).
     public let link: CDMarkdownLink
+    /// Handles automatic link detection for bare URLs.
     public let automaticLink: CDMarkdownAutomaticLink
+    /// Handles bold text (**text** or __text__).
     public let bold: CDMarkdownBold
+    /// Handles italic text (*text* or _text_).
     public let italic: CDMarkdownItalic
+    /// Handles inline code (`code`).
     public let code: CDMarkdownCode
+    /// Handles fenced code blocks (```code```).
     public let syntax: CDMarkdownSyntax
 #if os(iOS) || os(macOS) || os(tvOS)
+    /// Handles image syntax (![alt](url)). Not available on watchOS.
     public let image: CDMarkdownImage
 #endif
+    /// Handles strikethrough text (~~text~~).
     public let strikethrough: CDMarkdownStrikethrough
 
     // MARK: - Escaping Elements
@@ -62,15 +75,21 @@ open class CDMarkdownParser {
     fileprivate var unescaping = CDMarkdownUnescaping()
 
     // MARK: - Configuration
-    // Enables or disables detection of URLs even without Markdown format
+    /// Enables automatic detection of URLs without explicit Markdown syntax.
     open var automaticLinkDetectionEnabled: Bool = true
+    /// When enabled, collapses multiple consecutive newlines into a single newline.
     open var squashNewlines: Bool = true
+    /// The default font used for all parsed text.
     public let font: CDFont
+    /// The default text color for all parsed text.
     public let fontColor: CDColor
+    /// The default background color for all parsed text.
     public let backgroundColor: CDColor
+    /// The default paragraph style for all parsed text.
     public let paragraphStyle: NSParagraphStyle
 
     // MARK: - Initializer
+    /// Creates a new parser with custom styling options.
     public init(font: CDFont = CDFont.systemFont(ofSize: 12),
                 boldFont: CDFont? = nil,
                 italicFont: CDFont? = nil,
@@ -157,10 +176,12 @@ open class CDMarkdownParser {
     }
 
     // MARK: - Element Extensibility
+    /// Adds a custom Markdown element to the parser.
     open func addCustomElement(_ element: any CDMarkdownElement) {
         customElements.append(element)
     }
 
+    /// Removes a custom Markdown element from the parser.
     open func removeCustomElement(_ element: any CDMarkdownElement) {
         guard let index = customElements.firstIndex(where: { someElement -> Bool in
             return element === someElement
@@ -171,18 +192,22 @@ open class CDMarkdownParser {
     }
 
     // MARK: - Parsing
+    /// Parses a Markdown string and returns a styled NSAttributedString.
     open func parse(_ markdown: String) -> NSAttributedString {
         return parse(NSAttributedString(string: markdown))
     }
 
+    /// Parses a Markdown NSAttributedString and returns a styled NSAttributedString.
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         return parse(markdown, loadImages: true)
     }
 
+    /// Asynchronously parses a Markdown string with image loading support.
     public func parse(_ string: String) async -> NSAttributedString {
         return await parse(NSAttributedString(string: string))
     }
 
+    /// Asynchronously parses a Markdown NSAttributedString with image loading support.
     public func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
         let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))
         await resolveImages(in: result)

@@ -33,21 +33,29 @@
 
 extension CDMarkdownBold: @unchecked Sendable { }
 
+/// Renders bold text using **text** or __text__ syntax.
 open class CDMarkdownBold: CDMarkdownCommonElement {
 
     fileprivate static let regex = "()(\\*\\*|__)(.*?)(\\2)"
 
+    /// The font to apply to bold text.
     open var font: CDFont?
+    /// The text color for bold text.
     open var color: CDColor?
+    /// The background color for bold text.
     open var backgroundColor: CDColor?
+    /// The paragraph style for bold text.
     open var paragraphStyle: NSParagraphStyle?
+    /// The underline color for bold text.
     open var underlineColor: CDColor?
+    /// The underline style for bold text.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         return CDMarkdownBold.regex
     }
 
+    /// Creates a new bold element with optional custom styling.
     public init(font: CDFont? = nil,
                 customBoldFont: CDFont? = nil,
                 color: CDColor? = nil,

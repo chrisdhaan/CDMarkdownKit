@@ -35,19 +35,27 @@ import SafariServices
 
 import UIKit
 
+/// Delegate for handling link selection events in CDMarkdownLabel.
 public protocol CDMarkdownLabelDelegate: AnyObject {
+    /// Called when a link is selected in the label.
     func didSelect(_ url: URL)
 }
 
 typealias URLRange = (url: URL, range: NSRange)
 
+/// A UILabel subclass that renders styled Markdown text with clickable links.
 @MainActor
 open class CDMarkdownLabel: UILabel {
 
+    /// The custom layout manager used for rendering.
     open var customLayoutManager: CDMarkdownLayoutManager!
+    /// The custom text container used for rendering.
     open var customTextContainer: NSTextContainer!
+    /// The custom text storage used for rendering.
     open var customTextStorage: NSTextStorage!
+    /// Delegate to receive link selection callbacks.
     open weak var delegate: CDMarkdownLabelDelegate?
+    /// When true, all background color regions have rounded corners.
     open var roundAllCorners: Bool = false {
         didSet {
             if let layoutManager = self.customLayoutManager {
@@ -113,6 +121,7 @@ open class CDMarkdownLabel: UILabel {
         self.customTextContainer.size = self.bounds.size
     }
 
+    /// Configures the label's layout manager, text container, and text storage.
     open func configure() {
         self.isUserInteractionEnabled = true
 

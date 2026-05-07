@@ -33,21 +33,29 @@
 
 extension CDMarkdownSyntax: @unchecked Sendable { }
 
+/// Renders fenced code blocks using ```code``` syntax.
 open class CDMarkdownSyntax: CDMarkdownCommonElement {
 
     fileprivate static let regex = "(\\s+|^)(`{3})(\\s*[^`]*?\\s*)(\\2)(?!`)"
 
+    /// The font for code block text.
     open var font: CDFont?
+    /// The text color for code blocks.
     open var color: CDColor?
+    /// The background color for code blocks.
     open var backgroundColor: CDColor?
+    /// The paragraph style for code blocks.
     open var paragraphStyle: NSParagraphStyle?
+    /// The underline color for code blocks.
     open var underlineColor: CDColor?
+    /// The underline style for code blocks.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         return CDMarkdownSyntax.regex
     }
 
+    /// Creates a new syntax block element with optional custom styling.
     public init(font: CDFont? = CDFont(name: "Menlo-Regular", size: 12),
                 color: CDColor? = CDColor.syntaxTextGray(),
                 backgroundColor: CDColor? = CDColor.syntaxBackgroundGray(),

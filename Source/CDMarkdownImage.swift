@@ -35,17 +35,26 @@
 
 extension CDMarkdownImage: @unchecked Sendable { }
 
+/// Renders inline images using ![alt](url) syntax. Available on iOS, macOS, and tvOS.
 open class CDMarkdownImage: CDMarkdownLinkElement {
 
     fileprivate static let regex = "[!{1}]\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"
 
+    /// The font associated with the image.
     open var font: CDFont?
+    /// The text color for image links.
     open var color: CDColor?
+    /// The background color for images.
     open var backgroundColor: CDColor?
+    /// The paragraph style for images.
     open var paragraphStyle: NSParagraphStyle?
+    /// The preferred size for rendered images.
     open var size: CGSize?
+    /// The underline color for image links.
     open var underlineColor: CDColor?
+    /// The underline style for image links.
     open var underlineStyle: NSUnderlineStyle?
+    /// When true, stores image URLs as attributes for async loading instead of loading synchronously.
     internal var placeholderOnly: Bool = false
 
     open var regex: String {
@@ -57,6 +66,7 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
                                        options: .dotMatchesLineSeparators)
     }
 
+    /// Creates a new image element with optional custom sizing and styling.
     public init(font: CDFont? = nil,
                 color: CDColor? = CDColor.blue,
                 backgroundColor: CDColor? = nil,

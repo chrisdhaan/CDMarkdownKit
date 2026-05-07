@@ -33,23 +33,33 @@
 
 extension CDMarkdownStrikethrough: @unchecked Sendable { }
 
+/// Renders strikethrough text using ~~text~~ syntax.
 open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
 
     fileprivate static let regex = "()(~~)(.*?)(\\2)"
 
+    /// The font for strikethrough text.
     open var font: CDFont?
+    /// The text color for strikethrough.
     open var color: CDColor?
+    /// The background color for strikethrough text.
     open var backgroundColor: CDColor?
+    /// The paragraph style for strikethrough text.
     open var paragraphStyle: NSParagraphStyle?
+    /// The color of the strikethrough line.
     open var strikethroughColor: CDColor?
+    /// The style of the strikethrough line.
     open var strikethroughStyle: NSUnderlineStyle?
+    /// The underline color for strikethrough text.
     open var underlineColor: CDColor?
+    /// The underline style for strikethrough text.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         return CDMarkdownStrikethrough.regex
     }
 
+    /// Creates a new strikethrough element with optional custom styling.
     public init(font: CDFont? = nil,
                 color: CDColor? = nil,
                 backgroundColor: CDColor? = nil,

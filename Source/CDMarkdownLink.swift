@@ -33,15 +33,22 @@
 
 extension CDMarkdownLink: @unchecked Sendable { }
 
+/// Renders inline links using [text](url) syntax.
 open class CDMarkdownLink: CDMarkdownLinkElement {
 
     fileprivate static let regex = "(?<![!])\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"
 
+    /// The font for link text.
     open var font: CDFont?
+    /// The text color for links.
     open var color: CDColor?
+    /// The background color for links.
     open var backgroundColor: CDColor?
+    /// The paragraph style for links.
     open var paragraphStyle: NSParagraphStyle?
+    /// The underline color for links.
     open var underlineColor: CDColor?
+    /// The underline style for links.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
@@ -53,6 +60,7 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
                                        options: .dotMatchesLineSeparators)
     }
 
+    /// Creates a new link element with optional custom styling.
     public init(font: CDFont? = nil,
                 color: CDColor? = CDColor.blue,
                 backgroundColor: CDColor? = nil,

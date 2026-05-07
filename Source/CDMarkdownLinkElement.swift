@@ -31,12 +31,14 @@
     import Cocoa
 #endif
 
-// The base to all Link parsing elements.
+/// Protocol for link-based elements (e.g., links, images, automatic links).
 public protocol CDMarkdownLinkElement: CDMarkdownElement, CDMarkdownStyle {
 
+    /// Formats the display text for a link element.
     func formatText(_ attributedString: NSMutableAttributedString,
                     range: NSRange,
                     link: String)
+    /// Applies styling attributes and link information to a range.
     func addAttributes(_ attributedString: NSMutableAttributedString,
                        range: NSRange,
                        link: String)

@@ -29,11 +29,15 @@
 
 import UIKit
 
+/// A UITextView subclass that renders styled Markdown text with custom layout management.
 @MainActor
 open class CDMarkdownTextView: UITextView {
 
+    /// The custom layout manager used for rendering.
     open var customLayoutManager: CDMarkdownLayoutManager!
+    /// The custom text storage used for rendering.
     open var customTextStorage: NSTextStorage!
+    /// When true, all background color regions have rounded corners.
     open var roundAllCorners: Bool = false {
         didSet {
             if let layoutManager = self.customLayoutManager {
@@ -76,6 +80,7 @@ open class CDMarkdownTextView: UITextView {
         self.configure()
     }
 
+    /// Configures the text view's layout manager and storage.
     open func configure() {
         self.customLayoutManager = CDMarkdownLayoutManager()
         self.customLayoutManager.addTextContainer(self.textContainer)

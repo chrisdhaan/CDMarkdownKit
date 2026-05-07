@@ -33,18 +33,28 @@
 
 extension CDMarkdownList: @unchecked Sendable { }
 
+/// Renders unordered lists using *, -, or + syntax.
 open class CDMarkdownList: CDMarkdownLevelElement {
 
     fileprivate static let regex = "^\\s*([\\*\\+\\-]{1,%@})[ \t]+(.+)$"
 
+    /// The font for list item text.
     open var font: CDFont?
+    /// The maximum nesting level for lists.
     open var maxLevel: Int
+    /// The bullet character or string used for list items.
     open var indicator: String
+    /// The string used for indenting nested list levels.
     open var separator: String
+    /// The text color for list items.
     open var color: CDColor?
+    /// The background color for list items.
     open var backgroundColor: CDColor?
+    /// The paragraph style for list items.
     open var paragraphStyle: NSParagraphStyle?
+    /// The underline color for list items.
     open var underlineColor: CDColor?
+    /// The underline style for list items.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
@@ -53,6 +63,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
                       level)
     }
 
+    /// Creates a new list element with optional custom styling.
     public init(font: CDFont? = nil,
                 maxLevel: Int = 0,
                 indicator: String = "•",

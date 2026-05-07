@@ -29,10 +29,13 @@
 
 import UIKit
 
+/// Custom layout manager that renders background colors with rounded corners for code and syntax blocks.
 open class CDMarkdownLayoutManager: NSLayoutManager {
 
+    /// When true, all background color regions have rounded corners.
     open var roundAllCorners: Bool = false
 
+    /// Fills background rectangles with optional rounded corners for attributed string ranges.
     override open func fillBackgroundRectArray(_ rectArray: UnsafePointer<CGRect>,
                                                count rectCount: Int,
                                                forCharacterRange charRange: NSRange,

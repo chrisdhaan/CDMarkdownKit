@@ -33,6 +33,7 @@
 
 extension CDMarkdownHeader: @unchecked Sendable { }
 
+/// Renders headings using # through ###### syntax.
 open class CDMarkdownHeader: CDMarkdownLevelElement {
 
     fileprivate static let regex = "^\\s*(#{1,%@})\\s*(.+)$\n*"
@@ -46,13 +47,21 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         static let zero  = 0
     }
 
+    /// The base font for headers.
     open var font: CDFont?
+    /// The maximum heading level to recognize (0 means no limit).
     open var maxLevel: Int
+    /// The additional font size increase per heading level.
     open var fontIncrease: Int
+    /// The text color for headers.
     open var color: CDColor?
+    /// The background color for headers.
     open var backgroundColor: CDColor?
+    /// The paragraph style for headers.
     open var paragraphStyle: NSParagraphStyle?
+    /// The underline color for headers.
     open var underlineColor: CDColor?
+    /// The underline style for headers.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
@@ -60,6 +69,7 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         return String(format: CDMarkdownHeader.regex, level)
     }
 
+    /// Creates a new header element with optional custom styling.
     public init(font: CDFont? = CDFont.boldSystemFont(ofSize: 12),
                 maxLevel: Int = 0,
                 fontIncrease: Int = 2,

@@ -33,8 +33,10 @@
 
 extension CDMarkdownAutomaticLink: @unchecked Sendable { }
 
+/// Detects and renders bare URLs as clickable links without Markdown syntax.
 open class CDMarkdownAutomaticLink: CDMarkdownLink {
 
+    /// Automatically detects URLs using NSDataDetector.
     open override func regularExpression() throws -> NSRegularExpression {
         #if os(watchOS)
         return try NSRegularExpression(pattern: "(?!)", options: [])

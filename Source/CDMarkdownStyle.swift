@@ -31,17 +31,26 @@
     import Cocoa
 #endif
 
-// Styling protocol for all MarkdownElements
+/// Protocol defining the styling attributes for Markdown elements.
 public protocol CDMarkdownStyle: Sendable {
 
+    /// The font to apply to this element.
     var font: CDFont? { get }
+    /// The foreground text color for this element.
     var color: CDColor? { get }
+    /// The background color for this element.
     var backgroundColor: CDColor? { get }
+    /// The paragraph style (spacing, alignment, etc.) for this element.
     var paragraphStyle: NSParagraphStyle? { get }
+    /// The underline color to apply to this element.
     var underlineColor: CDColor? { get }
+    /// The underline style (single, double, etc.) to apply to this element.
     var underlineStyle: NSUnderlineStyle? { get }
+    /// The strikethrough color to apply to this element.
     var strikethroughColor: CDColor? { get }
+    /// The strikethrough style to apply to this element.
     var strikethroughStyle: NSUnderlineStyle? { get }
+    /// The computed dictionary of NSAttributedString attributes for this style.
     var attributes: [CDAttributedStringKey: AnyObject] { get }
 }
 
