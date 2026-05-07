@@ -113,4 +113,27 @@ import Foundation
         }
         #expect(!foundLink)
     }
+
+    @Test func asyncParseReturnsAttributedString() async {
+        // Given
+        let input = "Hello **async** world"
+        // When
+        let result = await parser.parse(input)
+        // Then
+        #expect(result.length > 0)
+        #expect(result.string.contains("Hello"))
+    }
+
+    @Test func asyncParseFindsBoldText() async {
+        // Given
+        let input = "Hello **async** world"
+        // When
+        let result = await parser.parse(input)
+        // Then
+        var foundBold = false
+        result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let font = value as? CDFont, font.isBold { foundBold = true }
+        }
+        #expect(foundBold)
+    }
 }
