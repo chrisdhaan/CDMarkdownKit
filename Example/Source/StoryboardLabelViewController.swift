@@ -59,11 +59,6 @@ class StoryboardLabelViewController: BaseViewController {
         self.storyboardLabel.attributedText = self.configure()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: - Action Methods
 
     @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {

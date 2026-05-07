@@ -1,7 +1,13 @@
 import Testing
 import Foundation
+#if os(iOS) || os(tvOS) || os(watchOS)
+import UIKit
+#elseif os(macOS)
+import Cocoa
+#endif
 @testable import CDMarkdownKit
 
+@MainActor
 @Suite struct CDMarkdownListTests {
 
     let parser = CDMarkdownParser()

@@ -2,6 +2,7 @@ import Testing
 import Foundation
 @testable import CDMarkdownKit
 
+@MainActor
 @Suite struct CDMarkdownEscapingTests {
 
     let parser = CDMarkdownParser()
