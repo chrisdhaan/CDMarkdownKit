@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 6/11/18.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -107,20 +107,14 @@ class BaseViewController: UIViewController {
 
     // MARK: - Internal Methods
 
-    func configure() -> NSAttributedString {
+    func configure() async -> NSAttributedString {
         let attributedString = NSAttributedString(string: self.markdownString)
-        // Determine whether to show default or custom parsing
-        var attributedText = NSAttributedString(string: "")
         if self.segmentedControl.selectedSegmentIndex == 0 {
             self.onDefaultParser?()
-            // Parse markdown
-            attributedText = self.defaultMarkdownParser.parse(attributedString)
+            return await self.defaultMarkdownParser.parse(attributedString)
         } else {
             self.onCustomParser?()
-            // Parse markdown
-            attributedText = self.customMarkdownParser.parse(attributedString)
+            return await self.customMarkdownParser.parse(attributedString)
         }
-
-        return attributedText
     }
 }

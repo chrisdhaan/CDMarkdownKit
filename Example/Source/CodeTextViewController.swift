@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 8/2/17.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -48,8 +48,7 @@ class CodeTextViewController: BaseViewController {
 
         self.onDefaultParser = { [weak self] in
             // Configure text view
-            self?.codeTextView.roundCodeCorners = true
-            self?.codeTextView.roundSyntaxCorners = true
+            self?.codeTextView.roundAllCorners = true
         }
 
         // Initialize textContainer and layoutManager for CDMarkdownTextView
@@ -86,8 +85,8 @@ class CodeTextViewController: BaseViewController {
                                                     attribute: CDLayoutConstraintAttribute.trailingMargin,
                                                     multiplier: 1,
                                                     constant: 0)
-        let bottomConstraint = NSLayoutConstraint(item: self.bottomLayoutGuide,
-                                                  attribute: CDLayoutConstraintAttribute.top,
+        let bottomConstraint = NSLayoutConstraint(item: self.view.safeAreaLayoutGuide,
+                                                  attribute: CDLayoutConstraintAttribute.bottom,
                                                   relatedBy: CDLayoutConstraintRelation.equal,
                                                   toItem: codeTextView,
                                                   attribute: CDLayoutConstraintAttribute.bottom,
@@ -104,12 +103,18 @@ class CodeTextViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.codeTextView.attributedText = self.configure()
+        Task { [weak self] in
+            guard let self else { return }
+            self.codeTextView.attributedText = await self.configure()
+        }
     }
 
     // MARK: - Action Methods
 
     @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
-        self.codeTextView.attributedText = self.configure()
+        Task { [weak self] in
+            guard let self else { return }
+            self.codeTextView.attributedText = await self.configure()
+        }
     }
 }

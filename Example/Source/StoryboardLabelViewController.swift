@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 6/11/18.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -45,8 +45,7 @@ class StoryboardLabelViewController: BaseViewController {
 
         self.onDefaultParser = { [weak self] in
             // Configure label
-            self?.storyboardLabel.roundCodeCorners = true
-            self?.storyboardLabel.roundSyntaxCorners = true
+            self?.storyboardLabel.roundAllCorners = true
         }
 
         // Set delegate of CDMarkdownLabel
@@ -56,13 +55,19 @@ class StoryboardLabelViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.storyboardLabel.attributedText = self.configure()
+        Task { [weak self] in
+            guard let self else { return }
+            self.storyboardLabel.attributedText = await self.configure()
+        }
     }
 
     // MARK: - Action Methods
 
     @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
-        self.storyboardLabel.attributedText = self.configure()
+        Task { [weak self] in
+            guard let self else { return }
+            self.storyboardLabel.attributedText = await self.configure()
+        }
     }
 }
 

@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 6/11/18.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -45,8 +45,7 @@ class CodeLabelViewController: BaseViewController {
 
         self.onDefaultParser = { [weak self] in
             // Configure label
-            self?.codeLabel.roundCodeCorners = true
-            self?.codeLabel.roundSyntaxCorners = true
+            self?.codeLabel.roundAllCorners = true
         }
 
         // Example initialization of CDMarkdownLabel
@@ -60,13 +59,19 @@ class CodeLabelViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.codeLabel.attributedText = self.configure()
+        Task { [weak self] in
+            guard let self else { return }
+            self.codeLabel.attributedText = await self.configure()
+        }
     }
 
     // MARK: - Action Methods
 
     @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
-        self.codeLabel.attributedText = self.configure()
+        Task { [weak self] in
+            guard let self else { return }
+            self.codeLabel.attributedText = await self.configure()
+        }
     }
 }
 
