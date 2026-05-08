@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -198,16 +198,19 @@ open class CDMarkdownParser {
     }
 
     /// Parses a Markdown NSAttributedString and returns a styled NSAttributedString.
+    /// Images are not loaded; use the async overload to load remote images.
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
-        return parse(markdown, loadImages: true)
+        return parse(markdown, loadImages: false)
     }
 
     /// Asynchronously parses a Markdown string with image loading support.
+    @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     open func parse(_ string: String) async -> NSAttributedString {
         return await parse(NSAttributedString(string: string))
     }
 
     /// Asynchronously parses a Markdown NSAttributedString with image loading support.
+    @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     open func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
         let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))
         await resolveImages(in: result)
@@ -275,6 +278,22 @@ open class CDMarkdownParser {
         return attributedString
     }
 
+    @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+    private func urlSessionData(from url: URL) async throws -> Data {
+        try await withCheckedThrowingContinuation { continuation in
+            URLSession.shared.dataTask(with: url) { data, _, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else if let data = data {
+                    continuation.resume(returning: data)
+                } else {
+                    continuation.resume(throwing: URLError(.unknown))
+                }
+            }.resume()
+        }
+    }
+
+    @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     private func resolveImages(in attributedString: NSMutableAttributedString) async {
         var replacements: [(range: NSRange, url: URL)] = []
         attributedString.enumerateAttribute(.cdMarkdownImageURL,
@@ -285,7 +304,7 @@ open class CDMarkdownParser {
         }
 
         for (range, url) in replacements.reversed() {
-            if let (data, _) = try? await URLSession.shared.data(from: url),
+            if let data = try? await urlSessionData(from: url),
                let image = CDImage(data: data) {
                 let attachment = NSTextAttachment()
                 attachment.image = image
