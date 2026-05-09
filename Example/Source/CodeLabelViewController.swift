@@ -49,10 +49,19 @@ class CodeLabelViewController: BaseViewController {
         }
 
         // Example initialization of CDMarkdownLabel
-        let codeLabel = CDMarkdownLabel(frame: self.rect)
+        let codeLabel = CDMarkdownLabel(frame: .zero)
+        codeLabel.numberOfLines = 0
         codeLabel.delegate = self
-        codeLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        codeLabel.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(codeLabel)
+
+        NSLayoutConstraint.activate([
+            codeLabel.topAnchor.constraint(equalTo: self.segmentedControl.bottomAnchor, constant: 8),
+            codeLabel.leadingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.leadingAnchor),
+            codeLabel.trailingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.trailingAnchor),
+            codeLabel.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        ])
+
         self.codeLabel = codeLabel
     }
 

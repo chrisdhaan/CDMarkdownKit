@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		5F40591A24FC66A100DBCEF8 /* CDMarkdownKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = B2B366431F324FAA0078B962 /* CDMarkdownKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B2B365EA1F324BDA0078B962 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B365E81F324BDA0078B962 /* AppDelegate.swift */; };
-		CD0000001000000000000002 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0000001000000000000001 /* SceneDelegate.swift */; };
 		B2B365EB1F324BDA0078B962 /* CodeTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B365E91F324BDA0078B962 /* CodeTextViewController.swift */; };
 		B2B365F81F324C0C0078B962 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B2B365F71F324C0C0078B962 /* Assets.xcassets */; };
 		B2B365FD1F324C170078B962 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2B365F91F324C170078B962 /* LaunchScreen.storyboard */; };
@@ -19,6 +18,7 @@
 		B2D61BCE20CF4C470091BFFF /* StoryboardTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D61BCD20CF4C470091BFFF /* StoryboardTextViewController.swift */; };
 		B2D61BD020CF4C510091BFFF /* StoryboardLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D61BCF20CF4C510091BFFF /* StoryboardLabelViewController.swift */; };
 		B2F8EE912059DD4F00B5B54D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2F8EE902059DD4F00B5B54D /* Localizable.strings */; };
+		CD0000001000000000000002 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0000001000000000000001 /* SceneDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,7 +76,6 @@
 /* Begin PBXFileReference section */
 		B2B365CB1F324A930078B962 /* iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2B365E81F324BDA0078B962 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CD0000001000000000000001 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B2B365E91F324BDA0078B962 /* CodeTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeTextViewController.swift; sourceTree = "<group>"; };
 		B2B365F71F324C0C0078B962 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Resources/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		B2B365FA1F324C170078B962 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Resources/Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
@@ -88,6 +87,7 @@
 		B2D61BCD20CF4C470091BFFF /* StoryboardTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardTextViewController.swift; sourceTree = "<group>"; };
 		B2D61BCF20CF4C510091BFFF /* StoryboardLabelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardLabelViewController.swift; sourceTree = "<group>"; };
 		B2F8EE902059DD4F00B5B54D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		CD0000001000000000000001 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -366,7 +366,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -421,7 +421,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

@@ -132,7 +132,7 @@ open class CDMarkdownLabel: UILabel {
         } else {
             self.customTextContainer = NSTextContainer()
             self.customTextContainer.lineFragmentPadding = 0
-            self.customTextContainer.maximumNumberOfLines = self.numberOfLines
+            self.customTextContainer.maximumNumberOfLines = 0
             self.customTextContainer.lineBreakMode = self.lineBreakMode
             self.customTextContainer.size = self.frame.size
 

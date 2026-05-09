@@ -52,6 +52,11 @@ open class CDMarkdownTextView: UITextView {
         }
         set {
             super.attributedText = newValue
+            guard let newValue = newValue else { return }
+            self.customTextStorage = NSTextStorage(attributedString: newValue)
+            if let layoutManager = self.customLayoutManager {
+                self.customTextStorage.addLayoutManager(layoutManager)
+            }
         }
     }
 
@@ -77,13 +82,9 @@ open class CDMarkdownTextView: UITextView {
 
     /// Configures the text view's layout manager and storage.
     open func configure() {
-        // CDMarkdownLayoutManager is an NSLayoutManager subclass, which requires TextKit 1.
-        // Accessing self.layoutManager here deliberately opts UITextView into TextKit 1
-        // compatibility mode. The one-time console warning this produces is expected and
-        // unavoidable until CDMarkdownLayoutManager is migrated to NSTextLayoutManager.
-        self.textStorage.removeLayoutManager(self.layoutManager)
+        // Accessing self.textContainer here opts UITextView into TextKit 1 compatibility
+        // mode (one-time console warning expected; unavoidable until TK2 migration).
         self.customLayoutManager = CDMarkdownLayoutManager()
-        self.textStorage.addLayoutManager(self.customLayoutManager)
         self.customLayoutManager.addTextContainer(self.textContainer)
 
         self.isScrollEnabled = true
