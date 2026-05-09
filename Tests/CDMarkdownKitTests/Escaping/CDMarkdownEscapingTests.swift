@@ -34,4 +34,51 @@ import Foundation
         }
         #expect(!hasBold)
     }
+
+    // MARK: - Backslash escaping negative cases
+
+    @Test func backslashEscapedAsteriskDoesNotTriggerItalic() {
+        // \* should produce a literal * and NOT open an italic span
+        let result = parser.parse("\\*not italic\\*")
+        var hasItalic = false
+        result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if let f = v as? CDFont, f.isItalic { hasItalic = true }
+        }
+        #expect(!hasItalic)
+        #expect(result.string.contains("*"))
+    }
+
+    @Test func backslashEscapedUnderscoreDoesNotTriggerItalic() {
+        // \_ should produce a literal _ and NOT open an italic span
+        let result = parser.parse("\\_not italic\\_")
+        var hasItalic = false
+        result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if let f = v as? CDFont, f.isItalic { hasItalic = true }
+        }
+        #expect(!hasItalic)
+        #expect(result.string.contains("_"))
+    }
+
+    @Test func backslashEscapedBacktickDoesNotTriggerCode() {
+        // \` should produce a literal ` and NOT open a code span
+        let result = parser.parse("\\`not code\\`")
+        // Code spans apply a distinct foreground color (red); plain text should not have it
+        var hasCodeColor = false
+        result.enumerateAttribute(.foregroundColor, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if let color = v as? CDColor, color == CDColor.codeTextRed() { hasCodeColor = true }
+        }
+        #expect(!hasCodeColor)
+        #expect(result.string.contains("`"))
+    }
+
+    @Test func backslashEscapedBracketDoesNotTriggerLink() {
+        // \[ should not open a link span (no URL present either, to avoid auto-detection)
+        let result = parser.parse("\\[not a link")
+        var hasLink = false
+        result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if v != nil { hasLink = true }
+        }
+        #expect(!hasLink)
+        #expect(result.string.contains("["))
+    }
 }
