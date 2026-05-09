@@ -241,6 +241,27 @@ import Cocoa
         #expect(result.string.contains("the docs"))
     }
 
+    @Test func parseAcceptsNSAttributedStringInput() {
+        // Given: an NSAttributedString carrying a pre-existing custom attribute
+        let customKey = NSAttributedString.Key("com.test.preexisting")
+        let input = NSMutableAttributedString(string: "**bold** text")
+        input.addAttribute(customKey, value: "marker" as AnyObject,
+                           range: NSRange(location: 0, length: input.length))
+        // When: the NSAttributedString overload is used directly
+        let result = parser.parse(input as NSAttributedString)
+        // Then: markdown is parsed AND the pre-existing attribute survives
+        var foundBold = false
+        result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if let f = v as? CDFont, f.isBold { foundBold = true }
+        }
+        var foundCustom = false
+        result.enumerateAttribute(customKey, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if v != nil { foundCustom = true }
+        }
+        #expect(foundBold)
+        #expect(foundCustom)
+    }
+
     @Test func asyncParseLoadsLocalImage() async {
         #if os(iOS) || os(tvOS) || os(macOS)
         // Build a minimal 1×1 PNG via Core Graphics so no bundle resource is needed

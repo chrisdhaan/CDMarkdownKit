@@ -43,4 +43,10 @@ import Cocoa
         let result = parser.parse("* item")
         #expect(!result.string.contains("*"))
     }
+
+    @Test func listBulletCharacterIsPresent() {
+        // The default indicator is "•"; verify it replaces the markdown marker
+        let result = parser.parse("* item")
+        #expect(result.string.contains("•"))
+    }
 }

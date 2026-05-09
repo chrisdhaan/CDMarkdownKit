@@ -38,4 +38,17 @@ import Foundation
         let result = parser.parse("**bold**")
         #expect(!result.string.contains("*"))
     }
+
+    @Test func boldSpansMultipleWords() {
+        // Verify the bold font covers the full span, not just the first word
+        let result = parser.parse("**hello world**")
+        var boldWordCount = 0
+        result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, range, _ in
+            if let f = v as? CDFont, f.isBold {
+                let substring = (result.string as NSString).substring(with: range)
+                boldWordCount += substring.components(separatedBy: " ").filter { !$0.isEmpty }.count
+            }
+        }
+        #expect(boldWordCount >= 2)
+    }
 }
