@@ -145,6 +145,102 @@ import Cocoa
         #expect(foundBold)
     }
 
+    // MARK: - Multi-element document tests
+
+    @Test func boldAndItalicInSameParagraph() {
+        // Given
+        let input = "**bold** and _italic_ text"
+        // When
+        let result = parser.parse(input)
+        // Then
+        var foundBold = false
+        var foundItalic = false
+        result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let font = value as? CDFont {
+                if font.isBold { foundBold = true }
+                if font.isItalic { foundItalic = true }
+            }
+        }
+        #expect(foundBold)
+        #expect(foundItalic)
+    }
+
+    @Test func codeAndBoldInSameParagraph() {
+        // Given
+        let input = "`code` and **bold**"
+        // When
+        let result = parser.parse(input)
+        // Then: code applies a foreground color; bold applies a bold font
+        var foundBold = false
+        var foundCodeColor = false
+        result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let font = value as? CDFont, font.isBold { foundBold = true }
+        }
+        result.enumerateAttribute(.foregroundColor, in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if value != nil { foundCodeColor = true }
+        }
+        #expect(foundBold)
+        #expect(foundCodeColor)
+    }
+
+    @Test func headerAndParagraphProduceDifferentFontSizes() {
+        // Given
+        let input = "# Heading\nNormal **bold** text"
+        // When
+        let result = parser.parse(input)
+        // Then: header font is larger than body font — at least two distinct sizes
+        var fontSizes = Set<CGFloat>()
+        result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let font = value as? CDFont { fontSizes.insert(font.pointSize) }
+        }
+        #expect(fontSizes.count >= 2)
+    }
+
+    #if !os(watchOS)
+    @Test func bracketLinkAndBareUrlBothLinked() {
+        // Given: a bracket-style link and a separate bare URL in the same string
+        let input = "[GitHub](https://github.com) and https://example.com"
+        // When
+        let result = parser.parse(input)
+        // Then: two distinct link attribute runs
+        var linkedRuns = 0
+        result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if value != nil { linkedRuns += 1 }
+        }
+        #expect(linkedRuns >= 2)
+    }
+    #endif
+
+    @Test func fullDocumentParsesAllElements() {
+        // A kitchen-sink document — verifies the pipeline handles all element
+        // types together without crashing or producing an empty result.
+        // Given
+        let input = """
+        # Welcome
+
+        This is **bold** and _italic_ text.
+
+        > A blockquote with `inline code`.
+
+        - Item one
+        - Item two
+
+        ```
+        let x = 42
+        ```
+
+        Visit [the docs](https://example.com) for more.
+        """
+        // When
+        let result = parser.parse(input)
+        // Then: output is non-empty and key text survives parsing
+        #expect(result.length > 0)
+        #expect(result.string.contains("Welcome"))
+        #expect(result.string.contains("bold"))
+        #expect(result.string.contains("italic"))
+        #expect(result.string.contains("the docs"))
+    }
+
     @Test func asyncParseLoadsLocalImage() async {
         #if os(iOS) || os(tvOS) || os(macOS)
         // Build a minimal 1×1 PNG via Core Graphics so no bundle resource is needed
