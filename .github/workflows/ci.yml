@@ -19,44 +19,133 @@ on:
 concurrency:
   group: ${{ github.ref_name }}
   cancel-in-progress: true
+
 jobs:
-  Latest:
-    name: Test Latest (iOS, macOS, tvOS, watchOS)
-    runs-on: macOS-15
-    env:
-      DEVELOPER_DIR: "/Applications/Xcode_16.2.app/Contents/Developer"
-    timeout-minutes: 10
+  iOS:
+    name: Test ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         include:
-          - name: "iOS"
+          - runner: macos-15
+            xcode: /Applications/Xcode_16.2.app/Contents/Developer
             destination: "OS=18.2,name=iPhone 16"
-          - name: "macOS"
-            destination: "platform=macOS"
-          - name: "tvOS"
-            destination: "OS=18.2,name=Apple TV 4K (3rd generation) (at 1080p)"
-          - name: "watchOS"
-            destination: "OS=11.2,name=Apple Watch Series 10 (46mm)"
+            name: "iOS 18.2"
+          - runner: macos-14
+            xcode: /Applications/Xcode_15.4.app/Contents/Developer
+            destination: "OS=17.5,name=iPhone 15"
+            name: "iOS 17.5"
     steps:
       - uses: actions/checkout@v4
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+        run: sudo xcode-select -s ${{ matrix.xcode }}
       - name: Install xcbeautify
         run: brew install xcbeautify
       - name: ${{ matrix.name }} - Debug
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit ${{ matrix.name }}" -destination "${{ matrix.destination }}" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "${{ matrix.destination }}" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
       - name: ${{ matrix.name }} - Release
         run: |
           set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit ${{ matrix.name }}" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
+
+  macOS:
+    name: Test ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            xcode: /Applications/Xcode_16.2.app/Contents/Developer
+            name: "macOS 15"
+          - runner: macos-14
+            xcode: /Applications/Xcode_15.4.app/Contents/Developer
+            name: "macOS 14"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s ${{ matrix.xcode }}
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+      - name: ${{ matrix.name }} - Debug
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit macOS" -destination "platform=macOS" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
+      - name: ${{ matrix.name }} - Release
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit macOS" -destination "platform=macOS" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
+
+  tvOS:
+    name: Test ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            xcode: /Applications/Xcode_16.2.app/Contents/Developer
+            destination: "OS=18.2,name=Apple TV 4K (3rd generation) (at 1080p)"
+            name: "tvOS 18.2"
+          - runner: macos-14
+            xcode: /Applications/Xcode_15.4.app/Contents/Developer
+            destination: "OS=17.5,name=Apple TV 4K (3rd generation) (at 1080p)"
+            name: "tvOS 17.5"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s ${{ matrix.xcode }}
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+      - name: ${{ matrix.name }} - Debug
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit tvOS" -destination "${{ matrix.destination }}" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
+      - name: ${{ matrix.name }} - Release
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit tvOS" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
+
+  watchOS:
+    name: Test ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            xcode: /Applications/Xcode_16.2.app/Contents/Developer
+            destination: "OS=11.2,name=Apple Watch Series 10 (46mm)"
+            name: "watchOS 11.2"
+          - runner: macos-14
+            xcode: /Applications/Xcode_15.4.app/Contents/Developer
+            destination: "OS=10.5,name=Apple Watch Series 9 (45mm)"
+            name: "watchOS 10.5"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s ${{ matrix.xcode }}
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+      - name: ${{ matrix.name }} - Debug
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit watchOS" -destination "${{ matrix.destination }}" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
+      - name: ${{ matrix.name }} - Release
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit watchOS" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
+
   Catalyst:
     name: Test Catalyst
-    runs-on: macOS-15
-    env:
-      DEVELOPER_DIR: "/Applications/Xcode_16.2.app/Contents/Developer"
+    runs-on: macos-15
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -72,108 +161,39 @@ jobs:
         run: |
           set -o pipefail
           env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "platform=macOS" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
-  iOS:
-    name: Test iOS
-    runs-on: macOS-15
-    env:
-      DEVELOPER_DIR: "/Applications/Xcode_16.2.app/Contents/Developer"
-    timeout-minutes: 20
+
+  CocoaPods:
+    name: pod lib lint
+    runs-on: macos-15
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
-      - name: Install xcbeautify
-        run: brew install xcbeautify
       - uses: actions/cache@v4
         with:
           path: Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
-      - name: iOS 18.2 - Debug
-        run: |
-          set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "OS=18.2,name=iPhone 16" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
-      - name: iOS 18.2 - Release
-        run: |
-          set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "OS=18.2,name=iPhone 16" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
       - name: Install Gems
         run: bundle install
       - name: pod lib lint
         run: bundle exec pod lib lint --allow-warnings
-  macOS:
-    name: Test macOS
-    runs-on: macOS-15
-    env:
-      DEVELOPER_DIR: "/Applications/Xcode_16.2.app/Contents/Developer"
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
-      - name: Install xcbeautify
-        run: brew install xcbeautify
-      - name: macOS - Debug
-        run: |
-          set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit macOS" -destination "platform=macOS" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
-      - name: macOS - Release
-        run: |
-          set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit macOS" -destination "platform=macOS" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
-  tvOS:
-    name: Test tvOS
-    runs-on: macOS-15
-    env:
-      DEVELOPER_DIR: "/Applications/Xcode_16.2.app/Contents/Developer"
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
-      - name: Install xcbeautify
-        run: brew install xcbeautify
-      - name: tvOS 18.2 - Debug
-        run: |
-          set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit tvOS" -destination "OS=18.2,name=Apple TV 4K (3rd generation) (at 1080p)" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
-      - name: tvOS 18.2 - Release
-        run: |
-          set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit tvOS" -destination "OS=18.2,name=Apple TV 4K (3rd generation) (at 1080p)" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
-  watchOS:
-    name: Test watchOS
-    runs-on: macOS-15
-    env:
-      DEVELOPER_DIR: "/Applications/Xcode_16.2.app/Contents/Developer"
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
-      - name: Install xcbeautify
-        run: brew install xcbeautify
-      - name: watchOS 11.2 - Debug
-        run: |
-          set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit watchOS" -destination "OS=11.2,name=Apple Watch Series 10 (46mm)" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
-      - name: watchOS 11.2 - Release
-        run: |
-          set -o pipefail
-          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit watchOS" -destination "OS=11.2,name=Apple Watch Series 10 (46mm)" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
+
   SPM:
     name: Test with SPM
-    runs-on: macOS-15
-    env:
-      DEVELOPER_DIR: "/Applications/Xcode_16.2.app/Contents/Developer"
+    runs-on: macos-15
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+      - name: Install xcbeautify
+        run: brew install xcbeautify
       - name: swift test
         run: set -o pipefail && swift test -c debug 2>&1 | xcbeautify --renderer github-actions
+
   swiftlint:
     name: SwiftLint
     runs-on: macos-15
@@ -184,6 +204,7 @@ jobs:
         run: brew install swiftlint
       - name: Lint
         run: swiftlint lint --strict
+
   codeql:
     name: CodeQL
     runs-on: macos-15
