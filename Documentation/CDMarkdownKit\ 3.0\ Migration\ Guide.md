@@ -120,7 +120,7 @@ CDMarkdownKit 3.0 removes support for Carthage as a distribution method. Carthag
 
 ```swift
 // Swift Package Manager
-.package(url: "https://github.com/christopherdehaan/CDMarkdownKit.git", from: "3.0.0")
+.package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", from: "3.0.0")
 ```
 
 ```ruby
@@ -167,5 +167,5 @@ Before deploying your updated app:
 
 If you encounter problems during migration, please:
 - Check [Documentation/Usage.md](Usage.md) for current API examples
-- Search existing [GitHub Issues](https://github.com/christopherdehaan/CDMarkdownKit/issues)
+- Search existing [GitHub Issues](https://github.com/chrisdhaan/CDMarkdownKit/issues)
 - Open a new issue with details about your use case

@@ -11,7 +11,7 @@ CDMarkdownKit is distributed via Swift Package Manager, CocoaPods, and Carthage.
 Add to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/christopherdehaan/CDMarkdownKit.git", from: "3.0.0")
+.package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", from: "3.0.0")
 ```
 
 Or in Xcode: **File → Add Packages** and enter the repository URL.
@@ -31,7 +31,7 @@ Run `pod install`.
 Add to your `Cartfile`:
 
 ```
-github "christopherdehaan/CDMarkdownKit" ~> 3.0
+github "chrisdhaan/CDMarkdownKit" ~> 3.0
 ```
 
 Run `carthage update`.
@@ -152,7 +152,7 @@ class MyViewController: UIViewController {
         super.viewDidLoad()
         
         let parser = CDMarkdownParser()
-        let markdown = "Check out [CDMarkdownKit](https://github.com/christopherdehaan/CDMarkdownKit)"
+        let markdown = "Check out [CDMarkdownKit](https://github.com/chrisdhaan/CDMarkdownKit)"
         label.attributedText = parser.parse(markdown)
     }
 }

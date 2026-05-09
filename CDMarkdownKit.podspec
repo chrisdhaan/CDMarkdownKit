@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.homepage = 'https://github.com/chrisdhaan/CDMarkdownKit'
   s.author = { 'Christopher de Haan' => 'contact@christopherdehaan.me' }
   s.source = { :git => 'https://github.com/chrisdhaan/CDMarkdownKit.git', :tag => s.version.to_s }
-  s.documentation_url = 'https://christopherdehaan.github.io/CDMarkdownKit/'
+  s.documentation_url = 'https://chrisdhaan.github.io/CDMarkdownKit/'
 
   s.ios.deployment_target = '15.0'
   s.osx.deployment_target = '12.0'

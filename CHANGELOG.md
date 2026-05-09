@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [3.0.0](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/3.0.0)
+## [3.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/3.0.0)
 
 Released on 2026-05-06.
 
@@ -32,7 +32,7 @@ Released on 2026-05-06.
 - GFM ordered list support (`1.`, `2.`, `3.`)
 - GFM table support with column alignment
 - Public API documentation with Jazzy
-- GitHub Pages hosted documentation at https://christopherdehaan.github.io/CDMarkdownKit/
+- GitHub Pages hosted documentation at https://chrisdhaan.github.io/CDMarkdownKit/
 - `Documentation/Usage.md` with comprehensive usage examples and platform-specific notes
 - Privacy manifest (`PrivacyInfo.xcprivacy`) for App Store compliance
 - SwiftLint enforcement in CI
@@ -61,7 +61,7 @@ Released on 2026-05-06.
 
 ---
 
-## [2.5.1](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/2.5.1)
+## [2.5.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.5.1)
 
 Released on 2022-12-13.
 
@@ -75,7 +75,7 @@ Released on 2022-12-13.
 
 ---
 
-## [2.5.0](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/2.5.0)
+## [2.5.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.5.0)
 
 Released on 2022-12-12.
 
@@ -85,7 +85,7 @@ Released on 2022-12-12.
 
 ---
 
-## [2.4.0](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/2.4.0)
+## [2.4.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.4.0)
 
 Released on 2022-12-03.
 
@@ -95,7 +95,7 @@ Released on 2022-12-03.
 
 ---
 
-## [2.3.0](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/2.3.0)
+## [2.3.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.3.0)
 
 Released on 2022-10-17.
 
@@ -105,7 +105,7 @@ Released on 2022-10-17.
 
 ---
 
-## [2.2.0](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/2.2.0)
+## [2.2.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.2.0)
 
 Released on 2022-06-26.
 
@@ -120,7 +120,7 @@ Released on 2022-06-26.
 
 ---
 
-## [2.1.1](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/2.1.1)
+## [2.1.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.1.1)
 
 Released on 2021-05-29.
 
@@ -131,7 +131,7 @@ Released on 2021-05-29.
 
 ---
 
-## [2.1.0](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/2.1.0)
+## [2.1.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.1.0)
 
 Released on 2020-08-30.
 
@@ -141,7 +141,7 @@ Released on 2020-08-30.
 
 ---
 
-## [2.0.0](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/2.0.0)
+## [2.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.0.0)
 
 Released on 2020-08-29.
 
@@ -151,7 +151,7 @@ Released on 2020-08-29.
 
 ---
 
-## [1.2.1](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/1.2.1)
+## [1.2.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/1.2.1)
 
 Released on 2018-12-14.
 
@@ -169,7 +169,7 @@ Released on 2018-12-14.
 
 ---
 
-## [1.2.0](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/1.2.0)
+## [1.2.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/1.2.0)
 
 Released on 2018-07-27.
 
@@ -186,7 +186,7 @@ Released on 2018-07-27.
 
 ---
 
-## [1.1.0](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/1.1.0)
+## [1.1.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/1.1.0)
 
 Released on 2018-06-12.
 
@@ -196,7 +196,7 @@ Released on 2018-06-12.
 
 ---
 
-## [1.0.0](https://github.com/christopherdehaan/CDMarkdownKit/releases/tag/1.0.0)
+## [1.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/1.0.0)
 
 Released on 2018-06-11.
 

@@ -65,7 +65,7 @@ label.attributedText = attributedString
 Add to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/christopherdehaan/CDMarkdownKit.git", from: "3.0.0")
+.package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", from: "3.0.0")
 ```
 
 Or in Xcode: **File → Add Packages** and enter the repository URL.
