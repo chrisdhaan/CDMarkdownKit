@@ -231,7 +231,9 @@ open class CDMarkdownParser {
                                          with: " ",
                                          range: NSRange(location: 0,
                                                         length: mutableString.length))
-        let regExp = try? NSRegularExpression(pattern: "^\\s+",
+        // Use [ \t]+ rather than \s+ so blank lines (\n only) are not consumed.
+        // \s includes \n, which would collapse blank lines even when squashNewlines is false.
+        let regExp = try? NSRegularExpression(pattern: "^[ \\t]+",
                                               options: .anchorsMatchLines)
         if let regExp = regExp {
             regExp.replaceMatches(in: mutableString,

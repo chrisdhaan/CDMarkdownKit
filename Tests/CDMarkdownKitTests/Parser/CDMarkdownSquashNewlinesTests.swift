@@ -39,4 +39,13 @@ import Foundation
         let result = parser.parse(input)
         #expect(result.string.contains("\n"))
     }
+
+    @Test func squashNewlinesFalsePreservesConsecutiveNewlines() {
+        // When squashNewlines is disabled, \n\n must survive into the output
+        let parser = CDMarkdownParser()
+        parser.squashNewlines = false
+        let input = "first\n\nsecond"
+        let result = parser.parse(input)
+        #expect(result.string.contains("\n\n"))
+    }
 }
