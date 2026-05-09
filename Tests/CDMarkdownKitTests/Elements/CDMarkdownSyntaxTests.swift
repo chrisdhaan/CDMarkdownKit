@@ -34,4 +34,19 @@ import Foundation
         let result = parser.parse("```\ncode\n```")
         #expect(!result.string.contains("```"))
     }
+
+    @Test func fencedCodeUsesConfiguredFont() {
+        // CDMarkdownParser passes its base font to syntax element at init time,
+        // overriding the Menlo-Regular default. Verify the explicitly configured
+        // font is applied when set directly on parser.syntax.
+        guard let menlo = CDFont(name: "Menlo-Regular", size: 12) else { return }
+        let parser = CDMarkdownParser()
+        parser.syntax.font = menlo
+        let result = parser.parse("```\ncode\n```")
+        var found = false
+        result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if let f = v as? CDFont, f.fontName.lowercased().contains("menlo") { found = true }
+        }
+        #expect(found)
+    }
 }

@@ -34,4 +34,19 @@ import Foundation
         let result = parser.parse("`code`")
         #expect(!result.string.contains("`"))
     }
+
+    @Test func codeSpanUsesConfiguredFont() {
+        // CDMarkdownParser passes its base font to code element at init time,
+        // overriding the Menlo-Regular default. Verify the explicitly configured
+        // font is applied when set directly on parser.code.
+        guard let menlo = CDFont(name: "Menlo-Regular", size: 12) else { return }
+        let parser = CDMarkdownParser()
+        parser.code.font = menlo
+        let result = parser.parse("`code`")
+        var found = false
+        result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if let f = v as? CDFont, f.fontName.lowercased().contains("menlo") { found = true }
+        }
+        #expect(found)
+    }
 }
