@@ -117,6 +117,8 @@ CDMarkdownKit supports the following Markdown syntax:
 | Links | `[text](url)` | Clickable URLs |
 | Automatic Links | `https://example.com` | Bare URLs detected |
 | Images | `![alt](url)` | Rendered images |
+| Ordered Lists | `1. item` | Numbered items |
+| Tables | Pipe-delimited rows | Aligned columns |
 
 ### Platform Notes
 
@@ -124,14 +126,33 @@ CDMarkdownKit supports the following Markdown syntax:
 |---------|-----|-------|------|---------|
 | Bold / Italic / Strikethrough | ✓ | ✓ | ✓ | ✓ |
 | Headers | ✓ | ✓ | ✓ | ✓ |
-| Lists | ✓ | ✓ | ✓ | ✓ |
+| Unordered Lists | ✓ | ✓ | ✓ | ✓ |
+| Ordered Lists | ✓ | ✓ | ✓ | ✓ |
 | Blockquotes | ✓ | ✓ | ✓ | ✓ |
 | Inline Code / Fenced Blocks | ✓ | ✓ | ✓ | ✓ |
+| Tables | ✓ | ✓ | ✓ | ✓ |
 | Links (tappable) | ✓ | ✓ | ✓ | — |
 | Automatic Links | ✓ | ✓ | ✓ | — |
 | Images | ✓ | ✓ | ✓ | — |
 
 > **watchOS**: Only `WKInterfaceLabel.setAttributedText(_:)` is supported. Tappable links, images, and `CDMarkdownLabel`/`CDMarkdownTextView` UI components are not available on watchOS. All text styling (bold, italic, headers, code, tables, etc.) works because it is applied as `NSAttributedString` attributes, which `WKInterfaceLabel` renders correctly.
+
+### Tables
+
+CDMarkdownKit supports GitHub Flavored Markdown tables with optional leading/trailing pipes:
+
+```
+| Column 1 | Column 2 | Column 3 |
+| :------- | :------: | -------: |
+| left     | center   | right    |
+```
+
+Column alignment is controlled by the colon position in the separator row:
+- `:---` (or `---`) — Left-aligned
+- `:---:` — Center-aligned
+- `---:` — Right-aligned
+
+Cell content is rendered as plain text; inline formatting inside cells is not supported in this version.
 
 ---
 
