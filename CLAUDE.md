@@ -198,17 +198,17 @@ Defined in `.github/workflows/ci.yml`. Triggered on push to `master` and on pull
 
 | Job | Strategy | Runner(s) | Tool |
 |-----|----------|-----------|------|
-| iOS | matrix: iOS 26.0 / 18.6 | macos-26 / macos-15 | xcodebuild |
-| macOS | matrix: macOS 26 / 15 | macos-26 / macos-15 | xcodebuild |
-| tvOS | matrix: tvOS 26.0 / 18.5 | macos-26 / macos-15 | xcodebuild |
-| watchOS | matrix: watchOS 26.0 / 11.5 | macos-26 / macos-15 | xcodebuild |
+| iOS | matrix: Xcode 26.0.1–26.4.1 (macos-26) / Xcode 16.0–16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| macOS | matrix: Xcode 26.0.1–26.4.1 (macos-26) / Xcode 16.0–16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| tvOS | matrix: Xcode 26.0.1–26.4.1 (macos-26) / Xcode 16.0–16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| watchOS | matrix: Xcode 26.0.1–26.4.1 (macos-26) / Xcode 16.0–16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
 | Catalyst | single | macos-15, Xcode 16.4 | xcodebuild |
 | CocoaPods | single | macos-15, Xcode 16.4 | pod lib lint |
 | SPM | single | macos-15, Xcode 16.4 | swift test |
 | SwiftLint | single | macos-15 | swiftlint --strict |
 | CodeQL | single | macos-15, Xcode 16.4 | codeql-action |
 
-Each platform job runs both Debug and Release builds. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
+Each platform job runs 10 matrix entries (5 Xcode 26.x on macos-26, 5 Xcode 16.x on macos-15), both Debug and Release builds. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
 
 ---
 
