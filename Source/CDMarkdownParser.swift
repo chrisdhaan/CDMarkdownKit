@@ -248,16 +248,20 @@ open class CDMarkdownParser {
                                          with: " ",
                                          range: NSRange(location: 0,
                                                         length: mutableString.length))
-        // Use [ \t]+ rather than \s+ so blank lines (\n only) are not consumed.
-        // \s includes \n, which would collapse blank lines even when squashNewlines is false.
-        let regExp = try? NSRegularExpression(pattern: "^[ \\t]+",
-                                              options: .anchorsMatchLines)
-        if let regExp = regExp {
-            regExp.replaceMatches(in: mutableString,
-                                  options: [],
-                                  range: NSRange(location: 0,
-                                                 length: mutableString.length),
-                                  withTemplate: "")
+        // Conditionally strip leading whitespace. When preserveLeadingWhitespace is true,
+        // skip this step to maintain spaces at the beginning of lines.
+        if !preserveLeadingWhitespace {
+            // Use [ \t]+ rather than \s+ so blank lines (\n only) are not consumed.
+            // \s includes \n, which would collapse blank lines even when squashNewlines is false.
+            let regExp = try? NSRegularExpression(pattern: "^[ \\t]+",
+                                                  options: .anchorsMatchLines)
+            if let regExp = regExp {
+                regExp.replaceMatches(in: mutableString,
+                                      options: [],
+                                      range: NSRange(location: 0,
+                                                     length: mutableString.length),
+                                      withTemplate: "")
+            }
         }
         let range = NSRange(location: 0,
                             length: attributedString.length)
