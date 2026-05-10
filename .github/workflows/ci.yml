@@ -73,6 +73,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s ${{ matrix.xcode }}
+      - name: List available simulators
+        run: xcrun simctl list
       - name: Install xcbeautify
         run: brew install xcbeautify
       - name: ${{ matrix.name }} - Debug
@@ -189,6 +191,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s ${{ matrix.xcode }}
+      - name: List available simulators
+        run: xcrun simctl list
       - name: Install xcbeautify
         run: brew install xcbeautify
       - name: ${{ matrix.name }} - Debug
@@ -252,6 +256,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s ${{ matrix.xcode }}
+      - name: List available simulators
+        run: xcrun simctl list
       - name: Install xcbeautify
         run: brew install xcbeautify
       - name: ${{ matrix.name }} - Debug
