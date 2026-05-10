@@ -31,7 +31,7 @@ jobs:
         include:
           - runner: macos-26
             xcode: /Applications/Xcode_26.0.app/Contents/Developer
-            destination: "OS=26.0,name=iPhone 17 Pro"
+            destination: "OS=26.4,name=iPhone 17 Pro"
             name: "iOS 26.0"
           - runner: macos-15
             xcode: /Applications/Xcode_16.4.app/Contents/Developer
@@ -91,12 +91,12 @@ jobs:
         include:
           - runner: macos-26
             xcode: /Applications/Xcode_26.0.app/Contents/Developer
-            destination: "OS=26.0,name=Apple TV 4K (3rd generation) (at 1080p)"
+            destination: "OS=26.4,name=Apple TV 4K (3rd generation) (at 1080p)"
             name: "tvOS 26.0"
           - runner: macos-15
             xcode: /Applications/Xcode_16.4.app/Contents/Developer
-            destination: "OS=18.6,name=Apple TV 4K (3rd generation) (at 1080p)"
-            name: "tvOS 18.6"
+            destination: "OS=18.5,name=Apple TV 4K (3rd generation) (at 1080p)"
+            name: "tvOS 18.5"
     steps:
       - uses: actions/checkout@v4
       - name: Select Xcode
@@ -122,7 +122,7 @@ jobs:
         include:
           - runner: macos-26
             xcode: /Applications/Xcode_26.0.app/Contents/Developer
-            destination: "OS=26.0,name=Apple Watch Series 10 (46mm)"
+            destination: "OS=26.4,name=Apple Watch Series 11 (46mm)"
             name: "watchOS 26.0"
           - runner: macos-15
             xcode: /Applications/Xcode_16.4.app/Contents/Developer
