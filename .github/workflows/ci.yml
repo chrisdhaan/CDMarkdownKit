@@ -47,7 +47,7 @@ jobs:
             name: "iOS 26 (Xcode 26.1.1)"
           - runner: macos-26
             xcode: /Applications/Xcode_26.0.1.app/Contents/Developer
-            destination: "OS=26.0.1,name=iPhone 17 Pro"
+            destination: "OS=26.1,name=iPhone 17 Pro"
             name: "iOS 26 (Xcode 26.0.1)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.4.app/Contents/Developer
@@ -55,19 +55,19 @@ jobs:
             name: "iOS 18 (Xcode 16.4)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.3.app/Contents/Developer
-            destination: "OS=18.3.1,name=iPhone 16 Pro"
+            destination: "OS=18.5,name=iPhone 16 Pro"
             name: "iOS 18 (Xcode 16.3)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.2.app/Contents/Developer
-            destination: "OS=18.2,name=iPhone 16 Pro"
+            destination: "OS=18.5,name=iPhone 16 Pro"
             name: "iOS 18 (Xcode 16.2)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.1.app/Contents/Developer
-            destination: "OS=18.1,name=iPhone 16 Pro"
+            destination: "OS=18.5,name=iPhone 16 Pro"
             name: "iOS 18 (Xcode 16.1)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.0.app/Contents/Developer
-            destination: "OS=18.0,name=iPhone 16 Pro"
+            destination: "OS=18.5,name=iPhone 16 Pro"
             name: "iOS 18 (Xcode 16.0)"
     steps:
       - uses: actions/checkout@v4
@@ -163,7 +163,7 @@ jobs:
             name: "tvOS 26 (Xcode 26.1.1)"
           - runner: macos-26
             xcode: /Applications/Xcode_26.0.1.app/Contents/Developer
-            destination: "OS=26.0,name=Apple TV"
+            destination: "OS=26.1,name=Apple TV"
             name: "tvOS 26 (Xcode 26.0.1)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.4.app/Contents/Developer
@@ -171,19 +171,19 @@ jobs:
             name: "tvOS 18 (Xcode 16.4)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.3.app/Contents/Developer
-            destination: "OS=18.3,name=Apple TV 4K (3rd generation) (at 1080p)"
+            destination: "OS=18.5,name=Apple TV 4K (3rd generation) (at 1080p)"
             name: "tvOS 18 (Xcode 16.3)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.2.app/Contents/Developer
-            destination: "OS=18.2,name=Apple TV 4K (3rd generation) (at 1080p)"
+            destination: "OS=18.5,name=Apple TV 4K (3rd generation) (at 1080p)"
             name: "tvOS 18 (Xcode 16.2)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.1.app/Contents/Developer
-            destination: "OS=18.1,name=Apple TV 4K (3rd generation) (at 1080p)"
+            destination: "OS=18.5,name=Apple TV 4K (3rd generation) (at 1080p)"
             name: "tvOS 18 (Xcode 16.1)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.0.app/Contents/Developer
-            destination: "OS=18.0,name=Apple TV 4K (3rd generation) (at 1080p)"
+            destination: "OS=18.5,name=Apple TV 4K (3rd generation) (at 1080p)"
             name: "tvOS 18 (Xcode 16.0)"
     steps:
       - uses: actions/checkout@v4
@@ -226,7 +226,7 @@ jobs:
             name: "watchOS 26 (Xcode 26.1.1)"
           - runner: macos-26
             xcode: /Applications/Xcode_26.0.1.app/Contents/Developer
-            destination: "OS=26.1,name=Apple Watch Series 11 (46mm)"
+            destination: "generic/platform=watchOS Simulator"
             name: "watchOS 26 (Xcode 26.0.1)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.4.app/Contents/Developer
@@ -234,19 +234,19 @@ jobs:
             name: "watchOS 11 (Xcode 16.4)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.3.app/Contents/Developer
-            destination: "OS=11.3,name=Apple Watch Series 10 (46mm)"
+            destination: "OS=11.5,name=Apple Watch Series 10 (46mm)"
             name: "watchOS 11 (Xcode 16.3)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.2.app/Contents/Developer
-            destination: "OS=11.2,name=Apple Watch Series 10 (46mm)"
+            destination: "OS=11.5,name=Apple Watch Series 10 (46mm)"
             name: "watchOS 11 (Xcode 16.2)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.1.app/Contents/Developer
-            destination: "OS=11.1,name=Apple Watch Series 10 (46mm)"
+            destination: "OS=11.5,name=Apple Watch Series 10 (46mm)"
             name: "watchOS 11 (Xcode 16.1)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.0.app/Contents/Developer
-            destination: "OS=11.0,name=Apple Watch Series 10 (46mm)"
+            destination: "OS=11.5,name=Apple Watch Series 10 (46mm)"
             name: "watchOS 11 (Xcode 16.0)"
     steps:
       - uses: actions/checkout@v4
