@@ -22,7 +22,7 @@ All notable changes to this project will be documented in this file.
 
 ## [3.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/3.0.0)
 
-Released on 2026-05-06.
+Released on 2026-05-10.
 
 ### Added
 
@@ -39,7 +39,7 @@ Released on 2026-05-06.
 
 ### Updated
 
-- Deployment targets: iOS 15.0+, macOS 12.0+, tvOS 15.0+, watchOS 8.0+
+- Deployment targets: iOS 12.0+, macOS 10.13+, tvOS 12.0+, watchOS 4.0+
 - CI/CD pipeline: Xcode 26.1.1–26.4.1 (macos-26) + Xcode 16.4 (macos-15), modern GitHub Actions, xcbeautify output formatting
 - Swift Package Manager: Consolidated versioned manifests, added dynamic library product
 - CocoaPods support: Updated deployment targets, added resource bundles, enforced CocoaPods 1.13+
@@ -58,6 +58,13 @@ Released on 2026-05-06.
 - `CDMarkdownTextView.shouldInteractWith` delegate method never called due to missing `super.attributedText` assignment
 - Language hints in fenced code blocks rendering as content instead of being silently stripped
 - Missing force unwrap crash protection and graceful fallback for unavailable font traits
+- `CDMarkdownImage` regex `[!{1}]` incorrectly matching `{`, `1`, and `}` in addition to `!`, causing false positive image detection
+- Async `parse(_:)` overloads declared `public` instead of `open`, preventing subclasses from overriding the async parse path
+- Async image loading using the iOS 15-only `URLSession.data(from:)` API; replaced with a back-deployed wrapper available from iOS 13 / macOS 10.15 / tvOS 13 / watchOS 6
+- Synchronous `parse(_:NSAttributedString)` overload triggering network requests on the calling thread; it now always skips image loading
+- `CDMarkdownLabel` text container initialized with `maximumNumberOfLines = 1` (UILabel default), silently truncating all multi-line markdown to a single line
+- `CDMarkdownLabel` `NSLayoutManagerDelegate` conformance producing a Swift 6 data race warning; resolved with `@preconcurrency`
+- Leading whitespace strip regex `^\s+` consuming blank lines, causing `squashNewlines = false` to still collapse consecutive newlines; corrected to `^[ \t]+`
 
 ---
 
