@@ -29,15 +29,22 @@
 
 import UIKit
 
-/// A UITextView subclass that renders styled Markdown text with custom layout management.
+/// A `UITextView` subclass that renders styled Markdown text with custom layout management.
+///
+/// Use ``CDMarkdownTextView`` to display longer Markdown-formatted text with scrolling support.
+/// Set ``attributedText`` with an ``NSAttributedString`` produced by ``CDMarkdownParser`` to display parsed Markdown.
+/// Links are automatically detected and highlighted when ``automaticLinkDetectionEnabled`` is `true`.
 @MainActor
 open class CDMarkdownTextView: UITextView {
 
-    /// The custom layout manager used for rendering.
+    /// The custom layout manager used for rendering with rounded-corner backgrounds and link detection.
     open var customLayoutManager: CDMarkdownLayoutManager!
-    /// The custom text storage used for rendering.
+
+    /// The custom text storage that holds the attributed text and layout information.
     open var customTextStorage: NSTextStorage!
-    /// When true, all background color regions have rounded corners.
+
+    /// When `true`, all background color regions (code blocks, syntax blocks, etc.) are drawn with rounded corners.
+    /// When `false` (default), backgrounds are drawn as rectangles. Set to `true` for a softer appearance.
     open var roundAllCorners: Bool = false {
         didSet {
             if let layoutManager = self.customLayoutManager {
@@ -80,7 +87,14 @@ open class CDMarkdownTextView: UITextView {
         self.configure()
     }
 
-    /// Configures the text view's layout manager and storage.
+    /// Configures the text view's custom layout manager and text storage.
+    ///
+    /// Called automatically during initialization. This method sets up the ``CDMarkdownLayoutManager``
+    /// for rendering with rounded-corner backgrounds and enables scrolling while disabling editing.
+    ///
+    /// Note: Accessing `self.textContainer` during configuration opts the text view into TextKit 1
+    /// compatibility mode (one-time console warning expected). This is expected behavior until a
+    /// TextKit 2 migration is completed.
     open func configure() {
         // Accessing self.textContainer here opts UITextView into TextKit 1 compatibility
         // mode (one-time console warning expected; unavoidable until TK2 migration).

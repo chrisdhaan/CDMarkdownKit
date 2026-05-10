@@ -35,27 +35,42 @@ import SafariServices
 
 import UIKit
 
-/// Delegate for handling link selection events in CDMarkdownLabel.
+/// Delegate for handling link selection events in ``CDMarkdownLabel``.
 public protocol CDMarkdownLabelDelegate: AnyObject {
-    /// Called when a link is selected in the label.
+    /// Called when a user taps a link in the label.
+    ///
+    /// - Parameter url: The URL of the link that was selected.
+    ///
+    /// Implement this method to handle link navigation, e.g., opening a Safari view controller
+    /// or pushing a web view onto the navigation stack.
     func didSelect(_ url: URL)
 }
 
 typealias URLRange = (url: URL, range: NSRange)
 
-/// A UILabel subclass that renders styled Markdown text with clickable links.
+/// A `UILabel` subclass that renders styled Markdown text with clickable links.
+///
+/// Use ``CDMarkdownLabel`` to display Markdown-formatted text with automatic link handling.
+/// Set ``attributedText`` with an ``NSAttributedString`` produced by ``CDMarkdownParser/parse(_:)-string``
+/// to display parsed Markdown. Links trigger ``CDMarkdownLabelDelegate`` callbacks.
 @MainActor
 open class CDMarkdownLabel: UILabel {
 
-    /// The custom layout manager used for rendering.
+    /// The custom layout manager used for rendering with rounded-corner backgrounds.
     open var customLayoutManager: CDMarkdownLayoutManager!
-    /// The custom text container used for rendering.
+
+    /// The custom text container that manages text layout dimensions and line properties.
     open var customTextContainer: NSTextContainer!
-    /// The custom text storage used for rendering.
+
+    /// The custom text storage that holds the attributed text and layout information.
     open var customTextStorage: NSTextStorage!
-    /// Delegate to receive link selection callbacks.
+
+    /// Delegate that receives callbacks when links in the label are tapped.
+    /// Set this to handle link navigation, e.g., opening URLs in Safari.
     open weak var delegate: CDMarkdownLabelDelegate?
-    /// When true, all background color regions have rounded corners.
+
+    /// When `true`, all background color regions (code blocks, syntax blocks, etc.) are drawn with rounded corners.
+    /// When `false` (default), backgrounds are drawn as rectangles. Set to `true` for a softer appearance.
     open var roundAllCorners: Bool = false {
         didSet {
             if let layoutManager = self.customLayoutManager {
@@ -121,7 +136,11 @@ open class CDMarkdownLabel: UILabel {
         self.customTextContainer.size = self.bounds.size
     }
 
-    /// Configures the label's layout manager, text container, and text storage.
+    /// Configures the label's custom layout manager, text container, and text storage.
+    ///
+    /// Called automatically during initialization. This method sets up the ``CDMarkdownLayoutManager``
+    /// and ``NSTextContainer`` for rendering with rounded-corner backgrounds and proper text sizing.
+    /// Text containers are configured for multiple lines with no fragment padding to ensure proper rendering.
     open func configure() {
         self.isUserInteractionEnabled = true
 

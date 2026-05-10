@@ -41,6 +41,7 @@ open class CDMarkdownParser {
     fileprivate var unescapingElements: [any CDMarkdownElement]
 
     /// Custom Markdown elements to parse in addition to built-in elements.
+    /// Use ``addCustomElement(_:)`` and ``removeCustomElement(_:)`` to modify this collection safely.
     open var customElements: [any CDMarkdownElement]
 
     // MARK: - Basic Elements
@@ -79,12 +80,14 @@ open class CDMarkdownParser {
     fileprivate var unescaping = CDMarkdownUnescaping()
 
     // MARK: - Configuration
-    /// Enables automatic detection of URLs without explicit Markdown syntax.
+    /// Enables automatic detection of bare URLs (without explicit Markdown link syntax) via ``CDMarkdownAutomaticLink``.
+    /// Default is `true`. Set to `false` to skip automatic link detection.
     open var automaticLinkDetectionEnabled: Bool = true
     /// When enabled, collapses multiple consecutive newlines into a single newline.
+    /// Default is `true`. Set to `false` to preserve blank lines exactly as they appear in input.
     open var squashNewlines: Bool = true
     /// When enabled, preserves leading whitespace (spaces and tabs) on each line.
-    /// Default is `false` (whitespace is stripped as usual).
+    /// Default is `false` (leading whitespace is stripped). Set to `true` to preserve indentation in code and quoted text.
     open var preserveLeadingWhitespace: Bool = false
     /// The default font used for all parsed text.
     public let font: CDFont
@@ -97,6 +100,18 @@ open class CDMarkdownParser {
 
     // MARK: - Initializer
     /// Creates a new parser with custom styling options.
+    ///
+    /// - Parameters:
+    ///   - font: The default font for all parsed text. Defaults to the system font at 12pt.
+    ///   - boldFont: Optional custom font for bold text. If `nil`, the parser derives it from `font`.
+    ///   - italicFont: Optional custom font for italic text. If `nil`, the parser derives it from `font`.
+    ///   - fontColor: The default text color. Defaults to black.
+    ///   - backgroundColor: The default background color. Defaults to clear.
+    ///   - paragraphStyle: Optional custom paragraph style (spacing, alignment, line height). If `nil`, a default style is created.
+    ///   - imageSize: Optional size constraint for images. If `nil`, images render at their natural dimensions.
+    ///   - automaticLinkDetectionEnabled: Whether to automatically detect bare URLs as links. Defaults to `true`.
+    ///   - squashNewlines: Whether to collapse consecutive blank lines. Defaults to `true`.
+    ///   - customElements: Array of custom ``CDMarkdownElement`` implementations to parse. Defaults to an empty array.
     public init(font: CDFont = CDFont.systemFont(ofSize: 12),
                 boldFont: CDFont? = nil,
                 italicFont: CDFont? = nil,
@@ -194,11 +209,20 @@ open class CDMarkdownParser {
 
     // MARK: - Element Extensibility
     /// Adds a custom Markdown element to the parser.
+    ///
+    /// - Parameter element: A ``CDMarkdownElement`` implementation to add to the parsing pipeline.
+    ///
+    /// Custom elements are parsed after built-in elements (headers, lists, links, etc.) but before
+    /// the unescaping pass. This allows custom syntax to take priority over default parsing.
     open func addCustomElement(_ element: any CDMarkdownElement) {
         customElements.append(element)
     }
 
     /// Removes a custom Markdown element from the parser.
+    ///
+    /// - Parameter element: The ``CDMarkdownElement`` instance to remove.
+    ///
+    /// This method uses instance identity (`===`) to find and remove the element.
     open func removeCustomElement(_ element: any CDMarkdownElement) {
         guard let index = customElements.firstIndex(where: { someElement -> Bool in
             return element === someElement
@@ -210,23 +234,44 @@ open class CDMarkdownParser {
 
     // MARK: - Parsing
     /// Parses a Markdown string and returns a styled NSAttributedString.
+    ///
+    /// - Parameter markdown: The raw Markdown text to parse.
+    /// - Returns: An `NSAttributedString` with styling applied for all recognized Markdown syntax.
+    ///
+    /// Images are not loaded in the synchronous overload. Use the async overload for remote image support.
     open func parse(_ markdown: String) -> NSAttributedString {
         return parse(NSAttributedString(string: markdown))
     }
 
     /// Parses a Markdown NSAttributedString and returns a styled NSAttributedString.
-    /// Images are not loaded; use the async overload to load remote images.
+    ///
+    /// - Parameter markdown: The attributed Markdown text to parse.
+    /// - Returns: An `NSAttributedString` with styling applied for all recognized Markdown syntax.
+    ///
+    /// Images are not loaded in the synchronous overload. Use the async overload to download remote images.
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         return parse(markdown, loadImages: false)
     }
 
     /// Asynchronously parses a Markdown string with image loading support.
+    ///
+    /// - Parameter string: The raw Markdown text to parse.
+    /// - Returns: An `NSAttributedString` with styling applied and remote images downloaded and injected.
+    ///
+    /// Use this overload for Markdown containing image references (`![alt](url)`). Images are downloaded
+    /// off the main thread via ``resolveImages(in:)``.
     @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     open func parse(_ string: String) async -> NSAttributedString {
         return await parse(NSAttributedString(string: string))
     }
 
     /// Asynchronously parses a Markdown NSAttributedString with image loading support.
+    ///
+    /// - Parameter attributedString: The attributed Markdown text to parse.
+    /// - Returns: An `NSAttributedString` with styling applied and remote images downloaded and injected.
+    ///
+    /// Use this overload for Markdown containing image references. Images are downloaded off the main thread
+    /// via ``resolveImages(in:)``.
     @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     open func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
         let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))

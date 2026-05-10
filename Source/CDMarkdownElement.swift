@@ -28,16 +28,48 @@
 import Foundation
 
 /// Base protocol for all Markdown elements, providing regex-based parsing.
+///
+/// Conform to this protocol to define custom Markdown syntax. You must provide a regex pattern
+/// and implement ``match(_:attributedString:)`` to handle matches. The default ``parse(_:)``
+/// implementation scans the string and calls ``match(_:attributedString:)`` for each match.
+///
+/// See ``CDMarkdownCommonElement``, ``CDMarkdownLevelElement``, and ``CDMarkdownLinkElement``
+/// for specialized protocols that simplify common use cases.
 public protocol CDMarkdownElement: AnyObject, Sendable {
 
     /// The regular expression pattern to match this element's syntax.
+    ///
+    /// This pattern is used by ``regularExpression()`` to find matches in the Markdown input.
     var regex: String { get }
 
     /// Returns the compiled regular expression for this element.
+    ///
+    /// - Returns: An `NSRegularExpression` compiled from ``regex``.
+    /// - Throws: Any error from `NSRegularExpression` initialization (e.g., invalid regex).
+    ///
+    /// The default implementation caches the compiled expression, so repeated calls do not
+    /// recompile. Subclasses can override for custom caching or compilation logic.
     func regularExpression() throws -> NSRegularExpression
+
     /// Parses the attributed string and applies matches for this element.
+    ///
+    /// - Parameter attributedString: The `NSMutableAttributedString` being built by the parser.
+    ///
+    /// The default implementation repeatedly finds matches using ``regularExpression()`` and
+    /// calls ``match(_:attributedString:)`` for each one, tracking position to avoid re-scanning
+    /// already-processed matches. Override this if your element requires custom parsing logic
+    /// or needs to interact with the parsing pipeline.
     func parse(_ attributedString: NSMutableAttributedString)
+
     /// Processes a single regex match and updates the attributed string.
+    ///
+    /// - Parameters:
+    ///   - match: The `NSTextCheckingResult` from a successful regex match.
+    ///   - attributedString: The `NSMutableAttributedString` being built by the parser.
+    ///
+    /// Your implementation should examine the match range, extract the matched text, apply
+    /// formatting (fonts, colors, paragraph styles), and optionally replace the matched range
+    /// with a modified version (e.g., stripping delimiters like `**` for bold).
     func match(_ match: NSTextCheckingResult,
                attributedString: NSMutableAttributedString)
 }
