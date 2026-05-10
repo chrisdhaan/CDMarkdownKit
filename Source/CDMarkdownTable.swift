@@ -1,0 +1,160 @@
+import Foundation
+#if os(iOS) || os(tvOS) || os(watchOS)
+    import UIKit
+#elseif os(macOS)
+    import Cocoa
+#endif
+
+open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
+
+    // Group 1: header row (line containing at least one |)
+    // Group 2: separator row (dashes, colons, pipes, whitespace only)
+    // Group 3: all data rows
+    fileprivate static let regex = "^([^\\n]*\\|[^\\n]*\\n)([ \\t]*\\|?[ \\t]*:?-{3,}:?[ \\t]*(?:\\|[ \\t]*:?-{3,}:?[ \\t]*)*\\|?[ \\t]*\\n)((?:[^\\n]*\\|[^\\n]*(?:\\n|$))+)"
+
+    open var font: CDFont?
+    open var color: CDColor?
+    open var backgroundColor: CDColor?
+    open var paragraphStyle: NSParagraphStyle?
+    open var underlineColor: CDColor?
+    open var underlineStyle: NSUnderlineStyle?
+
+    open var columnPadding: CGFloat = 16
+
+    open var regex: String {
+        return CDMarkdownTable.regex
+    }
+
+    public init(font: CDFont? = nil,
+                color: CDColor? = nil,
+                backgroundColor: CDColor? = nil,
+                paragraphStyle: NSParagraphStyle? = nil,
+                underlineColor: CDColor? = nil,
+                underlineStyle: NSUnderlineStyle? = nil) {
+        self.font = font
+        self.color = color
+        self.backgroundColor = backgroundColor
+        self.paragraphStyle = paragraphStyle
+        self.underlineColor = underlineColor
+        self.underlineStyle = underlineStyle
+    }
+
+    open func regularExpression() throws -> NSRegularExpression {
+        return try NSRegularExpression(pattern: regex,
+                                       options: .anchorsMatchLines)
+    }
+
+    // MARK: - Cell Parsing
+
+    private func parseCells(from line: String) -> [String] {
+        let stripped = line.trimmingCharacters(in: .whitespacesAndNewlines)
+        var parts = stripped.components(separatedBy: "|")
+        // Remove empty strings produced by leading/trailing pipes
+        if parts.first?.trimmingCharacters(in: .whitespaces).isEmpty == true { parts.removeFirst() }
+        if parts.last?.trimmingCharacters(in: .whitespaces).isEmpty == true { parts.removeLast() }
+        return parts.map { $0.trimmingCharacters(in: .whitespaces) }
+    }
+
+    private func parseAlignments(from separatorLine: String) -> [NSTextAlignment] {
+        let cells = separatorLine.components(separatedBy: "|")
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+        return cells.map { cell in
+            let left  = cell.hasPrefix(":")
+            let right = cell.hasSuffix(":")
+            if left && right { return .center }
+            if right         { return .right }
+            return .left
+        }
+    }
+
+    // MARK: - Attribute Helpers
+
+    private var boldAttributes: [CDAttributedStringKey: AnyObject] {
+        var attrs = attributes
+        if let font = font {
+            attrs[.font] = font.bold() as AnyObject
+        } else if let existingFont = attrs[.font] as? CDFont {
+            attrs[.font] = existingFont.bold() as AnyObject
+        }
+        return attrs
+    }
+
+    // MARK: - Match
+
+    open func match(_ match: NSTextCheckingResult,
+                    attributedString: NSMutableAttributedString) {
+        guard match.numberOfRanges == 4 else { return }
+
+        let fullRange = match.nsRange(atIndex: 0)
+        let nsString  = attributedString.string as NSString
+
+        let headerLine    = nsString.substring(with: match.nsRange(atIndex: 1))
+        let separatorLine = nsString.substring(with: match.nsRange(atIndex: 2))
+        let dataBlock     = nsString.substring(with: match.nsRange(atIndex: 3))
+
+        let headerCells = parseCells(from: headerLine)
+        let alignments  = parseAlignments(from: separatorLine)
+        let dataRows    = dataBlock
+            .components(separatedBy: "\n")
+            .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+            .map { parseCells(from: $0) }
+
+        let columnCount = max(headerCells.count, dataRows.first?.count ?? 0)
+        guard columnCount > 0 else { return }
+
+        // Measure the maximum rendered width of each column
+        var columnWidths = [CGFloat](repeating: columnPadding, count: columnCount)
+        for (i, cell) in headerCells.enumerated() where i < columnCount {
+            let w = cell.sizeWithAttributes(boldAttributes).width + columnPadding
+            columnWidths[i] = max(columnWidths[i], w)
+        }
+        for row in dataRows {
+            for (i, cell) in row.enumerated() where i < columnCount {
+                let w = cell.sizeWithAttributes(attributes).width + columnPadding
+                columnWidths[i] = max(columnWidths[i], w)
+            }
+        }
+
+        // Build tab stops from cumulative column offsets
+        var tabStops = [NSTextTab]()
+        var offset: CGFloat = 0
+        for (i, width) in columnWidths.enumerated() {
+            let alignment = i < alignments.count ? alignments[i] : .left
+            tabStops.append(NSTextTab(textAlignment: alignment, location: offset))
+            offset += width
+        }
+        let tableStyle = NSMutableParagraphStyle()
+        tableStyle.tabStops = tabStops
+        tableStyle.defaultTabInterval = columnWidths.first ?? 80
+
+        // Build the replacement attributed string
+        let result = NSMutableAttributedString()
+
+        func appendRow(_ cells: [String], cellAttributes: [CDAttributedStringKey: AnyObject]) {
+            let rowString = NSMutableAttributedString()
+            for i in 0..<columnCount {
+                if i > 0 {
+                    rowString.append(NSAttributedString(string: "\t"))
+                }
+                let text = i < cells.count ? cells[i] : ""
+                rowString.append(NSAttributedString(string: text,
+                                                    attributes: cellAttributes))
+            }
+            rowString.append(NSAttributedString(string: "\n"))
+            let rowRange = NSRange(location: 0, length: rowString.length)
+            rowString.addAttribute(.paragraphStyle,
+                                   value: tableStyle,
+                                   range: rowRange)
+            result.append(rowString)
+        }
+
+        appendRow(headerCells, cellAttributes: boldAttributes)
+        for row in dataRows {
+            appendRow(row, cellAttributes: attributes)
+        }
+
+        // Replace the original table block with the rebuilt attributed string
+        attributedString.replaceCharacters(in: fullRange, with: result)
+    }
+}
