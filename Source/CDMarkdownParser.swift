@@ -107,60 +107,62 @@ open class CDMarkdownParser {
         self.font = font
         self.fontColor = fontColor
         self.backgroundColor = backgroundColor
-        self.paragraphStyle = paragraphStyle ?? {
-            let style = NSMutableParagraphStyle()
-            style.paragraphSpacing = 3
-            style.paragraphSpacingBefore = 0
-            style.lineSpacing = 1.38
-            return style
-        }()
+        if let paragraphStyle = paragraphStyle {
+            self.paragraphStyle = paragraphStyle
+        } else {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.paragraphSpacing = 3
+            paragraphStyle.paragraphSpacingBefore = 0
+            paragraphStyle.lineSpacing = 1.38
+            self.paragraphStyle = paragraphStyle
+        }
 
         table = CDMarkdownTable(font: font,
                                 color: fontColor,
                                 backgroundColor: backgroundColor,
-                                paragraphStyle: self.paragraphStyle)
+                                paragraphStyle: paragraphStyle)
         header = CDMarkdownHeader(font: font,
                                   color: fontColor,
                                   backgroundColor: backgroundColor,
-                                  paragraphStyle: self.paragraphStyle)
+                                  paragraphStyle: paragraphStyle)
         list = CDMarkdownList(font: font,
                               color: fontColor,
                               backgroundColor: backgroundColor,
-                              paragraphStyle: self.paragraphStyle)
+                              paragraphStyle: paragraphStyle)
         orderedList = CDMarkdownOrderedList(font: font,
                                             color: fontColor,
                                             backgroundColor: backgroundColor,
-                                            paragraphStyle: self.paragraphStyle)
+                                            paragraphStyle: paragraphStyle)
         quote = CDMarkdownQuote(font: font,
                                 color: fontColor,
                                 backgroundColor: backgroundColor,
-                                paragraphStyle: self.paragraphStyle)
+                                paragraphStyle: paragraphStyle)
         link = CDMarkdownLink(font: font,
                               color: fontColor,
                               backgroundColor: backgroundColor,
-                              paragraphStyle: self.paragraphStyle)
+                              paragraphStyle: paragraphStyle)
         automaticLink = CDMarkdownAutomaticLink(font: font,
                                                 color: fontColor,
                                                 backgroundColor: backgroundColor,
-                                                paragraphStyle: self.paragraphStyle)
+                                                paragraphStyle: paragraphStyle)
         bold = CDMarkdownBold(font: font,
                               customBoldFont: boldFont,
                               color: fontColor,
                               backgroundColor: backgroundColor,
-                              paragraphStyle: self.paragraphStyle)
+                              paragraphStyle: paragraphStyle)
         italic = CDMarkdownItalic(font: font,
                                   customItalicFont: italicFont,
                                   color: fontColor,
                                   backgroundColor: backgroundColor,
-                                  paragraphStyle: self.paragraphStyle)
+                                  paragraphStyle: paragraphStyle)
         code = CDMarkdownCode(font: font,
                               color: fontColor,
                               backgroundColor: backgroundColor,
-                              paragraphStyle: self.paragraphStyle)
+                              paragraphStyle: paragraphStyle)
         syntax = CDMarkdownSyntax(font: font,
                                   color: fontColor,
                                   backgroundColor: backgroundColor,
-                                  paragraphStyle: self.paragraphStyle)
+                                  paragraphStyle: paragraphStyle)
 #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
         image = CDMarkdownImage(font: font,
                                 color: fontColor,
@@ -171,7 +173,7 @@ open class CDMarkdownParser {
         strikethrough = CDMarkdownStrikethrough(font: font,
                                                 color: fontColor,
                                                 backgroundColor: backgroundColor,
-                                                paragraphStyle: self.paragraphStyle)
+                                                paragraphStyle: paragraphStyle)
 
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.squashNewlines = squashNewlines
