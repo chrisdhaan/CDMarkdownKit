@@ -40,7 +40,7 @@ Released on 2026-05-06.
 ### Updated
 
 - Deployment targets: iOS 15.0+, macOS 12.0+, tvOS 15.0+, watchOS 8.0+
-- CI/CD pipeline: Xcode 16.2, macOS 15, modern GitHub Actions, xcbeautify output formatting
+- CI/CD pipeline: Xcode 26.1.1–26.4.1 (macos-26) + Xcode 16.4 (macos-15), modern GitHub Actions, xcbeautify output formatting
 - Swift Package Manager: Consolidated versioned manifests, added dynamic library product
 - CocoaPods support: Updated deployment targets, added resource bundles, enforced CocoaPods 1.13+
 - Documentation: Restructured README as navigation hub, added migration guide
