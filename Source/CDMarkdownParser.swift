@@ -44,6 +44,8 @@ open class CDMarkdownParser {
     open var customElements: [any CDMarkdownElement]
 
     // MARK: - Basic Elements
+    /// Handles GFM table syntax (pipe-delimited rows).
+    public let table: CDMarkdownTable
     /// Handles heading syntax (#, ##, etc.).
     public let header: CDMarkdownHeader
     /// Handles unordered list syntax (*, -, +).
@@ -115,6 +117,10 @@ open class CDMarkdownParser {
             self.paragraphStyle = paragraphStyle
         }
 
+        table = CDMarkdownTable(font: font,
+                                color: fontColor,
+                                backgroundColor: backgroundColor,
+                                paragraphStyle: paragraphStyle)
         header = CDMarkdownHeader(font: font,
                                   color: fontColor,
                                   backgroundColor: backgroundColor,
@@ -173,9 +179,9 @@ open class CDMarkdownParser {
         self.squashNewlines = squashNewlines
         self.escapingElements = [codeEscaping, escaping]
 #if os(iOS) || os(macOS) || os(tvOS)
-        self.defaultElements = [header, list, orderedList, quote, link, automaticLink, image, bold, italic, strikethrough]
+        self.defaultElements = [table, header, list, orderedList, quote, link, automaticLink, image, bold, italic, strikethrough]
 #else
-        self.defaultElements = [header, list, orderedList, quote, link, automaticLink, bold, italic, strikethrough]
+        self.defaultElements = [table, header, list, orderedList, quote, link, automaticLink, bold, italic, strikethrough]
 #endif
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
