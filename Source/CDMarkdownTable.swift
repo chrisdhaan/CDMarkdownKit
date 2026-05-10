@@ -10,7 +10,9 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
     // Group 1: header row (line containing at least one |)
     // Group 2: separator row (dashes, colons, pipes, whitespace only)
     // Group 3: all data rows
-    fileprivate static let regex = "^([^\\n]*\\|[^\\n]*\\n)([ \\t]*\\|?[ \\t]*:?-{3,}:?[ \\t]*(?:\\|[ \\t]*:?-{3,}:?[ \\t]*)*\\|?[ \\t]*\\n)((?:[^\\n]*\\|[^\\n]*(?:\\n|$))+)"
+    fileprivate static let regex =
+        "^([^\\n]*\\|[^\\n]*\\n)([ \\t]*\\|?[ \\t]*:?-{3,}:?[ \\t]*" +
+        "(?:\\|[ \\t]*:?-{3,}:?[ \\t]*)*\\|?[ \\t]*\\n)((?:[^\\n]*\\|[^\\n]*(?:\\n|$))+)"
 
     open var font: CDFont?
     open var color: CDColor?
@@ -60,10 +62,10 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
         return cells.map { cell in
-            let left  = cell.hasPrefix(":")
+            let left = cell.hasPrefix(":")
             let right = cell.hasSuffix(":")
             if left && right { return .center }
-            if right         { return .right }
+            if right { return .right }
             return .left
         }
     }
@@ -105,22 +107,22 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
 
         // Measure the maximum rendered width of each column
         var columnWidths = [CGFloat](repeating: columnPadding, count: columnCount)
-        for (i, cell) in headerCells.enumerated() where i < columnCount {
-            let w = cell.sizeWithAttributes(boldAttributes).width + columnPadding
-            columnWidths[i] = max(columnWidths[i], w)
+        for (columnIndex, cell) in headerCells.enumerated() where columnIndex < columnCount {
+            let columnWidth = cell.sizeWithAttributes(boldAttributes).width + columnPadding
+            columnWidths[columnIndex] = max(columnWidths[columnIndex], columnWidth)
         }
         for row in dataRows {
-            for (i, cell) in row.enumerated() where i < columnCount {
-                let w = cell.sizeWithAttributes(attributes).width + columnPadding
-                columnWidths[i] = max(columnWidths[i], w)
+            for (columnIndex, cell) in row.enumerated() where columnIndex < columnCount {
+                let columnWidth = cell.sizeWithAttributes(attributes).width + columnPadding
+                columnWidths[columnIndex] = max(columnWidths[columnIndex], columnWidth)
             }
         }
 
         // Build tab stops from cumulative column offsets
         var tabStops = [NSTextTab]()
         var offset: CGFloat = 0
-        for (i, width) in columnWidths.enumerated() {
-            let alignment = i < alignments.count ? alignments[i] : .left
+        for (columnIndex, width) in columnWidths.enumerated() {
+            let alignment = columnIndex < alignments.count ? alignments[columnIndex] : .left
             tabStops.append(NSTextTab(textAlignment: alignment, location: offset))
             offset += width
         }
@@ -133,11 +135,11 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
 
         func appendRow(_ cells: [String], cellAttributes: [CDAttributedStringKey: AnyObject]) {
             let rowString = NSMutableAttributedString()
-            for i in 0..<columnCount {
-                if i > 0 {
+            for columnIndex in 0..<columnCount {
+                if columnIndex > 0 {
                     rowString.append(NSAttributedString(string: "\t"))
                 }
-                let text = i < cells.count ? cells[i] : ""
+                let text = columnIndex < cells.count ? cells[columnIndex] : ""
                 rowString.append(NSAttributedString(string: text,
                                                     attributes: cellAttributes))
             }
