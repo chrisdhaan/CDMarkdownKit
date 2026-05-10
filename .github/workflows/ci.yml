@@ -47,7 +47,7 @@ jobs:
             name: "iOS 26 (Xcode 26.1.1)"
           - runner: macos-26
             xcode: /Applications/Xcode_26.0.1.app/Contents/Developer
-            destination: "OS=26.1,name=iPhone 17 Pro"
+            destination: "generic/platform=iOS Simulator"
             name: "iOS 26 (Xcode 26.0.1)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.4.app/Contents/Developer
