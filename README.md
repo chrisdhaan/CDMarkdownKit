@@ -53,10 +53,10 @@ label.attributedText = attributedString
 
 | Platform | Minimum OS | Swift | Installation |
 |----------|-----------|-------|--------------|
-| iOS      | 15.0+     | 5.3+  | SPM, CocoaPods |
-| macOS    | 12.0+     | 5.3+  | SPM, CocoaPods |
-| tvOS     | 15.0+     | 5.3+  | SPM, CocoaPods |
-| watchOS  | 8.0+      | 5.3+  | SPM, CocoaPods |
+| iOS      | 12.0+     | 5.3+  | SPM, CocoaPods |
+| macOS    | 10.13+    | 5.3+  | SPM, CocoaPods |
+| tvOS     | 12.0+     | 5.3+  | SPM, CocoaPods |
+| watchOS  | 4.0+      | 5.3+  | SPM, CocoaPods |
 
 ## Installation
 
