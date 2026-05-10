@@ -5,7 +5,6 @@
 CDMarkdownKit is a pure-Swift, zero-dependency framework for parsing Markdown text into `NSAttributedString`. It supports rendering inside custom `UILabel` and `UITextView` subclasses with optional rounded-corner background styling for code and syntax blocks.
 
 - **Current version**: 3.0.0
-- **Local Swift**: 6.3.1 (as of audit on 2026-05-02)
 - **License**: MIT
 - **Author**: Christopher de Haan (contact@christopherdehaan.me)
 
@@ -45,10 +44,10 @@ CDMarkdownKit/
 
 | Platform | `Package.swift` | Podspec |
 |----------|----------------|---------|
-| iOS      | 15.0+          | 15.0+   |
-| macOS    | 12.0+          | 12.0+   |
-| tvOS     | 15.0+          | 15.0+   |
-| watchOS  | 8.0+           | 8.0+    |
+| iOS      | 12.0+          | 12.0+   |
+| macOS    | 10.13+         | 10.13+  |
+| tvOS     | 12.0+          | 12.0+   |
+| watchOS  | 4.0+           | 4.0+    |
 
 Swift minimum: **5.3** (enforced in `CDMarkdownKit.swift` via `#error`). The SPM manifest uses swift-tools-version 6.0 with `swiftLanguageModes: [.v5]` — compiled in Swift 5 language mode while on a Swift 6 toolchain.
 
@@ -201,7 +200,7 @@ Defined in `.github/workflows/ci.yml`. Triggered on push to `master` and on pull
 |-----|----------|-----------|------|
 | iOS | matrix: iOS 26.0 / 18.6 | macos-26 / macos-15 | xcodebuild |
 | macOS | matrix: macOS 26 / 15 | macos-26 / macos-15 | xcodebuild |
-| tvOS | matrix: tvOS 26.0 / 18.6 | macos-26 / macos-15 | xcodebuild |
+| tvOS | matrix: tvOS 26.0 / 18.5 | macos-26 / macos-15 | xcodebuild |
 | watchOS | matrix: watchOS 26.0 / 11.5 | macos-26 / macos-15 | xcodebuild |
 | Catalyst | single | macos-15, Xcode 16.4 | xcodebuild |
 | CocoaPods | single | macos-15, Xcode 16.4 | pod lib lint |
