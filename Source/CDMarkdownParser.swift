@@ -83,6 +83,9 @@ open class CDMarkdownParser {
     open var automaticLinkDetectionEnabled: Bool = true
     /// When enabled, collapses multiple consecutive newlines into a single newline.
     open var squashNewlines: Bool = true
+    /// When enabled, preserves leading whitespace (spaces and tabs) on each line.
+    /// Default is `false` (whitespace is stripped as usual).
+    open var preserveLeadingWhitespace: Bool = false
     /// The default font used for all parsed text.
     public let font: CDFont
     /// The default text color for all parsed text.
