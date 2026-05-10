@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CDMarkdownParser Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/CDMarkdownParser" class="dashAnchor"></a>
+
+    <a title="CDMarkdownParser Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          CDMarkdownKit 3.0.0 Docs
+        </a>
+         (85% documented)
+      </p>
+    
+      <div class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </div>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/chrisdhaan/CDMarkdownKit">
+            <img class="header-icon" src="../img/gh.png" alt="GitHub"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">CDMarkdownKit</a>
+      <img class="carat" src="../img/carat.png" alt=""/>
+      <a class="breadcrumb" href="../Classes.html">Classes</a>
+      <img class="carat" src="../img/carat.png" alt=""/>
+      CDMarkdownParser Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownAutomaticLink.html">CDMarkdownAutomaticLink</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownBold.html">CDMarkdownBold</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownCode.html">CDMarkdownCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownCodeEscaping.html">CDMarkdownCodeEscaping</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownEscaping.html">CDMarkdownEscaping</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownHeader.html">CDMarkdownHeader</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownImage.html">CDMarkdownImage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownItalic.html">CDMarkdownItalic</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownLabel.html">CDMarkdownLabel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownLayoutManager.html">CDMarkdownLayoutManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownLink.html">CDMarkdownLink</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownList.html">CDMarkdownList</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownParser.html">CDMarkdownParser</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownQuote.html">CDMarkdownQuote</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownStrikethrough.html">CDMarkdownStrikethrough</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownSyntax.html">CDMarkdownSyntax</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownTextView.html">CDMarkdownTextView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/CDMarkdownUnescaping.html">CDMarkdownUnescaping</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CDColor.html">CDColor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CDMarkdownCommonElement.html">CDMarkdownCommonElement</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CDMarkdownElement.html">CDMarkdownElement</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CDMarkdownLabelDelegate.html">CDMarkdownLabelDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CDMarkdownLevelElement.html">CDMarkdownLevelElement</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CDMarkdownLinkElement.html">CDMarkdownLinkElement</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CDMarkdownStyle.html">CDMarkdownStyle</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13CDMarkdownKit21CDAttributedStringKeya">CDAttributedStringKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/CDColor">CDColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13CDMarkdownKit7CDColora">CDColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/CDFont">CDFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13CDMarkdownKit6CDFonta">CDFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13CDMarkdownKit30CDFontDescriptorSymbolicTraitsa">CDFontDescriptorSymbolicTraits</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/CDImage">CDImage</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13CDMarkdownKit7CDImagea">CDImage</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            <h1>CDMarkdownParser</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">open</span> <span class="kd">class</span> <span class="kt">CDMarkdownParser</span></code></pre>
+
+                </div>
+              </div>
+            <p>Parser for converting Markdown text into styled NSAttributedString.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Element%20Arrays"></a>
+                <a name="//apple_ref/swift/Section/Element Arrays" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Element%20Arrays"></a>
+                  <h3 class="section-name"><span>Element Arrays</span>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC14customElementsSayAA0A7Element_pGvp"></a>
+                    <a name="//apple_ref/swift/Property/customElements" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC14customElementsSayAA0A7Element_pGvp">customElements</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Custom Markdown elements to parse in addition to built-in elements.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">open</span> <span class="k">var</span> <span class="nv">customElements</span><span class="p">:</span> <span class="p">[</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/CDMarkdownElement.html">CDMarkdownElement</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Basic%20Elements"></a>
+                <a name="//apple_ref/swift/Section/Basic Elements" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Basic%20Elements"></a>
+                  <h3 class="section-name"><span>Basic Elements</span>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC6headerAA0A6HeaderCvp"></a>
+                    <a name="//apple_ref/swift/Property/header" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC6headerAA0A6HeaderCvp">header</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles heading syntax (#, ##, etc.).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">header</span><span class="p">:</span> <span class="kt"><a href="../Classes/CDMarkdownHeader.html">CDMarkdownHeader</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC4listAA0A4ListCvp"></a>
+                    <a name="//apple_ref/swift/Property/list" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC4listAA0A4ListCvp">list</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles unordered list syntax (*, -, +).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">list</span><span class="p">:</span> <span class="kt"><a href="../Classes/CDMarkdownList.html">CDMarkdownList</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC5quoteAA0A5QuoteCvp"></a>
+                    <a name="//apple_ref/swift/Property/quote" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC5quoteAA0A5QuoteCvp">quote</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles blockquote syntax (&gt;).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">quote</span><span class="p">:</span> <span class="kt"><a href="../Classes/CDMarkdownQuote.html">CDMarkdownQuote</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC4linkAA0A4LinkCvp"></a>
+                    <a name="//apple_ref/swift/Property/link" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC4linkAA0A4LinkCvp">link</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles inline links (<a href="url">text</a>).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">link</span><span class="p">:</span> <span class="kt"><a href="../Classes/CDMarkdownLink.html">CDMarkdownLink</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC13automaticLinkAA0a9AutomaticE0Cvp"></a>
+                    <a name="//apple_ref/swift/Property/automaticLink" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC13automaticLinkAA0a9AutomaticE0Cvp">automaticLink</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles automatic link detection for bare URLs.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">automaticLink</span><span class="p">:</span> <span class="kt"><a href="../Classes/CDMarkdownAutomaticLink.html">CDMarkdownAutomaticLink</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC4boldAA0A4BoldCvp"></a>
+                    <a name="//apple_ref/swift/Property/bold" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC4boldAA0A4BoldCvp">bold</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles bold text (<strong>text</strong> or <strong>text</strong>).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">bold</span><span class="p">:</span> <span class="kt"><a href="../Classes/CDMarkdownBold.html">CDMarkdownBold</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC6italicAA0A6ItalicCvp"></a>
+                    <a name="//apple_ref/swift/Property/italic" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC6italicAA0A6ItalicCvp">italic</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles italic text (<em>text</em> or <em>text</em>).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">italic</span><span class="p">:</span> <span class="kt"><a href="../Classes/CDMarkdownItalic.html">CDMarkdownItalic</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC4codeAA0A4CodeCvp"></a>
+                    <a name="//apple_ref/swift/Property/code" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC4codeAA0A4CodeCvp">code</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles inline code (<code>code</code>).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">code</span><span class="p">:</span> <span class="kt"><a href="../Classes/CDMarkdownCode.html">CDMarkdownCode</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC6syntaxAA0A6SyntaxCvp"></a>
+                    <a name="//apple_ref/swift/Property/syntax" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC6syntaxAA0A6SyntaxCvp">syntax</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles fenced code blocks (<code><a href="../Classes/CDMarkdownParser.html#/s:13CDMarkdownKit0A6ParserC4codeAA0A4CodeCvp">code</a></code>).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">syntax</span><span class="p">:</span> <span class="kt"><a href="../Classes/CDMarkdownSyntax.html">CDMarkdownSyntax</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC5imageAA0A5ImageCvp"></a>
+                    <a name="//apple_ref/swift/Property/image" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC5imageAA0A5ImageCvp">image</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles image syntax (<img src="url" alt="alt">). Not available on watchOS.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">image</span><span class="p">:</span> <span class="kt"><a href="../Classes/CDMarkdownImage.html">CDMarkdownImage</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC13strikethroughAA0A13StrikethroughCvp"></a>
+                    <a name="//apple_ref/swift/Property/strikethrough" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC13strikethroughAA0A13StrikethroughCvp">strikethrough</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Handles strikethrough text (<del>text</del>).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">strikethrough</span><span class="p">:</span> <span class="kt"><a href="../Classes/CDMarkdownStrikethrough.html">CDMarkdownStrikethrough</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Configuration"></a>
+                <a name="//apple_ref/swift/Section/Configuration" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Configuration"></a>
+                  <h3 class="section-name"><span>Configuration</span>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC29automaticLinkDetectionEnabledSbvp"></a>
+                    <a name="//apple_ref/swift/Property/automaticLinkDetectionEnabled" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC29automaticLinkDetectionEnabledSbvp">automaticLinkDetectionEnabled</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Enables automatic detection of URLs without explicit Markdown syntax.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">open</span> <span class="k">var</span> <span class="nv">automaticLinkDetectionEnabled</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC14squashNewlinesSbvp"></a>
+                    <a name="//apple_ref/swift/Property/squashNewlines" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC14squashNewlinesSbvp">squashNewlines</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>When enabled, collapses multiple consecutive newlines into a single newline.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">open</span> <span class="k">var</span> <span class="nv">squashNewlines</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC4fontSo6UIFontCvp"></a>
+                    <a name="//apple_ref/swift/Property/font" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC4fontSo6UIFontCvp">font</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The default font used for all parsed text.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">font</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13CDMarkdownKit6CDFonta">CDFont</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC9fontColorSo7UIColorCvp"></a>
+                    <a name="//apple_ref/swift/Property/fontColor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC9fontColorSo7UIColorCvp">fontColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The default text color for all parsed text.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">fontColor</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13CDMarkdownKit7CDColora">CDColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC15backgroundColorSo7UIColorCvp"></a>
+                    <a name="//apple_ref/swift/Property/backgroundColor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC15backgroundColorSo7UIColorCvp">backgroundColor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The default background color for all parsed text.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">backgroundColor</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13CDMarkdownKit7CDColora">CDColor</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC14paragraphStyleSo011NSParagraphE0Cvp"></a>
+                    <a name="//apple_ref/swift/Property/paragraphStyle" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC14paragraphStyleSo011NSParagraphE0Cvp">paragraphStyle</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The default paragraph style for all parsed text.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="k">let</span> <span class="nv">paragraphStyle</span><span class="p">:</span> <span class="kt">NSParagraphStyle</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Initializer"></a>
+                <a name="//apple_ref/swift/Section/Initializer" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Initializer"></a>
+                  <h3 class="section-name"><span>Initializer</span>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC4font8boldFont06italicF00D5Color010backgroundH014paragraphStyle9imageSize29automaticLinkDetectionEnabled14squashNewlines14customElementsACSo6UIFontC_AOSgAPSo7UIColorCARSo011NSParagraphK0CSgSo6CGSizeVSgS2bSayAA0A7Element_pGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(font:boldFont:italicFont:fontColor:backgroundColor:paragraphStyle:imageSize:automaticLinkDetectionEnabled:squashNewlines:customElements:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC4font8boldFont06italicF00D5Color010backgroundH014paragraphStyle9imageSize29automaticLinkDetectionEnabled14squashNewlines14customElementsACSo6UIFontC_AOSgAPSo7UIColorCARSo011NSParagraphK0CSgSo6CGSizeVSgS2bSayAA0A7Element_pGtcfc">init(font:<wbr>boldFont:<wbr>italicFont:<wbr>fontColor:<wbr>backgroundColor:<wbr>paragraphStyle:<wbr>imageSize:<wbr>automaticLinkDetectionEnabled:<wbr>squashNewlines:<wbr>customElements:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a new parser with custom styling options.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">font</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13CDMarkdownKit6CDFonta">CDFont</a></span> <span class="o">=</span> <span class="kt"><a href="../Typealiases.html#/s:13CDMarkdownKit6CDFonta">CDFont</a></span><span class="o">.</span><span class="nf">systemFont</span><span class="p">(</span><span class="nv">ofSize</span><span class="p">:</span> <span class="mi">12</span><span class="p">),</span>
+            <span class="nv">boldFont</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13CDMarkdownKit6CDFonta">CDFont</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+            <span class="nv">italicFont</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13CDMarkdownKit6CDFonta">CDFont</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+            <span class="nv">fontColor</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13CDMarkdownKit7CDColora">CDColor</a></span> <span class="o">=</span> <span class="kt"><a href="../Typealiases.html#/s:13CDMarkdownKit7CDColora">CDColor</a></span><span class="o">.</span><span class="n">black</span><span class="p">,</span>
+            <span class="nv">backgroundColor</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:13CDMarkdownKit7CDColora">CDColor</a></span> <span class="o">=</span> <span class="kt"><a href="../Typealiases.html#/s:13CDMarkdownKit7CDColora">CDColor</a></span><span class="o">.</span><span class="n">clear</span><span class="p">,</span>
+            <span class="nv">paragraphStyle</span><span class="p">:</span> <span class="kt">NSParagraphStyle</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+            <span class="nv">imageSize</span><span class="p">:</span> <span class="kt">CGSize</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+            <span class="nv">automaticLinkDetectionEnabled</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nv">squashNewlines</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nv">customElements</span><span class="p">:</span> <span class="p">[</span><span class="kd">any</span> <span class="kt"><a href="../Protocols/CDMarkdownElement.html">CDMarkdownElement</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Element%20Extensibility"></a>
+                <a name="//apple_ref/swift/Section/Element Extensibility" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Element%20Extensibility"></a>
+                  <h3 class="section-name"><span>Element Extensibility</span>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC16addCustomElementyyAA0aF0_pF"></a>
+                    <a name="//apple_ref/swift/Method/addCustomElement(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC16addCustomElementyyAA0aF0_pF">addCustomElement(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Adds a custom Markdown element to the parser.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">addCustomElement</span><span class="p">(</span><span class="n">_</span> <span class="nv">element</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/CDMarkdownElement.html">CDMarkdownElement</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC19removeCustomElementyyAA0aF0_pF"></a>
+                    <a name="//apple_ref/swift/Method/removeCustomElement(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC19removeCustomElementyyAA0aF0_pF">removeCustomElement(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes a custom Markdown element from the parser.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">removeCustomElement</span><span class="p">(</span><span class="n">_</span> <span class="nv">element</span><span class="p">:</span> <span class="kd">any</span> <span class="kt"><a href="../Protocols/CDMarkdownElement.html">CDMarkdownElement</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Parsing"></a>
+                <a name="//apple_ref/swift/Section/Parsing" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Parsing"></a>
+                  <h3 class="section-name"><span>Parsing</span>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC5parseySo18NSAttributedStringCSSF"></a>
+                    <a name="//apple_ref/swift/Method/parse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC5parseySo18NSAttributedStringCSSF">parse(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Parses a Markdown string and returns a styled NSAttributedString.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">parse</span><span class="p">(</span><span class="n">_</span> <span class="nv">markdown</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">NSAttributedString</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC5parseySo18NSAttributedStringCAFF"></a>
+                    <a name="//apple_ref/swift/Method/parse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC5parseySo18NSAttributedStringCAFF">parse(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Parses a Markdown NSAttributedString and returns a styled NSAttributedString.
+Images are not loaded; use the async overload to load remote images.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@MainActor</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">parse</span><span class="p">(</span><span class="n">_</span> <span class="nv">markdown</span><span class="p">:</span> <span class="kt">NSAttributedString</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">NSAttributedString</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC5parseySo18NSAttributedStringCSSYaF"></a>
+                    <a name="//apple_ref/swift/Method/parse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC5parseySo18NSAttributedStringCSSYaF">parse(_:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Asynchronous
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Asynchronously parses a Markdown string with image loading support.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">macOS</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
+<span class="kd">@MainActor</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">parse</span><span class="p">(</span><span class="n">_</span> <span class="nv">string</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">async</span> <span class="o">-&gt;</span> <span class="kt">NSAttributedString</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13CDMarkdownKit0A6ParserC5parseySo18NSAttributedStringCAFYaF"></a>
+                    <a name="//apple_ref/swift/Method/parse(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13CDMarkdownKit0A6ParserC5parseySo18NSAttributedStringCAFYaF">parse(_:<wbr>)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Asynchronous
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Asynchronously parses a Markdown NSAttributedString with image loading support.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">macOS</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
+<span class="kd">@MainActor</span>
+<span class="kd">open</span> <span class="kd">func</span> <span class="nf">parse</span><span class="p">(</span><span class="n">_</span> <span class="nv">attributedString</span><span class="p">:</span> <span class="kt">NSAttributedString</span><span class="p">)</span> <span class="k">async</span> <span class="o">-&gt;</span> <span class="kt">NSAttributedString</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2026 <a class="link" href="https://christopherdehaan.me" target="_blank" rel="external noopener">Christopher de Haan</a>. All rights reserved. (Last updated: 2026-05-08)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.15.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+    </section>
+  </body>
+</html>

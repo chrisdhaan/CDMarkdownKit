@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,13 +27,17 @@
 
 import Foundation
 
-// The base protocol for all Markdown Elements, it handles parsing through regex.
-public protocol CDMarkdownElement: AnyObject {
+/// Base protocol for all Markdown elements, providing regex-based parsing.
+public protocol CDMarkdownElement: AnyObject, Sendable {
 
+    /// The regular expression pattern to match this element's syntax.
     var regex: String { get }
 
+    /// Returns the compiled regular expression for this element.
     func regularExpression() throws -> NSRegularExpression
+    /// Parses the attributed string and applies matches for this element.
     func parse(_ attributedString: NSMutableAttributedString)
+    /// Processes a single regex match and updates the attributed string.
     func match(_ match: NSTextCheckingResult,
                attributedString: NSMutableAttributedString)
 }

@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -53,9 +53,10 @@ internal extension CDFont {
 #else
 
     private func withTraits(_ traits: CDFontDescriptorSymbolicTraits...) -> CDFont {
-        let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(traits))
-        return CDFont(descriptor: descriptor!,
-                      size: self.pointSize)
+        guard let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(traits)) else {
+            return self
+        }
+        return CDFont(descriptor: descriptor, size: self.pointSize)
     }
 
     func bold() -> CDFont {
@@ -67,4 +68,20 @@ internal extension CDFont {
     }
 
 #endif
+
+    var isBold: Bool {
+        #if os(macOS)
+        return NSFontManager.shared.traits(of: self).contains(.boldFontMask)
+        #else
+        return fontDescriptor.symbolicTraits.contains(.traitBold)
+        #endif
+    }
+
+    var isItalic: Bool {
+        #if os(macOS)
+        return NSFontManager.shared.traits(of: self).contains(.italicFontMask)
+        #else
+        return fontDescriptor.symbolicTraits.contains(.traitItalic)
+        #endif
+    }
 }

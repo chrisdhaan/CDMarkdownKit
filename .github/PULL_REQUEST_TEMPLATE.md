@@ -1,13 +1,15 @@
-### Issue Link :link:
-<!-- What issue does this fix? If an issue doesn't exist, remove this section. -->
+### Issue :link:
+
+> Link to the GitHub issue this PR addresses.
 
 ### Goals :soccer:
-<!-- List the high-level objectives of this pull request. -->
-<!-- Include any relevant context. -->
+
+> Bullet list of what this PR accomplishes.
 
 ### Implementation Details :construction:
-<!-- Explain the reasoning behind any architectural changes. -->
-<!-- Highlight any new functionality. -->
+
+> Describe any non-obvious implementation decisions.
 
 ### Testing Details :mag:
-<!-- Describe what tests you've added for your changes. -->
+
+> How was this tested? List new tests added, or explain why no tests are needed.

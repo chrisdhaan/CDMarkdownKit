@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 12/8/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -29,28 +29,19 @@
 
 import UIKit
 
+/// A UITextView subclass that renders styled Markdown text with custom layout management.
+@MainActor
 open class CDMarkdownTextView: UITextView {
 
+    /// The custom layout manager used for rendering.
     open var customLayoutManager: CDMarkdownLayoutManager!
+    /// The custom text storage used for rendering.
     open var customTextStorage: NSTextStorage!
+    /// When true, all background color regions have rounded corners.
     open var roundAllCorners: Bool = false {
         didSet {
             if let layoutManager = self.customLayoutManager {
                 layoutManager.roundAllCorners = roundAllCorners
-            }
-        }
-    }
-    open var roundCodeCorners: Bool = false {
-        didSet {
-            if let layoutManager = self.customLayoutManager {
-                layoutManager.roundCodeCorners = roundCodeCorners
-            }
-        }
-    }
-    open var roundSyntaxCorners: Bool = false {
-        didSet {
-            if let layoutManager = self.customLayoutManager {
-                layoutManager.roundSyntaxCorners = roundSyntaxCorners
             }
         }
     }
@@ -60,6 +51,8 @@ open class CDMarkdownTextView: UITextView {
             return super.attributedText
         }
         set {
+            super.attributedText = newValue
+            guard let newValue = newValue else { return }
             self.customTextStorage = NSTextStorage(attributedString: newValue)
             if let layoutManager = self.customLayoutManager {
                 self.customTextStorage.addLayoutManager(layoutManager)
@@ -87,7 +80,10 @@ open class CDMarkdownTextView: UITextView {
         self.configure()
     }
 
+    /// Configures the text view's layout manager and storage.
     open func configure() {
+        // Accessing self.textContainer here opts UITextView into TextKit 1 compatibility
+        // mode (one-time console warning expected; unavoidable until TK2 migration).
         self.customLayoutManager = CDMarkdownLayoutManager()
         self.customLayoutManager.addTextContainer(self.textContainer)
 

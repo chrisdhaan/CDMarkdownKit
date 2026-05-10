@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,19 +31,33 @@
     import Cocoa
 #endif
 
-// Styling protocol for all MarkdownElements
-public protocol CDMarkdownStyle {
+/// Protocol defining the styling attributes for Markdown elements.
+public protocol CDMarkdownStyle: Sendable {
 
+    /// The font to apply to this element.
     var font: CDFont? { get }
+    /// The foreground text color for this element.
     var color: CDColor? { get }
+    /// The background color for this element.
     var backgroundColor: CDColor? { get }
+    /// The paragraph style (spacing, alignment, etc.) for this element.
     var paragraphStyle: NSParagraphStyle? { get }
+    /// The underline color to apply to this element.
     var underlineColor: CDColor? { get }
+    /// The underline style (single, double, etc.) to apply to this element.
     var underlineStyle: NSUnderlineStyle? { get }
+    /// The strikethrough color to apply to this element.
+    var strikethroughColor: CDColor? { get }
+    /// The strikethrough style to apply to this element.
+    var strikethroughStyle: NSUnderlineStyle? { get }
+    /// The computed dictionary of NSAttributedString attributes for this style.
     var attributes: [CDAttributedStringKey: AnyObject] { get }
 }
 
 public extension CDMarkdownStyle {
+
+    var strikethroughColor: CDColor? { return nil }
+    var strikethroughStyle: NSUnderlineStyle? { return nil }
 
     var attributes: [CDAttributedStringKey: AnyObject] {
         var attributes = [CDAttributedStringKey: AnyObject]()
@@ -65,6 +79,12 @@ public extension CDMarkdownStyle {
         }
         if let underlineStyle = underlineStyle {
             attributes.addUnderlineStyle(underlineStyle)
+        }
+        if let strikethroughColor = strikethroughColor {
+            attributes.addStrikethroughColor(strikethroughColor)
+        }
+        if let strikethroughStyle = strikethroughStyle {
+            attributes.addStrikethroughStyle(strikethroughStyle)
         }
 
         return attributes

@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,18 +31,30 @@
     import Cocoa
 #endif
 
+extension CDMarkdownList: @unchecked Sendable { }
+
+/// Renders unordered lists using *, -, or + syntax.
 open class CDMarkdownList: CDMarkdownLevelElement {
 
     fileprivate static let regex = "^\\s*([\\*\\+\\-]{1,%@})[ \t]+(.+)$"
 
+    /// The font for list item text.
     open var font: CDFont?
+    /// The maximum nesting level for lists.
     open var maxLevel: Int
+    /// The bullet character or string used for list items.
     open var indicator: String
+    /// The string used for indenting nested list levels.
     open var separator: String
+    /// The text color for list items.
     open var color: CDColor?
+    /// The background color for list items.
     open var backgroundColor: CDColor?
+    /// The paragraph style for list items.
     open var paragraphStyle: NSParagraphStyle?
+    /// The underline color for list items.
     open var underlineColor: CDColor?
+    /// The underline style for list items.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
@@ -51,6 +63,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
                       level)
     }
 
+    /// Creates a new list element with optional custom styling.
     public init(font: CDFont? = nil,
                 maxLevel: Int = 0,
                 indicator: String = "•",

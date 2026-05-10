@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 6/26/22.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -33,4 +33,4 @@ import Foundation
 #endif
 
 /// Current CDMarkdownKit version. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
-let version = "2.5.1"
+let version = "3.0.0"

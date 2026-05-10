@@ -1,0 +1,16 @@
+author: Christopher de Haan
+author_url: https://christopherdehaan.me
+github_url: https://github.com/chrisdhaan/CDMarkdownKit
+module: CDMarkdownKit
+module_version: 3.0.0
+xcodebuild_arguments:
+  - "-project"
+  - "CDMarkdownKit.xcodeproj"
+  - "-scheme"
+  - "CDMarkdownKit iOS"
+output: docs
+theme: fullwidth
+clean: true
+readme: README.md
+skip_undocumented: false
+hide_documentation_coverage: false

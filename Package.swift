@@ -1,11 +1,11 @@
-// swift-tools-version:5.7
+// swift-tools-version:6.0
 //
 //  Package.swift
 //  CDMarkdownKit
 //
 //  Created by Christopher de Haan on 05/07/2017.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -29,15 +29,22 @@
 import PackageDescription
 
 let package = Package(name: "CDMarkdownKit",
-                      platforms: [.macOS(.v10_13),
-                                  .iOS(.v11),
-                                  .tvOS(.v11),
+                      platforms: [.iOS(.v12),
+                                  .macOS(.v10_13),
+                                  .tvOS(.v12),
                                   .watchOS(.v4)],
                       products: [.library(name: "CDMarkdownKit",
+                                          targets: ["CDMarkdownKit"]),
+                                 .library(name: "CDMarkdownKitDynamic",
+                                          type: .dynamic,
                                           targets: ["CDMarkdownKit"])],
                       targets: [.target(name: "CDMarkdownKit",
                                         path: "Source",
                                         exclude: ["Info.plist"],
+                                        resources: [.process("PrivacyInfo.xcprivacy")],
+                                        swiftSettings: [
+                                            .enableUpcomingFeature("ExistentialAny")
+                                        ],
                                         linkerSettings: [.linkedFramework("Foundation",
                                                                           .when(platforms: [.macOS,
                                                                                             .iOS,
@@ -48,5 +55,9 @@ let package = Package(name: "CDMarkdownKit",
                                                          .linkedFramework("UIKit",
                                                                           .when(platforms: [.iOS,
                                                                                             .tvOS,
-                                                                                            .watchOS]))])],
-                      swiftLanguageVersions: [.v5])
+                                                                                            .watchOS]))]),
+                                .testTarget(
+                                    name: "CDMarkdownKitTests",
+                                    dependencies: ["CDMarkdownKit"]
+                                )],
+                      swiftLanguageModes: [.v5])

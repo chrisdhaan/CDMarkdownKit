@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,18 +31,30 @@
     import Cocoa
 #endif
 
+extension CDMarkdownQuote: @unchecked Sendable { }
+
+/// Renders blockquotes using > syntax.
 open class CDMarkdownQuote: CDMarkdownLevelElement {
 
     fileprivate static let regex = "^(\\>{1,%@})\\s*(.+)$"
 
+    /// The font for blockquote text.
     open var font: CDFont?
+    /// The maximum nesting level for blockquotes.
     open var maxLevel: Int
+    /// The indicator character or string used for blockquotes.
     open var indicator: String
+    /// The string used for indenting nested blockquote levels.
     open var separator: String
+    /// The text color for blockquotes.
     open var color: CDColor?
+    /// The background color for blockquotes.
     open var backgroundColor: CDColor?
+    /// The paragraph style for blockquotes.
     open var paragraphStyle: NSParagraphStyle?
+    /// The underline color for blockquotes.
     open var underlineColor: CDColor?
+    /// The underline style for blockquotes.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
@@ -51,6 +63,7 @@ open class CDMarkdownQuote: CDMarkdownLevelElement {
                       level)
     }
 
+    /// Creates a new blockquote element with optional custom styling.
     public init(font: CDFont? = nil,
                 maxLevel: Int = 0,
                 indicator: String = ">",

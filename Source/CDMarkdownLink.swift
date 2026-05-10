@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,15 +31,24 @@
     import Cocoa
 #endif
 
+extension CDMarkdownLink: @unchecked Sendable { }
+
+/// Renders inline links using [text](url) syntax.
 open class CDMarkdownLink: CDMarkdownLinkElement {
 
-    fileprivate static let regex = "[^!{1}]\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"
+    fileprivate static let regex = "(?<![!])\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"
 
+    /// The font for link text.
     open var font: CDFont?
+    /// The text color for links.
     open var color: CDColor?
+    /// The background color for links.
     open var backgroundColor: CDColor?
+    /// The paragraph style for links.
     open var paragraphStyle: NSParagraphStyle?
+    /// The underline color for links.
     open var underlineColor: CDColor?
+    /// The underline style for links.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
@@ -51,6 +60,7 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
                                        options: .dotMatchesLineSeparators)
     }
 
+    /// Creates a new link element with optional custom styling.
     public init(font: CDFont? = nil,
                 color: CDColor? = CDColor.blue,
                 backgroundColor: CDColor? = nil,
@@ -98,10 +108,10 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
 
         // deleting leading markdown
         // needs to be called before formattingBlock to provide a stable range
-        attributedString.deleteCharacters(in: NSRange(location: match.range.location + 1,
+        attributedString.deleteCharacters(in: NSRange(location: match.range.location,
                                                       length: 1))
-        let formatRange = NSRange(location: match.range.location + 1,
-                                  length: linkStartInResult - match.range.location - 3)
+        let formatRange = NSRange(location: match.range.location,
+                                  length: linkStartInResult - match.range.location - 2)
 
         formatText(attributedString,
                    range: formatRange,

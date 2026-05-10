@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 12/15/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -33,17 +33,29 @@
 
 #if os(iOS) || os(macOS) || os(tvOS)
 
+extension CDMarkdownImage: @unchecked Sendable { }
+
+/// Renders inline images using ![alt](url) syntax. Available on iOS, macOS, and tvOS.
 open class CDMarkdownImage: CDMarkdownLinkElement {
 
-    fileprivate static let regex = "[!{1}]\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"
+    fileprivate static let regex = "!\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"
 
+    /// The font associated with the image.
     open var font: CDFont?
+    /// The text color for image links.
     open var color: CDColor?
+    /// The background color for images.
     open var backgroundColor: CDColor?
+    /// The paragraph style for images.
     open var paragraphStyle: NSParagraphStyle?
+    /// The preferred size for rendered images.
     open var size: CGSize?
+    /// The underline color for image links.
     open var underlineColor: CDColor?
+    /// The underline style for image links.
     open var underlineStyle: NSUnderlineStyle?
+    /// When true, stores image URLs as attributes for async loading instead of loading synchronously.
+    internal var placeholderOnly: Bool = false
 
     open var regex: String {
         return CDMarkdownImage.regex
@@ -54,6 +66,7 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
                                        options: .dotMatchesLineSeparators)
     }
 
+    /// Creates a new image element with optional custom sizing and styling.
     public init(font: CDFont? = nil,
                 color: CDColor? = CDColor.blue,
                 backgroundColor: CDColor? = nil,
@@ -99,29 +112,40 @@ open class CDMarkdownImage: CDMarkdownLinkElement {
         attributedString.deleteCharacters(in: NSRange(location: match.range.location,
                                                       length: linkRange.length + 2))
 
-        // load image
-        let textAttachment = NSTextAttachment()
-        if let url = URL(string: linkURLString) {
-            let data = try? Data(contentsOf: url)
-            // Try to load image from url
-            if let data = data,
-                let image = CDImage(data: data) {
-                textAttachment.image = image
-                adjustTextAttachmentSize(textAttachment,
-                                         forImage: image)
-            // Try to load image from local file store
-            } else if let image = CDImage(named: url.path) {
-                textAttachment.image = image
-                adjustTextAttachmentSize(textAttachment,
-                                         forImage: image)
+        if placeholderOnly {
+            let placeholderRange = NSRange(location: match.range.location,
+                                          length: linkStartInResult - match.range.location - 1)
+            if let url = URL(string: linkURLString) {
+                let placeholder = NSMutableAttributedString(string: "\u{FFFC}")
+                placeholder.addAttribute(.cdMarkdownImageURL,
+                                        value: url as AnyObject,
+                                        range: NSRange(location: 0, length: 1))
+                attributedString.replaceCharacters(in: placeholderRange, with: placeholder)
             }
-        }
+        } else {
+            let textAttachment = NSTextAttachment()
+            if let url = URL(string: linkURLString) {
+                let data = try? Data(contentsOf: url)
+                // Try to load image from url
+                if let data = data,
+                    let image = CDImage(data: data) {
+                    textAttachment.image = image
+                    adjustTextAttachmentSize(textAttachment,
+                                             forImage: image)
+                // Try to load image from local file store
+                } else if let image = CDImage(named: url.path) {
+                    textAttachment.image = image
+                    adjustTextAttachmentSize(textAttachment,
+                                             forImage: image)
+                }
+            }
 
-        // replace text with image
-        let textAttachmentAttributedString = NSAttributedString(attachment: textAttachment)
-        attributedString.replaceCharacters(in: NSRange(location: match.range.location,
-                                                       length: linkStartInResult - match.range.location - 1),
-                                           with: textAttachmentAttributedString)
+            // replace text with image
+            let textAttachmentAttributedString = NSAttributedString(attachment: textAttachment)
+            attributedString.replaceCharacters(in: NSRange(location: match.range.location,
+                                                           length: linkStartInResult - match.range.location - 1),
+                                               with: textAttachmentAttributedString)
+        }
 
         let formatRange = NSRange(location: match.range.location,
                                   length: 0)

@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 10/16/22.
 
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,23 +31,35 @@
     import Cocoa
 #endif
 
+extension CDMarkdownStrikethrough: @unchecked Sendable { }
+
+/// Renders strikethrough text using ~~text~~ syntax.
 open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
 
     fileprivate static let regex = "()(~~)(.*?)(\\2)"
 
+    /// The font for strikethrough text.
     open var font: CDFont?
+    /// The text color for strikethrough.
     open var color: CDColor?
+    /// The background color for strikethrough text.
     open var backgroundColor: CDColor?
+    /// The paragraph style for strikethrough text.
     open var paragraphStyle: NSParagraphStyle?
+    /// The color of the strikethrough line.
     open var strikethroughColor: CDColor?
+    /// The style of the strikethrough line.
     open var strikethroughStyle: NSUnderlineStyle?
+    /// The underline color for strikethrough text.
     open var underlineColor: CDColor?
+    /// The underline style for strikethrough text.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         return CDMarkdownStrikethrough.regex
     }
 
+    /// Creates a new strikethrough element with optional custom styling.
     public init(font: CDFont? = nil,
                 color: CDColor? = nil,
                 backgroundColor: CDColor? = nil,
@@ -64,19 +76,6 @@ open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
         self.strikethroughStyle = strikethroughStyle
         self.underlineColor = underlineColor
         self.underlineStyle = underlineStyle
-    }
-
-    public func addAttributes(_ attributedString: NSMutableAttributedString, range: NSRange) {
-        var adjustedAttributes = attributes
-
-        if let strikethroughColor = strikethroughColor {
-            adjustedAttributes.addStrikethroughColor(strikethroughColor)
-        }
-        if let strikethroughStyle = strikethroughStyle {
-            adjustedAttributes.addStrikethroughStyle(strikethroughStyle)
-        }
-
-        attributedString.addAttributes(adjustedAttributes, range: range)
     }
 
 }

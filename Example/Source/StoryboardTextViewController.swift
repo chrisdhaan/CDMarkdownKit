@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 6/11/18.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -45,25 +45,25 @@ class StoryboardTextViewController: BaseViewController {
 
         self.onDefaultParser = { [weak self] in
             // Configure text view
-            self?.storyboardTextView.roundCodeCorners = true
-            self?.storyboardTextView.roundSyntaxCorners = true
+            self?.storyboardTextView.roundAllCorners = true
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.storyboardTextView.attributedText = self.configure()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        Task { [weak self] in
+            guard let self else { return }
+            self.storyboardTextView.attributedText = await self.configure()
+        }
     }
 
     // MARK: - Action Methods
 
     @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
-        self.storyboardTextView.attributedText = self.configure()
+        Task { [weak self] in
+            guard let self else { return }
+            self.storyboardTextView.attributedText = await self.configure()
+        }
     }
 }

@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,10 +31,18 @@
     import Cocoa
 #endif
 
+extension CDMarkdownAutomaticLink: @unchecked Sendable { }
+
+/// Detects and renders bare URLs as clickable links without Markdown syntax.
 open class CDMarkdownAutomaticLink: CDMarkdownLink {
 
+    /// Automatically detects URLs using NSDataDetector.
     open override func regularExpression() throws -> NSRegularExpression {
+        #if os(watchOS)
+        return try NSRegularExpression(pattern: "(?!)", options: [])
+        #else
         return try NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+        #endif
     }
 
     open override func match(_ match: NSTextCheckingResult,

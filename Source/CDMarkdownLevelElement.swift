@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,22 +31,25 @@
     import Cocoa
 #endif
 
-// MarkdownLevelElement serves the purpose of handling Elements which may have more than one
-// representation (e.g. Headers or Lists)
+/// Protocol for block-level Markdown elements with multiple levels of nesting (e.g., headers, lists).
 public protocol CDMarkdownLevelElement: CDMarkdownElement, CDMarkdownStyle {
 
-    // The maximum level of elements we should parse (e.g. limit the headers to 6 #s)
+    /// The maximum nesting level supported by this element (e.g., 6 for headers).
     var maxLevel: Int { get }
 
+    /// Formats text content by removing or replacing level markers.
     func formatText(_ attributedString: NSMutableAttributedString,
                     range: NSRange,
                     level: Int)
+    /// Applies styling attributes to the entire element block.
     func addFullAttributes(_ attributedString: NSMutableAttributedString,
                            range: NSRange,
                            level: Int)
+    /// Applies styling attributes to the element's content text.
     func addAttributes(_ attributedString: NSMutableAttributedString,
                        range: NSRange,
                        level: Int)
+    /// Returns style attributes specific to the given nesting level.
     func attributesForLevel(_ level: Int) -> [CDAttributedStringKey: AnyObject]
 }
 

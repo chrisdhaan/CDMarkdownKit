@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,21 +31,31 @@
     import Cocoa
 #endif
 
+extension CDMarkdownItalic: @unchecked Sendable { }
+
+/// Renders italic text using *text* or _text_ syntax.
 open class CDMarkdownItalic: CDMarkdownCommonElement {
 
     fileprivate static let regex = "()(\\*|_)(.*?)(\\2)"
 
+    /// The font to apply to italic text.
     open var font: CDFont?
+    /// The text color for italic text.
     open var color: CDColor?
+    /// The background color for italic text.
     open var backgroundColor: CDColor?
+    /// The paragraph style for italic text.
     open var paragraphStyle: NSParagraphStyle?
+    /// The underline color for italic text.
     open var underlineColor: CDColor?
+    /// The underline style for italic text.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         return CDMarkdownItalic.regex
     }
 
+    /// Creates a new italic element with optional custom styling.
     public init(font: CDFont? = nil,
                 customItalicFont: CDFont? = nil,
                 color: CDColor? = nil,

@@ -37,3 +37,9 @@ playground.xcworkspace
 
 # Carthage
 Carthage/Build
+
+# Bundler
+.bundle/
+
+# Jazzy documentation
+docs/undocumented.json

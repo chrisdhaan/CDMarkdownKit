@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 11/7/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,10 +31,10 @@
     import Cocoa
 #endif
 
-// MarkdownCommentElement represent the default Markdown elements which only manipulate content
-// visually, (e.g. Bold or Italic)
+/// Protocol for simple inline Markdown elements that apply styling attributes (e.g., bold, italic).
 public protocol CDMarkdownCommonElement: CDMarkdownElement, CDMarkdownStyle {
 
+    /// Applies the element's styling attributes to a range of the attributed string.
     func addAttributes(_ attributedString: NSMutableAttributedString,
                        range: NSRange)
 }

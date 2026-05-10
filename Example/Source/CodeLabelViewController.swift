@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 6/11/18.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -45,33 +45,42 @@ class CodeLabelViewController: BaseViewController {
 
         self.onDefaultParser = { [weak self] in
             // Configure label
-            self?.codeLabel.roundCodeCorners = true
-            self?.codeLabel.roundSyntaxCorners = true
+            self?.codeLabel.roundAllCorners = true
         }
 
         // Example initialization of CDMarkdownLabel
-        let codeLabel = CDMarkdownLabel(frame: self.rect)
+        let codeLabel = CDMarkdownLabel(frame: .zero)
+        codeLabel.numberOfLines = 0
         codeLabel.delegate = self
-        codeLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        codeLabel.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(codeLabel)
+
+        NSLayoutConstraint.activate([
+            codeLabel.topAnchor.constraint(equalTo: self.segmentedControl.bottomAnchor, constant: 8),
+            codeLabel.leadingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.leadingAnchor),
+            codeLabel.trailingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.trailingAnchor),
+            codeLabel.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        ])
+
         self.codeLabel = codeLabel
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        self.codeLabel.attributedText = self.configure()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        Task { [weak self] in
+            guard let self else { return }
+            self.codeLabel.attributedText = await self.configure()
+        }
     }
 
     // MARK: - Action Methods
 
     @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
-        self.codeLabel.attributedText = self.configure()
+        Task { [weak self] in
+            guard let self else { return }
+            self.codeLabel.attributedText = await self.configure()
+        }
     }
 }
 

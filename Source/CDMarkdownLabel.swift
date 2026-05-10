@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 12/14/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -35,36 +35,31 @@ import SafariServices
 
 import UIKit
 
+/// Delegate for handling link selection events in CDMarkdownLabel.
 public protocol CDMarkdownLabelDelegate: AnyObject {
+    /// Called when a link is selected in the label.
     func didSelect(_ url: URL)
 }
 
 typealias URLRange = (url: URL, range: NSRange)
 
+/// A UILabel subclass that renders styled Markdown text with clickable links.
+@MainActor
 open class CDMarkdownLabel: UILabel {
 
+    /// The custom layout manager used for rendering.
     open var customLayoutManager: CDMarkdownLayoutManager!
+    /// The custom text container used for rendering.
     open var customTextContainer: NSTextContainer!
+    /// The custom text storage used for rendering.
     open var customTextStorage: NSTextStorage!
+    /// Delegate to receive link selection callbacks.
     open weak var delegate: CDMarkdownLabelDelegate?
+    /// When true, all background color regions have rounded corners.
     open var roundAllCorners: Bool = false {
         didSet {
             if let layoutManager = self.customLayoutManager {
                 layoutManager.roundAllCorners = roundAllCorners
-            }
-        }
-    }
-    open var roundCodeCorners: Bool = false {
-        didSet {
-            if let layoutManager = self.customLayoutManager {
-                layoutManager.roundCodeCorners = roundCodeCorners
-            }
-        }
-    }
-    open var roundSyntaxCorners: Bool = false {
-        didSet {
-            if let layoutManager = self.customLayoutManager {
-                layoutManager.roundSyntaxCorners = roundSyntaxCorners
             }
         }
     }
@@ -126,6 +121,7 @@ open class CDMarkdownLabel: UILabel {
         self.customTextContainer.size = self.bounds.size
     }
 
+    /// Configures the label's layout manager, text container, and text storage.
     open func configure() {
         self.isUserInteractionEnabled = true
 
@@ -136,7 +132,7 @@ open class CDMarkdownLabel: UILabel {
         } else {
             self.customTextContainer = NSTextContainer()
             self.customTextContainer.lineFragmentPadding = 0
-            self.customTextContainer.maximumNumberOfLines = self.numberOfLines
+            self.customTextContainer.maximumNumberOfLines = 0
             self.customTextContainer.lineBreakMode = self.lineBreakMode
             self.customTextContainer.size = self.frame.size
 
@@ -331,7 +327,7 @@ open class CDMarkdownLabel: UILabel {
     }
 
     private func parseTextAndExtractURLRanges(_ attrString: NSAttributedString) {
-
+        urlRanges.removeAll()
         attrString.enumerateLinkAttribute(in: NSRange(location: 0,
                                                       length: attrString.length),
                                           options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
@@ -369,7 +365,7 @@ open class CDMarkdownLabel: UILabel {
 
 // MARK: - LayoutManagerDelegate Methods
 
-extension CDMarkdownLabel: NSLayoutManagerDelegate {
+extension CDMarkdownLabel: @preconcurrency NSLayoutManagerDelegate {
     public func layoutManager(_ layoutManager: NSLayoutManager,
                               shouldBreakLineByWordBeforeCharacterAt charIndex: Int) -> Bool {
         var range = NSRange()

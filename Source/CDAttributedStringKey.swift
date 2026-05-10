@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 6/18/18.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -28,3 +28,8 @@
 import Foundation
 
 public typealias CDAttributedStringKey = NSAttributedString.Key
+
+extension NSAttributedString.Key {
+    static let cdMarkdownRoundedBackground = NSAttributedString.Key("CDMarkdownKit.roundedBackground")
+    static let cdMarkdownImageURL = NSAttributedString.Key("CDMarkdownKit.imageURL")
+}

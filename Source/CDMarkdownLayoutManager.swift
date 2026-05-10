@@ -4,7 +4,7 @@
 //
 //  Created by Christopher de Haan on 12/8/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -29,22 +29,24 @@
 
 import UIKit
 
+/// Custom layout manager that renders background colors with rounded corners for code and syntax blocks.
 open class CDMarkdownLayoutManager: NSLayoutManager {
 
+    /// When true, all background color regions have rounded corners.
     open var roundAllCorners: Bool = false
-    open var roundCodeCorners: Bool = false
-    open var roundSyntaxCorners: Bool = false
 
+    /// Fills background rectangles with optional rounded corners for attributed string ranges.
     override open func fillBackgroundRectArray(_ rectArray: UnsafePointer<CGRect>,
                                                count rectCount: Int,
                                                forCharacterRange charRange: NSRange,
                                                color: UIColor) {
 
         var cornerRadius: CGFloat = 0
-        if (self.roundCodeCorners == true && color.isEqualTo(otherColor: UIColor.codeBackgroundRed())) ||
-            (self.roundSyntaxCorners == true && color.isEqualTo(otherColor: UIColor.syntaxBackgroundGray())) ||
-            self.roundAllCorners == true {
-
+        let hasRoundedAttribute = self.textStorage?.attribute(
+            .cdMarkdownRoundedBackground,
+            at: charRange.location,
+            effectiveRange: nil) as? Bool == true
+        if hasRoundedAttribute || self.roundAllCorners {
             cornerRadius = 3
         }
 

@@ -1,10 +1,10 @@
 //
-//  CDMarkdownCode.swift
+//  CDMarkdownSyntax.swift
 //  CDMarkdownKit
 //
 //  Created by Christopher de Haan on 11/10/16.
 //
-//  Copyright © 2016-2022 Christopher de Haan <contact@christopherdehaan.me>
+//  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -31,21 +31,31 @@
     import Cocoa
 #endif
 
+extension CDMarkdownSyntax: @unchecked Sendable { }
+
+/// Renders fenced code blocks using ```code``` syntax.
 open class CDMarkdownSyntax: CDMarkdownCommonElement {
 
     fileprivate static let regex = "(\\s+|^)(`{3})(\\s*[^`]*?\\s*)(\\2)(?!`)"
 
+    /// The font for code block text.
     open var font: CDFont?
+    /// The text color for code blocks.
     open var color: CDColor?
+    /// The background color for code blocks.
     open var backgroundColor: CDColor?
+    /// The paragraph style for code blocks.
     open var paragraphStyle: NSParagraphStyle?
+    /// The underline color for code blocks.
     open var underlineColor: CDColor?
+    /// The underline style for code blocks.
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
         return CDMarkdownSyntax.regex
     }
 
+    /// Creates a new syntax block element with optional custom styling.
     public init(font: CDFont? = CDFont(name: "Menlo-Regular", size: 12),
                 color: CDColor? = CDColor.syntaxTextGray(),
                 backgroundColor: CDColor? = CDColor.syntaxBackgroundGray(),
@@ -63,7 +73,17 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
     open func addAttributes(_ attributedString: NSMutableAttributedString,
                             range: NSRange) {
         let matchString: String = attributedString.attributedSubstring(from: range).string
-        guard let unescapedString = matchString.unescapeUTF16() else { return }
+        guard var unescapedString = matchString.unescapeUTF16() else { return }
+
+        // Strip optional language hint: first line with no whitespace (e.g. "js", "swift", "python")
+        let newlineCharacters = CharacterSet.newlines
+        if let firstNewline = unescapedString.rangeOfCharacter(from: newlineCharacters) {
+            let hint = String(unescapedString[unescapedString.startIndex..<firstNewline.lowerBound])
+            if !hint.isEmpty && hint.rangeOfCharacter(from: .whitespaces) == nil {
+                unescapedString = String(unescapedString[firstNewline.upperBound...])
+            }
+        }
+
         attributedString.replaceCharacters(in: range,
                                            with: unescapedString)
 
@@ -71,6 +91,9 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                             length: unescapedString.characterCount())
         attributedString.addAttributes(attributes,
                                        range: range)
+        attributedString.addAttribute(.cdMarkdownRoundedBackground,
+                                      value: true as AnyObject,
+                                      range: range)
         // If the previous character was a newline then parser doesn't have to worry about
         // wrapping the background color from the end of the last element to the newline.
         if range.location - 4 >= 0,
