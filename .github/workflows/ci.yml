@@ -55,7 +55,7 @@ jobs:
             name: "iOS 18 (Xcode 16.4)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.3.app/Contents/Developer
-            destination: "OS=18.5,name=iPhone 16 Pro"
+            destination: "generic/platform=iOS Simulator"
             name: "iOS 18 (Xcode 16.3)"
           - runner: macos-15
             xcode: /Applications/Xcode_16.2.app/Contents/Developer
