@@ -25,7 +25,7 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa

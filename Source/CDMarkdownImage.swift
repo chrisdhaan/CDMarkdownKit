@@ -25,13 +25,13 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS)
+#if os(iOS) || os(tvOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
 #endif
 
-#if os(iOS) || os(macOS) || os(tvOS)
+#if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
 
 extension CDMarkdownImage: @unchecked Sendable { }
 

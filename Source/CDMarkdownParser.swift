@@ -66,7 +66,7 @@ open class CDMarkdownParser {
     public let code: CDMarkdownCode
     /// Handles fenced code blocks (```code```).
     public let syntax: CDMarkdownSyntax
-#if os(iOS) || os(macOS) || os(tvOS)
+#if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
     /// Handles image syntax (![alt](url)). Not available on watchOS.
     public let image: CDMarkdownImage
 #endif
@@ -163,7 +163,7 @@ open class CDMarkdownParser {
                                   color: fontColor,
                                   backgroundColor: backgroundColor,
                                   paragraphStyle: paragraphStyle)
-#if os(iOS) || os(macOS) || os(tvOS)
+#if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
         image = CDMarkdownImage(font: font,
                                 color: fontColor,
                                 backgroundColor: backgroundColor,
@@ -178,7 +178,7 @@ open class CDMarkdownParser {
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.squashNewlines = squashNewlines
         self.escapingElements = [codeEscaping, escaping]
-#if os(iOS) || os(macOS) || os(tvOS)
+#if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
         self.defaultElements = [table, header, list, orderedList, quote, link, automaticLink, image, bold, italic, strikethrough]
 #else
         self.defaultElements = [table, header, list, orderedList, quote, link, automaticLink, bold, italic, strikethrough]
@@ -271,7 +271,7 @@ open class CDMarkdownParser {
         elements.append(contentsOf: customElements)
         elements.append(contentsOf: unescapingElements)
 
-        #if os(iOS) || os(macOS) || os(tvOS)
+        #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
         if !loadImages {
             image.placeholderOnly = true
         }
@@ -283,7 +283,7 @@ open class CDMarkdownParser {
             }
         }
 
-        #if os(iOS) || os(macOS) || os(tvOS)
+        #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
         if !loadImages {
             image.placeholderOnly = false
         }
@@ -322,7 +322,7 @@ open class CDMarkdownParser {
                let image = CDImage(data: data) {
                 let attachment = NSTextAttachment()
                 attachment.image = image
-                #if os(iOS) || os(macOS) || os(tvOS)
+                #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
                 if let size = self.image.size {
                     let preferredWidth = size.width - 10
                     let widthScalingFactor = image.size.width / preferredWidth
