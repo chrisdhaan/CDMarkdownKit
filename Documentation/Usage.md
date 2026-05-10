@@ -98,6 +98,30 @@ parser.link.color = UIColor.blue
 parser.header.fontIncrease = 4
 ```
 
+### Preserving Leading Whitespace
+
+By default, CDMarkdownKit strips leading whitespace (spaces and tabs) from each line. This is suitable for most Markdown text, but if you need to preserve indentation in code blocks or other contexts, enable the `preserveLeadingWhitespace` option:
+
+```swift
+let parser = CDMarkdownParser()
+parser.preserveLeadingWhitespace = true
+let attributed = parser.parse("""
+    ```
+       function sayHello() {
+          console.log("Hello, World!");
+       }
+    ```
+    """)
+```
+
+With `preserveLeadingWhitespace = true`, the indentation inside both inline code (`` `...` ``) and fenced code blocks (` ``` `) is preserved as-is. This is useful for:
+- Code examples with semantic indentation
+- ASCII art or diagrams
+- Poetry or formatted prose
+- Any content where whitespace spacing is meaningful
+
+**Note**: This setting only affects code elements. Other Markdown elements (bold, italic, lists, etc.) are not affected by this option.
+
 ---
 
 ## Supported Syntax
