@@ -189,6 +189,7 @@ open class CDMarkdownParser {
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
         code.parser = self
+        syntax.parser = self
     }
 
     // MARK: - Element Extensibility

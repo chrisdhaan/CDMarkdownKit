@@ -51,6 +51,8 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
     /// The underline style for code blocks.
     open var underlineStyle: NSUnderlineStyle?
 
+    nonisolated(unsafe) weak var parser: CDMarkdownParser?
+
     open var regex: String {
         return CDMarkdownSyntax.regex
     }
@@ -70,6 +72,7 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         self.underlineStyle = underlineStyle
     }
 
+    @MainActor
     open func addAttributes(_ attributedString: NSMutableAttributedString,
                             range: NSRange) {
         let matchString: String = attributedString.attributedSubstring(from: range).string
@@ -82,6 +85,13 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
             if !hint.isEmpty && hint.rangeOfCharacter(from: .whitespaces) == nil {
                 unescapedString = String(unescapedString[firstNewline.upperBound...])
             }
+        }
+
+        // Conditionally preserve leading whitespace on each line
+        if let parser = parser, !parser.preserveLeadingWhitespace {
+            let lines = unescapedString.components(separatedBy: "\n")
+            let strippedLines = lines.map { $0.trimmingCharacters(in: .whitespaces) }
+            unescapedString = strippedLines.joined(separator: "\n")
         }
 
         attributedString.replaceCharacters(in: range,
