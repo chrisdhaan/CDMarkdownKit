@@ -146,18 +146,18 @@ CDMarkdownKit supports the following Markdown syntax:
 
 ### Platform Notes
 
-| Feature | iOS | macOS | tvOS | watchOS |
-|---------|-----|-------|------|---------|
-| Bold / Italic / Strikethrough | ✓ | ✓ | ✓ | ✓ |
-| Headers | ✓ | ✓ | ✓ | ✓ |
-| Unordered Lists | ✓ | ✓ | ✓ | ✓ |
-| Ordered Lists | ✓ | ✓ | ✓ | ✓ |
-| Blockquotes | ✓ | ✓ | ✓ | ✓ |
-| Inline Code / Fenced Blocks | ✓ | ✓ | ✓ | ✓ |
-| Tables | ✓ | ✓ | ✓ | ✓ |
-| Links (tappable) | ✓ | ✓ | ✓ | — |
-| Automatic Links | ✓ | ✓ | ✓ | — |
-| Images | ✓ | ✓ | ✓ | — |
+| Feature | iOS | macOS | tvOS | watchOS | visionOS |
+|---------|-----|-------|------|---------|----------|
+| Bold / Italic / Strikethrough | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Headers | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Unordered Lists | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Ordered Lists | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Blockquotes | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Inline Code / Fenced Blocks | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Tables | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Links (tappable) | ✓ | ✓ | ✓ | — | ✓ |
+| Automatic Links | ✓ | ✓ | ✓ | — | ✓ |
+| Images | ✓ | ✓ | ✓ | — | ✓ |
 
 > **watchOS**: Only `WKInterfaceLabel.setAttributedText(_:)` is supported. Tappable links, images, and `CDMarkdownLabel`/`CDMarkdownTextView` UI components are not available on watchOS. All text styling (bold, italic, headers, code, tables, etc.) works because it is applied as `NSAttributedString` attributes, which `WKInterfaceLabel` renders correctly.
 
