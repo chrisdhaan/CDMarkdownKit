@@ -4,7 +4,7 @@ Parse Markdown and display it in your app in three steps.
 
 ## Parse a string
 
-Create a ``CDMarkdownParser`` and call ``CDMarkdownParser/parse(_:)-string``:
+Create a ``CDMarkdownParser`` and call `parse(_:)`:
 
 ```swift
 let parser = CDMarkdownParser()
@@ -14,15 +14,15 @@ let attributed = parser.parse("Hello **world**")
 ## Display with CDMarkdownLabel
 
 ```swift
-let label = CDMarkdownLabel()
-label.markdownParser = parser
-label.parseText = "Hello **world**"
+let label = CDMarkdownLabel(frame: .zero)
+label.attributedText = parser.parse("Hello **world**")
 ```
 
 ## Display with CDMarkdownTextView
 
 ```swift
-let textView = CDMarkdownTextView.makeTextView(frame: view.bounds)
+let textView = CDMarkdownTextView(frame: view.bounds, textContainer: nil)
+textView.configure()
 textView.attributedText = parser.parse("Hello **world**")
 ```
 

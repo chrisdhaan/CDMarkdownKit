@@ -51,7 +51,7 @@ typealias URLRange = (url: URL, range: NSRange)
 /// A `UILabel` subclass that renders styled Markdown text with clickable links.
 ///
 /// Use ``CDMarkdownLabel`` to display Markdown-formatted text with automatic link handling.
-/// Set ``attributedText`` with an ``NSAttributedString`` produced by ``CDMarkdownParser/parse(_:)-string``
+/// Set ``attributedText`` with an ``NSAttributedString`` produced by ``CDMarkdownParser``
 /// to display parsed Markdown. Links trigger ``CDMarkdownLabelDelegate`` callbacks.
 @MainActor
 open class CDMarkdownLabel: UILabel {
