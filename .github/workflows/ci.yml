@@ -317,7 +317,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build DocC
-        run: swift package generate-documentation --target CDMarkdownKit 2>&1 | tee docc.log
+        run: |
+          swift package --disable-sandbox generate-documentation \
+            --target CDMarkdownKit \
+            --output-path /tmp/docc-output \
+            --transform-for-static-hosting \
+            --hosting-base-path CDMarkdownKit \
+            2>&1 | tee docc.log
       - name: Fail on DocC warnings
         run: grep -q "warning:" docc.log && exit 1 || exit 0
 
