@@ -1,0 +1,40 @@
+# Swift language version target
+--swiftversion 5.9
+
+# Indentation: 4 spaces, no tabs
+--indent 4
+--tabwidth 4
+--smarttabs enabled
+--indentcase false
+
+# Line length — matches the warning threshold in .swiftlint.yml
+--maxwidth 149
+
+# Line endings
+--linebreaks lf
+
+# Trailing syntax
+--commas always
+--semicolons never
+--stripunusedargs closure-only
+
+# Argument wrapping
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--closingparen balanced
+
+# Import grouping
+--importgrouping testable-last
+
+# Self keyword: remove where redundant
+--self remove
+
+# File headers: leave existing MIT copyright blocks untouched
+--header ignore
+
+# Paths to exclude from formatting
+--exclude .build,Pods,docs,Package.swift
+
+# Rules disabled to preserve existing codebase conventions
+--disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,extensionAccessControl,redundantType,redundantInternal
