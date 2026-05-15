@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [3.1.0](#310)
 - [3.0.0](#300)
 - [2.5.1](#251)
 - [2.5.0](#250)
@@ -17,6 +18,34 @@ All notable changes to this project will be documented in this file.
 - [1.2.0](#120)
 - [1.1.0](#110)
 - [1.0.0](#100)
+
+---
+
+## [3.1.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/3.1.0)
+
+Released on 2026-05-12.
+
+### Added
+
+- Added `CDMarkdownOrderedList` element for parsing ordered (numbered) lists.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
+- Added `CDMarkdownTable` element for parsing GitHub Flavored Markdown pipe tables.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
+- Added `preserveLeadingWhitespace` configuration property to `CDMarkdownParser`. When `true`, leading whitespace is preserved in inline code spans and fenced code blocks.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
+- Added visionOS platform support to `Package.swift`, `CDMarkdownKit.podspec`, all source file platform guards, and CI.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
+- Added native DocC documentation catalog (`Source/CDMarkdownKit.docc/`) with landing page and Getting Started article.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
+
+### Updated
+
+- Migrated documentation hosting from Jazzy to DocC. Removed `.jazzy.yaml` and the `jazzy` gem; added `swift-docc-plugin` dependency to `Package.swift`; regenerated `docs/` with DocC static site output.
+  - Updated by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
+- Extended inline doc comments across all source files for full DocC compatibility.
+  - Updated by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
+- Updated CI to add a visionOS build job and replace the Jazzy documentation job with a DocC build job.
+  - Updated by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
 
 ---
 
