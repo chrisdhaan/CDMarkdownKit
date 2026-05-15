@@ -310,6 +310,17 @@ jobs:
       - name: Lint
         run: swiftlint lint --strict
 
+  swiftformat:
+    name: SwiftFormat
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SwiftFormat
+        run: brew install swiftformat
+      - name: Check formatting
+        run: swiftformat Source Tests --lint
+
   documentation:
     name: DocC Build
     runs-on: macos-15
