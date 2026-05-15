@@ -62,6 +62,6 @@ internal extension Dictionary where Key == CDAttributedStringKey {
     }
 
     mutating func addUnderlineStyle(_ underlineStyle: NSUnderlineStyle) {
-      self[NSAttributedString.Key.underlineStyle] = underlineStyle.rawValue as? Value
+        self[NSAttributedString.Key.underlineStyle] = underlineStyle.rawValue as? Value
     }
 }

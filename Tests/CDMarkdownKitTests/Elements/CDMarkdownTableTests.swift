@@ -1,24 +1,24 @@
-import Testing
 import Foundation
+import Testing
 #if os(iOS) || os(tvOS) || os(watchOS)
-import UIKit
+    import UIKit
 #elseif os(macOS)
-import Cocoa
+    import Cocoa
 #endif
 @testable import CDMarkdownKit
 
 @MainActor
-@Suite struct CDMarkdownTableTests {
+struct CDMarkdownTableTests {
 
     let parser = CDMarkdownParser()
 
-    // Minimal two-column GFM table
+    /// Minimal two-column GFM table
     let simpleTable = """
-        | Header 1 | Header 2 |
-        | -------- | -------- |
-        | Cell A   | Cell B   |
-        | Cell C   | Cell D   |
-        """
+    | Header 1 | Header 2 |
+    | -------- | -------- |
+    | Cell A   | Cell B   |
+    | Cell C   | Cell D   |
+    """
 
     @Test func tableProducesTabStops() {
         let result = parser.parse(simpleTable)
@@ -54,7 +54,7 @@ import Cocoa
             return
         }
         let afterHeader = result.string.distance(from: result.string.startIndex,
-                                                  to: newlineRange.upperBound)
+                                                 to: newlineRange.upperBound)
         var foundBold = false
         result.enumerateAttribute(.font,
                                   in: NSRange(location: afterHeader,
@@ -73,10 +73,10 @@ import Cocoa
 
     @Test func tableWithoutLeadingTrailingPipes() {
         let input = """
-            Header 1 | Header 2
-            -------- | --------
-            Cell A   | Cell B
-            """
+        Header 1 | Header 2
+        -------- | --------
+        Cell A   | Cell B
+        """
         let result = parser.parse(input)
         var hasTabStops = false
         result.enumerateAttribute(.paragraphStyle,
@@ -91,9 +91,9 @@ import Cocoa
     @Test func nonTableTextIsUnaffected() {
         // Text with pipes but no valid separator row (no dashes)
         let input = """
-            | Hello | world |
-            | This | is | not | a | table |
-            """
+        | Hello | world |
+        | This | is | not | a | table |
+        """
         let result = parser.parse(input)
         // Without a proper separator row, the pipes should be preserved as text
         #expect(result.string.contains("|"))

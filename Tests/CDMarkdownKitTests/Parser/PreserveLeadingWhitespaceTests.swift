@@ -25,11 +25,11 @@
 //  THE SOFTWARE.
 //
 
-import Testing
 import Foundation
+import Testing
 @testable import CDMarkdownKit
 
-@Suite struct PreserveLeadingWhitespaceTests {
+struct PreserveLeadingWhitespaceTests {
 
     @MainActor
     static let parser = CDMarkdownParser()
@@ -53,12 +53,12 @@ import Foundation
 
     @Test @MainActor func fencedCodeStripsByDefault() {
         let input = """
-            ```
-               function hello() {
-                  return "world";
-               }
-            ```
-            """
+        ```
+           function hello() {
+              return "world";
+           }
+        ```
+        """
         let result = Self.parser.parse(input)
         let lines = result.string.components(separatedBy: "\n")
         // After stripping, first non-empty line should not have leading spaces

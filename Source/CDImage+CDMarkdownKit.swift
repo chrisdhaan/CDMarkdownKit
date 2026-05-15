@@ -33,6 +33,6 @@
 
 #if os(macOS)
 
-internal extension CDImage {}
+    internal extension CDImage {}
 
 #endif

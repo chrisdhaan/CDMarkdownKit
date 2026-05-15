@@ -31,21 +31,21 @@
     import Cocoa
 #endif
 
-extension CDMarkdownAutomaticLink: @unchecked Sendable { }
+extension CDMarkdownAutomaticLink: @unchecked Sendable {}
 
 /// Detects and renders bare URLs as clickable links without Markdown syntax.
 open class CDMarkdownAutomaticLink: CDMarkdownLink {
 
     /// Automatically detects URLs using NSDataDetector.
-    open override func regularExpression() throws -> NSRegularExpression {
+    override open func regularExpression() throws -> NSRegularExpression {
         #if os(watchOS)
-        return try NSRegularExpression(pattern: "(?!)", options: [])
+            return try NSRegularExpression(pattern: "(?!)", options: [])
         #else
-        return try NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+            return try NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
         #endif
     }
 
-    open override func match(_ match: NSTextCheckingResult,
+    override open func match(_ match: NSTextCheckingResult,
                              attributedString: NSMutableAttributedString) {
         let linkURLString = attributedString.attributedSubstring(from: match.range).string
         formatText(attributedString,

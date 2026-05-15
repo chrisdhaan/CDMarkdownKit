@@ -42,8 +42,8 @@ public protocol CDMarkdownCommonElement: CDMarkdownElement, CDMarkdownStyle {
 public extension CDMarkdownCommonElement {
 
     func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex,
-                                       options: [])
+        try NSRegularExpression(pattern: regex,
+                                options: [])
     }
 
     func addAttributes(_ attributedString: NSMutableAttributedString,

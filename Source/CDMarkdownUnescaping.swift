@@ -31,19 +31,19 @@
     import Cocoa
 #endif
 
-extension CDMarkdownUnescaping: @unchecked Sendable { }
+extension CDMarkdownUnescaping: @unchecked Sendable {}
 
 open class CDMarkdownUnescaping: CDMarkdownElement {
 
     fileprivate static let regex = "\\\\[0-9a-z]{4}"
 
     open var regex: String {
-        return CDMarkdownUnescaping.regex
+        CDMarkdownUnescaping.regex
     }
 
     open func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex,
-                                       options: .dotMatchesLineSeparators)
+        try NSRegularExpression(pattern: regex,
+                                options: .dotMatchesLineSeparators)
     }
 
     open func match(_ match: NSTextCheckingResult,

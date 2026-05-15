@@ -7,9 +7,9 @@ import Foundation
 
 open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
 
-    // Group 1: header row (line containing at least one |)
-    // Group 2: separator row (dashes, colons, pipes, whitespace only)
-    // Group 3: all data rows
+    /// Group 1: header row (line containing at least one |)
+    /// Group 2: separator row (dashes, colons, pipes, whitespace only)
+    /// Group 3: all data rows
     fileprivate static let regex =
         "^([^\\n]*\\|[^\\n]*\\n)([ \\t]*\\|?[ \\t]*:?-{3,}:?[ \\t]*" +
         "(?:\\|[ \\t]*:?-{3,}:?[ \\t]*)*\\|?[ \\t]*\\n)((?:[^\\n]*\\|[^\\n]*(?:\\n|$))+)"
@@ -24,7 +24,7 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
     open var columnPadding: CGFloat = 16
 
     open var regex: String {
-        return CDMarkdownTable.regex
+        CDMarkdownTable.regex
     }
 
     public init(font: CDFont? = nil,
@@ -42,8 +42,8 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
     }
 
     open func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex,
-                                       options: .anchorsMatchLines)
+        try NSRegularExpression(pattern: regex,
+                                options: .anchorsMatchLines)
     }
 
     // MARK: - Cell Parsing
@@ -64,7 +64,7 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
         return cells.map { cell in
             let left = cell.hasPrefix(":")
             let right = cell.hasSuffix(":")
-            if left && right { return .center }
+            if left, right { return .center }
             if right { return .right }
             return .left
         }
@@ -74,7 +74,7 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
 
     private var boldAttributes: [CDAttributedStringKey: AnyObject] {
         var attrs = attributes
-        if let font = font {
+        if let font {
             attrs[.font] = font.bold() as AnyObject
         } else if let existingFont = attrs[.font] as? CDFont {
             attrs[.font] = existingFont.bold() as AnyObject
@@ -89,15 +89,15 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
         guard match.numberOfRanges == 4 else { return }
 
         let fullRange = match.nsRange(atIndex: 0)
-        let nsString  = attributedString.string as NSString
+        let nsString = attributedString.string as NSString
 
-        let headerLine    = nsString.substring(with: match.nsRange(atIndex: 1))
+        let headerLine = nsString.substring(with: match.nsRange(atIndex: 1))
         let separatorLine = nsString.substring(with: match.nsRange(atIndex: 2))
-        let dataBlock     = nsString.substring(with: match.nsRange(atIndex: 3))
+        let dataBlock = nsString.substring(with: match.nsRange(atIndex: 3))
 
         let headerCells = parseCells(from: headerLine)
-        let alignments  = parseAlignments(from: separatorLine)
-        let dataRows    = dataBlock
+        let alignments = parseAlignments(from: separatorLine)
+        let dataRows = dataBlock
             .components(separatedBy: "\n")
             .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
             .map { parseCells(from: $0) }
@@ -135,7 +135,7 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
 
         func appendRow(_ cells: [String], cellAttributes: [CDAttributedStringKey: AnyObject]) {
             let rowString = NSMutableAttributedString()
-            for columnIndex in 0..<columnCount {
+            for columnIndex in 0 ..< columnCount {
                 if columnIndex > 0 {
                     rowString.append(NSAttributedString(string: "\t"))
                 }

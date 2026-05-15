@@ -1,14 +1,14 @@
-import Testing
 import Foundation
+import Testing
 #if os(iOS) || os(tvOS)
-import UIKit
+    import UIKit
 #elseif os(macOS)
-import Cocoa
+    import Cocoa
 #endif
 @testable import CDMarkdownKit
 
 @MainActor
-@Suite struct CDMarkdownParserInitTests {
+struct CDMarkdownParserInitTests {
 
     // MARK: - Base font / color applied to plain text
 
@@ -64,30 +64,30 @@ import Cocoa
     // NSDataDetector (used by CDMarkdownAutomaticLink) is unavailable on watchOS.
     #if !os(watchOS)
 
-    @Test func autoLinkDisabledPreventsLinkAttribute() {
-        // Given: bare URL with auto-detection turned off
-        let parser = CDMarkdownParser(automaticLinkDetectionEnabled: false)
-        // When
-        let result = parser.parse("https://example.com")
-        // Then: no .link attribute should appear
-        var foundLink = false
-        result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { foundLink = true }
+        @Test func autoLinkDisabledPreventsLinkAttribute() {
+            // Given: bare URL with auto-detection turned off
+            let parser = CDMarkdownParser(automaticLinkDetectionEnabled: false)
+            // When
+            let result = parser.parse("https://example.com")
+            // Then: no .link attribute should appear
+            var foundLink = false
+            result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+                if v != nil { foundLink = true }
+            }
+            #expect(!foundLink)
         }
-        #expect(!foundLink)
-    }
 
-    @Test func bracketLinkStillWorksWhenAutoLinkDisabled() {
-        // [text](url) is processed by CDMarkdownLink (not CDMarkdownAutomaticLink)
-        // and must remain functional even when auto-detection is off.
-        let parser = CDMarkdownParser(automaticLinkDetectionEnabled: false)
-        let result = parser.parse("[GitHub](https://github.com)")
-        var foundLink = false
-        result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { foundLink = true }
+        @Test func bracketLinkStillWorksWhenAutoLinkDisabled() {
+            // [text](url) is processed by CDMarkdownLink (not CDMarkdownAutomaticLink)
+            // and must remain functional even when auto-detection is off.
+            let parser = CDMarkdownParser(automaticLinkDetectionEnabled: false)
+            let result = parser.parse("[GitHub](https://github.com)")
+            var foundLink = false
+            result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+                if v != nil { foundLink = true }
+            }
+            #expect(foundLink)
         }
-        #expect(foundLink)
-    }
 
     #endif
 }

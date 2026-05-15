@@ -31,7 +31,7 @@
     import Cocoa
 #endif
 
-extension CDMarkdownItalic: @unchecked Sendable { }
+extension CDMarkdownItalic: @unchecked Sendable {}
 
 /// Renders italic text using *text* or _text_ syntax.
 open class CDMarkdownItalic: CDMarkdownCommonElement {
@@ -52,7 +52,7 @@ open class CDMarkdownItalic: CDMarkdownCommonElement {
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
-        return CDMarkdownItalic.regex
+        CDMarkdownItalic.regex
     }
 
     /// Creates a new italic element with optional custom styling.
@@ -63,7 +63,7 @@ open class CDMarkdownItalic: CDMarkdownCommonElement {
                 paragraphStyle: NSParagraphStyle? = nil,
                 underlineColor: CDColor? = nil,
                 underlineStyle: NSUnderlineStyle? = nil) {
-        if let customItalicFont = customItalicFont {
+        if let customItalicFont {
             self.font = customItalicFont
         } else {
             self.font = font?.italic()

@@ -31,7 +31,7 @@
     import Cocoa
 #endif
 
-extension CDMarkdownList: @unchecked Sendable { }
+extension CDMarkdownList: @unchecked Sendable {}
 
 /// Renders unordered lists using *, -, or + syntax.
 open class CDMarkdownList: CDMarkdownLevelElement {
@@ -79,7 +79,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         self.separator = separator
         self.color = color
         self.backgroundColor = backgroundColor
-        if let paragraphStyle = paragraphStyle {
+        if let paragraphStyle {
             self.paragraphStyle = paragraphStyle
         } else {
             let paragraphStyle = NSMutableParagraphStyle()
@@ -96,7 +96,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
     open func formatText(_ attributedString: NSMutableAttributedString,
                          range: NSRange,
                          level: Int) {
-        var string = (0..<level).reduce("") { (string, _) -> String in
+        var string = (0 ..< level).reduce("") { string, _ -> String in
             return "\(string)\(separator)"
         }
         string = "\(string)\(indicator) "
@@ -110,7 +110,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         let indicatorSize = "\(indicator) ".sizeWithAttributes(attributes)
         let separatorSize = separator.sizeWithAttributes(attributes)
         let floatLevel = CGFloat(level)
-        guard let paragraphStyle = self.paragraphStyle else { return }
+        guard let paragraphStyle else { return }
         let updatedParagraphStyle = paragraphStyle.mutableCopy() as? NSMutableParagraphStyle ?? NSMutableParagraphStyle()
         updatedParagraphStyle.headIndent = indicatorSize.width + (separatorSize.width * floatLevel)
 
@@ -121,7 +121,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
     open func addAttributes(_ attributedString: NSMutableAttributedString,
                             range: NSRange,
                             level: Int) {
-        attributedString.addAttributes(attributesForLevel(level-1),
+        attributedString.addAttributes(attributesForLevel(level - 1),
                                        range: range)
     }
 }

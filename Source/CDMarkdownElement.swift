@@ -91,6 +91,6 @@ public extension CDMarkdownElement {
                 let newLength = attributedString.length
                 location = regexMatch.range.location + regexMatch.range.length + newLength - oldLength
             }
-        } catch { }
+        } catch {}
     }
 }

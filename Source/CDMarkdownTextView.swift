@@ -27,86 +27,86 @@
 
 #if os(iOS) || os(tvOS) || os(visionOS)
 
-import UIKit
+    import UIKit
 
-/// A `UITextView` subclass that renders styled Markdown text with custom layout management.
-///
-/// Use ``CDMarkdownTextView`` to display longer Markdown-formatted text with scrolling support.
-/// Set ``attributedText`` with an ``NSAttributedString`` produced by ``CDMarkdownParser`` to display parsed Markdown.
-/// Links are automatically detected and highlighted when ``automaticLinkDetectionEnabled`` is `true`.
-@MainActor
-open class CDMarkdownTextView: UITextView {
+    /// A `UITextView` subclass that renders styled Markdown text with custom layout management.
+    ///
+    /// Use ``CDMarkdownTextView`` to display longer Markdown-formatted text with scrolling support.
+    /// Set ``attributedText`` with an ``NSAttributedString`` produced by ``CDMarkdownParser`` to display parsed Markdown.
+    /// Links are automatically detected and highlighted when ``automaticLinkDetectionEnabled`` is `true`.
+    @MainActor
+    open class CDMarkdownTextView: UITextView {
 
-    /// The custom layout manager used for rendering with rounded-corner backgrounds and link detection.
-    open var customLayoutManager: CDMarkdownLayoutManager!
+        /// The custom layout manager used for rendering with rounded-corner backgrounds and link detection.
+        open var customLayoutManager: CDMarkdownLayoutManager!
 
-    /// The custom text storage that holds the attributed text and layout information.
-    open var customTextStorage: NSTextStorage!
+        /// The custom text storage that holds the attributed text and layout information.
+        open var customTextStorage: NSTextStorage!
 
-    /// When `true`, all background color regions (code blocks, syntax blocks, etc.) are drawn with rounded corners.
-    /// When `false` (default), backgrounds are drawn as rectangles. Set to `true` for a softer appearance.
-    open var roundAllCorners: Bool = false {
-        didSet {
-            if let layoutManager = self.customLayoutManager {
-                layoutManager.roundAllCorners = roundAllCorners
+        /// When `true`, all background color regions (code blocks, syntax blocks, etc.) are drawn with rounded corners.
+        /// When `false` (default), backgrounds are drawn as rectangles. Set to `true` for a softer appearance.
+        open var roundAllCorners: Bool = false {
+            didSet {
+                if let layoutManager = customLayoutManager {
+                    layoutManager.roundAllCorners = roundAllCorners
+                }
             }
         }
-    }
 
-    open override var attributedText: NSAttributedString! {
-        get {
-            return super.attributedText
-        }
-        set {
-            super.attributedText = newValue
-            guard let newValue = newValue else { return }
-            self.customTextStorage = NSTextStorage(attributedString: newValue)
-            if let layoutManager = self.customLayoutManager {
-                self.customTextStorage.addLayoutManager(layoutManager)
+        override open var attributedText: NSAttributedString! {
+            get {
+                super.attributedText
+            }
+            set {
+                super.attributedText = newValue
+                guard let newValue else { return }
+                customTextStorage = NSTextStorage(attributedString: newValue)
+                if let layoutManager = customLayoutManager {
+                    customTextStorage.addLayoutManager(layoutManager)
+                }
             }
         }
+
+        public init(frame: CGRect,
+                    textContainer: NSTextContainer,
+                    layoutManager: CDMarkdownLayoutManager) {
+            super.init(frame: frame,
+                       textContainer: textContainer)
+
+            customLayoutManager = layoutManager
+        }
+
+        override public init(frame: CGRect,
+                             textContainer: NSTextContainer?) {
+            super.init(frame: frame,
+                       textContainer: textContainer)
+        }
+
+        public required init?(coder aDecoder: NSCoder) {
+            super.init(coder: aDecoder)
+            configure()
+        }
+
+        /// Configures the text view's custom layout manager and text storage.
+        ///
+        /// Called automatically during initialization. This method sets up the ``CDMarkdownLayoutManager``
+        /// for rendering with rounded-corner backgrounds and enables scrolling while disabling editing.
+        ///
+        /// Note: Accessing `self.textContainer` during configuration opts the text view into TextKit 1
+        /// compatibility mode (one-time console warning expected). This is expected behavior until a
+        /// TextKit 2 migration is completed.
+        open func configure() {
+            // Accessing self.textContainer here opts UITextView into TextKit 1 compatibility
+            // mode (one-time console warning expected; unavoidable until TK2 migration).
+            customLayoutManager = CDMarkdownLayoutManager()
+            customLayoutManager.addTextContainer(textContainer)
+
+            isScrollEnabled = true
+            isSelectable = false
+            #if os(iOS)
+                isEditable = false
+            #endif
+        }
     }
-
-    public init(frame: CGRect,
-                textContainer: NSTextContainer,
-                layoutManager: CDMarkdownLayoutManager) {
-        super.init(frame: frame,
-                   textContainer: textContainer)
-
-        self.customLayoutManager = layoutManager
-    }
-
-    public override init(frame: CGRect,
-                         textContainer: NSTextContainer?) {
-        super.init(frame: frame,
-                   textContainer: textContainer)
-    }
-
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.configure()
-    }
-
-    /// Configures the text view's custom layout manager and text storage.
-    ///
-    /// Called automatically during initialization. This method sets up the ``CDMarkdownLayoutManager``
-    /// for rendering with rounded-corner backgrounds and enables scrolling while disabling editing.
-    ///
-    /// Note: Accessing `self.textContainer` during configuration opts the text view into TextKit 1
-    /// compatibility mode (one-time console warning expected). This is expected behavior until a
-    /// TextKit 2 migration is completed.
-    open func configure() {
-        // Accessing self.textContainer here opts UITextView into TextKit 1 compatibility
-        // mode (one-time console warning expected; unavoidable until TK2 migration).
-        self.customLayoutManager = CDMarkdownLayoutManager()
-        self.customLayoutManager.addTextContainer(self.textContainer)
-
-        self.isScrollEnabled = true
-        self.isSelectable = false
-#if os(iOS)
-        self.isEditable = false
-#endif
-    }
-}
 
 #endif

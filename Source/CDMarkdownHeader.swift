@@ -31,20 +31,20 @@
     import Cocoa
 #endif
 
-extension CDMarkdownHeader: @unchecked Sendable { }
+extension CDMarkdownHeader: @unchecked Sendable {}
 
 /// Renders headings using # through ###### syntax.
 open class CDMarkdownHeader: CDMarkdownLevelElement {
 
     fileprivate static let regex = "^\\s*(#{1,%@})\\s*(.+)$\n*"
-    fileprivate struct CDMarkdownHeadingHashes {
-        static let one   = 9
-        static let two   = 5
+    fileprivate enum CDMarkdownHeadingHashes {
+        static let one = 9
+        static let two = 5
         static let three = 4
-        static let four  = 3
-        static let five  = 2
-        static let six   = 1
-        static let zero  = 0
+        static let four = 3
+        static let five = 2
+        static let six = 1
+        static let zero = 0
     }
 
     /// The base font for headers.
@@ -83,7 +83,7 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         self.fontIncrease = fontIncrease
         self.color = color
         self.backgroundColor = backgroundColor
-        if let paragraphStyle = paragraphStyle {
+        if let paragraphStyle {
             self.paragraphStyle = paragraphStyle
         } else {
             let paragraphStyle = NSMutableParagraphStyle()
@@ -101,35 +101,34 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         attributedString.deleteCharacters(in: range)
 
         let string = attributedString.mutableString
-        if range.location - 2 > 0 && string.substring(with: NSRange(location: range.location - 2,
-                                                                    length: 2)) == "\n\n" {
+        if range.location - 2 > 0, string.substring(with: NSRange(location: range.location - 2,
+                                                                  length: 2)) == "\n\n" {
             string.deleteCharacters(in: NSRange(location: range.location - 1,
                                                 length: 1))
         }
     }
 
     open func attributesForLevel(_ level: Int) -> [CDAttributedStringKey: AnyObject] {
-        var attributes = self.attributes
-        var fontMultiplier: CGFloat
-        switch level {
+        var attributes = attributes
+        var fontMultiplier: CGFloat = switch level {
         case 0:
-            fontMultiplier = CGFloat(CDMarkdownHeadingHashes.one)
+            CGFloat(CDMarkdownHeadingHashes.one)
         case 1:
-            fontMultiplier = CGFloat(CDMarkdownHeadingHashes.two)
+            CGFloat(CDMarkdownHeadingHashes.two)
         case 2:
-            fontMultiplier = CGFloat(CDMarkdownHeadingHashes.three)
+            CGFloat(CDMarkdownHeadingHashes.three)
         case 3:
-            fontMultiplier = CGFloat(CDMarkdownHeadingHashes.four)
+            CGFloat(CDMarkdownHeadingHashes.four)
         case 4:
-            fontMultiplier = CGFloat(CDMarkdownHeadingHashes.five)
+            CGFloat(CDMarkdownHeadingHashes.five)
         case 5:
-            fontMultiplier = CGFloat(CDMarkdownHeadingHashes.six)
+            CGFloat(CDMarkdownHeadingHashes.six)
         case 6:
-            fontMultiplier = CGFloat(CDMarkdownHeadingHashes.zero)
+            CGFloat(CDMarkdownHeadingHashes.zero)
         default:
-            fontMultiplier = CGFloat(CDMarkdownHeadingHashes.four)
+            CGFloat(CDMarkdownHeadingHashes.four)
         }
-        if let font = font {
+        if let font {
             let headerFontSize: CGFloat = font.pointSize + (CGFloat(fontMultiplier) * CGFloat(fontIncrease))
             let headerFont = font.withSize(headerFontSize)
 

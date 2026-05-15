@@ -31,7 +31,7 @@
     import Cocoa
 #endif
 
-extension CDMarkdownBold: @unchecked Sendable { }
+extension CDMarkdownBold: @unchecked Sendable {}
 
 /// Renders bold text using **text** or __text__ syntax.
 open class CDMarkdownBold: CDMarkdownCommonElement {
@@ -52,7 +52,7 @@ open class CDMarkdownBold: CDMarkdownCommonElement {
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
-        return CDMarkdownBold.regex
+        CDMarkdownBold.regex
     }
 
     /// Creates a new bold element with optional custom styling.
@@ -63,7 +63,7 @@ open class CDMarkdownBold: CDMarkdownCommonElement {
                 paragraphStyle: NSParagraphStyle? = nil,
                 underlineColor: CDColor? = nil,
                 underlineStyle: NSUnderlineStyle? = nil) {
-        if let customBoldFont = customBoldFont {
+        if let customBoldFont {
             self.font = customBoldFont
         } else {
             self.font = font?.bold()

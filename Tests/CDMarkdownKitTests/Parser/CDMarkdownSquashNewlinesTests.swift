@@ -1,9 +1,9 @@
-import Testing
 import Foundation
+import Testing
 @testable import CDMarkdownKit
 
 @MainActor
-@Suite struct CDMarkdownSquashNewlinesTests {
+struct CDMarkdownSquashNewlinesTests {
 
     @Test func defaultSquashNewlinesIsTrue() {
         let parser = CDMarkdownParser()

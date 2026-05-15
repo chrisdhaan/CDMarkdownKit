@@ -27,81 +27,82 @@
 
 #if os(iOS) || os(tvOS) || os(visionOS)
 
-import UIKit
+    import UIKit
 
-/// Custom layout manager that renders background colors with rounded corners for code and syntax blocks.
-open class CDMarkdownLayoutManager: NSLayoutManager {
+    /// Custom layout manager that renders background colors with rounded corners for code and syntax blocks.
+    open class CDMarkdownLayoutManager: NSLayoutManager {
 
-    /// When true, all background color regions have rounded corners.
-    open var roundAllCorners: Bool = false
+        /// When true, all background color regions have rounded corners.
+        open var roundAllCorners: Bool = false
 
-    /// Fills background rectangles with optional rounded corners for attributed string ranges.
-    override open func fillBackgroundRectArray(_ rectArray: UnsafePointer<CGRect>,
-                                               count rectCount: Int,
-                                               forCharacterRange charRange: NSRange,
-                                               color: UIColor) {
+        /// Fills background rectangles with optional rounded corners for attributed string ranges.
+        override open func fillBackgroundRectArray(_ rectArray: UnsafePointer<CGRect>,
+                                                   count rectCount: Int,
+                                                   forCharacterRange charRange: NSRange,
+                                                   color: UIColor) {
 
-        var cornerRadius: CGFloat = 0
-        let hasRoundedAttribute = self.textStorage?.attribute(
-            .cdMarkdownRoundedBackground,
-            at: charRange.location,
-            effectiveRange: nil) as? Bool == true
-        if hasRoundedAttribute || self.roundAllCorners {
-            cornerRadius = 3
-        }
-
-        let path = CGMutablePath()
-
-        if rectCount == 1 ||
-            rectCount == 2 && (rectArray[1].maxX < rectArray[0].minX) {
-            // 1 rect or 2 rects without edges in contact
-            path.addRect(rectArray[0].insetBy(dx: cornerRadius,
-                                              dy: cornerRadius))
-            if rectCount == 2 {
-                path.addRect(rectArray[1].insetBy(dx: cornerRadius,
-                                                  dy: cornerRadius))
+            var cornerRadius: CGFloat = 0
+            let hasRoundedAttribute = textStorage?.attribute(
+                .cdMarkdownRoundedBackground,
+                at: charRange.location,
+                effectiveRange: nil
+            ) as? Bool == true
+            if hasRoundedAttribute || roundAllCorners {
+                cornerRadius = 3
             }
-        } else {
-            // 2 or 3 rects
-            let lastRect: Int = rectCount - 1
 
-            path.move(to: CGPoint(x: rectArray[0].minX + cornerRadius,
-                                  y: rectArray[0].maxY + cornerRadius))
+            let path = CGMutablePath()
 
-            path.addLine(to: CGPoint(x: rectArray[0].minX + cornerRadius,
-                                     y: rectArray[0].minY + cornerRadius))
-            path.addLine(to: CGPoint(x: rectArray[0].maxX - cornerRadius,
-                                     y: rectArray[0].minY + cornerRadius))
+            if rectCount == 1 ||
+                rectCount == 2 && (rectArray[1].maxX < rectArray[0].minX) {
+                // 1 rect or 2 rects without edges in contact
+                path.addRect(rectArray[0].insetBy(dx: cornerRadius,
+                                                  dy: cornerRadius))
+                if rectCount == 2 {
+                    path.addRect(rectArray[1].insetBy(dx: cornerRadius,
+                                                      dy: cornerRadius))
+                }
+            } else {
+                // 2 or 3 rects
+                let lastRect: Int = rectCount - 1
 
-            path.addLine(to: CGPoint(x: rectArray[0].maxX - cornerRadius,
-                                     y: rectArray[lastRect].minY - cornerRadius))
-            path.addLine(to: CGPoint(x: rectArray[lastRect].maxX - cornerRadius,
-                                     y: rectArray[lastRect].minY - cornerRadius))
+                path.move(to: CGPoint(x: rectArray[0].minX + cornerRadius,
+                                      y: rectArray[0].maxY + cornerRadius))
 
-            path.addLine(to: CGPoint(x: rectArray[lastRect].maxX - cornerRadius,
-                                     y: rectArray[lastRect].maxY - cornerRadius))
-            path.addLine(to: CGPoint(x: rectArray[lastRect].minX + cornerRadius,
-                                     y: rectArray[lastRect].maxY - cornerRadius))
+                path.addLine(to: CGPoint(x: rectArray[0].minX + cornerRadius,
+                                         y: rectArray[0].minY + cornerRadius))
+                path.addLine(to: CGPoint(x: rectArray[0].maxX - cornerRadius,
+                                         y: rectArray[0].minY + cornerRadius))
 
-            path.addLine(to: CGPoint(x: rectArray[lastRect].minX + cornerRadius,
-                                     y: rectArray[0].maxY + cornerRadius))
+                path.addLine(to: CGPoint(x: rectArray[0].maxX - cornerRadius,
+                                         y: rectArray[lastRect].minY - cornerRadius))
+                path.addLine(to: CGPoint(x: rectArray[lastRect].maxX - cornerRadius,
+                                         y: rectArray[lastRect].minY - cornerRadius))
 
-            path.closeSubpath()
+                path.addLine(to: CGPoint(x: rectArray[lastRect].maxX - cornerRadius,
+                                         y: rectArray[lastRect].maxY - cornerRadius))
+                path.addLine(to: CGPoint(x: rectArray[lastRect].minX + cornerRadius,
+                                         y: rectArray[lastRect].maxY - cornerRadius))
+
+                path.addLine(to: CGPoint(x: rectArray[lastRect].minX + cornerRadius,
+                                         y: rectArray[0].maxY + cornerRadius))
+
+                path.closeSubpath()
+            }
+            // set fill and stroke color
+            color.set()
+
+            let ctx = UIGraphicsGetCurrentContext()
+            ctx?.setAllowsAntialiasing(true)
+            ctx?.setShouldAntialias(true)
+
+            ctx?.setLineWidth(cornerRadius * 2)
+            ctx?.setLineJoin(.round)
+
+            ctx?.addPath(path)
+
+            ctx?.drawPath(using: .fillStroke)
         }
-        // set fill and stroke color
-        color.set()
-
-        let ctx = UIGraphicsGetCurrentContext()
-        ctx?.setAllowsAntialiasing(true)
-        ctx?.setShouldAntialias(true)
-
-        ctx?.setLineWidth(cornerRadius * 2)
-        ctx?.setLineJoin(.round)
-
-        ctx?.addPath(path)
-
-        ctx?.drawPath(using: .fillStroke)
     }
-}
 
 #endif

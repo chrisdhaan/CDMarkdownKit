@@ -31,7 +31,7 @@
     import Cocoa
 #endif
 
-extension CDMarkdownCode: @unchecked Sendable { }
+extension CDMarkdownCode: @unchecked Sendable {}
 
 /// Renders inline code using `code` syntax.
 open class CDMarkdownCode: CDMarkdownCommonElement {
@@ -54,7 +54,7 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
     nonisolated(unsafe) weak var parser: CDMarkdownParser?
 
     open var regex: String {
-        return CDMarkdownCode.regex
+        CDMarkdownCode.regex
     }
 
     /// Creates a new code element with optional custom styling.
@@ -79,7 +79,7 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
         guard var unescapedString = matchString.unescapeUTF16() else { return }
 
         // Conditionally preserve leading whitespace on each line
-        if let parser = parser, !parser.preserveLeadingWhitespace {
+        if let parser, !parser.preserveLeadingWhitespace {
             let lines = unescapedString.components(separatedBy: "\n")
             let strippedLines = lines.map { $0.trimmingCharacters(in: .whitespaces) }
             unescapedString = strippedLines.joined(separator: "\n")

@@ -16,7 +16,7 @@ open class CDMarkdownOrderedList: CDMarkdownElement, CDMarkdownStyle {
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
-        return CDMarkdownOrderedList.regex
+        CDMarkdownOrderedList.regex
     }
 
     public init(font: CDFont? = nil,
@@ -28,7 +28,7 @@ open class CDMarkdownOrderedList: CDMarkdownElement, CDMarkdownStyle {
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
-        if let paragraphStyle = paragraphStyle {
+        if let paragraphStyle {
             self.paragraphStyle = paragraphStyle
         } else {
             let style = NSMutableParagraphStyle()
@@ -43,18 +43,18 @@ open class CDMarkdownOrderedList: CDMarkdownElement, CDMarkdownStyle {
     }
 
     open func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex,
-                                       options: .anchorsMatchLines)
+        try NSRegularExpression(pattern: regex,
+                                options: .anchorsMatchLines)
     }
 
     open func match(_ match: NSTextCheckingResult,
                     attributedString: NSMutableAttributedString) {
         guard match.numberOfRanges == 4 else { return }
 
-        let fullRange    = match.nsRange(atIndex: 0)  // entire line
-        let markerRange  = match.nsRange(atIndex: 1)  // "1."
-        let spacerRange  = match.nsRange(atIndex: 2)  // whitespace between marker and text
-        let contentRange = match.nsRange(atIndex: 3)  // item text
+        let fullRange = match.nsRange(atIndex: 0) // entire line
+        let markerRange = match.nsRange(atIndex: 1) // "1."
+        let spacerRange = match.nsRange(atIndex: 2) // whitespace between marker and text
+        let contentRange = match.nsRange(atIndex: 3) // item text
 
         // Apply style attributes to the content text
         attributedString.addAttributes(attributes, range: contentRange)

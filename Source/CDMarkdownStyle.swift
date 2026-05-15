@@ -79,34 +79,34 @@ public protocol CDMarkdownStyle: Sendable {
 
 public extension CDMarkdownStyle {
 
-    var strikethroughColor: CDColor? { return nil }
-    var strikethroughStyle: NSUnderlineStyle? { return nil }
+    var strikethroughColor: CDColor? { nil }
+    var strikethroughStyle: NSUnderlineStyle? { nil }
 
     var attributes: [CDAttributedStringKey: AnyObject] {
         var attributes = [CDAttributedStringKey: AnyObject]()
 
-        if let font = font {
+        if let font {
             attributes.addFont(font)
         }
-        if let color = color {
+        if let color {
             attributes.addForegroundColor(color)
         }
-        if let backgroundColor = backgroundColor {
+        if let backgroundColor {
             attributes.addBackgroundColor(backgroundColor)
         }
-        if let paragraphStyle = paragraphStyle {
+        if let paragraphStyle {
             attributes.addParagraphStyle(paragraphStyle)
         }
-        if let underlineColor = underlineColor {
+        if let underlineColor {
             attributes.addUnderlineColor(underlineColor)
         }
-        if let underlineStyle = underlineStyle {
+        if let underlineStyle {
             attributes.addUnderlineStyle(underlineStyle)
         }
-        if let strikethroughColor = strikethroughColor {
+        if let strikethroughColor {
             attributes.addStrikethroughColor(strikethroughColor)
         }
-        if let strikethroughStyle = strikethroughStyle {
+        if let strikethroughStyle {
             attributes.addStrikethroughStyle(strikethroughStyle)
         }
 

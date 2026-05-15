@@ -18,11 +18,10 @@
 --semicolons never
 --stripunusedargs closure-only
 
-# Argument wrapping
---wraparguments before-first
---wrapparameters before-first
---wrapcollections before-first
---closingparen balanced
+# Argument wrapping (disabled to prevent code expansion)
+--wraparguments preserve
+--wrapparameters preserve
+--wrapcollections preserve
 
 # Import grouping
 --importgrouping testable-last
@@ -37,4 +36,4 @@
 --exclude .build,Pods,docs,Package.swift
 
 # Rules disabled to preserve existing codebase conventions
---disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,extensionAccessControl,redundantType,redundantInternal
+--disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,blankLineAfterImports,blankLinesBetweenScopes,extensionAccessControl,redundantType,redundantInternal,wrap,wrapMultilineStatementBraces,wrapPropertyBodies

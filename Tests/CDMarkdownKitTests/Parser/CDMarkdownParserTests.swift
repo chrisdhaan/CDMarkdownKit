@@ -1,16 +1,16 @@
-import Testing
-import Foundation
 import CoreGraphics
+import Foundation
 import ImageIO
+import Testing
 #if os(iOS) || os(tvOS)
-import UIKit
+    import UIKit
 #elseif os(macOS)
-import Cocoa
+    import Cocoa
 #endif
 @testable import CDMarkdownKit
 
 @MainActor
-@Suite struct CDMarkdownParserTests {
+struct CDMarkdownParserTests {
 
     let parser = CDMarkdownParser()
 
@@ -197,18 +197,18 @@ import Cocoa
     }
 
     #if !os(watchOS)
-    @Test func bracketLinkAndBareUrlBothLinked() {
-        // Given: a bracket-style link and a separate bare URL in the same string
-        let input = "[GitHub](https://github.com) and https://example.com"
-        // When
-        let result = parser.parse(input)
-        // Then: two distinct link attribute runs
-        var linkedRuns = 0
-        result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { linkedRuns += 1 }
+        @Test func bracketLinkAndBareUrlBothLinked() {
+            // Given: a bracket-style link and a separate bare URL in the same string
+            let input = "[GitHub](https://github.com) and https://example.com"
+            // When
+            let result = parser.parse(input)
+            // Then: two distinct link attribute runs
+            var linkedRuns = 0
+            result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
+                if value != nil { linkedRuns += 1 }
+            }
+            #expect(linkedRuns >= 2)
         }
-        #expect(linkedRuns >= 2)
-    }
     #endif
 
     @Test func fullDocumentParsesAllElements() {
@@ -264,34 +264,34 @@ import Cocoa
 
     @Test func asyncParseLoadsLocalImage() async {
         #if os(iOS) || os(tvOS) || os(macOS)
-        // Build a minimal 1×1 PNG via Core Graphics so no bundle resource is needed
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        guard let ctx = CGContext(data: nil, width: 1, height: 1,
-                                  bitsPerComponent: 8, bytesPerRow: 4,
-                                  space: colorSpace,
-                                  bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue),
-              let cgImage = ctx.makeImage() else { return }
-        let mutableData = NSMutableData()
-        guard let dest = CGImageDestinationCreateWithData(mutableData,
-                                                         "public.png" as CFString, 1, nil) else { return }
-        CGImageDestinationAddImage(dest, cgImage, nil)
-        guard CGImageDestinationFinalize(dest) else { return }
+            // Build a minimal 1×1 PNG via Core Graphics so no bundle resource is needed
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            guard let ctx = CGContext(data: nil, width: 1, height: 1,
+                                      bitsPerComponent: 8, bytesPerRow: 4,
+                                      space: colorSpace,
+                                      bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue),
+                let cgImage = ctx.makeImage() else { return }
+            let mutableData = NSMutableData()
+            guard let dest = CGImageDestinationCreateWithData(mutableData,
+                                                              "public.png" as CFString, 1, nil) else { return }
+            CGImageDestinationAddImage(dest, cgImage, nil)
+            guard CGImageDestinationFinalize(dest) else { return }
 
-        let tmpURL = URL(fileURLWithPath: NSTemporaryDirectory())
-            .appendingPathComponent(UUID().uuidString + ".png")
-        guard (try? (mutableData as Data).write(to: tmpURL)) != nil else { return }
-        defer { try? FileManager.default.removeItem(at: tmpURL) }
+            let tmpURL = URL(fileURLWithPath: NSTemporaryDirectory())
+                .appendingPathComponent(UUID().uuidString + ".png")
+            guard (try? (mutableData as Data).write(to: tmpURL)) != nil else { return }
+            defer { try? FileManager.default.removeItem(at: tmpURL) }
 
-        // When: async parse with an image reference pointing at the local file
-        let input = "![test](\(tmpURL.absoluteString))"
-        let result = await parser.parse(input)
+            // When: async parse with an image reference pointing at the local file
+            let input = "![test](\(tmpURL.absoluteString))"
+            let result = await parser.parse(input)
 
-        // Then: resolveImages should have replaced the placeholder with a real attachment
-        var foundAttachment = false
-        result.enumerateAttribute(.attachment, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v is NSTextAttachment { foundAttachment = true }
-        }
-        #expect(foundAttachment)
+            // Then: resolveImages should have replaced the placeholder with a real attachment
+            var foundAttachment = false
+            result.enumerateAttribute(.attachment, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+                if v is NSTextAttachment { foundAttachment = true }
+            }
+            #expect(foundAttachment)
         #endif
     }
 }

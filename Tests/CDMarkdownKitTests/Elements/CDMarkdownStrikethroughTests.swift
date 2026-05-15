@@ -1,14 +1,14 @@
-import Testing
 import Foundation
+import Testing
 #if os(iOS) || os(tvOS) || os(watchOS)
-import UIKit
+    import UIKit
 #elseif os(macOS)
-import Cocoa
+    import Cocoa
 #endif
 @testable import CDMarkdownKit
 
 @MainActor
-@Suite struct CDMarkdownStrikethroughTests {
+struct CDMarkdownStrikethroughTests {
 
     let parser = CDMarkdownParser()
 

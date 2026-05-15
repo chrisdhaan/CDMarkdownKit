@@ -35,41 +35,41 @@ internal extension NSMutableAttributedString {
 
     func addFont(_ font: CDFont,
                  toRange range: NSRange) {
-        self.addAttribute(NSAttributedString.Key.font,
-                          value: font,
-                          range: range)
+        addAttribute(NSAttributedString.Key.font,
+                     value: font,
+                     range: range)
     }
 
     func addForegroundColor(_ foregroundColor: CDColor,
                             toRange range: NSRange) {
-        self.addAttribute(NSAttributedString.Key.foregroundColor,
-                          value: foregroundColor,
-                          range: range)
+        addAttribute(NSAttributedString.Key.foregroundColor,
+                     value: foregroundColor,
+                     range: range)
     }
 
     func addBackgroundColor(_ backgroundColor: CDColor,
                             toRange range: NSRange) {
-        self.addAttribute(NSAttributedString.Key.backgroundColor,
-                          value: backgroundColor,
-                          range: range)
+        addAttribute(NSAttributedString.Key.backgroundColor,
+                     value: backgroundColor,
+                     range: range)
     }
 
     func addParagraphStyle(_ paragraphStyle: NSParagraphStyle,
                            toRange range: NSRange) {
-        self.addAttribute(NSAttributedString.Key.paragraphStyle,
-                          value: paragraphStyle,
-                          range: range)
+        addAttribute(NSAttributedString.Key.paragraphStyle,
+                     value: paragraphStyle,
+                     range: range)
     }
 
     func addLink(_ link: URL,
                  toRange range: NSRange) {
-        self.addAttribute(NSAttributedString.Key.link,
-                          value: link,
-                          range: range)
+        addAttribute(NSAttributedString.Key.link,
+                     value: link,
+                     range: range)
     }
 
     func removeBackgroundColor(atRange range: NSRange) {
-        self.removeAttribute(NSAttributedString.Key.backgroundColor,
-                             range: range)
+        removeAttribute(NSAttributedString.Key.backgroundColor,
+                        range: range)
     }
 }

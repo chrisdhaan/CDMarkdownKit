@@ -31,7 +31,7 @@
     import Cocoa
 #endif
 
-extension CDMarkdownStrikethrough: @unchecked Sendable { }
+extension CDMarkdownStrikethrough: @unchecked Sendable {}
 
 /// Renders strikethrough text using ~~text~~ syntax.
 open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
@@ -56,7 +56,7 @@ open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
-        return CDMarkdownStrikethrough.regex
+        CDMarkdownStrikethrough.regex
     }
 
     /// Creates a new strikethrough element with optional custom styling.

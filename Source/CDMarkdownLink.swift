@@ -31,7 +31,7 @@
     import Cocoa
 #endif
 
-extension CDMarkdownLink: @unchecked Sendable { }
+extension CDMarkdownLink: @unchecked Sendable {}
 
 /// Renders inline links using [text](url) syntax.
 open class CDMarkdownLink: CDMarkdownLinkElement {
@@ -52,12 +52,12 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
     open var underlineStyle: NSUnderlineStyle?
 
     open var regex: String {
-        return CDMarkdownLink.regex
+        CDMarkdownLink.regex
     }
 
     open func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex,
-                                       options: .dotMatchesLineSeparators)
+        try NSRegularExpression(pattern: regex,
+                                options: .dotMatchesLineSeparators)
     }
 
     /// Creates a new link element with optional custom styling.
@@ -79,8 +79,8 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
                          range: NSRange,
                          link: String) {
         guard let encodedLink = link.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlHostAllowed)
-            else {
-                return
+        else {
+            return
         }
         guard let url = URL(string: link) ?? URL(string: encodedLink) else { return }
 
