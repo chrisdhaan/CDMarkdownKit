@@ -72,7 +72,7 @@ public extension CDMarkdownLevelElement {
     }
 
     func attributesForLevel(_ level: Int) -> [CDAttributedStringKey: AnyObject] {
-        attributes
+        self.attributes
     }
 
     func match(_ match: NSTextCheckingResult,

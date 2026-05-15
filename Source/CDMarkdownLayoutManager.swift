@@ -42,12 +42,12 @@
                                                    color: UIColor) {
 
             var cornerRadius: CGFloat = 0
-            let hasRoundedAttribute = textStorage?.attribute(
+            let hasRoundedAttribute = self.textStorage?.attribute(
                 .cdMarkdownRoundedBackground,
                 at: charRange.location,
                 effectiveRange: nil
             ) as? Bool == true
-            if hasRoundedAttribute || roundAllCorners {
+            if hasRoundedAttribute || self.roundAllCorners {
                 cornerRadius = 3
             }
 

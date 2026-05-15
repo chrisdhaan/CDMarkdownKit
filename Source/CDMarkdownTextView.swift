@@ -47,7 +47,7 @@
         /// When `false` (default), backgrounds are drawn as rectangles. Set to `true` for a softer appearance.
         open var roundAllCorners: Bool = false {
             didSet {
-                if let layoutManager = customLayoutManager {
+                if let layoutManager = self.customLayoutManager {
                     layoutManager.roundAllCorners = roundAllCorners
                 }
             }
@@ -60,9 +60,9 @@
             set {
                 super.attributedText = newValue
                 guard let newValue else { return }
-                customTextStorage = NSTextStorage(attributedString: newValue)
-                if let layoutManager = customLayoutManager {
-                    customTextStorage.addLayoutManager(layoutManager)
+                self.customTextStorage = NSTextStorage(attributedString: newValue)
+                if let layoutManager = self.customLayoutManager {
+                    self.customTextStorage.addLayoutManager(layoutManager)
                 }
             }
         }
@@ -73,7 +73,7 @@
             super.init(frame: frame,
                        textContainer: textContainer)
 
-            customLayoutManager = layoutManager
+            self.customLayoutManager = layoutManager
         }
 
         override public init(frame: CGRect,
@@ -84,7 +84,7 @@
 
         public required init?(coder aDecoder: NSCoder) {
             super.init(coder: aDecoder)
-            configure()
+            self.configure()
         }
 
         /// Configures the text view's custom layout manager and text storage.
@@ -98,13 +98,13 @@
         open func configure() {
             // Accessing self.textContainer here opts UITextView into TextKit 1 compatibility
             // mode (one-time console warning expected; unavoidable until TK2 migration).
-            customLayoutManager = CDMarkdownLayoutManager()
-            customLayoutManager.addTextContainer(textContainer)
+            self.customLayoutManager = CDMarkdownLayoutManager()
+            self.customLayoutManager.addTextContainer(self.textContainer)
 
-            isScrollEnabled = true
-            isSelectable = false
+            self.isScrollEnabled = true
+            self.isSelectable = false
             #if os(iOS)
-                isEditable = false
+                self.isEditable = false
             #endif
         }
     }

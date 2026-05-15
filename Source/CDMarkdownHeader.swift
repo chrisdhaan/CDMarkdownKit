@@ -109,7 +109,7 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
     }
 
     open func attributesForLevel(_ level: Int) -> [CDAttributedStringKey: AnyObject] {
-        var attributes = attributes
+        var attributes = self.attributes
         var fontMultiplier: CGFloat = switch level {
         case 0:
             CGFloat(CDMarkdownHeadingHashes.one)

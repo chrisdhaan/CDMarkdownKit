@@ -80,14 +80,14 @@ internal extension String {
     }
 
     func characterCount() -> Int {
-        count
+        self.count
     }
 
     func sizeWithAttributes(_ attributes: [CDAttributedStringKey: Any]? = nil) -> CGSize {
         #if os(macOS)
-            return size(withAttributes: attributes)
+            return self.size(withAttributes: attributes)
         #else
-            return size(withAttributes: attributes)
+            return self.size(withAttributes: attributes)
         #endif
     }
 }

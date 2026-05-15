@@ -110,7 +110,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         let indicatorSize = "\(indicator) ".sizeWithAttributes(attributes)
         let separatorSize = separator.sizeWithAttributes(attributes)
         let floatLevel = CGFloat(level)
-        guard let paragraphStyle else { return }
+        guard let paragraphStyle = self.paragraphStyle else { return }
         let updatedParagraphStyle = paragraphStyle.mutableCopy() as? NSMutableParagraphStyle ?? NSMutableParagraphStyle()
         updatedParagraphStyle.headIndent = indicatorSize.width + (separatorSize.width * floatLevel)
 

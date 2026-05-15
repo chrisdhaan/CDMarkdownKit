@@ -37,9 +37,9 @@
 
         func linkAttribute(at location: Int,
                            effectiveRange range: NSRangePointer?) -> Any? {
-            attribute(NSAttributedString.Key.link,
-                      at: location,
-                      effectiveRange: range)
+            self.attribute(NSAttributedString.Key.link,
+                           at: location,
+                           effectiveRange: range)
 
         }
     }

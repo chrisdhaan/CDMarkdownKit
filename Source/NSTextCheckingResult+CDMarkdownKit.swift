@@ -34,6 +34,6 @@
 internal extension NSTextCheckingResult {
 
     func nsRange(atIndex index: Int) -> NSRange {
-        range(at: index)
+        self.range(at: index)
     }
 }

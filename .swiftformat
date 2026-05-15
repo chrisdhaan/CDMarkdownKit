@@ -26,8 +26,7 @@
 # Import grouping
 --importgrouping testable-last
 
-# Self keyword: remove where redundant
---self remove
+# Self keyword: disabled (handled inconsistently in different contexts)
 
 # File headers: leave existing MIT copyright blocks untouched
 --header ignore
@@ -36,4 +35,4 @@
 --exclude .build,Pods,docs,Package.swift
 
 # Rules disabled to preserve existing codebase conventions
---disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,blankLineAfterImports,blankLinesBetweenScopes,extensionAccessControl,redundantType,redundantInternal,wrap,wrapMultilineStatementBraces,wrapPropertyBodies
+--disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,blankLineAfterImports,blankLinesBetweenScopes,extensionAccessControl,redundantSelf,redundantType,redundantInternal,wrap,wrapMultilineStatementBraces,wrapPropertyBodies

@@ -73,7 +73,7 @@
         /// When `false` (default), backgrounds are drawn as rectangles. Set to `true` for a softer appearance.
         open var roundAllCorners: Bool = false {
             didSet {
-                if let layoutManager = customLayoutManager {
+                if let layoutManager = self.customLayoutManager {
                     layoutManager.roundAllCorners = roundAllCorners
                 }
             }
@@ -85,8 +85,8 @@
             }
             set {
                 super.frame = newValue
-                if let textContainer = customTextContainer {
-                    textContainer.size = bounds.size
+                if let textContainer = self.customTextContainer {
+                    textContainer.size = self.bounds.size
                 }
             }
         }
@@ -96,7 +96,7 @@
             }
             set {
                 super.bounds = newValue
-                if let textContainer = customTextContainer {
+                if let textContainer = self.customTextContainer {
                     textContainer.size = self.bounds.size
                 }
             }
@@ -106,14 +106,14 @@
                 super.attributedText
             }
             set {
-                if customTextContainer != nil,
-                   let layoutManager = customLayoutManager {
-                    parseTextAndExtractURLRanges(newValue)
-                    customTextStorage = NSTextStorage(attributedString: newValue)
-                    customTextStorage.addLayoutManager(layoutManager)
-                    layoutManager.textStorage = customTextStorage
+                if self.customTextContainer != nil,
+                   let layoutManager = self.customLayoutManager {
+                    self.parseTextAndExtractURLRanges(newValue)
+                    self.customTextStorage = NSTextStorage(attributedString: newValue)
+                    self.customTextStorage.addLayoutManager(layoutManager)
+                    layoutManager.textStorage = self.customTextStorage
                 }
-                setNeedsDisplay()
+                self.setNeedsDisplay()
             }
         }
 
@@ -122,18 +122,18 @@
 
         override public init(frame: CGRect) {
             super.init(frame: frame)
-            configure()
+            self.configure()
         }
 
         public required init?(coder aDecoder: NSCoder) {
             super.init(coder: aDecoder)
-            configure()
+            self.configure()
         }
 
         override open func layoutSubviews() {
             super.layoutSubviews()
 
-            customTextContainer.size = bounds.size
+            self.customTextContainer.size = self.bounds.size
         }
 
         /// Configures the label's custom layout manager, text container, and text storage.
@@ -142,20 +142,20 @@
         /// and ``NSTextContainer`` for rendering with rounded-corner backgrounds and proper text sizing.
         /// Text containers are configured for multiple lines with no fragment padding to ensure proper rendering.
         open func configure() {
-            isUserInteractionEnabled = true
+            self.isUserInteractionEnabled = true
 
-            customLayoutManager = CDMarkdownLayoutManager()
+            self.customLayoutManager = CDMarkdownLayoutManager()
 
-            if let textContainer = customTextContainer {
-                customLayoutManager.addTextContainer(textContainer)
+            if let textContainer = self.customTextContainer {
+                self.customLayoutManager.addTextContainer(textContainer)
             } else {
-                customTextContainer = NSTextContainer()
-                customTextContainer.lineFragmentPadding = 0
-                customTextContainer.maximumNumberOfLines = 0
-                customTextContainer.lineBreakMode = lineBreakMode
-                customTextContainer.size = frame.size
+                self.customTextContainer = NSTextContainer()
+                self.customTextContainer.lineFragmentPadding = 0
+                self.customTextContainer.maximumNumberOfLines = 0
+                self.customTextContainer.lineBreakMode = self.lineBreakMode
+                self.customTextContainer.size = self.frame.size
 
-                customLayoutManager.addTextContainer(customTextContainer)
+                self.customLayoutManager.addTextContainer(self.customTextContainer)
             }
         }
 
@@ -165,13 +165,13 @@
                                     limitedToNumberOfLines numberOfLines: Int) -> CGRect {
             // Use our text container to calculate the bounds required. First save our
             // current text container setup
-            let savedTextContainerSize = customTextContainer.size
-            let savedTextContainerNumberOfLines = customTextContainer.maximumNumberOfLines
+            let savedTextContainerSize = self.customTextContainer.size
+            let savedTextContainerNumberOfLines = self.customTextContainer.maximumNumberOfLines
             // Apply the new potential bounds and number of lines
-            customTextContainer.size = self.bounds.size
-            customTextContainer.maximumNumberOfLines = numberOfLines
+            self.customTextContainer.size = self.bounds.size
+            self.customTextContainer.maximumNumberOfLines = numberOfLines
             // Measure the text with the new state
-            var textBounds = customLayoutManager.usedRect(for: customTextContainer)
+            var textBounds = self.customLayoutManager.usedRect(for: self.customTextContainer)
             // Position the bounds and round up the size for good measure
             textBounds.origin = bounds.origin
             textBounds.size.width = ceil(bounds.width)
@@ -182,34 +182,34 @@
                 textBounds.origin.y += offsetY
             }
             // Restore the old container state before we exit under any circumstances
-            customTextContainer.size = savedTextContainerSize
-            customTextContainer.maximumNumberOfLines = savedTextContainerNumberOfLines
+            self.customTextContainer.size = savedTextContainerSize
+            self.customTextContainer.maximumNumberOfLines = savedTextContainerNumberOfLines
 
             return textBounds
         }
 
         override open func drawText(in rect: CGRect) {
             // Calculate the offset of the text in the view
-            let glyphRange = customLayoutManager.glyphRange(for: customTextContainer)
-            let glyphsPosition = calculateGlyphsPositionInView()
+            let glyphRange = self.customLayoutManager.glyphRange(for: self.customTextContainer)
+            let glyphsPosition = self.calculateGlyphsPositionInView()
             // Drawing code
-            customLayoutManager.drawBackground(forGlyphRange: glyphRange,
-                                               at: glyphsPosition)
-            customLayoutManager.drawGlyphs(forGlyphRange: glyphRange,
-                                           at: glyphsPosition)
+            self.customLayoutManager.drawBackground(forGlyphRange: glyphRange,
+                                                    at: glyphsPosition)
+            self.customLayoutManager.drawGlyphs(forGlyphRange: glyphRange,
+                                                at: glyphsPosition)
         }
 
         private func calculateGlyphsPositionInView() -> CGPoint {
             // Returns the XY offset of the range of glyphs from the view's origin
             var textOffset = CGPoint.zero
 
-            var textBounds = customLayoutManager.usedRect(for: customTextContainer)
+            var textBounds = self.customLayoutManager.usedRect(for: self.customTextContainer)
 
             textBounds.size.width = ceil(textBounds.width)
             textBounds.size.height = ceil(textBounds.height)
 
-            if textBounds.size.height < bounds.size.height {
-                let paddingHeight = (bounds.height - textBounds.size.height) / 2
+            if textBounds.size.height < self.bounds.size.height {
+                let paddingHeight = (self.bounds.height - textBounds.size.height) / 2
                 textOffset.y = paddingHeight
             }
 
@@ -220,25 +220,25 @@
 
         override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             guard let touch = touches.first else { return }
-            if onTouch(touch) { return }
+            if self.onTouch(touch) { return }
             super.touchesBegan(touches, with: event)
         }
 
         override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
             guard let touch = touches.first else { return }
-            if onTouch(touch) { return }
+            if self.onTouch(touch) { return }
             super.touchesMoved(touches, with: event)
         }
 
         override open func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
             guard let touch = touches.first else { return }
-            _ = onTouch(touch)
+            _ = self.onTouch(touch)
             super.touchesCancelled(touches, with: event)
         }
 
         override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
             guard let touch = touches.first else { return }
-            if onTouch(touch) { return }
+            if self.onTouch(touch) { return }
             super.touchesEnded(touches, with: event)
         }
 
@@ -316,18 +316,20 @@
             switch touch.phase {
             case .began,
                  .moved:
-                if let urlRange = urlRange(at: location) {
-                    if urlRange.range.location != selectedURLRange?.range.location || urlRange.range.length != selectedURLRange?.range.length {
-                        selectedURLRange = urlRange
+                if let urlRange = self.urlRange(at: location) {
+                    let locationMatch = urlRange.range.location == self.selectedURLRange?.range.location
+                    let lengthMatch = urlRange.range.length == self.selectedURLRange?.range.length
+                    if !locationMatch || !lengthMatch {
+                        self.selectedURLRange = urlRange
                     }
                     avoidSuperCall = true
                 } else {
-                    selectedURLRange = nil
+                    self.selectedURLRange = nil
                 }
             case .ended:
-                guard let selectedRange = selectedURLRange else { return avoidSuperCall }
+                guard let selectedRange = self.selectedURLRange else { return avoidSuperCall }
 
-                displayActionController(forUrl: selectedRange.url)
+                self.displayActionController(forUrl: selectedRange.url)
 
                 let when = DispatchTime.now() + Double(Int64(0.25 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
                 DispatchQueue.main.asyncAfter(deadline: when) {
@@ -335,7 +337,7 @@
                 }
                 avoidSuperCall = true
             case .cancelled:
-                selectedURLRange = nil
+                self.selectedURLRange = nil
             case .stationary:
                 break
             default:
@@ -360,17 +362,17 @@
         }
 
         private func urlRange(at location: CGPoint) -> URLRange? {
-            guard customTextStorage.length > 0 else { return nil }
+            guard self.customTextStorage.length > 0 else { return nil }
 
             let correctLocation = location
             let boundingRect = customLayoutManager.boundingRect(forGlyphRange: NSRange(location: 0,
-                                                                                       length: customTextStorage.length),
-                                                                in: customTextContainer)
+                                                                                       length: self.customTextStorage.length),
+                                                                in: self.customTextContainer)
 
             guard boundingRect.contains(correctLocation) else { return nil }
 
-            let index = customLayoutManager.glyphIndex(for: correctLocation,
-                                                       in: customTextContainer)
+            let index = self.customLayoutManager.glyphIndex(for: correctLocation,
+                                                            in: self.customTextContainer)
 
             for urlRange in urlRanges {
                 if index >= urlRange.range.location, index <= urlRange.range.location + urlRange.range.length {

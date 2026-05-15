@@ -137,7 +137,7 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
             if range.location + range.length + 1 < attributedString.length,
                let nextCharacterRange = attributedString.string.range(from: addBackgroundColorAttributeRange),
                attributedString.string[nextCharacterRange] == "\n",
-               let backgroundColor {
+               let backgroundColor = self.backgroundColor {
 
                 attributedString.addBackgroundColor(backgroundColor,
                                                     toRange: addBackgroundColorAttributeRange)
