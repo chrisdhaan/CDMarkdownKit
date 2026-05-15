@@ -1,8 +1,8 @@
-import Testing
 import Foundation
+import Testing
 @testable import CDMarkdownKit
 
-@Suite struct StringTests {
+struct StringTests {
 
     @Test func escapeUTF16RoundtripsASCII() {
         let original = "Hello"
@@ -32,11 +32,11 @@ import Foundation
         #expect(result != nil)
     }
 
-    @Test func rangeFromNSRange() {
+    @Test func rangeFromNSRange() throws {
         let s = "Hello, world"
         let nsRange = NSRange(location: 7, length: 5)
         let range = s.range(from: nsRange)
         #expect(range != nil)
-        #expect(s[range!] == "world")
+        #expect(try s[#require(range)] == "world")
     }
 }

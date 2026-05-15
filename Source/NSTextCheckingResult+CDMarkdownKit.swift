@@ -25,7 +25,7 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
@@ -34,6 +34,6 @@
 internal extension NSTextCheckingResult {
 
     func nsRange(atIndex index: Int) -> NSRange {
-        return self.range(at: index)
+        self.range(at: index)
     }
 }

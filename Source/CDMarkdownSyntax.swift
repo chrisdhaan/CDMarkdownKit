@@ -25,15 +25,15 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
 #endif
 
-extension CDMarkdownSyntax: @unchecked Sendable { }
+extension CDMarkdownSyntax: @unchecked Sendable {}
 
-/// Renders fenced code blocks using ```code``` syntax.
+/// Renders fenced code blocks using triple-backtick syntax.
 open class CDMarkdownSyntax: CDMarkdownCommonElement {
 
     fileprivate static let regex = "(\\s+|^)(`{3})(\\s*[^`]*?\\s*)(\\2)(?!`)"
@@ -51,8 +51,10 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
     /// The underline style for code blocks.
     open var underlineStyle: NSUnderlineStyle?
 
+    nonisolated(unsafe) weak var parser: CDMarkdownParser?
+
     open var regex: String {
-        return CDMarkdownSyntax.regex
+        CDMarkdownSyntax.regex
     }
 
     /// Creates a new syntax block element with optional custom styling.
@@ -70,6 +72,7 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         self.underlineStyle = underlineStyle
     }
 
+    @MainActor
     open func addAttributes(_ attributedString: NSMutableAttributedString,
                             range: NSRange) {
         let matchString: String = attributedString.attributedSubstring(from: range).string
@@ -78,10 +81,17 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         // Strip optional language hint: first line with no whitespace (e.g. "js", "swift", "python")
         let newlineCharacters = CharacterSet.newlines
         if let firstNewline = unescapedString.rangeOfCharacter(from: newlineCharacters) {
-            let hint = String(unescapedString[unescapedString.startIndex..<firstNewline.lowerBound])
-            if !hint.isEmpty && hint.rangeOfCharacter(from: .whitespaces) == nil {
+            let hint = String(unescapedString[unescapedString.startIndex ..< firstNewline.lowerBound])
+            if !hint.isEmpty, hint.rangeOfCharacter(from: .whitespaces) == nil {
                 unescapedString = String(unescapedString[firstNewline.upperBound...])
             }
+        }
+
+        // Conditionally preserve leading whitespace on each line
+        if let parser, !parser.preserveLeadingWhitespace {
+            let lines = unescapedString.components(separatedBy: "\n")
+            let strippedLines = lines.map { $0.trimmingCharacters(in: .whitespaces) }
+            unescapedString = strippedLines.joined(separator: "\n")
         }
 
         attributedString.replaceCharacters(in: range,
@@ -97,9 +107,9 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         // If the previous character was a newline then parser doesn't have to worry about
         // wrapping the background color from the end of the last element to the newline.
         if range.location - 4 >= 0,
-            let previousCharacterRange = attributedString.string.range(from: NSRange(location: range.location - 4,
-                                                                                     length: 1)),
-            attributedString.string[previousCharacterRange] == "\n" {
+           let previousCharacterRange = attributedString.string.range(from: NSRange(location: range.location - 4,
+                                                                                    length: 1)),
+           attributedString.string[previousCharacterRange] == "\n" {
             // Do nothing
         } else {
             // If the first character in a Syntax Markdown element is \n remove the background
@@ -108,7 +118,7 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
             let removeBackgroundColorAttributeRange = NSRange(location: range.location,
                                                               length: 1)
             if let firstCharacterRange = attributedString.string.range(from: removeBackgroundColorAttributeRange),
-                attributedString.string[firstCharacterRange] == "\n" {
+               attributedString.string[firstCharacterRange] == "\n" {
 
                 attributedString.removeBackgroundColor(atRange: removeBackgroundColorAttributeRange)
             }
@@ -125,9 +135,9 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
             let addBackgroundColorAttributeRange = NSRange(location: range.location + range.length,
                                                            length: 1)
             if range.location + range.length + 1 < attributedString.length,
-                let nextCharacterRange = attributedString.string.range(from: addBackgroundColorAttributeRange),
-                attributedString.string[nextCharacterRange] == "\n",
-                let backgroundColor = self.backgroundColor {
+               let nextCharacterRange = attributedString.string.range(from: addBackgroundColorAttributeRange),
+               attributedString.string[nextCharacterRange] == "\n",
+               let backgroundColor = self.backgroundColor {
 
                 attributedString.addBackgroundColor(backgroundColor,
                                                     toRange: addBackgroundColorAttributeRange)

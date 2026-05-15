@@ -25,7 +25,7 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
@@ -36,10 +36,10 @@ internal extension NSAttributedString {
     func enumerateLinkAttribute(in enumerationRange: NSRange,
                                 options opts: NSAttributedString.EnumerationOptions = [],
                                 using block: (Any?, NSRange, UnsafeMutablePointer<ObjCBool>) -> Void) {
-        return self.enumerateAttribute(NSAttributedString.Key.link,
-                                       in: enumerationRange,
-                                       options: opts) { value, range, bool in
-                                        block(value, range, bool)
+        self.enumerateAttribute(NSAttributedString.Key.link,
+                                in: enumerationRange,
+                                options: opts) { value, range, bool in
+            block(value, range, bool)
         }
     }
 }

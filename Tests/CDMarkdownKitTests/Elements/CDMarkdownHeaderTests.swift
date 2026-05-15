@@ -1,9 +1,9 @@
-import Testing
 import Foundation
+import Testing
 @testable import CDMarkdownKit
 
 @MainActor
-@Suite struct CDMarkdownHeaderTests {
+struct CDMarkdownHeaderTests {
 
     let parser = CDMarkdownParser()
 
@@ -69,7 +69,7 @@ import Foundation
 
     @Test func h4ThroughH6HaveLargerFontThanBase() {
         let baseSize: CGFloat = 12 // CDMarkdownParser default font size
-        for level in 4...6 {
+        for level in 4 ... 6 {
             let input = String(repeating: "#", count: level) + " Heading"
             let result = parser.parse(input)
             var found = false

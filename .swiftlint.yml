@@ -4,9 +4,9 @@ included: # paths to include during linting. `--path` is ignored if present.
 
 # configurable rules can be customized from this configuration file.
 # number of lines allowed in a file
-file_length: 405
+file_length: 500
 # number of lines allowed in a function
-function_body_length: 71
+function_body_length: 100
 # rules related to vars/lets
 identifier_name:
   excluded:

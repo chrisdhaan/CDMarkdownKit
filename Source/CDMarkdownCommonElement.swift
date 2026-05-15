@@ -25,7 +25,7 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
@@ -42,8 +42,8 @@ public protocol CDMarkdownCommonElement: CDMarkdownElement, CDMarkdownStyle {
 public extension CDMarkdownCommonElement {
 
     func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex,
-                                       options: [])
+        try NSRegularExpression(pattern: regex,
+                                options: [])
     }
 
     func addAttributes(_ attributedString: NSMutableAttributedString,

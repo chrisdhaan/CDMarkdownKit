@@ -25,7 +25,7 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
@@ -62,6 +62,6 @@ internal extension Dictionary where Key == CDAttributedStringKey {
     }
 
     mutating func addUnderlineStyle(_ underlineStyle: NSUnderlineStyle) {
-      self[NSAttributedString.Key.underlineStyle] = underlineStyle.rawValue as? Value
+        self[NSAttributedString.Key.underlineStyle] = underlineStyle.rawValue as? Value
     }
 }

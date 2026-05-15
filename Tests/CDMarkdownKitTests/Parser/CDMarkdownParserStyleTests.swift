@@ -1,14 +1,14 @@
-import Testing
 import Foundation
+import Testing
 #if os(iOS) || os(tvOS)
-import UIKit
+    import UIKit
 #elseif os(macOS)
-import Cocoa
+    import Cocoa
 #endif
 @testable import CDMarkdownKit
 
 @MainActor
-@Suite struct CDMarkdownParserStyleTests {
+struct CDMarkdownParserStyleTests {
 
     @Test func boldForegroundColorIsApplied() {
         // Given

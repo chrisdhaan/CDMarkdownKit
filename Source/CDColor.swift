@@ -27,7 +27,7 @@
 
 import Foundation
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
     public typealias CDColor = UIColor
 #elseif os(macOS)

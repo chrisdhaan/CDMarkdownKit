@@ -25,65 +25,88 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
 #endif
 
 /// Protocol defining the styling attributes for Markdown elements.
+///
+/// Conform to this protocol (usually via ``CDMarkdownCommonElement``, ``CDMarkdownLevelElement``,
+/// or ``CDMarkdownLinkElement``) to define how an element's parsed text should be styled.
+/// Return `nil` for any property you don't want to customize — the default values from
+/// ``CDMarkdownParser`` will apply instead.
+///
+/// The ``attributes`` property computes the final `NSAttributedString` attribute dictionary
+/// from your style properties.
 public protocol CDMarkdownStyle: Sendable {
 
-    /// The font to apply to this element.
+    /// The font to apply to this element. Return `nil` to use the parser's default font.
     var font: CDFont? { get }
-    /// The foreground text color for this element.
+
+    /// The foreground text color for this element. Return `nil` to use the parser's default color.
     var color: CDColor? { get }
-    /// The background color for this element.
+
+    /// The background color for this element. Return `nil` to use the parser's default background.
     var backgroundColor: CDColor? { get }
-    /// The paragraph style (spacing, alignment, etc.) for this element.
+
+    /// The paragraph style (spacing, alignment, line height, etc.) for this element.
+    /// Return `nil` to use the parser's default paragraph style.
     var paragraphStyle: NSParagraphStyle? { get }
-    /// The underline color to apply to this element.
+
+    /// The underline color to apply to this element. Return `nil` for no custom underline color.
     var underlineColor: CDColor? { get }
-    /// The underline style (single, double, etc.) to apply to this element.
+
+    /// The underline style (single line, double line, etc.) to apply to this element.
+    /// Return `nil` for no underline. See `NSUnderlineStyle` for available styles.
     var underlineStyle: NSUnderlineStyle? { get }
-    /// The strikethrough color to apply to this element.
+
+    /// The strikethrough color to apply to this element. Return `nil` for no custom strikethrough color.
     var strikethroughColor: CDColor? { get }
-    /// The strikethrough style to apply to this element.
+
+    /// The strikethrough style to apply to this element. Return `nil` for no strikethrough.
+    /// See `NSUnderlineStyle` for available styles (single, double, etc.).
     var strikethroughStyle: NSUnderlineStyle? { get }
-    /// The computed dictionary of NSAttributedString attributes for this style.
+
+    /// The computed dictionary of `NSAttributedString` attributes for this style.
+    ///
+    /// This property builds the final attributes dictionary from the style properties.
+    /// The default implementation assembles attributes from all non-nil properties and
+    /// uses the ``CDAttributedStringKey`` type aliases.
     var attributes: [CDAttributedStringKey: AnyObject] { get }
 }
 
 public extension CDMarkdownStyle {
 
-    var strikethroughColor: CDColor? { return nil }
-    var strikethroughStyle: NSUnderlineStyle? { return nil }
+    var strikethroughColor: CDColor? { nil }
+    var strikethroughStyle: NSUnderlineStyle? { nil }
 
     var attributes: [CDAttributedStringKey: AnyObject] {
         var attributes = [CDAttributedStringKey: AnyObject]()
 
-        if let font = font {
+        if let font {
             attributes.addFont(font)
         }
-        if let color = color {
+        if let color {
             attributes.addForegroundColor(color)
         }
-        if let backgroundColor = backgroundColor {
+        if let backgroundColor {
             attributes.addBackgroundColor(backgroundColor)
         }
-        if let paragraphStyle = paragraphStyle {
+        if let paragraphStyle {
             attributes.addParagraphStyle(paragraphStyle)
         }
-        if let underlineColor = underlineColor {
+        if let underlineColor {
             attributes.addUnderlineColor(underlineColor)
         }
-        if let underlineStyle = underlineStyle {
+        if let underlineStyle {
             attributes.addUnderlineStyle(underlineStyle)
         }
-        if let strikethroughColor = strikethroughColor {
+        if let strikethroughColor {
             attributes.addStrikethroughColor(strikethroughColor)
         }
-        if let strikethroughStyle = strikethroughStyle {
+        if let strikethroughStyle {
             attributes.addStrikethroughStyle(strikethroughStyle)
         }
 

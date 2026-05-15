@@ -25,7 +25,7 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
@@ -36,21 +36,28 @@
 open class CDMarkdownParser {
 
     // MARK: - Element Arrays
-    fileprivate var escapingElements: [any CDMarkdownElement]
-    fileprivate var defaultElements: [any CDMarkdownElement]
-    fileprivate var unescapingElements: [any CDMarkdownElement]
+
+    private var escapingElements: [any CDMarkdownElement]
+    private var defaultElements: [any CDMarkdownElement]
+    private var unescapingElements: [any CDMarkdownElement]
 
     /// Custom Markdown elements to parse in addition to built-in elements.
+    /// Use ``addCustomElement(_:)`` and ``removeCustomElement(_:)`` to modify this collection safely.
     open var customElements: [any CDMarkdownElement]
 
     // MARK: - Basic Elements
+
+    /// Handles GFM table syntax (pipe-delimited rows).
+    public let table: CDMarkdownTable
     /// Handles heading syntax (#, ##, etc.).
     public let header: CDMarkdownHeader
     /// Handles unordered list syntax (*, -, +).
     public let list: CDMarkdownList
+    /// Handles ordered list syntax (1., 2., 3., etc.).
+    public let orderedList: CDMarkdownOrderedList
     /// Handles blockquote syntax (>).
     public let quote: CDMarkdownQuote
-    /// Handles inline links ([text](url)).
+    /// Handles inline links using `[text](url)` syntax.
     public let link: CDMarkdownLink
     /// Handles automatic link detection for bare URLs.
     public let automaticLink: CDMarkdownAutomaticLink
@@ -60,25 +67,32 @@ open class CDMarkdownParser {
     public let italic: CDMarkdownItalic
     /// Handles inline code (`code`).
     public let code: CDMarkdownCode
-    /// Handles fenced code blocks (```code```).
+    /// Handles fenced code blocks using triple-backtick syntax.
     public let syntax: CDMarkdownSyntax
-#if os(iOS) || os(macOS) || os(tvOS)
-    /// Handles image syntax (![alt](url)). Not available on watchOS.
-    public let image: CDMarkdownImage
-#endif
+    #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
+        /// Handles image syntax using `![alt](url)` syntax. Not available on watchOS.
+        public let image: CDMarkdownImage
+    #endif
     /// Handles strikethrough text (~~text~~).
     public let strikethrough: CDMarkdownStrikethrough
 
     // MARK: - Escaping Elements
-    fileprivate var codeEscaping = CDMarkdownCodeEscaping()
-    fileprivate var escaping = CDMarkdownEscaping()
-    fileprivate var unescaping = CDMarkdownUnescaping()
+
+    private var codeEscaping = CDMarkdownCodeEscaping()
+    private var escaping = CDMarkdownEscaping()
+    private var unescaping = CDMarkdownUnescaping()
 
     // MARK: - Configuration
-    /// Enables automatic detection of URLs without explicit Markdown syntax.
+
+    /// Enables automatic detection of bare URLs (without explicit Markdown link syntax) via ``CDMarkdownAutomaticLink``.
+    /// Default is `true`. Set to `false` to skip automatic link detection.
     open var automaticLinkDetectionEnabled: Bool = true
     /// When enabled, collapses multiple consecutive newlines into a single newline.
+    /// Default is `true`. Set to `false` to preserve blank lines exactly as they appear in input.
     open var squashNewlines: Bool = true
+    /// When enabled, preserves leading whitespace (spaces and tabs) on each line.
+    /// Default is `false` (leading whitespace is stripped). Set to `true` to preserve indentation in code and quoted text.
+    open var preserveLeadingWhitespace: Bool = false
     /// The default font used for all parsed text.
     public let font: CDFont
     /// The default text color for all parsed text.
@@ -89,7 +103,20 @@ open class CDMarkdownParser {
     public let paragraphStyle: NSParagraphStyle
 
     // MARK: - Initializer
+
     /// Creates a new parser with custom styling options.
+    ///
+    /// - Parameters:
+    ///   - font: The default font for all parsed text. Defaults to the system font at 12pt.
+    ///   - boldFont: Optional custom font for bold text. If `nil`, the parser derives it from `font`.
+    ///   - italicFont: Optional custom font for italic text. If `nil`, the parser derives it from `font`.
+    ///   - fontColor: The default text color. Defaults to black.
+    ///   - backgroundColor: The default background color. Defaults to clear.
+    ///   - paragraphStyle: Optional custom paragraph style (spacing, alignment, line height). If `nil`, a default style is created.
+    ///   - imageSize: Optional size constraint for images. If `nil`, images render at their natural dimensions.
+    ///   - automaticLinkDetectionEnabled: Whether to automatically detect bare URLs as links. Defaults to `true`.
+    ///   - squashNewlines: Whether to collapse consecutive blank lines. Defaults to `true`.
+    ///   - customElements: Array of custom ``CDMarkdownElement`` implementations to parse. Defaults to an empty array.
     public init(font: CDFont = CDFont.systemFont(ofSize: 12),
                 boldFont: CDFont? = nil,
                 italicFont: CDFont? = nil,
@@ -103,7 +130,7 @@ open class CDMarkdownParser {
         self.font = font
         self.fontColor = fontColor
         self.backgroundColor = backgroundColor
-        if let paragraphStyle = paragraphStyle {
+        if let paragraphStyle {
             self.paragraphStyle = paragraphStyle
         } else {
             let paragraphStyle = NSMutableParagraphStyle()
@@ -113,6 +140,10 @@ open class CDMarkdownParser {
             self.paragraphStyle = paragraphStyle
         }
 
+        table = CDMarkdownTable(font: font,
+                                color: fontColor,
+                                backgroundColor: backgroundColor,
+                                paragraphStyle: paragraphStyle)
         header = CDMarkdownHeader(font: font,
                                   color: fontColor,
                                   backgroundColor: backgroundColor,
@@ -121,6 +152,10 @@ open class CDMarkdownParser {
                               color: fontColor,
                               backgroundColor: backgroundColor,
                               paragraphStyle: paragraphStyle)
+        orderedList = CDMarkdownOrderedList(font: font,
+                                            color: fontColor,
+                                            backgroundColor: backgroundColor,
+                                            paragraphStyle: paragraphStyle)
         quote = CDMarkdownQuote(font: font,
                                 color: fontColor,
                                 backgroundColor: backgroundColor,
@@ -151,13 +186,13 @@ open class CDMarkdownParser {
                                   color: fontColor,
                                   backgroundColor: backgroundColor,
                                   paragraphStyle: paragraphStyle)
-#if os(iOS) || os(macOS) || os(tvOS)
-        image = CDMarkdownImage(font: font,
-                                color: fontColor,
-                                backgroundColor: backgroundColor,
-                                paragraphStyle: paragraphStyle,
-                                size: imageSize)
-#endif
+        #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
+            image = CDMarkdownImage(font: font,
+                                    color: fontColor,
+                                    backgroundColor: backgroundColor,
+                                    paragraphStyle: self.paragraphStyle,
+                                    size: imageSize)
+        #endif
         strikethrough = CDMarkdownStrikethrough(font: font,
                                                 color: fontColor,
                                                 backgroundColor: backgroundColor,
@@ -166,22 +201,34 @@ open class CDMarkdownParser {
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.squashNewlines = squashNewlines
         self.escapingElements = [codeEscaping, escaping]
-#if os(iOS) || os(macOS) || os(tvOS)
-        self.defaultElements = [header, list, quote, link, automaticLink, image, bold, italic, strikethrough]
-#else
-        self.defaultElements = [header, list, quote, link, automaticLink, bold, italic, strikethrough]
-#endif
+        #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
+            self.defaultElements = [table, header, list, orderedList, quote, link, automaticLink, image, bold, italic, strikethrough]
+        #else
+            self.defaultElements = [table, header, list, orderedList, quote, link, automaticLink, bold, italic, strikethrough]
+        #endif
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
+        code.parser = self
+        syntax.parser = self
     }
 
     // MARK: - Element Extensibility
+
     /// Adds a custom Markdown element to the parser.
+    ///
+    /// - Parameter element: A ``CDMarkdownElement`` implementation to add to the parsing pipeline.
+    ///
+    /// Custom elements are parsed after built-in elements (headers, lists, links, etc.) but before
+    /// the unescaping pass. This allows custom syntax to take priority over default parsing.
     open func addCustomElement(_ element: any CDMarkdownElement) {
         customElements.append(element)
     }
 
     /// Removes a custom Markdown element from the parser.
+    ///
+    /// - Parameter element: The ``CDMarkdownElement`` instance to remove.
+    ///
+    /// This method uses instance identity (`===`) to find and remove the element.
     open func removeCustomElement(_ element: any CDMarkdownElement) {
         guard let index = customElements.firstIndex(where: { someElement -> Bool in
             return element === someElement
@@ -192,24 +239,46 @@ open class CDMarkdownParser {
     }
 
     // MARK: - Parsing
+
     /// Parses a Markdown string and returns a styled NSAttributedString.
+    ///
+    /// - Parameter markdown: The raw Markdown text to parse.
+    /// - Returns: An `NSAttributedString` with styling applied for all recognized Markdown syntax.
+    ///
+    /// Images are not loaded in the synchronous overload. Use the async overload for remote image support.
     open func parse(_ markdown: String) -> NSAttributedString {
-        return parse(NSAttributedString(string: markdown))
+        parse(NSAttributedString(string: markdown))
     }
 
     /// Parses a Markdown NSAttributedString and returns a styled NSAttributedString.
-    /// Images are not loaded; use the async overload to load remote images.
+    ///
+    /// - Parameter markdown: The attributed Markdown text to parse.
+    /// - Returns: An `NSAttributedString` with styling applied for all recognized Markdown syntax.
+    ///
+    /// Images are not loaded in the synchronous overload. Use the async overload to download remote images.
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
-        return parse(markdown, loadImages: false)
+        parse(markdown, loadImages: false)
     }
 
     /// Asynchronously parses a Markdown string with image loading support.
+    ///
+    /// - Parameter string: The raw Markdown text to parse.
+    /// - Returns: An `NSAttributedString` with styling applied and remote images downloaded and injected.
+    ///
+    /// Use this overload for Markdown containing image references. Remote images are downloaded
+    /// asynchronously.
     @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     open func parse(_ string: String) async -> NSAttributedString {
-        return await parse(NSAttributedString(string: string))
+        await parse(NSAttributedString(string: string))
     }
 
     /// Asynchronously parses a Markdown NSAttributedString with image loading support.
+    ///
+    /// - Parameter attributedString: The attributed Markdown text to parse.
+    /// - Returns: An `NSAttributedString` with styling applied and remote images downloaded and injected.
+    ///
+    /// Use this overload for Markdown containing image references. Remote images are downloaded
+    /// asynchronously.
     @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     open func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
         let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))
@@ -231,16 +300,20 @@ open class CDMarkdownParser {
                                          with: " ",
                                          range: NSRange(location: 0,
                                                         length: mutableString.length))
-        // Use [ \t]+ rather than \s+ so blank lines (\n only) are not consumed.
-        // \s includes \n, which would collapse blank lines even when squashNewlines is false.
-        let regExp = try? NSRegularExpression(pattern: "^[ \\t]+",
-                                              options: .anchorsMatchLines)
-        if let regExp = regExp {
-            regExp.replaceMatches(in: mutableString,
-                                  options: [],
-                                  range: NSRange(location: 0,
-                                                 length: mutableString.length),
-                                  withTemplate: "")
+        // Conditionally strip leading whitespace. When preserveLeadingWhitespace is true,
+        // skip this step to maintain spaces at the beginning of lines.
+        if !preserveLeadingWhitespace {
+            // Use [ \t]+ rather than \s+ so blank lines (\n only) are not consumed.
+            // \s includes \n, which would collapse blank lines even when squashNewlines is false.
+            let regExp = try? NSRegularExpression(pattern: "^[ \\t]+",
+                                                  options: .anchorsMatchLines)
+            if let regExp {
+                regExp.replaceMatches(in: mutableString,
+                                      options: [],
+                                      range: NSRange(location: 0,
+                                                     length: mutableString.length),
+                                      withTemplate: "")
+            }
         }
         let range = NSRange(location: 0,
                             length: attributedString.length)
@@ -259,22 +332,22 @@ open class CDMarkdownParser {
         elements.append(contentsOf: customElements)
         elements.append(contentsOf: unescapingElements)
 
-        #if os(iOS) || os(macOS) || os(tvOS)
-        if !loadImages {
-            image.placeholderOnly = true
-        }
+        #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
+            if !loadImages {
+                image.placeholderOnly = true
+            }
         #endif
 
-        elements.forEach { element in
+        for element in elements {
             if automaticLinkDetectionEnabled || type(of: element) != CDMarkdownAutomaticLink.self {
                 element.parse(attributedString)
             }
         }
 
-        #if os(iOS) || os(macOS) || os(tvOS)
-        if !loadImages {
-            image.placeholderOnly = false
-        }
+        #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
+            if !loadImages {
+                image.placeholderOnly = false
+            }
         #endif
 
         return attributedString
@@ -284,9 +357,9 @@ open class CDMarkdownParser {
     private func urlSessionData(from url: URL) async throws -> Data {
         try await withCheckedThrowingContinuation { continuation in
             URLSession.shared.dataTask(with: url) { data, _, error in
-                if let error = error {
+                if let error {
                     continuation.resume(throwing: error)
-                } else if let data = data {
+                } else if let data {
                     continuation.resume(returning: data)
                 } else {
                     continuation.resume(throwing: URLError(.unknown))
@@ -310,15 +383,15 @@ open class CDMarkdownParser {
                let image = CDImage(data: data) {
                 let attachment = NSTextAttachment()
                 attachment.image = image
-                #if os(iOS) || os(macOS) || os(tvOS)
-                if let size = self.image.size {
-                    let preferredWidth = size.width - 10
-                    let widthScalingFactor = image.size.width / preferredWidth
-                    attachment.bounds = CGRect(x: 0,
-                                               y: 0,
-                                               width: image.size.width / widthScalingFactor,
-                                               height: image.size.height / widthScalingFactor)
-                }
+                #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
+                    if let size = self.image.size {
+                        let preferredWidth = size.width - 10
+                        let widthScalingFactor = image.size.width / preferredWidth
+                        attachment.bounds = CGRect(x: 0,
+                                                   y: 0,
+                                                   width: image.size.width / widthScalingFactor,
+                                                   height: image.size.height / widthScalingFactor)
+                    }
                 #endif
                 let replacement = NSAttributedString(attachment: attachment)
                 attributedString.replaceCharacters(in: range, with: replacement)

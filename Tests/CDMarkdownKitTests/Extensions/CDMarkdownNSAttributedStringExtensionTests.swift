@@ -1,9 +1,9 @@
-import Testing
 import Foundation
+import Testing
 @testable import CDMarkdownKit
 
 @MainActor
-@Suite struct CDMarkdownNSAttributedStringExtensionTests {
+struct CDMarkdownNSAttributedStringExtensionTests {
 
     @Test func enumerateLinkAttributeFindsLink() {
         // Given: a parsed attributed string with a link

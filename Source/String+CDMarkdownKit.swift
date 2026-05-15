@@ -27,7 +27,7 @@
 
 import Foundation
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
@@ -35,17 +35,17 @@ import Foundation
 
 internal extension String {
 
-    // Converts each character to its UTF16 form in hexadecimal value (e.g. "H" -> "0048")
+    /// Converts each character to its UTF16 form in hexadecimal value (e.g. "H" -> "0048")
     func escapeUTF16() -> String {
-        return Array(utf16).map {
+        Array(utf16).map {
             String(format: "%04x",
                    $0)
-            }.reduce("") {
-                return $0 + $1
+        }.reduce("") {
+            $0 + $1
         }
     }
 
-    // Converts each 4 digit characters to its String form  (e.g. "0048" -> "H")
+    /// Converts each 4 digit characters to its String form  (e.g. "0048" -> "H")
     func unescapeUTF16() -> String? {
         var utf16Array = [UInt16]()
         stride(from: 0,
@@ -56,7 +56,7 @@ internal extension String {
             if ($0 + 4) <= count {
                 let endIdx = index(startIndex,
                                    offsetBy: $0 + 4)
-                let hex4 = self[startIdx..<endIdx]
+                let hex4 = self[startIdx ..< endIdx]
 
                 if let utf16 = UInt16(hex4,
                                       radix: 16) {
@@ -75,19 +75,19 @@ internal extension String {
             let to16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location + nsRange.length, limitedBy: utf16.endIndex),
             let from = from16.samePosition(in: self),
             let to = to16.samePosition(in: self)
-            else { return nil }
+        else { return nil }
         return from ..< to
     }
 
     func characterCount() -> Int {
-        return self.count
+        self.count
     }
 
     func sizeWithAttributes(_ attributes: [CDAttributedStringKey: Any]? = nil) -> CGSize {
-#if os(macOS)
-        return self.size(withAttributes: attributes)
-#else
-        return self.size(withAttributes: attributes)
-#endif
+        #if os(macOS)
+            return self.size(withAttributes: attributes)
+        #else
+            return self.size(withAttributes: attributes)
+        #endif
     }
 }

@@ -1,5 +1,5 @@
 //
-//  UIColor+CDMarkdownKit.swift
+//  CDColor+CDMarkdownKit.swift
 //  CDMarkdownKit
 //
 //  Created by Christopher de Haann on 12/12/16.
@@ -25,7 +25,7 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
@@ -34,31 +34,31 @@
 public extension CDColor {
 
     static func codeTextRed() -> CDColor {
-        return CDColor(red: 189/255.0,
-                       green: 0/255.0,
-                       blue: 58/255.0,
-                       alpha: 1.0)
+        CDColor(red: 189 / 255.0,
+                green: 0 / 255.0,
+                blue: 58 / 255.0,
+                alpha: 1.0)
     }
 
     static func codeBackgroundRed() -> CDColor {
-        return CDColor(red: 247/255.0,
-                       green: 238/255.0,
-                       blue: 241/255.0,
-                       alpha: 1.0)
+        CDColor(red: 247 / 255.0,
+                green: 238 / 255.0,
+                blue: 241 / 255.0,
+                alpha: 1.0)
     }
 
     static func syntaxTextGray() -> CDColor {
-        return CDColor(red: 57/255.0,
-                       green: 57/255.0,
-                       blue: 57/255.0,
-                       alpha: 1.0)
+        CDColor(red: 57 / 255.0,
+                green: 57 / 255.0,
+                blue: 57 / 255.0,
+                alpha: 1.0)
     }
 
     static func syntaxBackgroundGray() -> CDColor {
-        return CDColor(red: 235/255.0,
-                       green: 235/255.0,
-                       blue: 235/255.0,
-                       alpha: 1.0)
+        CDColor(red: 235 / 255.0,
+                green: 235 / 255.0,
+                blue: 235 / 255.0,
+                alpha: 1.0)
     }
 
     func isEqualTo(otherColor: CDColor) -> Bool {
@@ -67,14 +67,13 @@ public extension CDColor {
         }
 
         let colorSpaceRGB = CGColorSpaceCreateDeviceRGB()
-        let convertColorToRGBSpace: ((_ color: CDColor) -> CDColor?) = { (color) -> CDColor? in
+        let convertColorToRGBSpace: ((_ color: CDColor) -> CDColor?) = { color -> CDColor? in
             if color.cgColor.colorSpace?.model == CGColorSpaceModel.monochrome {
                 let oldComponents = color.cgColor.components
                 let components: [CGFloat] = [oldComponents![0], oldComponents![0], oldComponents![0], oldComponents![1]]
                 let colorRef = CGColor(colorSpace: colorSpaceRGB,
                                        components: components)
-                let colorOut = CDColor(cgColor: colorRef!)
-                return colorOut
+                return CDColor(cgColor: colorRef!)
             } else {
                 return color
             }
@@ -83,8 +82,8 @@ public extension CDColor {
         let selfColor = convertColorToRGBSpace(self)
         let otherColor = convertColorToRGBSpace(otherColor)
 
-        if let selfColor = selfColor,
-            let otherColor = otherColor {
+        if let selfColor,
+           let otherColor {
             return selfColor.isEqual(otherColor)
         } else {
             return false

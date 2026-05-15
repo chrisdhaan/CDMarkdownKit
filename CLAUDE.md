@@ -248,6 +248,25 @@ xcodebuild -project CDMarkdownKit.xcodeproj \
 
 ---
 
+## How to Format
+
+CDMarkdownKit uses [SwiftFormat](https://github.com/nicklockwood/SwiftFormat) for automated code formatting. Configuration is in `.swiftformat` at the repository root.
+
+```bash
+# Preview changes without writing files
+swiftformat Source Tests --dryrun
+
+# Apply formatting
+swiftformat Source Tests
+
+# CI mode: exit non-zero if any file would change
+swiftformat Source Tests --lint
+```
+
+Run `swiftformat Source Tests` before committing new or modified source files to keep CI green.
+
+---
+
 ## How to Generate Documentation
 
 Uses Jazzy via Homebrew Ruby. **Always use the Homebrew bundle — the system Ruby (2.6) picks up the wrong bundler version and fails.**

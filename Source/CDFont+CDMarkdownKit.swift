@@ -1,5 +1,5 @@
 //
-//  UIFont+CDMarkdownKit.swift
+//  CDFont+CDMarkdownKit.swift
 //  CDMarkdownKit
 //
 //  Created by Christopher de Haan on 11/7/16.
@@ -25,7 +25,7 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
@@ -33,55 +33,55 @@
 
 internal extension CDFont {
 
-#if os(macOS)
+    #if os(macOS)
 
-    func bold() -> CDFont {
-        return NSFontManager.shared.convert(self,
-                                           toHaveTrait: .boldFontMask)
-    }
-
-    func italic() -> CDFont {
-        return NSFontManager.shared.convert(self,
-                                            toHaveTrait: .italicFontMask)
-    }
-
-    func withSize(_ fontSize: CGFloat) -> CDFont {
-        return NSFontManager.shared.convert(self,
-                                            toSize: fontSize)
-    }
-
-#else
-
-    private func withTraits(_ traits: CDFontDescriptorSymbolicTraits...) -> CDFont {
-        guard let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(traits)) else {
-            return self
+        func bold() -> CDFont {
+            NSFontManager.shared.convert(self,
+                                         toHaveTrait: .boldFontMask)
         }
-        return CDFont(descriptor: descriptor, size: self.pointSize)
-    }
 
-    func bold() -> CDFont {
-        return withTraits(.traitBold)
-    }
+        func italic() -> CDFont {
+            NSFontManager.shared.convert(self,
+                                         toHaveTrait: .italicFontMask)
+        }
 
-    func italic() -> CDFont {
-        return withTraits(.traitItalic)
-    }
+        func withSize(_ fontSize: CGFloat) -> CDFont {
+            NSFontManager.shared.convert(self,
+                                         toSize: fontSize)
+        }
 
-#endif
+    #else
+
+        private func withTraits(_ traits: CDFontDescriptorSymbolicTraits...) -> CDFont {
+            guard let descriptor = fontDescriptor.withSymbolicTraits(CDFontDescriptorSymbolicTraits(traits)) else {
+                return self
+            }
+            return CDFont(descriptor: descriptor, size: self.pointSize)
+        }
+
+        func bold() -> CDFont {
+            withTraits(.traitBold)
+        }
+
+        func italic() -> CDFont {
+            withTraits(.traitItalic)
+        }
+
+    #endif
 
     var isBold: Bool {
         #if os(macOS)
-        return NSFontManager.shared.traits(of: self).contains(.boldFontMask)
+            return NSFontManager.shared.traits(of: self).contains(.boldFontMask)
         #else
-        return fontDescriptor.symbolicTraits.contains(.traitBold)
+            return fontDescriptor.symbolicTraits.contains(.traitBold)
         #endif
     }
 
     var isItalic: Bool {
         #if os(macOS)
-        return NSFontManager.shared.traits(of: self).contains(.italicFontMask)
+            return NSFontManager.shared.traits(of: self).contains(.italicFontMask)
         #else
-        return fontDescriptor.symbolicTraits.contains(.traitItalic)
+            return fontDescriptor.symbolicTraits.contains(.traitItalic)
         #endif
     }
 }

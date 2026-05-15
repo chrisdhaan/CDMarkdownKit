@@ -1,10 +1,10 @@
-import Testing
 import Foundation
+import Testing
 @testable import CDMarkdownKit
 
-// A minimal CDMarkdownElement that marks ^^text^^ with a custom attribute.
-// Applying attributes doesn't change string length, so the default parse() loop
-// (which tracks location by length delta) works without further changes.
+/// A minimal CDMarkdownElement that marks ^^text^^ with a custom attribute.
+/// Applying attributes doesn't change string length, so the default parse() loop
+/// (which tracks location by length delta) works without further changes.
 private let highlightKey = NSAttributedString.Key("com.cdmarkdownkit.test.highlight")
 
 private final class HighlightElement: CDMarkdownElement {
@@ -27,7 +27,7 @@ private final class HighlightElement: CDMarkdownElement {
 extension HighlightElement: @unchecked Sendable {}
 
 @MainActor
-@Suite struct CDMarkdownCustomElementTests {
+struct CDMarkdownCustomElementTests {
 
     @Test func customElementAppliesAttributeWhenRegisteredAtInit() {
         // Given: custom element registered at parser init time

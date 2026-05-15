@@ -57,6 +57,7 @@ label.attributedText = attributedString
 | macOS    | 10.13+    | 5.3+  | SPM, CocoaPods |
 | tvOS     | 12.0+     | 5.3+  | SPM, CocoaPods |
 | watchOS  | 4.0+      | 5.3+  | SPM, CocoaPods |
+| visionOS | 1.0+      | 5.3+  | SPM, CocoaPods |
 
 ## Installation
 

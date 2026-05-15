@@ -25,25 +25,25 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
 #endif
 
-extension CDMarkdownCodeEscaping: @unchecked Sendable { }
+extension CDMarkdownCodeEscaping: @unchecked Sendable {}
 
 open class CDMarkdownCodeEscaping: CDMarkdownElement {
 
     fileprivate static let regex = "(?<!\\\\)(?:\\\\\\\\)*+(`+)(.*?[^`].*?)(\\1)(?!`)"
 
     open var regex: String {
-        return CDMarkdownCodeEscaping.regex
+        CDMarkdownCodeEscaping.regex
     }
 
     open func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex,
-                                       options: .dotMatchesLineSeparators)
+        try NSRegularExpression(pattern: regex,
+                                options: .dotMatchesLineSeparators)
     }
 
     open func match(_ match: NSTextCheckingResult,
@@ -58,7 +58,7 @@ open class CDMarkdownCodeEscaping: CDMarkdownElement {
                                                        value) }
             .reduce("") { (string: String, character: String) -> String in
                 return "\(string)\(character)"
-        }
+            }
         attributedString.replaceCharacters(in: range,
                                            with: escapedString)
     }

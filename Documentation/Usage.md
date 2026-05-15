@@ -98,6 +98,30 @@ parser.link.color = UIColor.blue
 parser.header.fontIncrease = 4
 ```
 
+### Preserving Leading Whitespace
+
+By default, CDMarkdownKit strips leading whitespace (spaces and tabs) from each line. This is suitable for most Markdown text, but if you need to preserve indentation in code blocks or other contexts, enable the `preserveLeadingWhitespace` option:
+
+```swift
+let parser = CDMarkdownParser()
+parser.preserveLeadingWhitespace = true
+let attributed = parser.parse("""
+    ```
+       function sayHello() {
+          console.log("Hello, World!");
+       }
+    ```
+    """)
+```
+
+With `preserveLeadingWhitespace = true`, the indentation inside both inline code (`` `...` ``) and fenced code blocks (` ``` `) is preserved as-is. This is useful for:
+- Code examples with semantic indentation
+- ASCII art or diagrams
+- Poetry or formatted prose
+- Any content where whitespace spacing is meaningful
+
+**Note**: This setting only affects code elements. Other Markdown elements (bold, italic, lists, etc.) are not affected by this option.
+
 ---
 
 ## Supported Syntax
@@ -117,21 +141,42 @@ CDMarkdownKit supports the following Markdown syntax:
 | Links | `[text](url)` | Clickable URLs |
 | Automatic Links | `https://example.com` | Bare URLs detected |
 | Images | `![alt](url)` | Rendered images |
+| Ordered Lists | `1. item` | Numbered items |
+| Tables | Pipe-delimited rows | Aligned columns |
 
 ### Platform Notes
 
-| Feature | iOS | macOS | tvOS | watchOS |
-|---------|-----|-------|------|---------|
-| Bold / Italic / Strikethrough | ✓ | ✓ | ✓ | ✓ |
-| Headers | ✓ | ✓ | ✓ | ✓ |
-| Lists | ✓ | ✓ | ✓ | ✓ |
-| Blockquotes | ✓ | ✓ | ✓ | ✓ |
-| Inline Code / Fenced Blocks | ✓ | ✓ | ✓ | ✓ |
-| Links (tappable) | ✓ | ✓ | ✓ | — |
-| Automatic Links | ✓ | ✓ | ✓ | — |
-| Images | ✓ | ✓ | ✓ | — |
+| Feature | iOS | macOS | tvOS | watchOS | visionOS |
+|---------|-----|-------|------|---------|----------|
+| Bold / Italic / Strikethrough | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Headers | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Unordered Lists | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Ordered Lists | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Blockquotes | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Inline Code / Fenced Blocks | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Tables | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Links (tappable) | ✓ | ✓ | ✓ | — | ✓ |
+| Automatic Links | ✓ | ✓ | ✓ | — | ✓ |
+| Images | ✓ | ✓ | ✓ | — | ✓ |
 
 > **watchOS**: Only `WKInterfaceLabel.setAttributedText(_:)` is supported. Tappable links, images, and `CDMarkdownLabel`/`CDMarkdownTextView` UI components are not available on watchOS. All text styling (bold, italic, headers, code, tables, etc.) works because it is applied as `NSAttributedString` attributes, which `WKInterfaceLabel` renders correctly.
+
+### Tables
+
+CDMarkdownKit supports GitHub Flavored Markdown tables with optional leading/trailing pipes:
+
+```
+| Column 1 | Column 2 | Column 3 |
+| :------- | :------: | -------: |
+| left     | center   | right    |
+```
+
+Column alignment is controlled by the colon position in the separator row:
+- `:---` (or `---`) — Left-aligned
+- `:---:` — Center-aligned
+- `---:` — Right-aligned
+
+Cell content is rendered as plain text; inline formatting inside cells is not supported in this version.
 
 ---
 

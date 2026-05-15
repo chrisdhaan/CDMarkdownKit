@@ -25,7 +25,7 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
@@ -56,8 +56,8 @@ public protocol CDMarkdownLevelElement: CDMarkdownElement, CDMarkdownStyle {
 public extension CDMarkdownLevelElement {
 
     func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex,
-                                       options: .anchorsMatchLines)
+        try NSRegularExpression(pattern: regex,
+                                options: .anchorsMatchLines)
     }
 
     func addFullAttributes(_ attributedString: NSMutableAttributedString,
@@ -72,7 +72,7 @@ public extension CDMarkdownLevelElement {
     }
 
     func attributesForLevel(_ level: Int) -> [CDAttributedStringKey: AnyObject] {
-        return self.attributes
+        self.attributes
     }
 
     func match(_ match: NSTextCheckingResult,

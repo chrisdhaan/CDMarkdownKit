@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.13'
   s.tvos.deployment_target = '12.0'
   s.watchos.deployment_target = '4.0'
+  s.visionos.deployment_target = '1.0'
 
   s.swift_versions = ['5']
   
@@ -27,4 +28,5 @@ Pod::Spec.new do |s|
   s.osx.framework  = 'Cocoa'
   s.tvos.framework  = 'UIKit'
   s.watchos.framework  = 'UIKit'
+  s.visionos.framework  = 'UIKit'
 end

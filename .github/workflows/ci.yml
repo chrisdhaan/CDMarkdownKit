@@ -209,6 +209,45 @@ jobs:
           set -o pipefail
           env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit watchOS" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
 
+  visionOS:
+    name: Test ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-26
+            xcode: /Applications/Xcode_26.4.1.app/Contents/Developer
+            destination: "OS=26.2,name=Apple Vision Pro"
+            name: "visionOS 26 (Xcode 26.4.1)"
+          - runner: macos-26
+            xcode: /Applications/Xcode_26.3.app/Contents/Developer
+            destination: "OS=26.2,name=Apple Vision Pro"
+            name: "visionOS 26 (Xcode 26.3)"
+          - runner: macos-26
+            xcode: /Applications/Xcode_26.2.app/Contents/Developer
+            destination: "OS=26.2,name=Apple Vision Pro"
+            name: "visionOS 26 (Xcode 26.2)"
+          - runner: macos-26
+            xcode: /Applications/Xcode_26.1.1.app/Contents/Developer
+            destination: "OS=26.1,name=Apple Vision Pro"
+            name: "visionOS 26 (Xcode 26.1.1)"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s ${{ matrix.xcode }}
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+      - name: ${{ matrix.name }} - Debug
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit visionOS" -destination "${{ matrix.destination }}" -configuration Debug clean build 2>&1 | xcbeautify --renderer github-actions
+      - name: ${{ matrix.name }} - Release
+        run: |
+          set -o pipefail
+          env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit visionOS" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
+
   Catalyst:
     name: Test Catalyst
     runs-on: macos-15
@@ -270,6 +309,34 @@ jobs:
         run: brew install swiftlint
       - name: Lint
         run: swiftlint lint --strict
+
+  swiftformat:
+    name: SwiftFormat
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install SwiftFormat
+        run: brew install swiftformat
+      - name: Check formatting
+        run: swiftformat Source Tests --lint
+
+  documentation:
+    name: DocC Build
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build DocC
+        run: |
+          swift package --disable-sandbox generate-documentation \
+            --target CDMarkdownKit \
+            --output-path /tmp/docc-output \
+            --transform-for-static-hosting \
+            --hosting-base-path CDMarkdownKit \
+            2>&1 | tee docc.log
+      - name: Fail on DocC warnings
+        run: grep -qE "^warning:" docc.log && exit 1 || exit 0
 
   codeql:
     name: CodeQL

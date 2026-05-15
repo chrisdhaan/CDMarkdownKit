@@ -25,13 +25,13 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa
 #endif
 
-extension CDMarkdownQuote: @unchecked Sendable { }
+extension CDMarkdownQuote: @unchecked Sendable {}
 
 /// Renders blockquotes using > syntax.
 open class CDMarkdownQuote: CDMarkdownLevelElement {
@@ -87,7 +87,7 @@ open class CDMarkdownQuote: CDMarkdownLevelElement {
     open func formatText(_ attributedString: NSMutableAttributedString,
                          range: NSRange,
                          level: Int) {
-        var string = (0..<level).reduce("") { (string: String, _: Int) -> String in
+        var string = (0 ..< level).reduce("") { (string: String, _: Int) -> String in
             return "\(string)\(separator)"
         }
         string = "\(string)\(indicator) "
