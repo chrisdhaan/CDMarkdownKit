@@ -219,7 +219,7 @@ jobs:
         include:
           - runner: macos-26
             xcode: /Applications/Xcode_26.4.1.app/Contents/Developer
-            destination: "OS=26.4,name=Apple Vision Pro"
+            destination: "OS=26.2,name=Apple Vision Pro"
             name: "visionOS 26 (Xcode 26.4.1)"
           - runner: macos-26
             xcode: /Applications/Xcode_26.3.app/Contents/Developer
@@ -336,7 +336,7 @@ jobs:
             --hosting-base-path CDMarkdownKit \
             2>&1 | tee docc.log
       - name: Fail on DocC warnings
-        run: grep -q "warning:" docc.log && exit 1 || exit 0
+        run: grep -qE "^warning:" docc.log && exit 1 || exit 0
 
   codeql:
     name: CodeQL
