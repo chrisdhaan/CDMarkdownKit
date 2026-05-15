@@ -4,6 +4,8 @@
     import Cocoa
 #endif
 
+extension CDMarkdownOrderedList: @unchecked Sendable {}
+
 open class CDMarkdownOrderedList: CDMarkdownElement, CDMarkdownStyle {
 
     fileprivate static let regex = "^(\\d+\\.)([ \\t]+)(.+)$"

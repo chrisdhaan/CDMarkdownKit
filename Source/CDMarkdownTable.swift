@@ -5,6 +5,8 @@ import Foundation
     import Cocoa
 #endif
 
+extension CDMarkdownTable: @unchecked Sendable {}
+
 open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
 
     /// Group 1: header row (line containing at least one |)
