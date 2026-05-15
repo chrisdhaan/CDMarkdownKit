@@ -57,7 +57,7 @@ open class CDMarkdownParser {
     public let orderedList: CDMarkdownOrderedList
     /// Handles blockquote syntax (>).
     public let quote: CDMarkdownQuote
-    /// Handles inline links ([text](url)).
+    /// Handles inline links using `[text](url)` syntax.
     public let link: CDMarkdownLink
     /// Handles automatic link detection for bare URLs.
     public let automaticLink: CDMarkdownAutomaticLink
@@ -67,10 +67,10 @@ open class CDMarkdownParser {
     public let italic: CDMarkdownItalic
     /// Handles inline code (`code`).
     public let code: CDMarkdownCode
-    /// Handles fenced code blocks (```code```).
+    /// Handles fenced code blocks using triple-backtick syntax.
     public let syntax: CDMarkdownSyntax
     #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
-        /// Handles image syntax (![alt](url)). Not available on watchOS.
+        /// Handles image syntax using `![alt](url)` syntax. Not available on watchOS.
         public let image: CDMarkdownImage
     #endif
     /// Handles strikethrough text (~~text~~).
@@ -265,8 +265,8 @@ open class CDMarkdownParser {
     /// - Parameter string: The raw Markdown text to parse.
     /// - Returns: An `NSAttributedString` with styling applied and remote images downloaded and injected.
     ///
-    /// Use this overload for Markdown containing image references (`![alt](url)`). Images are downloaded
-    /// off the main thread via ``resolveImages(in:)``.
+    /// Use this overload for Markdown containing image references. Remote images are downloaded
+    /// asynchronously.
     @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     open func parse(_ string: String) async -> NSAttributedString {
         await parse(NSAttributedString(string: string))
@@ -277,8 +277,8 @@ open class CDMarkdownParser {
     /// - Parameter attributedString: The attributed Markdown text to parse.
     /// - Returns: An `NSAttributedString` with styling applied and remote images downloaded and injected.
     ///
-    /// Use this overload for Markdown containing image references. Images are downloaded off the main thread
-    /// via ``resolveImages(in:)``.
+    /// Use this overload for Markdown containing image references. Remote images are downloaded
+    /// asynchronously.
     @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     open func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
         let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))

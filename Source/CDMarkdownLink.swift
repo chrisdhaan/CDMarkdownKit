@@ -33,7 +33,7 @@
 
 extension CDMarkdownLink: @unchecked Sendable {}
 
-/// Renders inline links using [text](url) syntax.
+/// Renders inline links using `[text](url)` syntax.
 open class CDMarkdownLink: CDMarkdownLinkElement {
 
     fileprivate static let regex = "(?<![!])\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"

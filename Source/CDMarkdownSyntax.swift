@@ -33,7 +33,7 @@
 
 extension CDMarkdownSyntax: @unchecked Sendable {}
 
-/// Renders fenced code blocks using ```code``` syntax.
+/// Renders fenced code blocks using triple-backtick syntax.
 open class CDMarkdownSyntax: CDMarkdownCommonElement {
 
     fileprivate static let regex = "(\\s+|^)(`{3})(\\s*[^`]*?\\s*)(\\2)(?!`)"

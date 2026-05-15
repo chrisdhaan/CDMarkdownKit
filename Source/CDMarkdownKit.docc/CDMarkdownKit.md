@@ -6,7 +6,7 @@ A pure-Swift, zero-dependency framework for parsing Markdown text into `NSAttrib
 
 CDMarkdownKit converts Markdown input into a fully attributed `NSAttributedString` in three phases:
 escaping, element parsing, and unescaping. The result can be rendered in any `UILabel`,
-`UITextView`, or the provided ``CDMarkdownLabel`` and ``CDMarkdownTextView`` subclasses,
+`UITextView`, or the provided `CDMarkdownLabel` and `CDMarkdownTextView` subclasses (iOS/tvOS/visionOS),
 which add rounded-corner background styling for code and syntax blocks.
 
 ## Topics
@@ -42,12 +42,6 @@ which add rounded-corner background styling for code and syntax blocks.
 - ``CDMarkdownCommonElement``
 - ``CDMarkdownLevelElement``
 - ``CDMarkdownLinkElement``
-
-### UI Components
-
-- ``CDMarkdownLabel``
-- ``CDMarkdownTextView``
-- ``CDMarkdownLayoutManager``
 
 ### Cross-Platform Types
 
