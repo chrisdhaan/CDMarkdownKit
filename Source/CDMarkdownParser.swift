@@ -505,7 +505,7 @@ open class CDMarkdownParser {
         }
     }
 
-    #if os(iOS) || os(tvOS) || os(visionOS)
+    #if os(iOS) || os(visionOS)
         /// Returns a copy of the attributed string with VoiceOver-compatible accessibility
         /// annotations derived from CDMarkdownKit's custom attributes.
         ///
@@ -517,7 +517,7 @@ open class CDMarkdownParser {
 
             result.enumerateAttribute(.cdMarkdownHeadingLevel, in: fullRange) { value, range, _ in
                 guard let level = value as? Int else { return }
-                result.addAttribute(NSAttributedString.Key(UIAccessibility.textAttributeHeadingLevel),
+                result.addAttribute(.accessibilityTextHeadingLevel,
                                     value: level as AnyObject,
                                     range: range)
             }

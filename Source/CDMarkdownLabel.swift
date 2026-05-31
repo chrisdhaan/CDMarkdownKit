@@ -116,9 +116,11 @@
                     self.customTextStorage = NSTextStorage(attributedString: newValue)
                     self.customTextStorage.addLayoutManager(layoutManager)
                     layoutManager.textStorage = self.customTextStorage
-                    if let parser = markdownParser {
-                        self.accessibilityAttributedLabel = parser.accessibilityAttributedString(from: newValue)
-                    }
+                    #if os(iOS) || os(visionOS)
+                        if let parser = markdownParser {
+                            self.accessibilityAttributedLabel = parser.accessibilityAttributedString(from: newValue)
+                        }
+                    #endif
                 }
                 self.setNeedsDisplay()
             }
