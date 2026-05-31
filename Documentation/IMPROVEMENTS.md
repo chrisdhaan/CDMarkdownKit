@@ -1573,7 +1573,7 @@ CDMarkdownKit has no SwiftUI-native API. This section adds two SwiftUI views: `C
 
 ### Steps
 
-**6.1 — Create `Source/CDMarkdownText.swift`**
+**6.1 — Create `Source/CDMarkdownText.swift`** ✅
 
 `CDMarkdownText` uses SwiftUI's built-in `Text(attributedString:)` API (available iOS 15+). It is the simplest integration and works everywhere SwiftUI does, but does not support rounded-corner code backgrounds (a UIKit/AppKit drawing feature that SwiftUI's `Text` does not expose).
 
