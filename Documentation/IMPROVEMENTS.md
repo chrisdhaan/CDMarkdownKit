@@ -1073,7 +1073,7 @@ Confirm the variable name for the content range in the existing source.
 
 ---
 
-**4.5 — Add an `accessibilityAttributedString(from:)` helper to `CDMarkdownParser`**
+**4.5 — Add an `accessibilityAttributedString(from:)` helper to `CDMarkdownParser`** ✅
 
 This method converts the parsed `NSAttributedString` (which has CDMarkdownKit's custom attributes) into one that uses standard `NSAccessibilityAttributedStringKey` annotations understood by VoiceOver. This is a separate pass so callers who do not need accessibility do not pay the cost.
 

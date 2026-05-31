@@ -504,4 +504,25 @@ open class CDMarkdownParser {
             }
         }
     }
+
+    #if os(iOS) || os(tvOS) || os(visionOS)
+    /// Returns a copy of the attributed string with VoiceOver-compatible accessibility
+    /// annotations derived from CDMarkdownKit's custom attributes.
+    ///
+    /// Pass the result to `UILabel.accessibilityAttributedLabel` or
+    /// `UITextView.accessibilityAttributedLabel`.
+    public func accessibilityAttributedString(from attributedString: NSAttributedString) -> NSAttributedString {
+        let result = NSMutableAttributedString(attributedString: attributedString)
+        let fullRange = NSRange(location: 0, length: result.length)
+
+        result.enumerateAttribute(.cdMarkdownHeadingLevel, in: fullRange) { value, range, _ in
+            guard let level = value as? Int else { return }
+            result.addAttribute(NSAttributedString.Key(UIAccessibility.textAttributeHeadingLevel),
+                                value: level as AnyObject,
+                                range: range)
+        }
+
+        return result
+    }
+    #endif
 }
