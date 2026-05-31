@@ -20,8 +20,8 @@ struct CDMarkdownTableTests {
     | Cell C   | Cell D   |
     """
 
-    @Test func tableProducesTabStops() {
-        let result = parser.parse(simpleTable)
+    @Test func tableProducesTabStops() async {
+        let result = await parser.parse(simpleTable)
         var hasTabStops = false
         result.enumerateAttribute(.paragraphStyle,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -32,8 +32,8 @@ struct CDMarkdownTableTests {
         #expect(hasTabStops)
     }
 
-    @Test func tableHeaderIsBold() {
-        let result = parser.parse(simpleTable)
+    @Test func tableHeaderIsBold() async {
+        let result = await parser.parse(simpleTable)
         var foundBold = false
         // Header row is first; check the font of the first character
         result.enumerateAttribute(.font,
@@ -46,8 +46,8 @@ struct CDMarkdownTableTests {
         #expect(foundBold)
     }
 
-    @Test func tableDataIsNotBold() {
-        let result = parser.parse(simpleTable)
+    @Test func tableDataIsNotBold() async {
+        let result = await parser.parse(simpleTable)
         // The data rows start after the header row; find the first \n and check after it
         guard let newlineRange = result.string.range(of: "\n") else {
             #expect(Bool(false), "No newline found")
@@ -64,20 +64,20 @@ struct CDMarkdownTableTests {
         #expect(!foundBold)
     }
 
-    @Test func tableCellContentIsPreserved() {
-        let result = parser.parse(simpleTable)
+    @Test func tableCellContentIsPreserved() async {
+        let result = await parser.parse(simpleTable)
         #expect(result.string.contains("Header 1"))
         #expect(result.string.contains("Cell A"))
         #expect(result.string.contains("Cell D"))
     }
 
-    @Test func tableWithoutLeadingTrailingPipes() {
+    @Test func tableWithoutLeadingTrailingPipes() async {
         let input = """
         Header 1 | Header 2
         -------- | --------
         Cell A   | Cell B
         """
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         var hasTabStops = false
         result.enumerateAttribute(.paragraphStyle,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -88,13 +88,13 @@ struct CDMarkdownTableTests {
         #expect(hasTabStops)
     }
 
-    @Test func nonTableTextIsUnaffected() {
+    @Test func nonTableTextIsUnaffected() async {
         // Text with pipes but no valid separator row (no dashes)
         let input = """
         | Hello | world |
         | This | is | not | a | table |
         """
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Without a proper separator row, the pipes should be preserved as text
         #expect(result.string.contains("|"))
         // The text should not be transformed into a table (would remove pipes)
@@ -102,13 +102,13 @@ struct CDMarkdownTableTests {
         #expect(result.string.contains("world"))
     }
 
-    @Test func tableCellWithBoldContent() {
+    @Test func tableCellWithBoldContent() async {
         let input = """
         | Header |
         | ------ |
         | **bold text** |
         """
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         var foundBold = false
         result.enumerateAttribute(.font,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -117,13 +117,13 @@ struct CDMarkdownTableTests {
         #expect(foundBold)
     }
 
-    @Test func tableCellWithItalicContent() {
+    @Test func tableCellWithItalicContent() async {
         let input = """
         | Header |
         | ------ |
         | *italic text* |
         """
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         var foundItalic = false
         result.enumerateAttribute(.font,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -132,13 +132,13 @@ struct CDMarkdownTableTests {
         #expect(foundItalic)
     }
 
-    @Test func tableCellWithLinkContent() {
+    @Test func tableCellWithLinkContent() async {
         let input = """
         | Header |
         | ------ |
         | [GitHub](https://github.com) |
         """
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         var foundLink = false
         result.enumerateAttribute(.link,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -147,13 +147,13 @@ struct CDMarkdownTableTests {
         #expect(foundLink)
     }
 
-    @Test func tableCellWithInlineCode() {
+    @Test func tableCellWithInlineCode() async {
         let input = """
         | Header |
         | ------ |
         | `code` |
         """
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         var foundCode = false
         result.enumerateAttribute(.cdMarkdownRoundedBackground,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in

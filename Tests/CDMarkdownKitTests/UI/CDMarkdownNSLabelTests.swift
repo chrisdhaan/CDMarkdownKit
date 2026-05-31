@@ -9,15 +9,15 @@
 
         let parser = CDMarkdownParser()
 
-        @Test func labelAcceptsAttributedText() {
+        @Test func labelAcceptsAttributedText() async {
             let label = CDMarkdownNSLabel(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
-            label.attributedText = parser.parse("Hello **world**")
+            label.attributedText = await parser.parse("Hello **world**")
             #expect(label.attributedText.length > 0)
         }
 
-        @Test func labelIntrinsicHeightIsPositive() {
+        @Test func labelIntrinsicHeightIsPositive() async {
             let label = CDMarkdownNSLabel(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
-            label.attributedText = parser.parse("Hello **world**")
+            label.attributedText = await parser.parse("Hello **world**")
             #expect(label.intrinsicContentSize.height > 0)
         }
 

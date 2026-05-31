@@ -20,11 +20,11 @@ struct CDMarkdownTextTests {
     }
 
     @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
-    @Test func environmentKeyDefaultValueIsNonNil() {
+    @Test func environmentKeyDefaultValueIsNonNil() async {
         let env = EnvironmentValues()
         let parser = env.markdownParser
         // Default parser should be usable
-        let result = parser.parse("test")
+        let result = await parser.parse("test")
         #expect(result.length > 0)
     }
 

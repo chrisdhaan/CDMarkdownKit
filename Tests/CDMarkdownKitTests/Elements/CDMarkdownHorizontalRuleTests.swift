@@ -12,49 +12,49 @@ struct CDMarkdownHorizontalRuleTests {
 
     let parser = CDMarkdownParser()
 
-    @Test func dashSyntaxReplaced() {
-        let result = parser.parse("---")
+    @Test func dashSyntaxReplaced() async {
+        let result = await parser.parse("---")
         #expect(!result.string.contains("-"))
         #expect(result.length > 0)
     }
 
-    @Test func asteriskSyntaxReplaced() {
-        let result = parser.parse("***")
+    @Test func asteriskSyntaxReplaced() async {
+        let result = await parser.parse("***")
         #expect(!result.string.contains("*"))
     }
 
-    @Test func underscoreSyntaxReplaced() {
-        let result = parser.parse("___")
+    @Test func underscoreSyntaxReplaced() async {
+        let result = await parser.parse("___")
         #expect(!result.string.contains("_"))
     }
 
-    @Test func spacedDashesSyntaxReplaced() {
-        let result = parser.parse("- - -")
+    @Test func spacedDashesSyntaxReplaced() async {
+        let result = await parser.parse("- - -")
         #expect(!result.string.contains("-"))
     }
 
-    @Test func fiveOrMoreCharactersAllowed() {
-        let result = parser.parse("-----")
+    @Test func fiveOrMoreCharactersAllowed() async {
+        let result = await parser.parse("-----")
         #expect(!result.string.contains("-"))
     }
 
-    @Test func twoDashesNotHorizontalRule() {
+    @Test func twoDashesNotHorizontalRule() async {
         // Two characters should NOT match (requires 3+)
-        let result = parser.parse("--")
+        let result = await parser.parse("--")
         #expect(result.string.contains("-"))
     }
 
-    @Test func contentBeforeIsPreserved() {
+    @Test func contentBeforeIsPreserved() async {
         let input = "Above\n---\nBelow"
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         #expect(result.string.contains("Above"))
         #expect(result.string.contains("Below"))
     }
 
-    @Test func customSeparatorString() {
+    @Test func customSeparatorString() async {
         let parser = CDMarkdownParser()
         parser.horizontalRule.separatorString = "---"
-        let result = parser.parse("***")
+        let result = await parser.parse("***")
         #expect(result.string.contains("---"))
     }
 }
