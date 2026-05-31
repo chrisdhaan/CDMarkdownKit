@@ -1059,7 +1059,7 @@ Open `Source/CDMarkdownSyntax.swift`. Apply the same addition in its `addAttribu
 
 ---
 
-**4.4 — Write blockquote flag into `CDMarkdownQuote`**
+**4.4 — Write blockquote flag into `CDMarkdownQuote`** ✅
 
 Open `Source/CDMarkdownQuote.swift`. In `match(_:attributedString:)`, after applying existing attributes to the content range:
 
