@@ -101,4 +101,66 @@ struct CDMarkdownTableTests {
         #expect(result.string.contains("Hello"))
         #expect(result.string.contains("world"))
     }
+
+    @Test func tableCellWithBoldContent() {
+        let input = """
+        | Header |
+        | ------ |
+        | **bold text** |
+        """
+        let result = parser.parse(input)
+        var foundBold = false
+        result.enumerateAttribute(.font,
+                                  in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let font = value as? CDFont, font.isBold { foundBold = true }
+        }
+        #expect(foundBold)
+    }
+
+    @Test func tableCellWithItalicContent() {
+        let input = """
+        | Header |
+        | ------ |
+        | *italic text* |
+        """
+        let result = parser.parse(input)
+        var foundItalic = false
+        result.enumerateAttribute(.font,
+                                  in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let font = value as? CDFont, font.isItalic { foundItalic = true }
+        }
+        #expect(foundItalic)
+    }
+
+    @Test func tableCellWithLinkContent() {
+        let input = """
+        | Header |
+        | ------ |
+        | [GitHub](https://github.com) |
+        """
+        let result = parser.parse(input)
+        var foundLink = false
+        result.enumerateAttribute(.link,
+                                  in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if value != nil { foundLink = true }
+        }
+        #expect(foundLink)
+    }
+
+    @Test func tableCellWithInlineCode() {
+        let input = """
+        | Header |
+        | ------ |
+        | `code` |
+        """
+        let result = parser.parse(input)
+        var foundCode = false
+        result.enumerateAttribute(.cdMarkdownRoundedBackground,
+                                  in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let rounded = value as? Bool, rounded {
+                foundCode = true
+            }
+        }
+        #expect(foundCode)
+    }
 }
