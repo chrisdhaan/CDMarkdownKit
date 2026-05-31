@@ -1126,7 +1126,7 @@ public func accessibilityAttributedString(from attributedString: NSAttributedStr
 
 ---
 
-**4.6 — Update `CDMarkdownLabel` to apply accessibility annotations automatically**
+**4.6 — Update `CDMarkdownLabel` to apply accessibility annotations automatically** ✅
 
 Open `Source/CDMarkdownLabel.swift`. `CDMarkdownLabel` is the primary display component for read-only markdown text. After setting `attributedText`, also set `accessibilityAttributedLabel` if a parser is available:
 
