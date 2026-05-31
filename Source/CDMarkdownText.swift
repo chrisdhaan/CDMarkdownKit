@@ -16,11 +16,11 @@ public struct CDMarkdownText: View {
     public var body: some View {
         Text(attributedString)
             .task(id: string) {
-                let ns = await parser.parse(string)
+                let nsAttributed = await parser.parse(string)
                 #if os(macOS)
-                attributedString = (try? AttributedString(ns, including: \.appKit)) ?? AttributedString(string)
+                attributedString = (try? AttributedString(nsAttributed, including: \.appKit)) ?? AttributedString(string)
                 #else
-                attributedString = (try? AttributedString(ns, including: \.uiKit)) ?? AttributedString(string)
+                attributedString = (try? AttributedString(nsAttributed, including: \.uiKit)) ?? AttributedString(string)
                 #endif
             }
     }

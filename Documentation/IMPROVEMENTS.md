@@ -1900,7 +1900,7 @@ In `README.md`, update the feature list to include:
 
 ---
 
-**6.8 — Verify**
+**6.8 — Verify** ✅
 
 Run `swift build` and `swift test`. Build the iOS, macOS, and tvOS Xcode schemes. In the Example app (or a new SwiftUI preview), verify:
 - `CDMarkdownText` renders bold, italic, and links with correct styling
