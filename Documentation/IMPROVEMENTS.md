@@ -1806,7 +1806,7 @@ Add this to `Source/CDMarkdownEnvironmentKey.swift`.
 
 ---
 
-**6.5 — Write tests in `Tests/CDMarkdownKitTests/SwiftUI/CDMarkdownTextTests.swift`**
+**6.5 — Write tests in `Tests/CDMarkdownKitTests/SwiftUI/CDMarkdownTextTests.swift`** ✅
 
 SwiftUI view tests require `XCTest` + `ViewInspector` or a hosting environment. Since the project uses Swift Testing and has no third-party test dependencies, limit tests to verifiable non-rendering properties:
 
