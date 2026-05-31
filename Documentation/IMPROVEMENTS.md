@@ -1170,11 +1170,10 @@ textView.accessibilityAttributedLabel = parser.accessibilityAttributedString(fro
 
 VoiceOver will announce headings with their level ("Heading level 1: Introduction"),
 helping users navigate document structure with the rotor.
-```
 
 ---
 
-**4.8 — Write tests in `Tests/CDMarkdownKitTests/Features/AccessibilityTests.swift`**
+**4.8 — Write tests in `Tests/CDMarkdownKitTests/Features/AccessibilityTests.swift`** ✅
 
 ```swift
 import Testing
