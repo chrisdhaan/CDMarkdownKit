@@ -1848,7 +1848,7 @@ import SwiftUI
 
 ---
 
-**6.6 — Update `Documentation/Usage.md`**
+**6.6 — Update `Documentation/Usage.md`** ✅
 
 Add a "SwiftUI" section:
 

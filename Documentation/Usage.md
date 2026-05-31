@@ -364,6 +364,42 @@ label.attributedText = parser.parse("Hello **world**")
 
 ---
 
+## SwiftUI
+
+### CDMarkdownText
+
+The lightweight option. Uses SwiftUI's `Text` with `AttributedString`. Does not draw
+rounded-corner code backgrounds, but works everywhere SwiftUI does:
+
+```swift
+CDMarkdownText("Hello **world**")
+```
+
+### CDMarkdownView
+
+Full fidelity, including rounded-corner code blocks and link interaction:
+
+```swift
+CDMarkdownView("Hello **world**\n\n`code`") { url in
+    // handle link tap
+    openURL(url)
+}
+```
+
+### Sharing a parser
+
+Set a parser once for a whole view hierarchy:
+
+```swift
+ContentView()
+    .markdownParser(myParser)
+```
+
+Any `CDMarkdownText` or `CDMarkdownView` in the subtree will use `myParser` unless
+overridden with an explicit `parser:` argument.
+
+---
+
 ## Custom Elements
 
 `CDMarkdownParser` accepts an array of `customElements`. Each element must conform to `CDMarkdownElement` and optionally `CDMarkdownStyle`. Custom elements run after all built-in elements in Phase 2 of the parsing pipeline.
