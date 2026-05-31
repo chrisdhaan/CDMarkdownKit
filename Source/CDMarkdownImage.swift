@@ -37,7 +37,8 @@
     extension CDMarkdownImage: @unchecked Sendable {}
 
     /// Renders inline images using `![alt](url)` syntax. Available on iOS, macOS, and tvOS.
-    open class CDMarkdownImage: CDMarkdownLinkElement {
+    @MainActor
+    open class CDMarkdownImage: @preconcurrency CDMarkdownLinkElement {
 
         fileprivate static let regex = "!\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"
 
