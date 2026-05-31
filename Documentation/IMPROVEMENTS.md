@@ -1306,7 +1306,7 @@ open class CDMarkdownNSLayoutManager: NSLayoutManager {
 
 ---
 
-**5.2 — Create `Source/CDMarkdownNSTextView.swift`**
+**5.2 — Create `Source/CDMarkdownNSTextView.swift`** ✅
 
 ```swift
 #if os(macOS)
