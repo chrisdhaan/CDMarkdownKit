@@ -224,12 +224,12 @@ open class CDMarkdownParser {
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
             self.defaultElements = [
                 table, horizontalRule, header, taskList, list, orderedList, quote, link,
-                automaticLink, image, bold, italic, strikethrough
+                automaticLink, image, bold, italic, strikethrough,
             ]
         #else
             self.defaultElements = [
                 table, horizontalRule, header, taskList, list, orderedList, quote, link,
-                automaticLink, bold, italic, strikethrough
+                automaticLink, bold, italic, strikethrough,
             ]
         #endif
         self.unescapingElements = [code, syntax, unescaping]
@@ -381,7 +381,7 @@ open class CDMarkdownParser {
             codeEscaping, escaping,
             link, automaticLink,
             bold, italic, strikethrough,
-            code, unescaping
+            code, unescaping,
         ]
         for element in inlineElements {
             element.parse(result)
@@ -506,23 +506,23 @@ open class CDMarkdownParser {
     }
 
     #if os(iOS) || os(tvOS) || os(visionOS)
-    /// Returns a copy of the attributed string with VoiceOver-compatible accessibility
-    /// annotations derived from CDMarkdownKit's custom attributes.
-    ///
-    /// Pass the result to `UILabel.accessibilityAttributedLabel` or
-    /// `UITextView.accessibilityAttributedLabel`.
-    public func accessibilityAttributedString(from attributedString: NSAttributedString) -> NSAttributedString {
-        let result = NSMutableAttributedString(attributedString: attributedString)
-        let fullRange = NSRange(location: 0, length: result.length)
+        /// Returns a copy of the attributed string with VoiceOver-compatible accessibility
+        /// annotations derived from CDMarkdownKit's custom attributes.
+        ///
+        /// Pass the result to `UILabel.accessibilityAttributedLabel` or
+        /// `UITextView.accessibilityAttributedLabel`.
+        public func accessibilityAttributedString(from attributedString: NSAttributedString) -> NSAttributedString {
+            let result = NSMutableAttributedString(attributedString: attributedString)
+            let fullRange = NSRange(location: 0, length: result.length)
 
-        result.enumerateAttribute(.cdMarkdownHeadingLevel, in: fullRange) { value, range, _ in
-            guard let level = value as? Int else { return }
-            result.addAttribute(NSAttributedString.Key(UIAccessibility.textAttributeHeadingLevel),
-                                value: level as AnyObject,
-                                range: range)
+            result.enumerateAttribute(.cdMarkdownHeadingLevel, in: fullRange) { value, range, _ in
+                guard let level = value as? Int else { return }
+                result.addAttribute(NSAttributedString.Key(UIAccessibility.textAttributeHeadingLevel),
+                                    value: level as AnyObject,
+                                    range: range)
+            }
+
+            return result
         }
-
-        return result
-    }
     #endif
 }

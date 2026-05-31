@@ -55,7 +55,7 @@
             customLayoutManager.addTextContainer(textContainer!)
 
             isEditable = false
-            isSelectable = true   // required for link clicks on macOS
+            isSelectable = true // required for link clicks on macOS
         }
 
         // MARK: - Text Management

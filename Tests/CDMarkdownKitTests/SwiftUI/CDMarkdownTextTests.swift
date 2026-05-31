@@ -1,9 +1,9 @@
-import Testing
 import SwiftUI
+import Testing
 @testable import CDMarkdownKit
 
 @MainActor
-@Suite struct CDMarkdownTextTests {
+struct CDMarkdownTextTests {
 
     @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
     @Test func cdMarkdownTextInitializesWithString() {

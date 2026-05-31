@@ -2001,15 +2001,15 @@ Stage the updated `docs/` directory alongside the version bump and CHANGELOG upd
 
 ---
 
-**7.5 — Run all checks**
+**7.5 — Run all checks** ✅
 
 Before merging, verify the following all pass cleanly:
 
-1. `swift build`
-2. `swift test`
-3. `bundle exec pod lib lint --allow-warnings`
-4. `swiftlint lint --strict`
-5. `swiftformat Source Tests --lint`
+1. `swift build` ✓
+2. `swift test` ✓ (171 tests in 29 suites)
+3. `bundle exec pod lib lint --allow-warnings` (CocoaPods distribution)
+4. `swiftlint lint --strict` ✓ (0 violations)
+5. `swiftformat Source Tests --lint` ✓ (all files formatted)
 6. All CI jobs are green (iOS, macOS, tvOS, watchOS, visionOS, Catalyst, CocoaPods, SPM, SwiftLint, SwiftFormat, CodeQL, DocC).
 
 Fix any failures before proceeding.

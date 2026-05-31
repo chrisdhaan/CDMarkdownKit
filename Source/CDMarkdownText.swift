@@ -21,9 +21,9 @@ public struct CDMarkdownText: View {
             .task(id: string) {
                 let nsAttributed = await parser.parse(string)
                 #if os(macOS)
-                attributedString = (try? AttributedString(nsAttributed, including: \.appKit)) ?? AttributedString(string)
+                    attributedString = (try? AttributedString(nsAttributed, including: \.appKit)) ?? AttributedString(string)
                 #else
-                attributedString = (try? AttributedString(nsAttributed, including: \.uiKit)) ?? AttributedString(string)
+                    attributedString = (try? AttributedString(nsAttributed, including: \.uiKit)) ?? AttributedString(string)
                 #endif
             }
     }

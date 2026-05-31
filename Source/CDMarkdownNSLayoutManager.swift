@@ -24,7 +24,7 @@
             }
 
             color.setFill()
-            for i in 0..<rectCount {
+            for i in 0 ..< rectCount {
                 let rect = rectArray[i].insetBy(dx: 0, dy: 1)
                 let path = NSBezierPath(roundedRect: rect, xRadius: 3, yRadius: 3)
                 path.fill()
@@ -34,8 +34,8 @@
         private func hasRoundedAttribute(at charRange: NSRange) -> Bool {
             guard charRange.location < (textStorage?.length ?? 0) else { return false }
             return textStorage?.attribute(.cdMarkdownRoundedBackground,
-                                           at: charRange.location,
-                                           effectiveRange: nil) as? Bool == true
+                                          at: charRange.location,
+                                          effectiveRange: nil) as? Bool == true
         }
     }
 

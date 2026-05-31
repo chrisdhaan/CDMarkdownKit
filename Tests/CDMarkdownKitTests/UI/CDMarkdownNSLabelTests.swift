@@ -1,11 +1,11 @@
 #if os(macOS)
 
-    import Testing
     import Cocoa
+    import Testing
     @testable import CDMarkdownKit
 
     @MainActor
-    @Suite struct CDMarkdownNSLabelTests {
+    struct CDMarkdownNSLabelTests {
 
         let parser = CDMarkdownParser()
 
