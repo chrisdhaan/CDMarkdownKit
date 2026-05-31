@@ -4,13 +4,16 @@ import SwiftUI
 public struct CDMarkdownText: View {
 
     private let string: String
+    private let explicitParser: CDMarkdownParser?
+    @Environment(\.markdownParser) private var environmentParser
     @State private var attributedString: AttributedString = AttributedString()
-    private let parser: CDMarkdownParser
+
+    private var parser: CDMarkdownParser { explicitParser ?? environmentParser }
 
     /// Creates a view that renders `string` as Markdown using `parser`.
-    public init(_ string: String, parser: CDMarkdownParser = CDMarkdownParser()) {
+    public init(_ string: String, parser: CDMarkdownParser? = nil) {
         self.string = string
-        self.parser = parser
+        self.explicitParser = parser
     }
 
     public var body: some View {

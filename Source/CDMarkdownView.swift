@@ -7,20 +7,23 @@ import SwiftUI
 public struct CDMarkdownView: UIViewRepresentable {
 
     private let string: String
-    private let parser: CDMarkdownParser
+    private let explicitParser: CDMarkdownParser?
+    @Environment(\.markdownParser) private var environmentParser
     public var onLinkTap: ((URL) -> Void)?
+
+    private var parser: CDMarkdownParser { explicitParser ?? environmentParser }
 
     /// Creates a full-fidelity Markdown view with rounded-corner support.
     public init(_ string: String,
-                parser: CDMarkdownParser = CDMarkdownParser(),
+                parser: CDMarkdownParser? = nil,
                 onLinkTap: ((URL) -> Void)? = nil) {
         self.string = string
-        self.parser = parser
+        self.explicitParser = parser
         self.onLinkTap = onLinkTap
     }
 
     public func makeUIView(context: Context) -> CDMarkdownTextView {
-        let textView = CDMarkdownTextView.makeTextView(frame: .zero)
+        let textView = CDMarkdownTextView(frame: .zero)
         textView.isScrollEnabled = false
         textView.backgroundColor = .clear
         textView.isSelectable = true
@@ -63,15 +66,18 @@ public struct CDMarkdownView: UIViewRepresentable {
 public struct CDMarkdownView: NSViewRepresentable {
 
     private let string: String
-    private let parser: CDMarkdownParser
+    private let explicitParser: CDMarkdownParser?
+    @Environment(\.markdownParser) private var environmentParser
     public var onLinkTap: ((URL) -> Bool)?
+
+    private var parser: CDMarkdownParser { explicitParser ?? environmentParser }
 
     /// Creates a full-fidelity Markdown view with rounded-corner support.
     public init(_ string: String,
-                parser: CDMarkdownParser = CDMarkdownParser(),
+                parser: CDMarkdownParser? = nil,
                 onLinkTap: ((URL) -> Bool)? = nil) {
         self.string = string
-        self.parser = parser
+        self.explicitParser = parser
         self.onLinkTap = onLinkTap
     }
 
