@@ -65,7 +65,6 @@
         /// - Parameter attributedString: The `NSAttributedString` to display. Typically produced by ``CDMarkdownParser.parse(_:)``.
         open func setAttributedString(_ attributedString: NSAttributedString) {
             customTextStorage.setAttributedString(attributedString)
-            super.textStorage?.setAttributedString(attributedString)
         }
     }
 
