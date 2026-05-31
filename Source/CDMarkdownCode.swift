@@ -95,6 +95,9 @@ open class CDMarkdownCode: @preconcurrency CDMarkdownCommonElement {
         attributedString.addAttribute(.cdMarkdownRoundedBackground,
                                       value: true as AnyObject,
                                       range: range)
+        attributedString.addAttribute(.cdMarkdownIsCode,
+                                      value: true as AnyObject,
+                                      range: range)
         let mutableString = attributedString.mutableString
         // Remove \n if in string, not valid in Code element
         // Use Syntax element for \n to parse in string

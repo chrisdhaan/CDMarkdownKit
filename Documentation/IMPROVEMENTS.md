@@ -1045,7 +1045,7 @@ attributedString.addAttribute(.cdMarkdownHeadingLevel,
 
 ---
 
-**4.3 — Write code flag into `CDMarkdownCode` and `CDMarkdownSyntax`**
+**4.3 — Write code flag into `CDMarkdownCode` and `CDMarkdownSyntax`** ✅
 
 Open `Source/CDMarkdownCode.swift`. In `addAttributes(_:range:)`, after applying existing attributes:
 
