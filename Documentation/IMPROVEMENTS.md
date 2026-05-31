@@ -1248,7 +1248,7 @@ import Foundation
 
 ---
 
-**4.9 — Verify**
+**4.9 — Verify** ✅
 
 Run `swift build` and `swift test`. Manually test in the Example app with VoiceOver enabled: navigate to a heading and confirm the VoiceOver rotor lists it as a heading. Confirm `CDMarkdownLabel` with heading content speaks the heading level.
 
