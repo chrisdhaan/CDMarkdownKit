@@ -1615,7 +1615,7 @@ attributedString = (try? AttributedString(ns, including: \.uiKit)) ?? Attributed
 
 ---
 
-**6.2 — Create `Source/CDMarkdownView.swift`**
+**6.2 — Create `Source/CDMarkdownView.swift`** ✅
 
 `CDMarkdownView` wraps `CDMarkdownTextView` (iOS/tvOS/visionOS) or `CDMarkdownNSTextView` (macOS) in the appropriate `UIViewRepresentable` / `NSViewRepresentable`. This provides full fidelity — rounded corners, link interaction, and correct text layout — at the cost of bridging overhead.
 

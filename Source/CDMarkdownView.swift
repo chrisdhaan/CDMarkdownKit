@@ -1,0 +1,112 @@
+import SwiftUI
+
+// MARK: - iOS / tvOS / visionOS
+
+#if os(iOS) || os(tvOS) || os(visionOS)
+@available(iOS 15.0, tvOS 15.0, visionOS 1.0, *)
+public struct CDMarkdownView: UIViewRepresentable {
+
+    private let string: String
+    private let parser: CDMarkdownParser
+    public var onLinkTap: ((URL) -> Void)?
+
+    /// Creates a full-fidelity Markdown view with rounded-corner support.
+    public init(_ string: String,
+                parser: CDMarkdownParser = CDMarkdownParser(),
+                onLinkTap: ((URL) -> Void)? = nil) {
+        self.string = string
+        self.parser = parser
+        self.onLinkTap = onLinkTap
+    }
+
+    public func makeUIView(context: Context) -> CDMarkdownTextView {
+        let textView = CDMarkdownTextView.makeTextView(frame: .zero)
+        textView.isScrollEnabled = false
+        textView.backgroundColor = .clear
+        textView.isSelectable = true
+        textView.delegate = context.coordinator
+        return textView
+    }
+
+    public func updateUIView(_ uiView: CDMarkdownTextView, context: Context) {
+        context.coordinator.onLinkTap = onLinkTap
+        Task { @MainActor in
+            uiView.attributedText = await parser.parse(string)
+        }
+    }
+
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(onLinkTap: onLinkTap)
+    }
+
+    public class Coordinator: NSObject, UITextViewDelegate {
+        var onLinkTap: ((URL) -> Void)?
+
+        init(onLinkTap: ((URL) -> Void)?) {
+            self.onLinkTap = onLinkTap
+        }
+
+        public func textView(_ textView: UITextView,
+                             shouldInteractWith url: URL,
+                             in characterRange: NSRange,
+                             interaction: UITextItemInteraction) -> Bool {
+            onLinkTap?(url)
+            return onLinkTap == nil  // let UIKit handle if no custom handler
+        }
+    }
+}
+
+// MARK: - macOS
+
+#elseif os(macOS)
+@available(macOS 12.0, *)
+public struct CDMarkdownView: NSViewRepresentable {
+
+    private let string: String
+    private let parser: CDMarkdownParser
+    public var onLinkTap: ((URL) -> Bool)?
+
+    /// Creates a full-fidelity Markdown view with rounded-corner support.
+    public init(_ string: String,
+                parser: CDMarkdownParser = CDMarkdownParser(),
+                onLinkTap: ((URL) -> Bool)? = nil) {
+        self.string = string
+        self.parser = parser
+        self.onLinkTap = onLinkTap
+    }
+
+    public func makeNSView(context: Context) -> CDMarkdownNSTextView {
+        let textView = CDMarkdownNSTextView(frame: .zero)
+        textView.delegate = context.coordinator
+        return textView
+    }
+
+    public func updateNSView(_ nsView: CDMarkdownNSTextView, context: Context) {
+        context.coordinator.onLinkTap = onLinkTap
+        Task { @MainActor in
+            nsView.setAttributedString(await parser.parse(string))
+        }
+    }
+
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(onLinkTap: onLinkTap)
+    }
+
+    public class Coordinator: NSObject, NSTextViewDelegate {
+        var onLinkTap: ((URL) -> Bool)?
+
+        init(onLinkTap: ((URL) -> Bool)?) {
+            self.onLinkTap = onLinkTap
+        }
+
+        public func textView(_ textView: NSTextView,
+                             clickedOnLink link: Any,
+                             at charIndex: Int) -> Bool {
+            if let url = link as? URL, let handler = onLinkTap {
+                return handler(url)
+            }
+            return false
+        }
+    }
+}
+#endif
