@@ -228,6 +228,12 @@ open class CDMarkdownParser {
         self.customElements = customElements
         code.parser = self
         syntax.parser = self
+
+        // Wire inline parsing for table cells after all elements are initialized
+        table.inlineParser = { [weak self] cellText in
+            guard let self else { return NSAttributedString(string: cellText) }
+            return self.parseInline(cellText)
+        }
     }
 
     // MARK: - Element Extensibility
@@ -301,6 +307,22 @@ open class CDMarkdownParser {
     open func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
         let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))
         await resolveImages(in: result)
+        return result
+    }
+
+    private func parseInline(_ string: String) -> NSAttributedString {
+        let attrs: [CDAttributedStringKey: AnyObject] = [.font: font as AnyObject,
+                                                         .foregroundColor: fontColor as AnyObject]
+        let result = NSMutableAttributedString(string: string, attributes: attrs)
+        let inlineElements: [any CDMarkdownElement] = [
+            codeEscaping, escaping,
+            link, automaticLink,
+            bold, italic, strikethrough,
+            code, unescaping
+        ]
+        for element in inlineElements {
+            element.parse(result)
+        }
         return result
     }
 
