@@ -1367,7 +1367,7 @@ open class CDMarkdownNSTextView: NSTextView {
 
 ---
 
-**5.3 — Create `Source/CDMarkdownNSLabel.swift`**
+**5.3 — Create `Source/CDMarkdownNSLabel.swift`** ✅
 
 For simple read-only display without link interaction, an `NSTextField`-based label is lighter weight than a full `NSTextView`. However, `NSTextField` does not use `NSLayoutManager` and therefore cannot draw rounded corners. Use a custom `NSView` subclass instead, drawing text via `NSLayoutManager` directly (mirroring how `CDMarkdownLabel` works on iOS).
 
