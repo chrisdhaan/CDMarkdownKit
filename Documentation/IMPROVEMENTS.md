@@ -1985,7 +1985,7 @@ Fill in the PR number and release date before merging.
 
 ---
 
-**7.4 — Regenerate the DocC static site**
+**7.4 — Regenerate the DocC static site** ✅
 
 Run the following from the repository root to regenerate `docs/` with the updated version:
 
