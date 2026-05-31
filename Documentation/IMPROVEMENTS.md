@@ -1890,7 +1890,7 @@ overridden with an explicit `parser:` argument.
 
 ---
 
-**6.7 — Update README badges and feature list**
+**6.7 — Update README badges and feature list** ✅
 
 In `README.md`, update the feature list to include:
 
