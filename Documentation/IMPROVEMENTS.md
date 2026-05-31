@@ -1031,7 +1031,7 @@ extension NSAttributedString.Key {
 
 ---
 
-**4.2 — Write heading level into `CDMarkdownHeader`**
+**4.2 — Write heading level into `CDMarkdownHeader`** ✅
 
 Open `Source/CDMarkdownHeader.swift`. In the `match(_:attributedString:)` method (or `addAttributes(_:range:level:)` if it exists), after applying existing attributes, also write the heading level:
 

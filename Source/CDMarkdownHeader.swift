@@ -137,4 +137,13 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
         }
         return attributes
     }
+
+    open func addAttributes(_ attributedString: NSMutableAttributedString,
+                           range: NSRange,
+                           level: Int) {
+        attributedString.addAttributes(attributesForLevel(level - 1), range: range)
+        attributedString.addAttribute(.cdMarkdownHeadingLevel,
+                                      value: level as AnyObject,
+                                      range: range)
+    }
 }
