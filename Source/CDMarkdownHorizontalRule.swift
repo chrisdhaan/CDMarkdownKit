@@ -50,7 +50,7 @@ open class CDMarkdownHorizontalRule: CDMarkdownElement, CDMarkdownStyle {
     open var underlineStyle: NSUnderlineStyle?
 
     /// The string that replaces the markdown horizontal rule syntax.
-    /// Default: "────────"  (8 em dashes)
+    /// Default: "────────"  (8 box-drawing horizontal rule characters, U+2500)
     open var separatorString: String = "────────"
 
     open var regex: String {
