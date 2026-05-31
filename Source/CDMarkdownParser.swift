@@ -49,6 +49,8 @@ open class CDMarkdownParser {
 
     /// Handles GFM table syntax (pipe-delimited rows).
     public let table: CDMarkdownTable
+    /// Handles horizontal rule syntax (---, ***, ___).
+    public let horizontalRule: CDMarkdownHorizontalRule
     /// Handles heading syntax (#, ##, etc.).
     public let header: CDMarkdownHeader
     /// Handles unordered list syntax (*, -, +).
@@ -146,6 +148,10 @@ open class CDMarkdownParser {
                                 color: fontColor,
                                 backgroundColor: backgroundColor,
                                 paragraphStyle: paragraphStyle)
+        horizontalRule = CDMarkdownHorizontalRule(font: font,
+                                                  color: fontColor,
+                                                  backgroundColor: backgroundColor,
+                                                  paragraphStyle: paragraphStyle)
         header = CDMarkdownHeader(font: font,
                                   color: fontColor,
                                   backgroundColor: backgroundColor,
@@ -208,9 +214,15 @@ open class CDMarkdownParser {
         self.squashNewlines = squashNewlines
         self.escapingElements = [codeEscaping, escaping]
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
-            self.defaultElements = [table, header, taskList, list, orderedList, quote, link, automaticLink, image, bold, italic, strikethrough]
+            self.defaultElements = [
+                table, horizontalRule, header, taskList, list, orderedList, quote, link,
+                automaticLink, image, bold, italic, strikethrough
+            ]
         #else
-            self.defaultElements = [table, header, taskList, list, orderedList, quote, link, automaticLink, bold, italic, strikethrough]
+            self.defaultElements = [
+                table, horizontalRule, header, taskList, list, orderedList, quote, link,
+                automaticLink, bold, italic, strikethrough
+            ]
         #endif
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
