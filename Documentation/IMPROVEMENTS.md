@@ -1736,7 +1736,7 @@ public struct CDMarkdownView: NSViewRepresentable {
 
 ---
 
-**6.3 — Create `Source/CDMarkdownEnvironmentKey.swift`**
+**6.3 — Create `Source/CDMarkdownEnvironmentKey.swift`** ✅
 
 Allow a `CDMarkdownParser` to be injected via the SwiftUI environment, so deeply nested views can share a single configured parser without passing it explicitly at every call site.
 
