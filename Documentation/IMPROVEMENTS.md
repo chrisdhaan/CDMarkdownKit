@@ -1919,7 +1919,7 @@ This section covers tagging and releasing v3.2.0. The release bundles all work f
 
 ---
 
-**7.1 — Bump the version**
+**7.1 — Bump the version** ✅
 
 Update the version constant in `Source/CDMarkdownKit.swift` from `"3.1.0"` to `"3.2.0"`:
 
