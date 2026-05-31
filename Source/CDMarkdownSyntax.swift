@@ -31,7 +31,7 @@
     import Cocoa
 #endif
 
-// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
+/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
 extension CDMarkdownSyntax: @unchecked Sendable {}
 
 /// Renders fenced code blocks using triple-backtick syntax.

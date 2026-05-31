@@ -31,7 +31,7 @@
     import Cocoa
 #endif
 
-// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
+/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
 extension CDMarkdownLink: @unchecked Sendable {}
 
 /// Renders inline links using `[text](url)` syntax.

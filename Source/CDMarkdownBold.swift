@@ -31,7 +31,7 @@
     import Cocoa
 #endif
 
-// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
+/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
 extension CDMarkdownBold: @unchecked Sendable {}
 
 /// Renders bold text using **text** or __text__ syntax.
