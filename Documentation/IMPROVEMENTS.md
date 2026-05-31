@@ -1457,7 +1457,7 @@ open class CDMarkdownNSLabel: NSView {
 
 ---
 
-**5.4 — Add macOS UI files to the Xcode project**
+**5.4 — Add macOS UI files to the Xcode project** ✅
 
 Open `CDMarkdownKit.xcodeproj`. In the macOS scheme target's **Build Phases → Compile Sources**, add:
 
