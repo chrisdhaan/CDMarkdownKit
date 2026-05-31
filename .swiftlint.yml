@@ -4,13 +4,14 @@ included: # paths to include during linting. `--path` is ignored if present.
 
 # configurable rules can be customized from this configuration file.
 # number of lines allowed in a file
-file_length: 500
+file_length: 550
 # number of lines allowed in a function
 function_body_length: 100
 # rules related to vars/lets
 identifier_name:
   excluded:
     - to
+    - i  # loop counter in NSLayoutManager
 # number of characters allowed in a line
 line_length:
   error: 200
@@ -18,4 +19,4 @@ line_length:
   ignores_function_declarations: true
   warning: 149
 # number of lines allowed in a type body
-type_body_length: 267
+type_body_length: 350

@@ -31,6 +31,7 @@
     import Cocoa
 #endif
 
+/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
 extension CDMarkdownQuote: @unchecked Sendable {}
 
 /// Renders blockquotes using > syntax.
@@ -93,5 +94,14 @@ open class CDMarkdownQuote: CDMarkdownLevelElement {
         string = "\(string)\(indicator) "
         attributedString.replaceCharacters(in: range,
                                            with: string)
+    }
+
+    open func addAttributes(_ attributedString: NSMutableAttributedString,
+                            range: NSRange,
+                            level: Int) {
+        attributedString.addAttributes(attributesForLevel(level - 1), range: range)
+        attributedString.addAttribute(.cdMarkdownIsBlockquote,
+                                      value: true as AnyObject,
+                                      range: range)
     }
 }

@@ -36,6 +36,8 @@ A pure-Swift, zero-dependency framework for parsing Markdown text into styled `N
 - [x] Async image loading with `async/await`
 - [x] Custom Markdown elements
 - [x] `UILabel` and `UITextView` subclasses with Markdown support
+- [x] macOS UI components (`NSTextView`, `NSLabel` subclasses)
+- [x] SwiftUI support via `CDMarkdownText` and `CDMarkdownView`
 - [x] Swift 6 concurrency safety
 
 ## Quick Example

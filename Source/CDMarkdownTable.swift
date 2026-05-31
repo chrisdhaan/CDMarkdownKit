@@ -5,6 +5,7 @@ import Foundation
     import Cocoa
 #endif
 
+/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
 extension CDMarkdownTable: @unchecked Sendable {}
 
 open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
@@ -24,6 +25,10 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
     open var underlineStyle: NSUnderlineStyle?
 
     open var columnPadding: CGFloat = 16
+
+    /// Called on each cell's text content to apply inline element parsing (bold, italic, links, etc.).
+    /// Set by CDMarkdownParser during initialization. Nil means cells render as plain text.
+    internal var inlineParser: ((String) -> NSAttributedString)?
 
     open var regex: String {
         CDMarkdownTable.regex
@@ -135,27 +140,42 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
         // Build the replacement attributed string
         let result = NSMutableAttributedString()
 
-        func appendRow(_ cells: [String], cellAttributes: [CDAttributedStringKey: AnyObject]) {
+        func appendRow(_ cells: [String], isBold: Bool) {
             let rowString = NSMutableAttributedString()
             for columnIndex in 0 ..< columnCount {
                 if columnIndex > 0 {
                     rowString.append(NSAttributedString(string: "\t"))
                 }
                 let text = columnIndex < cells.count ? cells[columnIndex] : ""
-                rowString.append(NSAttributedString(string: text,
-                                                    attributes: cellAttributes))
+                let cellContent: NSAttributedString
+                if inlineParser != nil, !text.isEmpty {
+                    // Parse inline markdown in cell content
+                    let parsed = NSMutableAttributedString(attributedString: inlineParser!(text))
+                    if isBold {
+                        // Bold the header row if no explicit font was set by inline parsing
+                        parsed.enumerateAttribute(.font,
+                                                  in: NSRange(location: 0, length: parsed.length)) { value, range, _ in
+                            if let font = value as? CDFont {
+                                parsed.addAttribute(.font, value: font.bold(), range: range)
+                            }
+                        }
+                    }
+                    cellContent = parsed
+                } else {
+                    let cellAttributes = isBold ? boldAttributes : attributes
+                    cellContent = NSAttributedString(string: text, attributes: cellAttributes)
+                }
+                rowString.append(cellContent)
             }
             rowString.append(NSAttributedString(string: "\n"))
             let rowRange = NSRange(location: 0, length: rowString.length)
-            rowString.addAttribute(.paragraphStyle,
-                                   value: tableStyle,
-                                   range: rowRange)
+            rowString.addAttribute(.paragraphStyle, value: tableStyle, range: rowRange)
             result.append(rowString)
         }
 
-        appendRow(headerCells, cellAttributes: boldAttributes)
+        appendRow(headerCells, isBold: true)
         for row in dataRows {
-            appendRow(row, cellAttributes: attributes)
+            appendRow(row, isBold: false)
         }
 
         // Replace the original table block with the rebuilt attributed string

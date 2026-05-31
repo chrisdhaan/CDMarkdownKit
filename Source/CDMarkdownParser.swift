@@ -49,12 +49,16 @@ open class CDMarkdownParser {
 
     /// Handles GFM table syntax (pipe-delimited rows).
     public let table: CDMarkdownTable
+    /// Handles horizontal rule syntax (---, ***, ___).
+    public let horizontalRule: CDMarkdownHorizontalRule
     /// Handles heading syntax (#, ##, etc.).
     public let header: CDMarkdownHeader
     /// Handles unordered list syntax (*, -, +).
     public let list: CDMarkdownList
     /// Handles ordered list syntax (1., 2., 3., etc.).
     public let orderedList: CDMarkdownOrderedList
+    /// Handles GFM task list syntax (`- [ ]`, `- [x]`).
+    public let taskList: CDMarkdownTaskList
     /// Handles blockquote syntax (>).
     public let quote: CDMarkdownQuote
     /// Handles inline links using `[text](url)` syntax.
@@ -93,6 +97,14 @@ open class CDMarkdownParser {
     /// When enabled, preserves leading whitespace (spaces and tabs) on each line.
     /// Default is `false` (leading whitespace is stripped). Set to `true` to preserve indentation in code and quoted text.
     open var preserveLeadingWhitespace: Bool = false
+    /// Element types listed here are excluded from the parsing pipeline.
+    /// Use this to opt out of specific default elements without subclassing.
+    ///
+    /// Example — disable header parsing:
+    /// ```swift
+    /// parser.disabledElementTypes.insert(ObjectIdentifier(CDMarkdownHeader.self))
+    /// ```
+    open var disabledElementTypes: Set<ObjectIdentifier> = []
     /// The default font used for all parsed text.
     public let font: CDFont
     /// The default text color for all parsed text.
@@ -144,6 +156,10 @@ open class CDMarkdownParser {
                                 color: fontColor,
                                 backgroundColor: backgroundColor,
                                 paragraphStyle: paragraphStyle)
+        horizontalRule = CDMarkdownHorizontalRule(font: font,
+                                                  color: fontColor,
+                                                  backgroundColor: backgroundColor,
+                                                  paragraphStyle: paragraphStyle)
         header = CDMarkdownHeader(font: font,
                                   color: fontColor,
                                   backgroundColor: backgroundColor,
@@ -156,6 +172,10 @@ open class CDMarkdownParser {
                                             color: fontColor,
                                             backgroundColor: backgroundColor,
                                             paragraphStyle: paragraphStyle)
+        taskList = CDMarkdownTaskList(font: font,
+                                      color: fontColor,
+                                      backgroundColor: backgroundColor,
+                                      paragraphStyle: paragraphStyle)
         quote = CDMarkdownQuote(font: font,
                                 color: fontColor,
                                 backgroundColor: backgroundColor,
@@ -202,14 +222,26 @@ open class CDMarkdownParser {
         self.squashNewlines = squashNewlines
         self.escapingElements = [codeEscaping, escaping]
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
-            self.defaultElements = [table, header, list, orderedList, quote, link, automaticLink, image, bold, italic, strikethrough]
+            self.defaultElements = [
+                table, horizontalRule, header, taskList, list, orderedList, quote, link,
+                automaticLink, image, bold, italic, strikethrough
+            ]
         #else
-            self.defaultElements = [table, header, list, orderedList, quote, link, automaticLink, bold, italic, strikethrough]
+            self.defaultElements = [
+                table, horizontalRule, header, taskList, list, orderedList, quote, link,
+                automaticLink, bold, italic, strikethrough
+            ]
         #endif
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
         code.parser = self
         syntax.parser = self
+
+        // Wire inline parsing for table cells after all elements are initialized
+        table.inlineParser = { [weak self] cellText in
+            guard let self else { return NSAttributedString(string: cellText) }
+            return self.parseInline(cellText)
+        }
     }
 
     // MARK: - Element Extensibility
@@ -238,6 +270,59 @@ open class CDMarkdownParser {
         customElements.remove(at: index)
     }
 
+    /// Disables all default elements of the given type from the parsing pipeline.
+    ///
+    /// - Parameter elementType: The type of element to disable (e.g., `CDMarkdownHeader.self`).
+    ///
+    /// Use this to opt out of specific default elements without subclassing. For example:
+    /// ```swift
+    /// parser.disable(CDMarkdownHeader.self)
+    /// ```
+    public func disable(_ elementType: (some AnyObject).Type) {
+        disabledElementTypes.insert(ObjectIdentifier(elementType))
+    }
+
+    /// Re-enables all default elements of the given type in the parsing pipeline.
+    ///
+    /// - Parameter elementType: The type of element to re-enable (e.g., `CDMarkdownHeader.self`).
+    public func enable(_ elementType: (some AnyObject).Type) {
+        disabledElementTypes.remove(ObjectIdentifier(elementType))
+    }
+
+    /// Inserts a custom element into the pipeline immediately before all default elements of a given type.
+    ///
+    /// - Parameters:
+    ///   - element: A ``CDMarkdownElement`` implementation to insert.
+    ///   - elementType: The type of default element to insert before (e.g., `CDMarkdownBold.self`).
+    ///
+    /// If no default element of the specified type exists, the custom element is appended to `customElements`.
+    public func insertCustomElement(_ element: any CDMarkdownElement,
+                                    before elementType: (some AnyObject).Type) {
+        let targetID = ObjectIdentifier(elementType)
+        if let index = defaultElements.firstIndex(where: { ObjectIdentifier(type(of: $0)) == targetID }) {
+            defaultElements.insert(element, at: index)
+        } else {
+            customElements.append(element)
+        }
+    }
+
+    /// Inserts a custom element into the pipeline immediately after all default elements of a given type.
+    ///
+    /// - Parameters:
+    ///   - element: A ``CDMarkdownElement`` implementation to insert.
+    ///   - elementType: The type of default element to insert after (e.g., `CDMarkdownBold.self`).
+    ///
+    /// If no default element of the specified type exists, the custom element is appended to `customElements`.
+    public func insertCustomElement(_ element: any CDMarkdownElement,
+                                    after elementType: (some AnyObject).Type) {
+        let targetID = ObjectIdentifier(elementType)
+        if let index = defaultElements.lastIndex(where: { ObjectIdentifier(type(of: $0)) == targetID }) {
+            defaultElements.insert(element, at: index + 1)
+        } else {
+            customElements.append(element)
+        }
+    }
+
     // MARK: - Parsing
 
     /// Parses a Markdown string and returns a styled NSAttributedString.
@@ -246,6 +331,7 @@ open class CDMarkdownParser {
     /// - Returns: An `NSAttributedString` with styling applied for all recognized Markdown syntax.
     ///
     /// Images are not loaded in the synchronous overload. Use the async overload for remote image support.
+    @available(*, deprecated, renamed: "parse(_:)")
     open func parse(_ markdown: String) -> NSAttributedString {
         parse(NSAttributedString(string: markdown))
     }
@@ -256,6 +342,7 @@ open class CDMarkdownParser {
     /// - Returns: An `NSAttributedString` with styling applied for all recognized Markdown syntax.
     ///
     /// Images are not loaded in the synchronous overload. Use the async overload to download remote images.
+    @available(*, deprecated, renamed: "parse(_:)")
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         parse(markdown, loadImages: false)
     }
@@ -283,6 +370,22 @@ open class CDMarkdownParser {
     open func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
         let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))
         await resolveImages(in: result)
+        return result
+    }
+
+    private func parseInline(_ string: String) -> NSAttributedString {
+        let attrs: [CDAttributedStringKey: AnyObject] = [.font: font as AnyObject,
+                                                         .foregroundColor: fontColor as AnyObject]
+        let result = NSMutableAttributedString(string: string, attributes: attrs)
+        let inlineElements: [any CDMarkdownElement] = [
+            codeEscaping, escaping,
+            link, automaticLink,
+            bold, italic, strikethrough,
+            code, unescaping
+        ]
+        for element in inlineElements {
+            element.parse(result)
+        }
         return result
     }
 
@@ -328,7 +431,10 @@ open class CDMarkdownParser {
                                            toRange: range)
 
         var elements: [any CDMarkdownElement] = escapingElements
-        elements.append(contentsOf: defaultElements)
+        let activeElements = defaultElements.filter { element in
+            !disabledElementTypes.contains(ObjectIdentifier(type(of: element)))
+        }
+        elements.append(contentsOf: activeElements)
         elements.append(contentsOf: customElements)
         elements.append(contentsOf: unescapingElements)
 
@@ -398,4 +504,25 @@ open class CDMarkdownParser {
             }
         }
     }
+
+    #if os(iOS) || os(visionOS)
+        /// Returns a copy of the attributed string with VoiceOver-compatible accessibility
+        /// annotations derived from CDMarkdownKit's custom attributes.
+        ///
+        /// Pass the result to `UILabel.accessibilityAttributedLabel` or
+        /// `UITextView.accessibilityAttributedLabel`.
+        public func accessibilityAttributedString(from attributedString: NSAttributedString) -> NSAttributedString {
+            let result = NSMutableAttributedString(attributedString: attributedString)
+            let fullRange = NSRange(location: 0, length: result.length)
+
+            result.enumerateAttribute(.cdMarkdownHeadingLevel, in: fullRange) { value, range, _ in
+                guard let level = value as? Int else { return }
+                result.addAttribute(.accessibilityTextHeadingLevel,
+                                    value: level as AnyObject,
+                                    range: range)
+            }
+
+            return result
+        }
+    #endif
 }

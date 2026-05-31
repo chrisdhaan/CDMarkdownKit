@@ -31,10 +31,11 @@
     import Cocoa
 #endif
 
+/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
 extension CDMarkdownCode: @unchecked Sendable {}
 
 /// Renders inline code using `code` syntax.
-open class CDMarkdownCode: CDMarkdownCommonElement {
+open class CDMarkdownCode: @preconcurrency CDMarkdownCommonElement {
 
     fileprivate static let regex = "(\\s+|^|\\()(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)(\\)?)"
 
@@ -92,6 +93,9 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
         attributedString.addAttributes(attributes,
                                        range: range)
         attributedString.addAttribute(.cdMarkdownRoundedBackground,
+                                      value: true as AnyObject,
+                                      range: range)
+        attributedString.addAttribute(.cdMarkdownIsCode,
                                       value: true as AnyObject,
                                       range: range)
         let mutableString = attributedString.mutableString

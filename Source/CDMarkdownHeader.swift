@@ -31,6 +31,7 @@
     import Cocoa
 #endif
 
+/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
 extension CDMarkdownHeader: @unchecked Sendable {}
 
 /// Renders headings using # through ###### syntax.
@@ -110,7 +111,7 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
 
     open func attributesForLevel(_ level: Int) -> [CDAttributedStringKey: AnyObject] {
         var attributes = self.attributes
-        var fontMultiplier: CGFloat = switch level {
+        let fontMultiplier: CGFloat = switch level {
         case 0:
             CGFloat(CDMarkdownHeadingHashes.one)
         case 1:
@@ -135,5 +136,14 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
             attributes.addFont(headerFont)
         }
         return attributes
+    }
+
+    open func addAttributes(_ attributedString: NSMutableAttributedString,
+                            range: NSRange,
+                            level: Int) {
+        attributedString.addAttributes(attributesForLevel(level - 1), range: range)
+        attributedString.addAttribute(.cdMarkdownHeadingLevel,
+                                      value: level as AnyObject,
+                                      range: range)
     }
 }

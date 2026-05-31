@@ -86,6 +86,43 @@ parser.addCustomElement(customElement)
 parser.removeCustomElement(customElement)
 ```
 
+### Customizing the Element Pipeline
+
+#### Disabling default elements
+
+Exclude specific built-in elements from parsing without subclassing:
+
+```swift
+let parser = CDMarkdownParser()
+parser.disable(CDMarkdownHeader.self)        // raw # syntax passes through
+parser.disable(CDMarkdownAutomaticLink.self) // no automatic URL detection
+```
+
+Re-enable at any time:
+
+```swift
+parser.enable(CDMarkdownHeader.self)
+```
+
+#### Inserting custom elements at specific positions
+
+By default, custom elements run after all built-in elements. Use `insertCustomElement(_:before:)` or `insertCustomElement(_:after:)` to position them precisely:
+
+```swift
+let mention = CDMarkdownMention()
+parser.insertCustomElement(mention, before: CDMarkdownBold.self)
+```
+
+#### Async vs. synchronous parsing
+
+Prefer the async overload for all new code:
+
+```swift
+let attributed = await parser.parse("Hello **world**")
+```
+
+The synchronous `parse(_:)` overloads are deprecated and will be removed in a future major version. They remain available for backward compatibility.
+
 ### Customizing Element Styling
 
 Each element has configurable styling:
@@ -285,6 +322,84 @@ textView.isEditable = false
 
 ---
 
+## macOS UI Components
+
+### CDMarkdownNSTextView
+
+`CDMarkdownNSTextView` is a read-only `NSTextView` subclass with rounded-corner support
+for code spans. Use it for rich display with selectable text and native link handling:
+
+```swift
+let textView = CDMarkdownNSTextView(frame: view.bounds)
+textView.roundAllCorners = true
+Task {
+    textView.setAttributedString(await parser.parse(markdown))
+}
+```
+
+Links in the attributed string are opened automatically by `NSWorkspace` when clicked.
+To intercept link clicks, set a delegate:
+
+```swift
+textView.delegate = self  // NSTextViewDelegate
+
+func textView(_ textView: NSTextView, clickedOnLink link: Any, at charIndex: Int) -> Bool {
+    if let url = link as? URL, url.scheme == "mention" {
+        // handle custom scheme
+        return true
+    }
+    return false
+}
+```
+
+### CDMarkdownNSLabel
+
+`CDMarkdownNSLabel` is a lightweight read-only `NSView` for simple markdown display without
+link interaction:
+
+```swift
+let label = CDMarkdownNSLabel(frame: .zero)
+label.attributedText = parser.parse("Hello **world**")
+```
+
+---
+
+## SwiftUI
+
+### CDMarkdownText
+
+The lightweight option. Uses SwiftUI's `Text` with `AttributedString`. Does not draw
+rounded-corner code backgrounds, but works everywhere SwiftUI does:
+
+```swift
+CDMarkdownText("Hello **world**")
+```
+
+### CDMarkdownView
+
+Full fidelity, including rounded-corner code blocks and link interaction:
+
+```swift
+CDMarkdownView("Hello **world**\n\n`code`") { url in
+    // handle link tap
+    openURL(url)
+}
+```
+
+### Sharing a parser
+
+Set a parser once for a whole view hierarchy:
+
+```swift
+ContentView()
+    .markdownParser(myParser)
+```
+
+Any `CDMarkdownText` or `CDMarkdownView` in the subtree will use `myParser` unless
+overridden with an explicit `parser:` argument.
+
+---
+
 ## Custom Elements
 
 `CDMarkdownParser` accepts an array of `customElements`. Each element must conform to `CDMarkdownElement` and optionally `CDMarkdownStyle`. Custom elements run after all built-in elements in Phase 2 of the parsing pipeline.
@@ -449,3 +564,22 @@ Task {
 - The parser respects custom image sizing from `CDMarkdownParser(imageSize:)`
 
 > **Note:** The synchronous `parse(_:)` blocks on remote images. Use the async variant when parsing documents with external image URLs to prevent UI freezing.
+
+---
+
+## Accessibility
+
+CDMarkdownKit writes semantic metadata (heading level, code, blockquote) as custom
+`NSAttributedString` attributes during parsing. These are automatically mapped to
+VoiceOver-compatible annotations by `CDMarkdownLabel`.
+
+For `CDMarkdownTextView` or custom views, apply annotations manually:
+
+```swift
+let attributed = await parser.parse(markdown)
+textView.attributedText = attributed
+textView.accessibilityAttributedLabel = parser.accessibilityAttributedString(from: attributed)
+```
+
+VoiceOver will announce headings with their level ("Heading level 1: Introduction"),
+helping users navigate document structure with the rotor.

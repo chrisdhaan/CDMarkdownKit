@@ -69,6 +69,10 @@
         /// Set this to handle link navigation, e.g., opening URLs in Safari.
         open weak var delegate: CDMarkdownLabelDelegate?
 
+        /// The parser used to render markdown text. Set this before assigning markdown text.
+        /// Used to apply accessibility annotations to the attributed text.
+        open weak var markdownParser: CDMarkdownParser?
+
         /// When `true`, all background color regions (code blocks, syntax blocks, etc.) are drawn with rounded corners.
         /// When `false` (default), backgrounds are drawn as rectangles. Set to `true` for a softer appearance.
         open var roundAllCorners: Bool = false {
@@ -112,6 +116,11 @@
                     self.customTextStorage = NSTextStorage(attributedString: newValue)
                     self.customTextStorage.addLayoutManager(layoutManager)
                     layoutManager.textStorage = self.customTextStorage
+                    #if os(iOS) || os(visionOS)
+                        if let parser = markdownParser {
+                            self.accessibilityAttributedLabel = parser.accessibilityAttributedString(from: newValue)
+                        }
+                    #endif
                 }
                 self.setNeedsDisplay()
             }

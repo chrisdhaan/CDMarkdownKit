@@ -14,7 +14,7 @@
 --linebreaks lf
 
 # Trailing syntax
---commas always
+--commas inline
 --semicolons never
 --stripunusedargs closure-only
 

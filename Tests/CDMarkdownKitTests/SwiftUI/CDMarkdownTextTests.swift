@@ -1,0 +1,37 @@
+import SwiftUI
+import Testing
+@testable import CDMarkdownKit
+
+@MainActor
+struct CDMarkdownTextTests {
+
+    @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
+    @Test func cdMarkdownTextInitializesWithString() {
+        let view = CDMarkdownText("Hello **world**")
+        // Verify the view can be created without crashing
+        #expect(type(of: view) == CDMarkdownText.self)
+    }
+
+    @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
+    @Test func cdMarkdownTextAcceptsExplicitParser() {
+        let parser = CDMarkdownParser()
+        let view = CDMarkdownText("Hello", parser: parser)
+        #expect(type(of: view) == CDMarkdownText.self)
+    }
+
+    @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
+    @Test func environmentKeyDefaultValueIsNonNil() async {
+        let env = EnvironmentValues()
+        let parser = env.markdownParser
+        // Default parser should be usable
+        let result = await parser.parse("test")
+        #expect(result.length > 0)
+    }
+
+    @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
+    @Test func viewModifierSetsParser() {
+        let customParser = CDMarkdownParser()
+        let view = CDMarkdownText("test").markdownParser(customParser)
+        #expect(type(of: view) != CDMarkdownText.self) // wrapped in modifier
+    }
+}

@@ -30,7 +30,7 @@ import PackageDescription
 
 let package = Package(name: "CDMarkdownKit",
                       platforms: [.iOS(.v12),
-                                  .macOS(.v10_13),
+                                  .macOS(.v11),
                                   .tvOS(.v12),
                                   .watchOS(.v4),
                                   .visionOS(.v1)],
@@ -46,9 +46,6 @@ let package = Package(name: "CDMarkdownKit",
                                         path: "Source",
                                         exclude: ["Info.plist"],
                                         resources: [.process("PrivacyInfo.xcprivacy")],
-                                        swiftSettings: [
-                                            .enableUpcomingFeature("ExistentialAny")
-                                        ],
                                         linkerSettings: [.linkedFramework("Foundation",
                                                                           .when(platforms: [.macOS,
                                                                                             .iOS,
@@ -66,4 +63,4 @@ let package = Package(name: "CDMarkdownKit",
                                     name: "CDMarkdownKitTests",
                                     dependencies: ["CDMarkdownKit"]
                                 )],
-                      swiftLanguageModes: [.v5])
+                      swiftLanguageModes: [.v6])
