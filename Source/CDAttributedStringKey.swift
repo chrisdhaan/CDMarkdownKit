@@ -32,4 +32,14 @@ public typealias CDAttributedStringKey = NSAttributedString.Key
 extension NSAttributedString.Key {
     static let cdMarkdownRoundedBackground = NSAttributedString.Key("CDMarkdownKit.roundedBackground")
     static let cdMarkdownImageURL = NSAttributedString.Key("CDMarkdownKit.imageURL")
+
+    /// Applied to heading ranges. Value: `Int` (1–6 corresponding to H1–H6).
+    static let cdMarkdownHeadingLevel = NSAttributedString.Key("CDMarkdownKit.headingLevel")
+
+    /// Applied to inline code and fenced code block ranges. Value: `true as AnyObject`.
+    /// Distinct from `.cdMarkdownRoundedBackground` — that key drives drawing; this drives AT.
+    static let cdMarkdownIsCode = NSAttributedString.Key("CDMarkdownKit.isCode")
+
+    /// Applied to blockquote ranges. Value: `true as AnyObject`.
+    static let cdMarkdownIsBlockquote = NSAttributedString.Key("CDMarkdownKit.isBlockquote")
 }
