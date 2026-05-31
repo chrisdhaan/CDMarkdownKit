@@ -1945,7 +1945,7 @@ bundle exec pod lib lint --allow-warnings
 
 ---
 
-**7.3 — Write the CHANGELOG entry**
+**7.3 — Write the CHANGELOG entry** ✅
 
 Add the `3.2.0` entry at the top of `CHANGELOG.md`, immediately above the `3.1.0` entry, and add `3.2.0` to the Table of Contents. Follow the format established in step 1.1 of IMPLEMENTATION.md.
 
