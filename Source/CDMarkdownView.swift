@@ -24,9 +24,13 @@ import SwiftUI
 
         public func makeUIView(context: Context) -> CDMarkdownTextView {
             let textView = CDMarkdownTextView(frame: .zero)
-            textView.isScrollEnabled = false
+            textView.configure() // sets up customLayoutManager for rounded corners
+            textView.isScrollEnabled = false // override configure()'s default of true
+            textView.isSelectable = true // override configure()'s default of false
+            #if os(visionOS)
+                textView.isEditable = false // configure() only handles this on iOS
+            #endif
             textView.backgroundColor = .clear
-            textView.isSelectable = true
             textView.delegate = context.coordinator
             return textView
         }
