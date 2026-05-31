@@ -1553,7 +1553,7 @@ label.attributedText = parser.parse("Hello **world**")
 
 ---
 
-**5.7 — Verify**
+**5.7 — Verify** ✅
 
 Run `swift build` and `swift test`. Run the macOS Xcode scheme and manually verify:
 - A `CDMarkdownNSTextView` displays markdown with correct styling
