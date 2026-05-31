@@ -1264,7 +1264,7 @@ CDMarkdownKit's parsing pipeline works on macOS but there are no AppKit UI compo
 
 ### Steps
 
-**5.1 — Create `Source/CDMarkdownNSLayoutManager.swift`**
+**5.1 — Create `Source/CDMarkdownNSLayoutManager.swift`** ✅
 
 macOS needs its own layout manager subclass that mirrors `CDMarkdownLayoutManager` but uses `NSColor` and AppKit drawing. Create this file gated on `#if os(macOS)`:
 
