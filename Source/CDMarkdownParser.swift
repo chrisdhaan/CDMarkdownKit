@@ -289,6 +289,40 @@ open class CDMarkdownParser {
         disabledElementTypes.remove(ObjectIdentifier(elementType))
     }
 
+    /// Inserts a custom element into the pipeline immediately before all default elements of a given type.
+    ///
+    /// - Parameters:
+    ///   - element: A ``CDMarkdownElement`` implementation to insert.
+    ///   - elementType: The type of default element to insert before (e.g., `CDMarkdownBold.self`).
+    ///
+    /// If no default element of the specified type exists, the custom element is appended to `customElements`.
+    public func insertCustomElement(_ element: any CDMarkdownElement,
+                                    before elementType: (some AnyObject).Type) {
+        let targetID = ObjectIdentifier(elementType)
+        if let index = defaultElements.firstIndex(where: { ObjectIdentifier(type(of: $0)) == targetID }) {
+            defaultElements.insert(element, at: index)
+        } else {
+            customElements.append(element)
+        }
+    }
+
+    /// Inserts a custom element into the pipeline immediately after all default elements of a given type.
+    ///
+    /// - Parameters:
+    ///   - element: A ``CDMarkdownElement`` implementation to insert.
+    ///   - elementType: The type of default element to insert after (e.g., `CDMarkdownBold.self`).
+    ///
+    /// If no default element of the specified type exists, the custom element is appended to `customElements`.
+    public func insertCustomElement(_ element: any CDMarkdownElement,
+                                    after elementType: (some AnyObject).Type) {
+        let targetID = ObjectIdentifier(elementType)
+        if let index = defaultElements.lastIndex(where: { ObjectIdentifier(type(of: $0)) == targetID }) {
+            defaultElements.insert(element, at: index + 1)
+        } else {
+            customElements.append(element)
+        }
+    }
+
     // MARK: - Parsing
 
     /// Parses a Markdown string and returns a styled NSAttributedString.
