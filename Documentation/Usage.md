@@ -486,3 +486,22 @@ Task {
 - The parser respects custom image sizing from `CDMarkdownParser(imageSize:)`
 
 > **Note:** The synchronous `parse(_:)` blocks on remote images. Use the async variant when parsing documents with external image URLs to prevent UI freezing.
+
+---
+
+## Accessibility
+
+CDMarkdownKit writes semantic metadata (heading level, code, blockquote) as custom
+`NSAttributedString` attributes during parsing. These are automatically mapped to
+VoiceOver-compatible annotations by `CDMarkdownLabel`.
+
+For `CDMarkdownTextView` or custom views, apply annotations manually:
+
+```swift
+let attributed = await parser.parse(markdown)
+textView.attributedText = attributed
+textView.accessibilityAttributedLabel = parser.accessibilityAttributedString(from: attributed)
+```
+
+VoiceOver will announce headings with their level ("Heading level 1: Introduction"),
+helping users navigate document structure with the rotor.

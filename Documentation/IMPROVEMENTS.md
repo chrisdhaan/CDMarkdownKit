@@ -1149,7 +1149,7 @@ and update the label's `parseText` setter to use `markdownParser?.parse(newValue
 
 ---
 
-**4.7 — Document accessibility in `Usage.md`**
+**4.7 — Document accessibility in `Usage.md`** ✅
 
 Add a section "Accessibility" to `Documentation/Usage.md`:
 
