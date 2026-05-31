@@ -216,12 +216,12 @@ open class CDMarkdownParser {
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
             self.defaultElements = [
                 table, horizontalRule, header, taskList, list, orderedList, quote, link,
-                automaticLink, image, bold, italic, strikethrough
+                automaticLink, image, bold, italic, strikethrough,
             ]
         #else
             self.defaultElements = [
                 table, horizontalRule, header, taskList, list, orderedList, quote, link,
-                automaticLink, bold, italic, strikethrough
+                automaticLink, bold, italic, strikethrough,
             ]
         #endif
         self.unescapingElements = [code, syntax, unescaping]
