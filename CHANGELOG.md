@@ -29,30 +29,30 @@ Released on 2026-05-31.
 ### Added
 
 - Added Swift 6 language mode (`swiftLanguageModes: [.v6]`) to `Package.swift`.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#NN](link).
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
 - Added `CDMarkdownTaskList` element for parsing GFM task list items (`- [ ]` / `- [x]`).
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#NN](link).
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
 - Added `CDMarkdownHorizontalRule` element for parsing horizontal rules (`---`, `***`, `___`).
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#NN](link).
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
 - Added inline markdown parsing inside GFM table cells (bold, italic, links, inline code).
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#NN](link).
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
 - Added `disabledElementTypes`, `disable(_:)`, and `enable(_:)` to `CDMarkdownParser` for opting out of individual default elements.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#NN](link).
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
 - Added `insertCustomElement(_:before:)` and `insertCustomElement(_:after:)` to `CDMarkdownParser` for precise pipeline positioning.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#NN](link).
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
 - Added accessibility attribute keys (`cdMarkdownHeadingLevel`, `cdMarkdownIsCode`, `cdMarkdownIsBlockquote`) and `accessibilityAttributedString(from:)` helper on `CDMarkdownParser`.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#NN](link).
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
 - Added `CDMarkdownNSLayoutManager`, `CDMarkdownNSTextView`, and `CDMarkdownNSLabel` — AppKit UI components for macOS.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#NN](link).
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
 - Added `CDMarkdownText` and `CDMarkdownView` — SwiftUI wrappers for iOS, tvOS, macOS, watchOS, and visionOS.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#NN](link).
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
 - Added `markdownParser` SwiftUI environment key and `.markdownParser(_:)` view modifier.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#NN](link).
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
 
 ### Updated
 
 - Deprecated synchronous `parse(_:)` overloads in favour of the async overloads.
-  - Updated by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#NN](link).
+  - Updated by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
 
 ---
 
