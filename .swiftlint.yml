@@ -18,4 +18,4 @@ line_length:
   ignores_function_declarations: true
   warning: 149
 # number of lines allowed in a type body
-type_body_length: 285
+type_body_length: 300

@@ -97,6 +97,14 @@ open class CDMarkdownParser {
     /// When enabled, preserves leading whitespace (spaces and tabs) on each line.
     /// Default is `false` (leading whitespace is stripped). Set to `true` to preserve indentation in code and quoted text.
     open var preserveLeadingWhitespace: Bool = false
+    /// Element types listed here are excluded from the parsing pipeline.
+    /// Use this to opt out of specific default elements without subclassing.
+    ///
+    /// Example — disable header parsing:
+    /// ```swift
+    /// parser.disabledElementTypes.insert(ObjectIdentifier(CDMarkdownHeader.self))
+    /// ```
+    open var disabledElementTypes: Set<ObjectIdentifier> = []
     /// The default font used for all parsed text.
     public let font: CDFont
     /// The default text color for all parsed text.
@@ -262,6 +270,25 @@ open class CDMarkdownParser {
         customElements.remove(at: index)
     }
 
+    /// Disables all default elements of the given type from the parsing pipeline.
+    ///
+    /// - Parameter elementType: The type of element to disable (e.g., `CDMarkdownHeader.self`).
+    ///
+    /// Use this to opt out of specific default elements without subclassing. For example:
+    /// ```swift
+    /// parser.disable(CDMarkdownHeader.self)
+    /// ```
+    public func disable(_ elementType: (some AnyObject).Type) {
+        disabledElementTypes.insert(ObjectIdentifier(elementType))
+    }
+
+    /// Re-enables all default elements of the given type in the parsing pipeline.
+    ///
+    /// - Parameter elementType: The type of element to re-enable (e.g., `CDMarkdownHeader.self`).
+    public func enable(_ elementType: (some AnyObject).Type) {
+        disabledElementTypes.remove(ObjectIdentifier(elementType))
+    }
+
     // MARK: - Parsing
 
     /// Parses a Markdown string and returns a styled NSAttributedString.
@@ -368,7 +395,10 @@ open class CDMarkdownParser {
                                            toRange: range)
 
         var elements: [any CDMarkdownElement] = escapingElements
-        elements.append(contentsOf: defaultElements)
+        let activeElements = defaultElements.filter { element in
+            !disabledElementTypes.contains(ObjectIdentifier(type(of: element)))
+        }
+        elements.append(contentsOf: activeElements)
         elements.append(contentsOf: customElements)
         elements.append(contentsOf: unescapingElements)
 
