@@ -296,7 +296,9 @@ jobs:
         run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
       - name: Install xcbeautify
         run: brew install xcbeautify
-      - name: swift test
+      - name: Build (Swift 6 mode)
+        run: set -o pipefail && swift build 2>&1 | xcbeautify --renderer github-actions
+      - name: Test (Swift 6 mode)
         run: set -o pipefail && swift test -c debug 2>&1 | xcbeautify --renderer github-actions
 
   swiftlint:
