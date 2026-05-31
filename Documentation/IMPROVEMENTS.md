@@ -1506,7 +1506,7 @@ import Cocoa
 
 ---
 
-**5.6 — Update `Documentation/Usage.md`**
+**5.6 — Update `Documentation/Usage.md`** ✅
 
 Add a "macOS" section under "UI Components":
 

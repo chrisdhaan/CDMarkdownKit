@@ -322,6 +322,48 @@ textView.isEditable = false
 
 ---
 
+## macOS UI Components
+
+### CDMarkdownNSTextView
+
+`CDMarkdownNSTextView` is a read-only `NSTextView` subclass with rounded-corner support
+for code spans. Use it for rich display with selectable text and native link handling:
+
+```swift
+let textView = CDMarkdownNSTextView(frame: view.bounds)
+textView.roundAllCorners = true
+Task {
+    textView.setAttributedString(await parser.parse(markdown))
+}
+```
+
+Links in the attributed string are opened automatically by `NSWorkspace` when clicked.
+To intercept link clicks, set a delegate:
+
+```swift
+textView.delegate = self  // NSTextViewDelegate
+
+func textView(_ textView: NSTextView, clickedOnLink link: Any, at charIndex: Int) -> Bool {
+    if let url = link as? URL, url.scheme == "mention" {
+        // handle custom scheme
+        return true
+    }
+    return false
+}
+```
+
+### CDMarkdownNSLabel
+
+`CDMarkdownNSLabel` is a lightweight read-only `NSView` for simple markdown display without
+link interaction:
+
+```swift
+let label = CDMarkdownNSLabel(frame: .zero)
+label.attributedText = parser.parse("Hello **world**")
+```
+
+---
+
 ## Custom Elements
 
 `CDMarkdownParser` accepts an array of `customElements`. Each element must conform to `CDMarkdownElement` and optionally `CDMarkdownStyle`. Custom elements run after all built-in elements in Phase 2 of the parsing pipeline.
