@@ -66,4 +66,4 @@ let package = Package(name: "CDMarkdownKit",
                                     name: "CDMarkdownKitTests",
                                     dependencies: ["CDMarkdownKit"]
                                 )],
-                      swiftLanguageModes: [.v5])
+                      swiftLanguageModes: [.v6])

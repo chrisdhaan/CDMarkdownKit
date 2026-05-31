@@ -31,6 +31,7 @@
     import Cocoa
 #endif
 
+// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
 extension CDMarkdownHeader: @unchecked Sendable {}
 
 /// Renders headings using # through ###### syntax.
