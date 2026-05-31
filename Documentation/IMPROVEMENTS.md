@@ -1469,7 +1469,7 @@ These files are already gated on `#if os(macOS)` so including them in other targ
 
 ---
 
-**5.5 — Write tests in `Tests/CDMarkdownKitTests/UI/CDMarkdownNSLabelTests.swift`**
+**5.5 — Write tests in `Tests/CDMarkdownKitTests/UI/CDMarkdownNSLabelTests.swift`** ✅
 
 macOS UI tests require a running AppKit application loop, which is not available in a plain `swift test` run. Write smoke tests that exercise the layout stack without requiring display:
 

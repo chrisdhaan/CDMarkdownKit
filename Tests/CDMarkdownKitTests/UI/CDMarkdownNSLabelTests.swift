@@ -1,0 +1,31 @@
+#if os(macOS)
+
+    import Testing
+    import Cocoa
+    @testable import CDMarkdownKit
+
+    @MainActor
+    @Suite struct CDMarkdownNSLabelTests {
+
+        let parser = CDMarkdownParser()
+
+        @Test func labelAcceptsAttributedText() {
+            let label = CDMarkdownNSLabel(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
+            label.attributedText = parser.parse("Hello **world**")
+            #expect(label.attributedText.length > 0)
+        }
+
+        @Test func labelIntrinsicHeightIsPositive() {
+            let label = CDMarkdownNSLabel(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
+            label.attributedText = parser.parse("Hello **world**")
+            #expect(label.intrinsicContentSize.height > 0)
+        }
+
+        @Test func roundAllCornersFlag() {
+            let label = CDMarkdownNSLabel(frame: .zero)
+            label.roundAllCorners = true
+            #expect(label.roundAllCorners == true)
+        }
+    }
+
+#endif
