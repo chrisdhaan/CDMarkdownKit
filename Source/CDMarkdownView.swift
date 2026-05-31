@@ -37,8 +37,11 @@ import SwiftUI
 
         public func updateUIView(_ uiView: CDMarkdownTextView, context: Context) {
             context.coordinator.onLinkTap = onLinkTap
-            Task { @MainActor in
-                uiView.attributedText = await parser.parse(string)
+            context.coordinator.parseTask?.cancel()
+            context.coordinator.parseTask = Task { @MainActor in
+                let result = await parser.parse(string)
+                guard !Task.isCancelled else { return }
+                uiView.attributedText = result
             }
         }
 
@@ -48,6 +51,7 @@ import SwiftUI
 
         public class Coordinator: NSObject, UITextViewDelegate {
             var onLinkTap: ((URL) -> Void)?
+            var parseTask: Task<Void, Never>?
 
             init(onLinkTap: ((URL) -> Void)?) {
                 self.onLinkTap = onLinkTap
@@ -93,8 +97,11 @@ import SwiftUI
 
         public func updateNSView(_ nsView: CDMarkdownNSTextView, context: Context) {
             context.coordinator.onLinkTap = onLinkTap
-            Task { @MainActor in
-                await nsView.setAttributedString(parser.parse(string))
+            context.coordinator.parseTask?.cancel()
+            context.coordinator.parseTask = Task { @MainActor in
+                let result = await parser.parse(string)
+                guard !Task.isCancelled else { return }
+                nsView.setAttributedString(result)
             }
         }
 
@@ -104,6 +111,7 @@ import SwiftUI
 
         public class Coordinator: NSObject, NSTextViewDelegate {
             var onLinkTap: ((URL) -> Bool)?
+            var parseTask: Task<Void, Never>?
 
             init(onLinkTap: ((URL) -> Bool)?) {
                 self.onLinkTap = onLinkTap
