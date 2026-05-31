@@ -46,9 +46,6 @@ let package = Package(name: "CDMarkdownKit",
                                         path: "Source",
                                         exclude: ["Info.plist"],
                                         resources: [.process("PrivacyInfo.xcprivacy")],
-                                        swiftSettings: [
-                                            .enableUpcomingFeature("ExistentialAny")
-                                        ],
                                         linkerSettings: [.linkedFramework("Foundation",
                                                                           .when(platforms: [.macOS,
                                                                                             .iOS,
