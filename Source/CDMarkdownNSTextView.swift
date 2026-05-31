@@ -6,7 +6,7 @@
     /// `CDMarkdownParser` with optional rounded-corner backgrounds for code spans.
     ///
     /// Use ``CDMarkdownNSTextView`` to display Markdown-formatted text with automatic link handling.
-    /// Set the attributed text using ``setAttributedString(_:)`` with an ``NSAttributedString``
+    /// Set the attributed text using ``setAttributedString(_:)`` with an `NSAttributedString`
     /// produced by ``CDMarkdownParser``. Links are opened automatically by `NSWorkspace`.
     @MainActor
     open class CDMarkdownNSTextView: NSTextView {
@@ -42,7 +42,7 @@
         /// Configures the text view's custom layout manager and text storage.
         ///
         /// Called automatically during initialization. This method sets up the ``CDMarkdownNSLayoutManager``
-        /// and ``NSTextStorage`` for rendering with rounded-corner backgrounds.
+        /// and `NSTextStorage` for rendering with rounded-corner backgrounds.
         open func configure() {
             // Replace the default layout manager with our custom one
             if let defaultLM = layoutManager {
@@ -62,7 +62,7 @@
 
         /// Sets the attributed string to be displayed.
         ///
-        /// - Parameter attributedString: The `NSAttributedString` to display. Typically produced by ``CDMarkdownParser.parse(_:)``.
+        /// - Parameter attributedString: The `NSAttributedString` to display. Typically produced by `CDMarkdownParser.parse(_:)`.
         open func setAttributedString(_ attributedString: NSAttributedString) {
             customTextStorage.setAttributedString(attributedString)
         }
