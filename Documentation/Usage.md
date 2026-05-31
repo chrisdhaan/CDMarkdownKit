@@ -86,6 +86,43 @@ parser.addCustomElement(customElement)
 parser.removeCustomElement(customElement)
 ```
 
+### Customizing the Element Pipeline
+
+#### Disabling default elements
+
+Exclude specific built-in elements from parsing without subclassing:
+
+```swift
+let parser = CDMarkdownParser()
+parser.disable(CDMarkdownHeader.self)        // raw # syntax passes through
+parser.disable(CDMarkdownAutomaticLink.self) // no automatic URL detection
+```
+
+Re-enable at any time:
+
+```swift
+parser.enable(CDMarkdownHeader.self)
+```
+
+#### Inserting custom elements at specific positions
+
+By default, custom elements run after all built-in elements. Use `insertCustomElement(_:before:)` or `insertCustomElement(_:after:)` to position them precisely:
+
+```swift
+let mention = CDMarkdownMention()
+parser.insertCustomElement(mention, before: CDMarkdownBold.self)
+```
+
+#### Async vs. synchronous parsing
+
+Prefer the async overload for all new code:
+
+```swift
+let attributed = await parser.parse("Hello **world**")
+```
+
+The synchronous `parse(_:)` overloads are deprecated and will be removed in a future major version. They remain available for backward compatibility.
+
 ### Customizing Element Styling
 
 Each element has configurable styling:
