@@ -1787,7 +1787,7 @@ Apply the same pattern to `CDMarkdownView`.
 
 ---
 
-**6.4 — Add `View.markdownParser(_:)` modifier**
+**6.4 — Add `View.markdownParser(_:)` modifier** ✅
 
 Add a convenience modifier so callers don't need to know about `EnvironmentValues` directly:
 
