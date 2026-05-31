@@ -1929,7 +1929,7 @@ public let CDMarkdownKitVersionNumber = "3.2.0"
 
 ---
 
-**7.2 — Update `CDMarkdownKit.podspec`**
+**7.2 — Update `CDMarkdownKit.podspec`** ✅
 
 Change `s.version` from `'3.1.0'` to `'3.2.0'`:
 
