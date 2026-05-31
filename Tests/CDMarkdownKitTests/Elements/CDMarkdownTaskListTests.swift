@@ -1,5 +1,5 @@
-import Testing
 import Foundation
+import Testing
 #if os(iOS) || os(tvOS) || os(watchOS)
     import UIKit
 #elseif os(macOS)
@@ -7,7 +7,6 @@ import Foundation
 #endif
 @testable import CDMarkdownKit
 
-@Suite
 @MainActor
 struct CDMarkdownTaskListTests {
 

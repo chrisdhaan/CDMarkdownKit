@@ -56,7 +56,7 @@ open class CDMarkdownTaskList: CDMarkdownElement, CDMarkdownStyle {
     open var checkedMarker: String = "☑ "
 
     open var regex: String {
-        return CDMarkdownTaskList.regex
+        CDMarkdownTaskList.regex
     }
 
     public init(font: CDFont? = nil,
@@ -68,7 +68,7 @@ open class CDMarkdownTaskList: CDMarkdownElement, CDMarkdownStyle {
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
-        if let paragraphStyle = paragraphStyle {
+        if let paragraphStyle {
             self.paragraphStyle = paragraphStyle
         } else {
             let style = NSMutableParagraphStyle()
@@ -83,18 +83,18 @@ open class CDMarkdownTaskList: CDMarkdownElement, CDMarkdownStyle {
     }
 
     open func regularExpression() throws -> NSRegularExpression {
-        return try NSRegularExpression(pattern: regex,
-                                       options: .anchorsMatchLines)
+        try NSRegularExpression(pattern: regex,
+                                options: .anchorsMatchLines)
     }
 
     open func match(_ match: NSTextCheckingResult,
                     attributedString: NSMutableAttributedString) {
         guard match.numberOfRanges == 4 else { return }
 
-        let fullRange     = match.nsRange(atIndex: 0)
-        let markerRange   = match.nsRange(atIndex: 1)  // "- " or "* " etc.
-        let checkboxRange = match.nsRange(atIndex: 2)  // " " or "x"
-        let contentRange  = match.nsRange(atIndex: 3)  // item text
+        let fullRange = match.nsRange(atIndex: 0)
+        let markerRange = match.nsRange(atIndex: 1) // "- " or "* " etc.
+        let checkboxRange = match.nsRange(atIndex: 2) // " " or "x"
+        let contentRange = match.nsRange(atIndex: 3) // item text
 
         let nsString = attributedString.string as NSString
         let checkboxValue = nsString.substring(with: checkboxRange).trimmingCharacters(in: .whitespaces)
