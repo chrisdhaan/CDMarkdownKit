@@ -55,6 +55,8 @@ open class CDMarkdownParser {
     public let list: CDMarkdownList
     /// Handles ordered list syntax (1., 2., 3., etc.).
     public let orderedList: CDMarkdownOrderedList
+    /// Handles GFM task list syntax (`- [ ]`, `- [x]`).
+    public let taskList: CDMarkdownTaskList
     /// Handles blockquote syntax (>).
     public let quote: CDMarkdownQuote
     /// Handles inline links using `[text](url)` syntax.
@@ -156,6 +158,10 @@ open class CDMarkdownParser {
                                             color: fontColor,
                                             backgroundColor: backgroundColor,
                                             paragraphStyle: paragraphStyle)
+        taskList = CDMarkdownTaskList(font: font,
+                                      color: fontColor,
+                                      backgroundColor: backgroundColor,
+                                      paragraphStyle: paragraphStyle)
         quote = CDMarkdownQuote(font: font,
                                 color: fontColor,
                                 backgroundColor: backgroundColor,
@@ -202,9 +208,9 @@ open class CDMarkdownParser {
         self.squashNewlines = squashNewlines
         self.escapingElements = [codeEscaping, escaping]
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
-            self.defaultElements = [table, header, list, orderedList, quote, link, automaticLink, image, bold, italic, strikethrough]
+            self.defaultElements = [table, header, taskList, list, orderedList, quote, link, automaticLink, image, bold, italic, strikethrough]
         #else
-            self.defaultElements = [table, header, list, orderedList, quote, link, automaticLink, bold, italic, strikethrough]
+            self.defaultElements = [table, header, taskList, list, orderedList, quote, link, automaticLink, bold, italic, strikethrough]
         #endif
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
