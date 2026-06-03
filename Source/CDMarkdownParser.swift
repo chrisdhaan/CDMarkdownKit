@@ -191,9 +191,9 @@ open class CDMarkdownParser {
                                                 backgroundColor: backgroundColor,
                                                 paragraphStyle: paragraphStyle)
         linkReference = CDMarkdownLinkReference(font: font,
-                                               color: fontColor,
-                                               backgroundColor: backgroundColor,
-                                               paragraphStyle: paragraphStyle)
+                                                color: fontColor,
+                                                backgroundColor: backgroundColor,
+                                                paragraphStyle: paragraphStyle)
         bold = CDMarkdownBold(font: font,
                               customBoldFont: boldFont,
                               color: fontColor,
@@ -418,13 +418,13 @@ open class CDMarkdownParser {
 
         // Iterate in reverse so that removing ranges doesn't shift subsequent indices
         for match in matches.reversed() {
-            let idRange  = match.range(at: 1)
+            let idRange = match.range(at: 1)
             let urlRange = match.range(at: 2)
             // Title may be in group 3, 4, or 5 depending on which delimiter was used
             let titleRange = [3, 4, 5].compactMap { match.range(at: $0) }
                 .first { $0.location != NSNotFound }
 
-            guard let id  = Range(idRange,  in: attributedString.string).map({ String(attributedString.string[$0]) }),
+            guard let referenceId = Range(idRange, in: attributedString.string).map({ String(attributedString.string[$0]) }),
                   let url = Range(urlRange, in: attributedString.string).map({ String(attributedString.string[$0]) }) else {
                 continue
             }
@@ -432,7 +432,7 @@ open class CDMarkdownParser {
             let title = titleRange.flatMap { Range($0, in: attributedString.string) }
                 .map { String(attributedString.string[$0]) }
 
-            definitions[id.lowercased()] = (url: url, title: title)
+            definitions[referenceId.lowercased()] = (url: url, title: title)
 
             // Remove the definition line (including its trailing newline if present)
             var removeRange = match.range(at: 0)
