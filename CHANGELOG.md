@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [3.3.0](#330)
 - [3.2.0](#320)
 - [3.1.0](#310)
 - [3.0.0](#300)
@@ -19,6 +20,42 @@ All notable changes to this project will be documented in this file.
 - [1.2.0](#120)
 - [1.1.0](#110)
 - [1.0.0](#100)
+
+---
+
+## [3.3.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/3.3.0)
+
+Released on 2026-06-03.
+
+### Added
+
+- Added `cdMarkdownCodeLanguage` attribute key. Applied to fenced code block ranges when a language hint is present (e.g. ` ```swift `). Value is a `String` containing the language identifier exactly as written after the opening fence.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Added `CDMarkdownLinkReference` element for parsing reference-style links (`[text][ref]` with `[ref]: url` definitions). Reference definitions are stripped from the rendered output and resolved to `.link` attributes at parse time.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Added `cdMarkdownLinkTitle` attribute key for the optional title string from a reference link definition. Value is a `String` (without surrounding quotes or parentheses). Present only when the definition included a title.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Added `CDMarkdownTheme` struct for unified styling of all parser elements. Bundles font, color, and per-element overrides (`HeaderTheme`, `InlineTheme`, `LinkTheme`) into a single value.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Added `CDMarkdownTheme.default` and `CDMarkdownTheme.systemDark` static factory themes.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Added `CDMarkdownParser.init(theme:)` convenience initializer that configures the parser from a `CDMarkdownTheme`.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Added theme convenience initializers to `CDMarkdownView` and `CDMarkdownText`.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Added `markdownTheme` SwiftUI environment key and `.markdownTheme(_:)` view modifier so a theme can be injected into an entire view hierarchy.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Added iOS 17+ `textView(_:primaryActionFor:defaultAction:)` delegate method to `CDMarkdownView.Coordinator` for correct link-tap behaviour on visionOS and iOS 17+.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+
+### Fixed
+
+- Fixed reference link definitions inside fenced code blocks being incorrectly extracted as link definitions.
+  - Fixed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Fixed `UITextItemInteraction` deprecation warning on visionOS.
+  - Fixed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Fixed `CDMarkdownText` not re-parsing when the `markdownTheme` environment value changes.
+  - Fixed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
 
 ---
 
