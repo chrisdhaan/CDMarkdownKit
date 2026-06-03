@@ -58,23 +58,23 @@ import SwiftUI
             }
 
             #if !os(visionOS)
-            public func textView(_ textView: UITextView,
-                                 shouldInteractWith url: URL,
-                                 in characterRange: NSRange,
-                                 interaction: UITextItemInteraction) -> Bool {
-                onLinkTap?(url)
-                return onLinkTap == nil // let UIKit handle if no custom handler
-            }
+                public func textView(_ textView: UITextView,
+                                     shouldInteractWith url: URL,
+                                     in characterRange: NSRange,
+                                     interaction: UITextItemInteraction) -> Bool {
+                    onLinkTap?(url)
+                    return onLinkTap == nil // let UIKit handle if no custom handler
+                }
             #endif
 
             @available(iOS 17.0, tvOS 17.0, visionOS 1.0, *)
             public func textView(_ textView: UITextView,
                                  primaryActionFor textItem: UITextItem,
                                  defaultAction: UIAction) -> UIAction? {
-                guard case .link(let url) = textItem.content else { return defaultAction }
+                guard case let .link(url) = textItem.content else { return defaultAction }
                 if let handler = onLinkTap {
                     handler(url)
-                    return nil  // returning nil suppresses UIKit's default open-URL behaviour
+                    return nil // returning nil suppresses UIKit's default open-URL behaviour
                 }
                 return defaultAction
             }
