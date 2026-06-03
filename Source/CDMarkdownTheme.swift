@@ -94,7 +94,7 @@ public struct CDMarkdownTheme {
         public var underlineStyle: NSUnderlineStyle?
 
         public init(font: CDFont? = nil,
-                    color: CDColor? = CDColor.blue,
+                    color: CDColor? = nil,
                     backgroundColor: CDColor? = nil,
                     underlineColor: CDColor? = nil,
                     underlineStyle: NSUnderlineStyle? = nil) {
@@ -178,7 +178,8 @@ extension CDMarkdownTheme {
                 color: CDColor.lightGray,
                 backgroundColor: CDColor.darkGray
             ),
-            link: LinkTheme(color: CDColor.systemBlue)
+            link: LinkTheme(color: CDColor.systemBlue),
+            linkReference: LinkTheme(color: CDColor.systemBlue)
         )
     }
 }

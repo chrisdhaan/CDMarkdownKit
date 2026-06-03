@@ -1,9 +1,9 @@
-import Testing
 import Foundation
+import Testing
 @testable import CDMarkdownKit
 
 @MainActor
-@Suite struct CDMarkdownLinkReferenceTests {
+struct CDMarkdownLinkReferenceTests {
 
     let parser = CDMarkdownParser()
 

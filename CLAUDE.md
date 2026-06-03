@@ -20,7 +20,7 @@ CDMarkdownKit/
 │   ├── Source/                # Example view controllers
 │   └── Resources/             # Storyboards, assets, plist
 ├── Documentation/             # ARCHITECTURE.md, Usage.md, migration guide, images
-├── docs/                      # Jazzy-generated HTML docs (served via GitHub Pages)
+├── docs/                      # DocC-generated HTML docs (served via GitHub Pages)
 ├── .github/
 │   ├── workflows/ci.yml       # GitHub Actions CI
 │   ├── ISSUE_TEMPLATE/        # bug_report.md, feature_request.md, config.yml
@@ -30,9 +30,9 @@ CDMarkdownKit/
 ├── CDMarkdownKit.xcworkspace
 ├── Package.swift              # SPM manifest (swift-tools 6.0, swiftLanguageModes: [.v5])
 ├── CDMarkdownKit.podspec      # CocoaPods spec
-├── .jazzy.yaml                # Jazzy documentation config
 ├── .swiftlint.yml             # SwiftLint config (lints Source/ and Example/Source/)
-├── Gemfile / Gemfile.lock     # cocoapods + jazzy gems
+├── Gemfile / Gemfile.lock     # cocoapods gem
+├── scripts/generate-docs.sh  # Regenerates docs/ and adds GitHub Pages support files
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 └── README.md
@@ -219,10 +219,9 @@ iOS/tvOS/watchOS jobs run 5 matrix entries each (4 Xcode 26.x on macos-26, 1 Xco
 2. **Swift 6 strict concurrency not fully adopted** — the package builds with `swiftLanguageModes: [.v5]`. `CDMarkdownParser` is `@MainActor` and the UI types have `@preconcurrency` conformances, but a full Swift 6 strict-concurrency audit has not been completed.
 
 ### Low Priority / Future
-3. **No DocC documentation** — API docs are generated with Jazzy (hosted at `https://chrisdhaan.github.io/CDMarkdownKit/`). A native DocC catalog does not exist.
-4. **`CDMarkdownStrikethrough`** has its own `strikethroughColor`/`strikethroughStyle` properties that are not part of the shared `CDMarkdownStyle` protocol, creating an inconsistency.
-5. **Carthage support** — README mentions Carthage compatibility but there is no `Cartfile`; Carthage is largely abandoned by the community.
-6. **TextKit 2 migration** — `CDMarkdownLayoutManager` is an `NSLayoutManager` subclass, which forces `CDMarkdownTextView` into TextKit 1 compatibility mode (expected one-time console warning). A future v4.0 migration to `NSTextLayoutManager` would eliminate this. See `Documentation/ARCHITECTURE.md` for the current TK1 wiring approach.
+3. **`CDMarkdownStrikethrough`** has its own `strikethroughColor`/`strikethroughStyle` properties that are not part of the shared `CDMarkdownStyle` protocol, creating an inconsistency.
+4. **Carthage support** — README mentions Carthage compatibility but there is no `Cartfile`; Carthage is largely abandoned by the community.
+5. **TextKit 2 migration** — `CDMarkdownLayoutManager` is an `NSLayoutManager` subclass, which forces `CDMarkdownTextView` into TextKit 1 compatibility mode (expected one-time console warning). A future v4.0 migration to `NSTextLayoutManager` would eliminate this. See `Documentation/ARCHITECTURE.md` for the current TK1 wiring approach.
 
 ---
 
@@ -269,13 +268,15 @@ Run `swiftformat Source Tests` before committing new or modified source files to
 
 ## How to Generate Documentation
 
-Uses Jazzy via Homebrew Ruby. **Always use the Homebrew bundle — the system Ruby (2.6) picks up the wrong bundler version and fails.**
+Uses the `swift-docc-plugin`. Always run via the wrapper script — it regenerates `docs/` and then adds `docs/.nojekyll` and `docs/404.html`, which DocC itself does not produce but GitHub Pages requires.
 
 ```bash
-/opt/homebrew/opt/ruby/bin/bundle exec jazzy
+./scripts/generate-docs.sh
 ```
 
 Output goes to `docs/`. The site is served from that directory via GitHub Pages at `https://chrisdhaan.github.io/CDMarkdownKit/`.
+
+Do **not** run `swift package generate-documentation` directly to publish docs — it will wipe `.nojekyll` and `404.html`, breaking the live site.
 
 ---
 

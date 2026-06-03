@@ -38,11 +38,11 @@ extension CDMarkdownLinkReference: @unchecked Sendable {}
 /// against a dictionary of definitions populated by `CDMarkdownParser`.
 open class CDMarkdownLinkReference: CDMarkdownElement, CDMarkdownStyle {
 
-    // Matches:
-    //   [display text][reference id]  — full reference
-    //   [display text][]              — collapsed reference (text is the id)
-    // Group 1: display text
-    // Group 2: reference id (may be empty string for collapsed form)
+    /// Matches:
+    ///   [display text][reference id]  — full reference
+    ///   [display text][]              — collapsed reference (text is the id)
+    /// Group 1: display text
+    /// Group 2: reference id (may be empty string for collapsed form)
     fileprivate static let regex = "\\[([^\\]]+)\\]\\[([^\\]]*)\\]"
 
     open var font: CDFont?
@@ -80,14 +80,14 @@ open class CDMarkdownLinkReference: CDMarkdownElement, CDMarkdownStyle {
                     attributedString: NSMutableAttributedString) {
         guard match.numberOfRanges == 3 else { return }
 
-        let fullRange  = match.range(at: 0)
-        let textRange  = match.range(at: 1)
-        let idRange    = match.range(at: 2)
+        let fullRange = match.range(at: 0)
+        let textRange = match.range(at: 1)
+        let idRange = match.range(at: 2)
 
         let nsString = attributedString.string as NSString
         let displayText = nsString.substring(with: textRange)
-        let rawId       = nsString.substring(with: idRange)
-        let lookupKey   = (rawId.isEmpty ? displayText : rawId).lowercased()
+        let rawId = nsString.substring(with: idRange)
+        let lookupKey = (rawId.isEmpty ? displayText : rawId).lowercased()
 
         guard let definition = references[lookupKey],
               let url = URL(string: definition.url) else { return }
