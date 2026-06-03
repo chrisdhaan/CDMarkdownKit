@@ -135,6 +135,35 @@ parser.link.color = UIColor.blue
 parser.header.fontIncrease = 4
 ```
 
+### Theming
+
+Use `CDMarkdownTheme` to style an entire parser in one call instead of setting properties
+on each element individually:
+
+```swift
+var theme = CDMarkdownTheme.default
+theme.code = CDMarkdownTheme.InlineTheme(
+    font: CDFont(name: "JetBrainsMono-Regular", size: 13)!,
+    color: CDColor.orange,
+    backgroundColor: CDColor.darkGray
+)
+theme.link = CDMarkdownTheme.LinkTheme(color: CDColor.systemBlue)
+
+let parser = CDMarkdownParser(theme: theme)
+```
+
+Built-in themes: `CDMarkdownTheme.default`, `CDMarkdownTheme.systemDark`.
+
+In SwiftUI, apply a theme to a subtree with `.markdownTheme(_:)`:
+
+```swift
+ContentView()
+    .markdownTheme(.systemDark)
+```
+
+Individual element properties can still be overridden on the parser after `init(theme:)`.
+Per-element overrides always win over theme values.
+
 ### Preserving Leading Whitespace
 
 By default, CDMarkdownKit strips leading whitespace (spaces and tabs) from each line. This is suitable for most Markdown text, but if you need to preserve indentation in code blocks or other contexts, enable the `preserveLeadingWhitespace` option:
