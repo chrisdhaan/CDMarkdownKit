@@ -153,6 +153,8 @@ public struct CDMarkdownTheme {
     }
 }
 
+extension CDMarkdownTheme: @unchecked Sendable {}
+
 extension CDMarkdownTheme {
 
     /// The default CDMarkdownKit styling — mirrors the existing `CDMarkdownParser.init()` defaults.

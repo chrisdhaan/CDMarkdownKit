@@ -9,9 +9,12 @@ import SwiftUI
         private let string: String
         private let explicitParser: CDMarkdownParser?
         @Environment(\.markdownParser) private var environmentParser
+        @Environment(\.markdownTheme) private var environmentTheme
         public var onLinkTap: ((URL) -> Void)?
 
-        private var parser: CDMarkdownParser { explicitParser ?? environmentParser }
+        private var parser: CDMarkdownParser {
+            explicitParser ?? environmentParser ?? CDMarkdownParser(theme: environmentTheme)
+        }
 
         /// Creates a full-fidelity Markdown view with rounded-corner support.
         public init(_ string: String,
@@ -97,9 +100,12 @@ import SwiftUI
         private let string: String
         private let explicitParser: CDMarkdownParser?
         @Environment(\.markdownParser) private var environmentParser
+        @Environment(\.markdownTheme) private var environmentTheme
         public var onLinkTap: ((URL) -> Bool)?
 
-        private var parser: CDMarkdownParser { explicitParser ?? environmentParser }
+        private var parser: CDMarkdownParser {
+            explicitParser ?? environmentParser ?? CDMarkdownParser(theme: environmentTheme)
+        }
 
         /// Creates a full-fidelity Markdown view with rounded-corner support.
         public init(_ string: String,

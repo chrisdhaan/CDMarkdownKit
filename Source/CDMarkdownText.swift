@@ -6,9 +6,12 @@ public struct CDMarkdownText: View {
     private let string: String
     private let explicitParser: CDMarkdownParser?
     @Environment(\.markdownParser) private var environmentParser
+    @Environment(\.markdownTheme) private var environmentTheme
     @State private var attributedString: AttributedString = AttributedString()
 
-    private var parser: CDMarkdownParser { explicitParser ?? environmentParser }
+    private var parser: CDMarkdownParser {
+        explicitParser ?? environmentParser ?? CDMarkdownParser(theme: environmentTheme)
+    }
 
     /// Creates a view that renders `string` as Markdown using `parser`.
     public init(_ string: String, parser: CDMarkdownParser? = nil) {
