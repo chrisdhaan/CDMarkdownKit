@@ -47,4 +47,9 @@ extension NSAttributedString.Key {
     /// Value: `String` — the language identifier exactly as written after the opening fence
     /// (e.g. `"swift"`, `"python"`, `"js"`). Not present when no hint is given.
     static let cdMarkdownCodeLanguage = NSAttributedString.Key("CDMarkdownKit.codeLanguage")
+
+    /// Optional title string from a reference link definition.
+    /// Value: `String` — the title text (without surrounding quotes/parens).
+    /// Present only when the definition included a title.
+    static let cdMarkdownLinkTitle = NSAttributedString.Key("CDMarkdownKit.linkTitle")
 }
