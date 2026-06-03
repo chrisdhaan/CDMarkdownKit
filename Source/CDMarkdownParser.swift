@@ -389,6 +389,58 @@ open class CDMarkdownParser {
         return result
     }
 
+    /// Scans `attributedString` for reference link definitions, removes them from the string,
+    /// and returns a dictionary mapping lowercased reference IDs to their resolved URLs.
+    ///
+    /// Supported definition format (one per line):
+    /// `[id]: url`
+    /// `[id]: url "title"`
+    /// `[id]: url 'title'`
+    /// `[id]: url (title)`
+    private func parseReferenceDefinitions(
+        from attributedString: NSMutableAttributedString
+    ) -> [String: (url: String, title: String?)] {
+        var definitions: [String: (url: String, title: String?)] = [:]
+
+        let pattern = #"^\[([^\]]+)\]:\s+(\S+)(?:\s+"([^"]*)"|\s+'([^']*)'|\s+\(([^)]*)\))?\s*$"#
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: .anchorsMatchLines) else {
+            return definitions
+        }
+
+        let fullRange = NSRange(location: 0, length: attributedString.length)
+        let matches = regex.matches(in: attributedString.string, options: [], range: fullRange)
+
+        // Iterate in reverse so that removing ranges doesn't shift subsequent indices
+        for match in matches.reversed() {
+            let idRange  = match.range(at: 1)
+            let urlRange = match.range(at: 2)
+            // Title may be in group 3, 4, or 5 depending on which delimiter was used
+            let titleRange = [3, 4, 5].compactMap { match.range(at: $0) }
+                .first { $0.location != NSNotFound }
+
+            guard let id  = Range(idRange,  in: attributedString.string).map({ String(attributedString.string[$0]) }),
+                  let url = Range(urlRange, in: attributedString.string).map({ String(attributedString.string[$0]) }) else {
+                continue
+            }
+
+            let title = titleRange.flatMap { Range($0, in: attributedString.string) }
+                .map { String(attributedString.string[$0]) }
+
+            definitions[id.lowercased()] = (url: url, title: title)
+
+            // Remove the definition line (including its trailing newline if present)
+            var removeRange = match.range(at: 0)
+            let nsString = attributedString.string as NSString
+            if removeRange.location + removeRange.length < attributedString.length,
+               nsString.character(at: removeRange.location + removeRange.length) == (("\n" as Unicode.Scalar).value) {
+                removeRange.length += 1
+            }
+            attributedString.deleteCharacters(in: removeRange)
+        }
+
+        return definitions
+    }
+
     private func parse(_ markdown: NSAttributedString, loadImages: Bool) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         let mutableString = attributedString.mutableString
