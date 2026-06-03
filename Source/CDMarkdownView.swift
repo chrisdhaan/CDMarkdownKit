@@ -22,6 +22,13 @@ import SwiftUI
             self.onLinkTap = onLinkTap
         }
 
+        /// Creates a full-fidelity Markdown view styled with `theme`.
+        public init(_ string: String,
+                    theme: CDMarkdownTheme,
+                    onLinkTap: ((URL) -> Void)? = nil) {
+            self.init(string, parser: CDMarkdownParser(theme: theme), onLinkTap: onLinkTap)
+        }
+
         public func makeUIView(context: Context) -> CDMarkdownTextView {
             let textView = CDMarkdownTextView(frame: .zero)
             textView.configure() // sets up customLayoutManager for rounded corners

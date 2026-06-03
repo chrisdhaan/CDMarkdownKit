@@ -16,6 +16,11 @@ public struct CDMarkdownText: View {
         self.explicitParser = parser
     }
 
+    /// Creates a Markdown text view styled with `theme`.
+    public init(_ string: String, theme: CDMarkdownTheme) {
+        self.init(string, parser: CDMarkdownParser(theme: theme))
+    }
+
     public var body: some View {
         Text(attributedString)
             .task(id: string) {
