@@ -57,6 +57,7 @@ import SwiftUI
                 self.onLinkTap = onLinkTap
             }
 
+            #if !os(visionOS)
             public func textView(_ textView: UITextView,
                                  shouldInteractWith url: URL,
                                  in characterRange: NSRange,
@@ -64,6 +65,7 @@ import SwiftUI
                 onLinkTap?(url)
                 return onLinkTap == nil // let UIKit handle if no custom handler
             }
+            #endif
 
             @available(iOS 17.0, tvOS 17.0, visionOS 1.0, *)
             public func textView(_ textView: UITextView,
