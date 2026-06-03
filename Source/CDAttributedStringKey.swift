@@ -42,4 +42,9 @@ extension NSAttributedString.Key {
 
     /// Applied to blockquote ranges. Value: `true as AnyObject`.
     static let cdMarkdownIsBlockquote = NSAttributedString.Key("CDMarkdownKit.isBlockquote")
+
+    /// Applied to fenced code block ranges when a language hint is present.
+    /// Value: `String` — the language identifier exactly as written after the opening fence
+    /// (e.g. `"swift"`, `"python"`, `"js"`). Not present when no hint is given.
+    static let cdMarkdownCodeLanguage = NSAttributedString.Key("CDMarkdownKit.codeLanguage")
 }
