@@ -65,6 +65,8 @@ open class CDMarkdownParser {
     public let link: CDMarkdownLink
     /// Handles automatic link detection for bare URLs.
     public let automaticLink: CDMarkdownAutomaticLink
+    /// Handles reference-style links using `[text][ref]` syntax.
+    public let linkReference: CDMarkdownLinkReference
     /// Handles bold text (**text** or __text__).
     public let bold: CDMarkdownBold
     /// Handles italic text (*text* or _text_).
@@ -188,6 +190,10 @@ open class CDMarkdownParser {
                                                 color: fontColor,
                                                 backgroundColor: backgroundColor,
                                                 paragraphStyle: paragraphStyle)
+        linkReference = CDMarkdownLinkReference(font: font,
+                                               color: fontColor,
+                                               backgroundColor: backgroundColor,
+                                               paragraphStyle: paragraphStyle)
         bold = CDMarkdownBold(font: font,
                               customBoldFont: boldFont,
                               color: fontColor,
@@ -224,12 +230,12 @@ open class CDMarkdownParser {
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
             self.defaultElements = [
                 table, horizontalRule, header, taskList, list, orderedList, quote, link,
-                automaticLink, image, bold, italic, strikethrough
+                automaticLink, linkReference, image, bold, italic, strikethrough
             ]
         #else
             self.defaultElements = [
                 table, horizontalRule, header, taskList, list, orderedList, quote, link,
-                automaticLink, bold, italic, strikethrough
+                automaticLink, linkReference, bold, italic, strikethrough
             ]
         #endif
         self.unescapingElements = [code, syntax, unescaping]
@@ -481,6 +487,10 @@ open class CDMarkdownParser {
                                             toRange: range)
         attributedString.addParagraphStyle(paragraphStyle,
                                            toRange: range)
+
+        // Phase 1.5 — Extract and strip reference link definitions
+        let referenceDefinitions = parseReferenceDefinitions(from: attributedString)
+        linkReference.references = referenceDefinitions
 
         var elements: [any CDMarkdownElement] = escapingElements
         let activeElements = defaultElements.filter { element in
