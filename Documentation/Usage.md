@@ -215,6 +215,28 @@ Column alignment is controlled by the colon position in the separator row:
 
 Cell content is rendered as plain text; inline formatting inside cells is not supported in this version.
 
+### Fenced Code Blocks
+
+CDMarkdownKit supports triple-backtick fenced code blocks with optional language hints.
+
+#### Language hint attribute
+
+When a fenced code block includes a language hint (e.g. ` ```swift `), CDMarkdownKit writes
+it to the attributed string as the `.cdMarkdownCodeLanguage` attribute. Use this to implement
+syntax highlighting:
+
+```swift
+let attributed = await parser.parse(markdown)
+attributed.enumerateAttribute(.cdMarkdownCodeLanguage,
+                               in: NSRange(location: 0, length: attributed.length)) { value, range, _ in
+    guard let language = value as? String else { return }
+    // Apply your own syntax highlighting to `range` for `language`
+}
+```
+
+The attribute is a `String` whose value is the exact text after the opening fence — `"swift"`,
+`"python"`, `"js"`, etc. It is absent when no hint is given.
+
 ---
 
 ## CDMarkdownLabel
