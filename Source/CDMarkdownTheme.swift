@@ -152,3 +152,31 @@ public struct CDMarkdownTheme {
         self.horizontalRule = horizontalRule
     }
 }
+
+extension CDMarkdownTheme {
+
+    /// The default CDMarkdownKit styling — mirrors the existing `CDMarkdownParser.init()` defaults.
+    public static var `default`: CDMarkdownTheme {
+        CDMarkdownTheme()
+    }
+
+    /// A minimal dark-mode–friendly theme using system colours.
+    public static var systemDark: CDMarkdownTheme {
+        CDMarkdownTheme(
+            font: CDFont.systemFont(ofSize: 14),
+            fontColor: CDColor.white,
+            backgroundColor: CDColor.black,
+            code: InlineTheme(
+                font: CDFont(name: "Menlo-Regular", size: 13),
+                color: CDColor.orange,
+                backgroundColor: CDColor.darkGray
+            ),
+            syntax: InlineTheme(
+                font: CDFont(name: "Menlo-Regular", size: 13),
+                color: CDColor.lightGray,
+                backgroundColor: CDColor.darkGray
+            ),
+            link: LinkTheme(color: CDColor.systemBlue)
+        )
+    }
+}
