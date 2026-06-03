@@ -13,6 +13,22 @@ public struct CDMarkdownText: View {
         explicitParser ?? environmentParser ?? CDMarkdownParser(theme: environmentTheme)
     }
 
+    /// Captures the identity of the effective parser so `.task` restarts whenever
+    /// the string, injected parser instance, or environment theme changes.
+    private struct ParseTaskID: Equatable {
+        let string: String
+        let parserID: ObjectIdentifier?
+        let theme: CDMarkdownTheme?
+    }
+
+    private var taskID: ParseTaskID {
+        if let injectedParser = explicitParser ?? environmentParser {
+            ParseTaskID(string: string, parserID: ObjectIdentifier(injectedParser), theme: nil)
+        } else {
+            ParseTaskID(string: string, parserID: nil, theme: environmentTheme)
+        }
+    }
+
     /// Creates a view that renders `string` as Markdown using `parser`.
     public init(_ string: String, parser: CDMarkdownParser? = nil) {
         self.string = string
@@ -26,7 +42,7 @@ public struct CDMarkdownText: View {
 
     public var body: some View {
         Text(attributedString)
-            .task(id: string) {
+            .task(id: taskID) {
                 let nsAttributed = await parser.parse(string)
                 #if os(macOS)
                     attributedString = (try? AttributedString(nsAttributed, including: \.appKit)) ?? AttributedString(string)

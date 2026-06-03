@@ -38,7 +38,7 @@ public struct CDMarkdownTheme {
     // MARK: - Nested Types
 
     /// Styling properties shared by most inline elements.
-    public struct InlineTheme {
+    public struct InlineTheme: Equatable {
         public var font: CDFont?
         public var color: CDColor?
         public var backgroundColor: CDColor?
@@ -62,7 +62,7 @@ public struct CDMarkdownTheme {
     }
 
     /// Extends `InlineTheme` with heading-specific sizing.
-    public struct HeaderTheme {
+    public struct HeaderTheme: Equatable {
         public var font: CDFont?
         public var color: CDColor?
         public var fontIncrease: Int
@@ -86,7 +86,7 @@ public struct CDMarkdownTheme {
     }
 
     /// Extends `InlineTheme` with link-specific underline defaults.
-    public struct LinkTheme {
+    public struct LinkTheme: Equatable {
         public var font: CDFont?
         public var color: CDColor?
         public var backgroundColor: CDColor?
@@ -153,6 +153,7 @@ public struct CDMarkdownTheme {
     }
 }
 
+extension CDMarkdownTheme: Equatable {}
 extension CDMarkdownTheme: @unchecked Sendable {}
 
 extension CDMarkdownTheme {
