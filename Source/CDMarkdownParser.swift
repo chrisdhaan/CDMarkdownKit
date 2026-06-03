@@ -492,6 +492,17 @@ open class CDMarkdownParser {
         return result
     }
 
+    /// Returns the ranges of all fenced code blocks (``` ... ```) in `string`.
+    /// Used to exclude content inside code blocks from reference definition scanning.
+    private func fencedCodeBlockRanges(in string: String) -> [NSRange] {
+        let pattern = #"^```[^\n]*\n[\s\S]*?^```\s*$"#
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: .anchorsMatchLines) else {
+            return []
+        }
+        let fullRange = NSRange(location: 0, length: (string as NSString).length)
+        return regex.matches(in: string, options: [], range: fullRange).map(\.range)
+    }
+
     /// Scans `attributedString` for reference link definitions, removes them from the string,
     /// and returns a dictionary mapping lowercased reference IDs to their resolved URLs.
     ///
@@ -512,9 +523,14 @@ open class CDMarkdownParser {
 
         let fullRange = NSRange(location: 0, length: attributedString.length)
         let matches = regex.matches(in: attributedString.string, options: [], range: fullRange)
+        let fencedRanges = fencedCodeBlockRanges(in: attributedString.string)
 
         // Iterate in reverse so that removing ranges doesn't shift subsequent indices
         for match in matches.reversed() {
+            let matchRange = match.range(at: 0)
+            if fencedRanges.contains(where: { NSLocationInRange(matchRange.location, $0) }) {
+                continue
+            }
             let idRange = match.range(at: 1)
             let urlRange = match.range(at: 2)
             // Title may be in group 3, 4, or 5 depending on which delimiter was used

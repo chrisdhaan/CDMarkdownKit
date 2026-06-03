@@ -83,4 +83,21 @@ struct CDMarkdownLinkReferenceTests {
         #expect(urls.contains("https://a.com"))
         #expect(urls.contains("https://b.com"))
     }
+
+    @Test func definitionInsideFencedBlockIsNotExtracted() async {
+        let input = "```\n[hidden]: https://hidden.com\n```"
+        let result = await parser.parse(input)
+        #expect(result.string.contains("[hidden]: https://hidden.com"))
+    }
+
+    @Test func definitionOutsideFencedBlockIsExtractedWhenFencedBlockPresent() async {
+        let input = "[link][ref]\n```\nsome code\n```\n[ref]: https://example.com"
+        let result = await parser.parse(input)
+        var foundURL: URL?
+        result.enumerateAttribute(.link,
+                                  in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let url = value as? URL { foundURL = url }
+        }
+        #expect(foundURL?.absoluteString == "https://example.com")
+    }
 }
