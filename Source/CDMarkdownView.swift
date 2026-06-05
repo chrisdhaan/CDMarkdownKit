@@ -77,7 +77,7 @@ import SwiftUI
                 }
             #endif
 
-            @available(iOS 17.0, tvOS 17.0, visionOS 1.0, *)
+            @available(iOS 17.0, visionOS 1.0, *)
             public func textView(_ textView: UITextView,
                                  primaryActionFor textItem: UITextItem,
                                  defaultAction: UIAction) -> UIAction? {

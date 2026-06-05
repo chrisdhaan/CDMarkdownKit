@@ -164,6 +164,7 @@ extension CDMarkdownTheme {
     }
 
     /// A minimal dark-mode–friendly theme using system colours.
+    @available(iOS 13.0, tvOS 13.0, macOS 10.15, watchOS 6.0, visionOS 1.0, *)
     public static var systemDark: CDMarkdownTheme {
         CDMarkdownTheme(
             font: CDFont.systemFont(ofSize: 14),
