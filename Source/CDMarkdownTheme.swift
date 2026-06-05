@@ -164,9 +164,17 @@ extension CDMarkdownTheme {
     }
 
     /// A minimal dark-mode–friendly theme using system colours.
-    @available(iOS 13.0, tvOS 13.0, macOS 10.15, watchOS 6.0, visionOS 1.0, *)
+    ///
+    /// On watchOS, link colours use a hardcoded blue because `UIColor.systemBlue` is
+    /// `API_UNAVAILABLE(watchos)`.
+    @available(iOS 13.0, tvOS 13.0, macOS 10.15, watchOS 4.0, visionOS 1.0, *)
     public static var systemDark: CDMarkdownTheme {
-        CDMarkdownTheme(
+        #if os(watchOS)
+            let linkColor = CDColor(red: 0.0, green: 122.0 / 255.0, blue: 1.0, alpha: 1.0)
+        #else
+            let linkColor = CDColor.systemBlue
+        #endif
+        return CDMarkdownTheme(
             font: CDFont.systemFont(ofSize: 14),
             fontColor: CDColor.white,
             backgroundColor: CDColor.black,
@@ -180,8 +188,8 @@ extension CDMarkdownTheme {
                 color: CDColor.lightGray,
                 backgroundColor: CDColor.darkGray
             ),
-            link: LinkTheme(color: CDColor.systemBlue),
-            linkReference: LinkTheme(color: CDColor.systemBlue)
+            link: LinkTheme(color: linkColor),
+            linkReference: LinkTheme(color: linkColor)
         )
     }
 }
