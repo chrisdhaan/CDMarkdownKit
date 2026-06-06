@@ -208,7 +208,10 @@ CDMarkdownKit supports the following Markdown syntax:
 | Automatic Links | `https://example.com` | Bare URLs detected |
 | Images | `![alt](url)` | Rendered images |
 | Ordered Lists | `1. item` | Numbered items |
+| Task Lists | `- [x] done` / `- [ ] todo` | Checked items |
+| Horizontal Rules | `---` or `***` or `___` | Divider line |
 | Tables | Pipe-delimited rows | Aligned columns |
+| Reference Links | `[text][ref]` + `[ref]: url` | Named URL references |
 
 ### Platform Notes
 
@@ -220,7 +223,10 @@ CDMarkdownKit supports the following Markdown syntax:
 | Ordered Lists | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Blockquotes | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Inline Code / Fenced Blocks | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Task Lists | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Horizontal Rules | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Tables | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Reference Links | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Links (tappable) | ✓ | ✓ | ✓ | — | ✓ |
 | Automatic Links | ✓ | ✓ | ✓ | — | ✓ |
 | Images | ✓ | ✓ | ✓ | — | ✓ |
@@ -242,7 +248,35 @@ Column alignment is controlled by the colon position in the separator row:
 - `:---:` — Center-aligned
 - `---:` — Right-aligned
 
-Cell content is rendered as plain text; inline formatting inside cells is not supported in this version.
+Cell content supports inline formatting — bold, italic, strikethrough, code spans, and links inside cells are all rendered.
+
+### Reference-Style Links
+
+CDMarkdownKit supports Markdown reference-style links. Reference definitions are stripped
+from the output and their URLs are resolved when the link is rendered:
+
+```
+See the [CDMarkdownKit repo][cdmk] for more details.
+
+[cdmk]: https://github.com/chrisdhaan/CDMarkdownKit
+```
+
+The link text (`CDMarkdownKit repo`) is written to the attributed string as a tappable
+`.link` attribute pointing to the resolved URL. The reference definition line is removed
+from the output entirely.
+
+CDMarkdownKit also writes the original link title (the first capture from the reference
+definition) to the `.cdMarkdownLinkTitle` custom attribute. Use this to display tooltips
+or accessible descriptions:
+
+```swift
+let attributed = await parser.parse(markdown)
+attributed.enumerateAttribute(.cdMarkdownLinkTitle,
+                               in: NSRange(location: 0, length: attributed.length)) { value, range, _ in
+    guard let title = value as? String else { return }
+    // e.g., attach as accessibility label for the link range
+}
+```
 
 ### Fenced Code Blocks
 
@@ -439,15 +473,19 @@ CDMarkdownView("Hello **world**\n\n`code`") { url in
 
 ### Sharing a parser
 
-Set a parser once for a whole view hierarchy:
+Set a parser or theme once for a whole view hierarchy:
 
 ```swift
 ContentView()
     .markdownParser(myParser)
+
+// Or share just a theme (a parser is created from it automatically)
+ContentView()
+    .markdownTheme(.systemDark)
 ```
 
-Any `CDMarkdownText` or `CDMarkdownView` in the subtree will use `myParser` unless
-overridden with an explicit `parser:` argument.
+Any `CDMarkdownText` or `CDMarkdownView` in the subtree will use `myParser` (or the
+derived parser) unless overridden with an explicit `parser:` argument.
 
 ---
 

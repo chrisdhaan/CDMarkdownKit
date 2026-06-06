@@ -32,13 +32,28 @@ Input: String or NSAttributedString
 │
 ▼
 ┌─────────────────────────────────────────────────────────────┐
+│  Phase 1.5 — REFERENCE DEFINITION EXTRACTION               │
+│                                                             │
+│  CDMarkdownLinkReference                                    │
+│    Strips [ref]: url lines from the string and populates    │
+│    CDMarkdownLinkReference.references with the mappings,   │
+│    so Phase 2 link reference parsing can resolve them.      │
+└─────────────────────────────────────────────────────────────┘
+│
+▼
+┌─────────────────────────────────────────────────────────────┐
 │  Phase 2 — ELEMENT PARSING  (order is fixed)               │
 │                                                             │
+│  CDMarkdownTable          pipe-delimited rows               │
+│  CDMarkdownHorizontalRule --- / *** / ___ dividers          │
 │  CDMarkdownHeader         # H1  through  ###### H6         │
+│  CDMarkdownTaskList       - [x] / - [ ] items              │
 │  CDMarkdownList           * / - / + items (nested)         │
+│  CDMarkdownOrderedList    1. / 2. numbered items            │
 │  CDMarkdownQuote          > blockquotes (nested)           │
 │  CDMarkdownLink           [text](url)                      │
 │  CDMarkdownAutomaticLink  bare URLs via NSDataDetector      │
+│  CDMarkdownLinkReference  [text][ref] resolved references   │
 │  CDMarkdownImage          ![alt](url)                      │
 │  CDMarkdownBold           **text** or __text__             │
 │  CDMarkdownItalic         *text* or _text_                 │
@@ -109,19 +124,29 @@ CDMarkdownElement                          Foundation
 │   │  func attributesForLevel(_ Int)      (default: self.attributes)
 │   │  func match(_:attributedString:)     extracts level from capture group 1 length
 │   │
-│   ├── CDMarkdownHeader   formatText removes #s; attributesForLevel scales font
-│   ├── CDMarkdownList     formatText replaces marker with "• "; addFullAttributes
-│   │                      sets headIndent for paragraph alignment
-│   └── CDMarkdownQuote    formatText replaces > with indicator string
+│   ├── CDMarkdownHeader         formatText removes #s; attributesForLevel scales font
+│   ├── CDMarkdownList           formatText replaces marker with "• "; addFullAttributes
+│   │                            sets headIndent for paragraph alignment
+│   ├── CDMarkdownOrderedList    formatText replaces "N." with "N."; tracks numbering
+│   ├── CDMarkdownTaskList       formatText replaces "- [x]"/"- [ ]" with ✓/☐
+│   └── CDMarkdownQuote          formatText replaces > with indicator string
 │
-└── CDMarkdownLinkElement : CDMarkdownElement, CDMarkdownStyle
-    │  func formatText(_:range:link:)      (must override) attaches URL attribute
-    │  func addAttributes(_:range:link:)   (must override) adds visual attrs
-    │
-    ├── CDMarkdownLink           formatText: URL percent-encoding + .link attr
-    ├── CDMarkdownAutomaticLink  extends Link; regularExpression returns NSDataDetector
-    └── CDMarkdownImage          match: inserts placeholder NSTextAttachment; async
-                                 resolution happens in CDMarkdownParser.resolveImages(in:)
+├── CDMarkdownLinkElement : CDMarkdownElement, CDMarkdownStyle
+│   │  func formatText(_:range:link:)      (must override) attaches URL attribute
+│   │  func addAttributes(_:range:link:)   (must override) adds visual attrs
+│   │
+│   ├── CDMarkdownLink           formatText: URL percent-encoding + .link attr
+│   ├── CDMarkdownAutomaticLink  extends Link; regularExpression returns NSDataDetector
+│   ├── CDMarkdownLinkReference  resolves [text][ref] against CDMarkdownLinkReference.references
+│   └── CDMarkdownImage          match: inserts placeholder NSTextAttachment; async
+│                                resolution happens in CDMarkdownParser.resolveImages(in:)
+│
+└── Direct CDMarkdownElement implementations (no shared sub-protocol)
+    ├── CDMarkdownTable          pipe-delimited GFM tables; writes per-cell paragraph attrs
+    ├── CDMarkdownHorizontalRule matches ---, ***, ___ and replaces with styled rule character
+    ├── CDMarkdownCodeEscaping   UTF16-hex-encodes backtick span contents (Phase 1)
+    ├── CDMarkdownEscaping       UTF16-hex-encodes backslash-escaped chars (Phase 1)
+    └── CDMarkdownUnescaping     reverses all remaining \HHHH sequences (Phase 3)
 ```
 
 ---
@@ -151,15 +176,15 @@ Every element that conforms to `CDMarkdownStyle` gets `attributes` for free: it 
 Subclass of `NSLayoutManager`. Overrides `fillBackgroundRectArray(_:count:forCharacterRange:color:)` to draw rounded rectangles around background-colored runs instead of sharp rectangles.
 
 Corner radius is set to 3pt when:
-- `roundCodeCorners == true` AND color matches `CDColor.codeBackgroundRed()`
-- `roundSyntaxCorners == true` AND color matches `CDColor.syntaxBackgroundGray()`  
+- `roundCodeCorners == true` AND the attributed string has a `.cdMarkdownRoundedBackground` attribute matching a code span
+- `roundSyntaxCorners == true` AND the attribute matches a syntax span
 - `roundAllCorners == true` (regardless of color)
 
-**Known fragility**: the color comparison is by RGBA value; it won't round custom colors.
+Rounding decisions are driven by the `.cdMarkdownRoundedBackground` custom attribute written during parsing — not by color comparison — so customized colors are handled correctly.
 
 ### CDMarkdownTextView (iOS/tvOS)
 
-`@MainActor UITextView` subclass. When initialized programmatically (preferred), caller provides a pre-wired `CDMarkdownLayoutManager`. When initialized from a storyboard, `configure()` creates its own layout manager, calls `addTextContainer(self.textContainer)` to take over rendering, and forces `isScrollEnabled = true`, `isSelectable = false`, `isEditable = false`. The `attributedText` setter keeps a separate `customTextStorage` (a copy of the attributed text) wired to the layout manager so it has content to draw from.
+`@MainActor UITextView` subclass. `configure()` creates a `CDMarkdownLayoutManager`, wires it into the text container, and forces `isScrollEnabled = true`, `isSelectable = false`, `isEditable = false`. The `attributedText` setter keeps a separate `customTextStorage` wired to the layout manager so it has content to draw from.
 
 **TextKit 1 note**: accessing `self.textContainer` in `configure()` opts UITextView into TextKit 1 compatibility mode. The one-time console warning this produces is expected and unavoidable until `CDMarkdownLayoutManager` is migrated to `NSTextLayoutManager`.
 
@@ -170,6 +195,42 @@ Corner radius is set to 3pt when:
 - `touchesEnded` opens a `UIAlertController` action sheet with Open / Add to Reading List / Copy / Share options
 - `CDMarkdownLabelDelegate.didSelect(_:URL)` is called on "Open"
 - Implements `NSLayoutManagerDelegate` to prevent line breaks mid-URL
+
+### CDMarkdownNSTextView (macOS)
+
+`NSTextView` subclass with rounded-corner support via `CDMarkdownNSLayoutManager`. Configured as read-only, non-editable by default. Links in the attributed string are opened by `NSWorkspace` on click unless a custom `NSTextViewDelegate` intercepts them. Use `setAttributedString(_:)` to display parsed markdown.
+
+### CDMarkdownNSLabel (macOS)
+
+Lightweight read-only `NSView` for simple markdown display without link interaction. Backs its text with `NSAttributedString` drawn directly in `drawRect(_:)`. Set `attributedText` to update the display.
+
+### CDMarkdownNSLayoutManager (macOS)
+
+`NSLayoutManager` subclass parallel to `CDMarkdownLayoutManager` for macOS. Provides the same rounded-corner background rendering using the `.cdMarkdownRoundedBackground` attribute.
+
+---
+
+## SwiftUI Components
+
+### CDMarkdownText
+
+Lightweight SwiftUI view backed by SwiftUI's native `Text` view with `AttributedString`. Does not support rounded-corner code backgrounds, but works on all SwiftUI platforms including watchOS.
+
+### CDMarkdownView
+
+Full-fidelity SwiftUI view backed by `CDMarkdownTextView` (iOS/tvOS/visionOS) or `CDMarkdownNSTextView` (macOS). Supports rounded-corner backgrounds, link tap handling, and async image loading.
+
+### CDMarkdownEnvironmentKey
+
+Provides `.markdownParser(_:)` and `.markdownTheme(_:)` SwiftUI environment modifiers. Any `CDMarkdownText` or `CDMarkdownView` in the subtree picks up the environment parser or builds one from the theme automatically.
+
+---
+
+## CDMarkdownTheme
+
+`CDMarkdownTheme` is a value type that bundles the visual styling for all elements. Pass it to `CDMarkdownParser(theme:)` to style the entire parser at once without setting properties element-by-element.
+
+Built-in themes: `CDMarkdownTheme.default` (mirrors parser defaults) and `CDMarkdownTheme.systemDark` (dark-mode friendly using system colors).
 
 ---
 
