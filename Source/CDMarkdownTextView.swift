@@ -47,8 +47,13 @@
         /// When `false` (default), backgrounds are drawn as rectangles. Set to `true` for a softer appearance.
         open var roundAllCorners: Bool = false {
             didSet {
-                if let layoutManager = self.customLayoutManager {
-                    layoutManager.roundAllCorners = roundAllCorners
+                if #available(iOS 16.0, tvOS 16.0, *),
+                   let tk2Manager = textLayoutManager as? CDMarkdownTextLayoutManager {
+                    tk2Manager.roundAllCorners = roundAllCorners
+                } else {
+                    if let layoutManager = self.customLayoutManager {
+                        layoutManager.roundAllCorners = roundAllCorners
+                    }
                 }
             }
         }
@@ -89,23 +94,50 @@
 
         /// Configures the text view's custom layout manager and text storage.
         ///
-        /// Called automatically during initialization. This method sets up the ``CDMarkdownLayoutManager``
-        /// for rendering with rounded-corner backgrounds and enables scrolling while disabling editing.
-        ///
-        /// Note: Accessing `self.textContainer` during configuration opts the text view into TextKit 1
-        /// compatibility mode (one-time console warning expected). This is expected behavior until a
-        /// TextKit 2 migration is completed.
+        /// Called automatically during initialization. On iOS 16+, this uses TextKit 2 with
+        /// ``CDMarkdownTextLayoutManager``. On iOS 15, this uses TextKit 1 with ``CDMarkdownLayoutManager``.
         open func configure() {
-            // Accessing self.textContainer here opts UITextView into TextKit 1 compatibility
-            // mode (one-time console warning expected; unavoidable until TK2 migration).
-            self.customLayoutManager = CDMarkdownLayoutManager()
-            self.customLayoutManager.addTextContainer(self.textContainer)
-
-            self.isScrollEnabled = true
-            self.isSelectable = false
+            if #available(iOS 16.0, tvOS 16.0, *) {
+                configureTK2()
+            } else {
+                configureTK1()
+            }
+            isScrollEnabled = true
+            isSelectable = false
             #if os(iOS)
-                self.isEditable = false
+            isEditable = false
             #endif
+        }
+
+        /// Configures TextKit 2 rendering (iOS 16+).
+        @available(iOS 16.0, tvOS 16.0, *)
+        private func configureTK2() {
+            let tk2Manager = CDMarkdownTextLayoutManager.makeDefault()
+            tk2Manager.textContainer = textContainer
+            setValue(tk2Manager, forKey: "textLayoutManager")
+        }
+
+        /// Configures TextKit 1 rendering (iOS 15).
+        private func configureTK1() {
+            textStorage.removeLayoutManager(layoutManager)
+            customLayoutManager = CDMarkdownLayoutManager()
+            textStorage.addLayoutManager(customLayoutManager)
+            customLayoutManager.addTextContainer(textContainer)
+        }
+
+        /// Preferred factory for programmatic construction on iOS 16+.
+        /// Falls back to the standard initializer on iOS 15.
+        @MainActor
+        static func makeTextView(frame: CGRect) -> CDMarkdownTextView {
+            if #available(iOS 16.0, tvOS 16.0, *) {
+                let view = CDMarkdownTextView(frame: frame, usingTextLayoutManager: true)
+                view.configure()
+                return view
+            } else {
+                let view = CDMarkdownTextView(frame: frame, textContainer: nil)
+                view.configure()
+                return view
+            }
         }
     }
 
