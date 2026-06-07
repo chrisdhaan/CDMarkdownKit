@@ -25,7 +25,7 @@ All notable changes to this project will be documented in this file.
 
 ## [3.3.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/3.3.0)
 
-Released on 2026-06-03.
+Released on 2026-06-07.
 
 ### Added
 
