@@ -409,9 +409,9 @@
 
                 self.displayActionController(forUrl: selectedRange.url)
 
-                let when = DispatchTime.now() + Double(Int64(0.25 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-                DispatchQueue.main.asyncAfter(deadline: when) {
-                    self.selectedURLRange = nil
+                Task { @MainActor [weak self] in
+                    try? await Task.sleep(nanoseconds: 250_000_000)
+                    self?.selectedURLRange = nil
                 }
                 avoidSuperCall = true
             case .cancelled:
