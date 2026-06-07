@@ -32,6 +32,7 @@
 #endif
 
 /// Protocol for block-level Markdown elements with multiple levels of nesting (e.g., headers, lists).
+@MainActor
 public protocol CDMarkdownLevelElement: CDMarkdownElement, CDMarkdownStyle {
 
     /// The maximum nesting level supported by this element (e.g., 6 for headers).

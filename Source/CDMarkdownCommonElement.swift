@@ -32,6 +32,7 @@
 #endif
 
 /// Protocol for simple inline Markdown elements that apply styling attributes (e.g., bold, italic).
+@MainActor
 public protocol CDMarkdownCommonElement: CDMarkdownElement, CDMarkdownStyle {
 
     /// Applies the element's styling attributes to a range of the attributed string.
