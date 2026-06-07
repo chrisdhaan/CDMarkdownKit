@@ -65,6 +65,12 @@
         /// The custom text storage that holds the attributed text and layout information.
         open var customTextStorage: NSTextStorage!
 
+        /// The TextKit 2 layout manager (iOS 16+).
+        private var tk2LayoutManager: CDMarkdownTextLayoutManager?
+
+        /// The TextKit 2 content storage (iOS 16+).
+        private var tk2ContentStorage: NSTextContentStorage?
+
         /// Delegate that receives callbacks when links in the label are tapped.
         /// Set this to handle link navigation, e.g., opening URLs in Safari.
         open weak var delegate: CDMarkdownLabelDelegate?
@@ -77,9 +83,15 @@
         /// When `false` (default), backgrounds are drawn as rectangles. Set to `true` for a softer appearance.
         open var roundAllCorners: Bool = false {
             didSet {
-                if let layoutManager = self.customLayoutManager {
-                    layoutManager.roundAllCorners = roundAllCorners
+                if #available(iOS 16.0, tvOS 16.0, *),
+                   let tk2Manager = textLayoutManager as? CDMarkdownTextLayoutManager {
+                    tk2Manager.roundAllCorners = roundAllCorners
+                } else {
+                    if let layoutManager = self.customLayoutManager {
+                        layoutManager.roundAllCorners = roundAllCorners
+                    }
                 }
+                setNeedsDisplay()
             }
         }
 
@@ -110,19 +122,30 @@
                 super.attributedText
             }
             set {
-                if self.customTextContainer != nil,
-                   let layoutManager = self.customLayoutManager {
-                    self.parseTextAndExtractURLRanges(newValue)
-                    self.customTextStorage = NSTextStorage(attributedString: newValue)
-                    self.customTextStorage.addLayoutManager(layoutManager)
-                    layoutManager.textStorage = self.customTextStorage
-                    #if os(iOS) || os(visionOS)
-                        if let parser = markdownParser {
-                            self.accessibilityAttributedLabel = parser.accessibilityAttributedString(from: newValue)
-                        }
-                    #endif
+                parseTextAndExtractURLRanges(newValue)
+
+                if #available(iOS 16.0, tvOS 16.0, *),
+                   let contentStorage = tk2ContentStorage {
+                    if let textStorage = contentStorage.textStorage {
+                        textStorage.setAttributedString(newValue)
+                    } else {
+                        let textStorage = NSTextStorage(attributedString: newValue)
+                        contentStorage.textStorage = textStorage
+                    }
+                } else if customTextContainer != nil,
+                          let layoutManager = customLayoutManager {
+                    customTextStorage = NSTextStorage(attributedString: newValue)
+                    customTextStorage.addLayoutManager(layoutManager)
+                    layoutManager.textStorage = customTextStorage
                 }
-                self.setNeedsDisplay()
+
+                #if os(iOS) || os(visionOS)
+                if let parser = markdownParser {
+                    self.accessibilityAttributedLabel = parser.accessibilityAttributedString(from: newValue)
+                }
+                #endif
+
+                setNeedsDisplay()
             }
         }
 
@@ -147,24 +170,47 @@
 
         /// Configures the label's custom layout manager, text container, and text storage.
         ///
-        /// Called automatically during initialization. This method sets up the ``CDMarkdownLayoutManager``
-        /// and ``NSTextContainer`` for rendering with rounded-corner backgrounds and proper text sizing.
-        /// Text containers are configured for multiple lines with no fragment padding to ensure proper rendering.
+        /// Called automatically during initialization. On iOS 16+, this uses TextKit 2 with
+        /// ``CDMarkdownTextLayoutManager``. On iOS 15, this uses TextKit 1 with ``CDMarkdownLayoutManager``.
         open func configure() {
-            self.isUserInteractionEnabled = true
+            isUserInteractionEnabled = true
 
-            self.customLayoutManager = CDMarkdownLayoutManager()
-
-            if let textContainer = self.customTextContainer {
-                self.customLayoutManager.addTextContainer(textContainer)
+            if #available(iOS 16.0, tvOS 16.0, *) {
+                configureTK2()
             } else {
-                self.customTextContainer = NSTextContainer()
-                self.customTextContainer.lineFragmentPadding = 0
-                self.customTextContainer.maximumNumberOfLines = 0
-                self.customTextContainer.lineBreakMode = self.lineBreakMode
-                self.customTextContainer.size = self.frame.size
+                configureTK1()
+            }
+        }
 
-                self.customLayoutManager.addTextContainer(self.customTextContainer)
+        @available(iOS 16.0, tvOS 16.0, *)
+        private func configureTK2() {
+            if customTextContainer == nil {
+                customTextContainer = NSTextContainer()
+                customTextContainer.lineFragmentPadding = 0
+                customTextContainer.maximumNumberOfLines = 0
+                customTextContainer.lineBreakMode = lineBreakMode
+                customTextContainer.size = frame.size
+            }
+
+            tk2ContentStorage = NSTextContentStorage()
+            tk2LayoutManager = CDMarkdownTextLayoutManager.makeDefault()
+            tk2LayoutManager?.textContainer = customTextContainer
+            tk2ContentStorage?.addTextLayoutManager(tk2LayoutManager!)
+        }
+
+        private func configureTK1() {
+            customLayoutManager = CDMarkdownLayoutManager()
+
+            if let textContainer = customTextContainer {
+                customLayoutManager.addTextContainer(textContainer)
+            } else {
+                customTextContainer = NSTextContainer()
+                customTextContainer.lineFragmentPadding = 0
+                customTextContainer.maximumNumberOfLines = 0
+                customTextContainer.lineBreakMode = lineBreakMode
+                customTextContainer.size = frame.size
+
+                customLayoutManager.addTextContainer(customTextContainer)
             }
         }
 
@@ -198,14 +244,37 @@
         }
 
         override open func drawText(in rect: CGRect) {
-            // Calculate the offset of the text in the view
-            let glyphRange = self.customLayoutManager.glyphRange(for: self.customTextContainer)
-            let glyphsPosition = self.calculateGlyphsPositionInView()
-            // Drawing code
-            self.customLayoutManager.drawBackground(forGlyphRange: glyphRange,
-                                                    at: glyphsPosition)
-            self.customLayoutManager.drawGlyphs(forGlyphRange: glyphRange,
-                                                at: glyphsPosition)
+            if #available(iOS 16.0, tvOS 16.0, *),
+               let tk2Manager = tk2LayoutManager {
+                drawTextTK2(in: rect, layoutManager: tk2Manager)
+            } else {
+                drawTextTK1(in: rect)
+            }
+        }
+
+        @available(iOS 16.0, tvOS 16.0, *)
+        private func drawTextTK2(in rect: CGRect, layoutManager: CDMarkdownTextLayoutManager) {
+            guard let context = UIGraphicsGetCurrentContext() else { return }
+
+            let glyphsPosition = calculateGlyphsPositionInView()
+            layoutManager.ensureLayout(for: layoutManager.documentRange)
+
+            for fragment in layoutManager.textLayoutFragments {
+                let fragmentOrigin = CGPoint(
+                    x: glyphsPosition.x + fragment.layoutFragmentFrame.origin.x,
+                    y: glyphsPosition.y + fragment.layoutFragmentFrame.origin.y
+                )
+                fragment.draw(at: fragmentOrigin, in: context)
+            }
+        }
+
+        private func drawTextTK1(in rect: CGRect) {
+            let glyphRange = customLayoutManager.glyphRange(for: customTextContainer)
+            let glyphsPosition = calculateGlyphsPositionInView()
+            customLayoutManager.drawBackground(forGlyphRange: glyphRange,
+                                               at: glyphsPosition)
+            customLayoutManager.drawGlyphs(forGlyphRange: glyphRange,
+                                           at: glyphsPosition)
         }
 
         private func calculateGlyphsPositionInView() -> CGPoint {
@@ -371,17 +440,54 @@
         }
 
         private func urlRange(at location: CGPoint) -> URLRange? {
-            guard self.customTextStorage.length > 0 else { return nil }
+            if #available(iOS 16.0, tvOS 16.0, *),
+               let tk2Manager = tk2LayoutManager,
+               let textStorage = tk2Manager.textContentManager as? NSTextContentStorage {
+                return urlRangeTK2(at: location, layoutManager: tk2Manager, storage: textStorage)
+            } else {
+                return urlRangeTK1(at: location)
+            }
+        }
 
-            let correctLocation = location
+        @available(iOS 16.0, tvOS 16.0, *)
+        private func urlRangeTK2(at location: CGPoint, layoutManager: CDMarkdownTextLayoutManager, storage: NSTextContentStorage) -> URLRange? {
+            guard let textStorage = storage.textStorage, textStorage.length > 0 else { return nil }
+
+            let glyphsPosition = calculateGlyphsPositionInView()
+            let adjustedLocation = CGPoint(
+                x: location.x - glyphsPosition.x,
+                y: location.y - glyphsPosition.y
+            )
+
+            for fragment in layoutManager.textLayoutFragments {
+                let fragmentFrame = fragment.layoutFragmentFrame
+                guard fragmentFrame.contains(adjustedLocation) else { continue }
+
+                if let location = fragment.textLocation(for: adjustedLocation) {
+                    if let charIndex = layoutManager.offset(from: layoutManager.documentRange.location, to: location) {
+                        for urlRange in urlRanges {
+                            if charIndex >= urlRange.range.location && charIndex < urlRange.range.location + urlRange.range.length {
+                                return urlRange
+                            }
+                        }
+                    }
+                }
+            }
+
+            return nil
+        }
+
+        private func urlRangeTK1(at location: CGPoint) -> URLRange? {
+            guard customTextStorage.length > 0 else { return nil }
+
             let boundingRect = customLayoutManager.boundingRect(forGlyphRange: NSRange(location: 0,
-                                                                                       length: self.customTextStorage.length),
-                                                                in: self.customTextContainer)
+                                                                                        length: customTextStorage.length),
+                                                                 in: customTextContainer)
 
-            guard boundingRect.contains(correctLocation) else { return nil }
+            guard boundingRect.contains(location) else { return nil }
 
-            let index = self.customLayoutManager.glyphIndex(for: correctLocation,
-                                                            in: self.customTextContainer)
+            let index = customLayoutManager.glyphIndex(for: location,
+                                                       in: customTextContainer)
 
             for urlRange in urlRanges {
                 if index >= urlRange.range.location, index <= urlRange.range.location + urlRange.range.length {
