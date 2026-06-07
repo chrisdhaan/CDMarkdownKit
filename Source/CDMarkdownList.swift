@@ -31,10 +31,8 @@
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownList: @unchecked Sendable {}
-
 /// Renders unordered lists using *, -, or + syntax.
+@MainActor
 open class CDMarkdownList: CDMarkdownLevelElement {
 
     fileprivate static let regex = "^\\s*([\\*\\+\\-]{1,%@})[ \t]+(.+)$"

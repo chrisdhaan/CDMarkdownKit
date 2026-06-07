@@ -31,10 +31,8 @@
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownQuote: @unchecked Sendable {}
-
 /// Renders blockquotes using > syntax.
+@MainActor
 open class CDMarkdownQuote: CDMarkdownLevelElement {
 
     fileprivate static let regex = "^(\\>{1,%@})\\s*(.+)$"

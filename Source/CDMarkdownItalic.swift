@@ -31,10 +31,8 @@
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownItalic: @unchecked Sendable {}
-
 /// Renders italic text using *text* or _text_ syntax.
+@MainActor
 open class CDMarkdownItalic: CDMarkdownCommonElement {
 
     fileprivate static let regex = "()(\\*|_)(.*?)(\\2)"
