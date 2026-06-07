@@ -9,9 +9,12 @@ import SwiftUI
         private let string: String
         private let explicitParser: CDMarkdownParser?
         @Environment(\.markdownParser) private var environmentParser
+        @Environment(\.markdownTheme) private var environmentTheme
         public var onLinkTap: ((URL) -> Void)?
 
-        private var parser: CDMarkdownParser { explicitParser ?? environmentParser }
+        private var parser: CDMarkdownParser {
+            explicitParser ?? environmentParser ?? CDMarkdownParser(theme: environmentTheme)
+        }
 
         /// Creates a full-fidelity Markdown view with rounded-corner support.
         public init(_ string: String,
@@ -20,6 +23,13 @@ import SwiftUI
             self.string = string
             self.explicitParser = parser
             self.onLinkTap = onLinkTap
+        }
+
+        /// Creates a full-fidelity Markdown view styled with `theme`.
+        public init(_ string: String,
+                    theme: CDMarkdownTheme,
+                    onLinkTap: ((URL) -> Void)? = nil) {
+            self.init(string, parser: CDMarkdownParser(theme: theme), onLinkTap: onLinkTap)
         }
 
         public func makeUIView(context: Context) -> CDMarkdownTextView {
@@ -57,13 +67,29 @@ import SwiftUI
                 self.onLinkTap = onLinkTap
             }
 
-            public func textView(_ textView: UITextView,
-                                 shouldInteractWith url: URL,
-                                 in characterRange: NSRange,
-                                 interaction: UITextItemInteraction) -> Bool {
-                onLinkTap?(url)
-                return onLinkTap == nil // let UIKit handle if no custom handler
-            }
+            #if !os(visionOS)
+                public func textView(_ textView: UITextView,
+                                     shouldInteractWith url: URL,
+                                     in characterRange: NSRange,
+                                     interaction: UITextItemInteraction) -> Bool {
+                    onLinkTap?(url)
+                    return onLinkTap == nil // let UIKit handle if no custom handler
+                }
+            #endif
+
+            #if os(iOS) || os(visionOS)
+                @available(iOS 17.0, visionOS 1.0, *)
+                public func textView(_ textView: UITextView,
+                                     primaryActionFor textItem: UITextItem,
+                                     defaultAction: UIAction) -> UIAction? {
+                    guard case let .link(url) = textItem.content else { return defaultAction }
+                    if let handler = onLinkTap {
+                        handler(url)
+                        return nil // returning nil suppresses UIKit's default open-URL behaviour
+                    }
+                    return defaultAction
+                }
+            #endif
         }
     }
 
@@ -76,9 +102,12 @@ import SwiftUI
         private let string: String
         private let explicitParser: CDMarkdownParser?
         @Environment(\.markdownParser) private var environmentParser
+        @Environment(\.markdownTheme) private var environmentTheme
         public var onLinkTap: ((URL) -> Bool)?
 
-        private var parser: CDMarkdownParser { explicitParser ?? environmentParser }
+        private var parser: CDMarkdownParser {
+            explicitParser ?? environmentParser ?? CDMarkdownParser(theme: environmentTheme)
+        }
 
         /// Creates a full-fidelity Markdown view with rounded-corner support.
         public init(_ string: String,

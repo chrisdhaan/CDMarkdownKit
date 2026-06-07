@@ -81,9 +81,11 @@ open class CDMarkdownSyntax: @preconcurrency CDMarkdownCommonElement {
 
         // Strip optional language hint: first line with no whitespace (e.g. "js", "swift", "python")
         let newlineCharacters = CharacterSet.newlines
+        var detectedLanguage: String?
         if let firstNewline = unescapedString.rangeOfCharacter(from: newlineCharacters) {
             let hint = String(unescapedString[unescapedString.startIndex ..< firstNewline.lowerBound])
             if !hint.isEmpty, hint.rangeOfCharacter(from: .whitespaces) == nil {
+                detectedLanguage = hint
                 unescapedString = String(unescapedString[firstNewline.upperBound...])
             }
         }
@@ -108,6 +110,11 @@ open class CDMarkdownSyntax: @preconcurrency CDMarkdownCommonElement {
         attributedString.addAttribute(.cdMarkdownIsCode,
                                       value: true as AnyObject,
                                       range: range)
+        if let language = detectedLanguage {
+            attributedString.addAttribute(.cdMarkdownCodeLanguage,
+                                          value: language as AnyObject,
+                                          range: range)
+        }
         // If the previous character was a newline then parser doesn't have to worry about
         // wrapping the background color from the end of the last element to the newline.
         if range.location - 4 >= 0,

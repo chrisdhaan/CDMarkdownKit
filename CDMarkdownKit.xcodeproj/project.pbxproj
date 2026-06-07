@@ -26,6 +26,31 @@
 		5F11F45B2FCC6707003A1AFB /* CDMarkdownNSTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F11F44E2FCC6707003A1AFB /* CDMarkdownNSTextView.swift */; };
 		5F11F45C2FCC6707003A1AFB /* CDMarkdownNSLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F11F44D2FCC6707003A1AFB /* CDMarkdownNSLayoutManager.swift */; };
 		5F11F45D2FCC6707003A1AFB /* CDMarkdownNSLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F11F44C2FCC6707003A1AFB /* CDMarkdownNSLabel.swift */; };
+		5F4315BC2FD2705900FAC621 /* CDMarkdownLinkReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315BB2FD2705800FAC621 /* CDMarkdownLinkReference.swift */; };
+		5F4315BD2FD2705900FAC621 /* CDMarkdownLinkReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315BB2FD2705800FAC621 /* CDMarkdownLinkReference.swift */; };
+		5F4315BE2FD2705900FAC621 /* CDMarkdownLinkReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315BB2FD2705800FAC621 /* CDMarkdownLinkReference.swift */; };
+		5F4315BF2FD2705900FAC621 /* CDMarkdownLinkReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315BB2FD2705800FAC621 /* CDMarkdownLinkReference.swift */; };
+		5F4315C02FD2705900FAC621 /* CDMarkdownLinkReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315BB2FD2705800FAC621 /* CDMarkdownLinkReference.swift */; };
+		5F4315C22FD2707C00FAC621 /* CDMarkdownEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315C12FD2707B00FAC621 /* CDMarkdownEnvironmentKey.swift */; };
+		5F4315C32FD2707C00FAC621 /* CDMarkdownEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315C12FD2707B00FAC621 /* CDMarkdownEnvironmentKey.swift */; };
+		5F4315C42FD2707C00FAC621 /* CDMarkdownEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315C12FD2707B00FAC621 /* CDMarkdownEnvironmentKey.swift */; };
+		5F4315C52FD2707C00FAC621 /* CDMarkdownEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315C12FD2707B00FAC621 /* CDMarkdownEnvironmentKey.swift */; };
+		5F4315C62FD2707C00FAC621 /* CDMarkdownEnvironmentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315C12FD2707B00FAC621 /* CDMarkdownEnvironmentKey.swift */; };
+		5F4315C82FD2709600FAC621 /* CDMarkdownTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315C72FD2709600FAC621 /* CDMarkdownTheme.swift */; };
+		5F4315C92FD2709600FAC621 /* CDMarkdownTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315C72FD2709600FAC621 /* CDMarkdownTheme.swift */; };
+		5F4315CA2FD2709600FAC621 /* CDMarkdownTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315C72FD2709600FAC621 /* CDMarkdownTheme.swift */; };
+		5F4315CB2FD2709600FAC621 /* CDMarkdownTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315C72FD2709600FAC621 /* CDMarkdownTheme.swift */; };
+		5F4315CC2FD2709600FAC621 /* CDMarkdownTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315C72FD2709600FAC621 /* CDMarkdownTheme.swift */; };
+		5F4315CF2FD270B200FAC621 /* CDMarkdownText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CD2FD270B200FAC621 /* CDMarkdownText.swift */; };
+		5F4315D02FD270B200FAC621 /* CDMarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CE2FD270B200FAC621 /* CDMarkdownView.swift */; };
+		5F4315D12FD270B200FAC621 /* CDMarkdownText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CD2FD270B200FAC621 /* CDMarkdownText.swift */; };
+		5F4315D22FD270B200FAC621 /* CDMarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CE2FD270B200FAC621 /* CDMarkdownView.swift */; };
+		5F4315D32FD270B200FAC621 /* CDMarkdownText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CD2FD270B200FAC621 /* CDMarkdownText.swift */; };
+		5F4315D42FD270B200FAC621 /* CDMarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CE2FD270B200FAC621 /* CDMarkdownView.swift */; };
+		5F4315D52FD270B200FAC621 /* CDMarkdownText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CD2FD270B200FAC621 /* CDMarkdownText.swift */; };
+		5F4315D62FD270B200FAC621 /* CDMarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CE2FD270B200FAC621 /* CDMarkdownView.swift */; };
+		5F4315D72FD270B200FAC621 /* CDMarkdownText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CD2FD270B200FAC621 /* CDMarkdownText.swift */; };
+		5F4315D82FD270B200FAC621 /* CDMarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CE2FD270B200FAC621 /* CDMarkdownView.swift */; };
 		5FB6FB962FB3FD6100E97C06 /* CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26790392868AC0E00DFAAA5 /* CDMarkdownKit.swift */; };
 		5FB6FB972FB3FD6100E97C06 /* CDMarkdownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366091F324DE90078B962 /* CDMarkdownParser.swift */; };
 		5FB6FB982FB3FD6100E97C06 /* CDMarkdownAutomaticLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3660B1F324DE90078B962 /* CDMarkdownAutomaticLink.swift */; };
@@ -234,6 +259,11 @@
 		5F11F44C2FCC6707003A1AFB /* CDMarkdownNSLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownNSLabel.swift; sourceTree = "<group>"; };
 		5F11F44D2FCC6707003A1AFB /* CDMarkdownNSLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownNSLayoutManager.swift; sourceTree = "<group>"; };
 		5F11F44E2FCC6707003A1AFB /* CDMarkdownNSTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownNSTextView.swift; sourceTree = "<group>"; };
+		5F4315BB2FD2705800FAC621 /* CDMarkdownLinkReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownLinkReference.swift; sourceTree = "<group>"; };
+		5F4315C12FD2707B00FAC621 /* CDMarkdownEnvironmentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownEnvironmentKey.swift; sourceTree = "<group>"; };
+		5F4315C72FD2709600FAC621 /* CDMarkdownTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownTheme.swift; sourceTree = "<group>"; };
+		5F4315CD2FD270B200FAC621 /* CDMarkdownText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownText.swift; sourceTree = "<group>"; };
+		5F4315CE2FD270B200FAC621 /* CDMarkdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownView.swift; sourceTree = "<group>"; };
 		5FB6FB8C2FB3FCA500E97C06 /* CDMarkdownKit_visionOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit_visionOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FE1B0EC2FCBD76600D912E9 /* CDMarkdownHorizontalRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownHorizontalRule.swift; sourceTree = "<group>"; };
 		5FE1B0ED2FCBD76600D912E9 /* CDMarkdownTaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownTaskList.swift; sourceTree = "<group>"; };
@@ -337,6 +367,7 @@
 				B205C6651FC129EB00E74CBA /* CDColor.swift */,
 				B205C66A1FC129FC00E74CBA /* CDFont.swift */,
 				B205C66F1FC135DF00E74CBA /* CDImage.swift */,
+				5F4315C72FD2709600FAC621 /* CDMarkdownTheme.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -420,6 +451,7 @@
 				B2B366071F324DE90078B962 /* CDMarkdownImage.swift */,
 				B2B3660F1F324DE90078B962 /* CDMarkdownItalic.swift */,
 				B2B366081F324DE90078B962 /* CDMarkdownLink.swift */,
+				5F4315BB2FD2705800FAC621 /* CDMarkdownLinkReference.swift */,
 				B2B366101F324DE90078B962 /* CDMarkdownList.swift */,
 				CD0001AA00000000000000A1 /* CDMarkdownOrderedList.swift */,
 				B2B366191F324DE90078B962 /* CDMarkdownQuote.swift */,
@@ -448,6 +480,7 @@
 				B2B3661E1F324DE90078B962 /* CDColor+CDMarkdownKit.swift */,
 				B2B3661F1F324DE90078B962 /* CDFont+CDMarkdownKit.swift */,
 				5F0AD09421063D36007B718F /* CDImage+CDMarkdownKit.swift */,
+				5F4315C12FD2707B00FAC621 /* CDMarkdownEnvironmentKey.swift */,
 				B29FE73B21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift */,
 				B22C0E9221B1AD16006CE401 /* NSAttributedString+CDMarkdownKit.swift */,
 				B22C0E8021B18AA8006CE401 /* NSMutableAttributedString+CDMarkdownKit.swift */,
@@ -478,7 +511,9 @@
 				5F11F44C2FCC6707003A1AFB /* CDMarkdownNSLabel.swift */,
 				5F11F44D2FCC6707003A1AFB /* CDMarkdownNSLayoutManager.swift */,
 				5F11F44E2FCC6707003A1AFB /* CDMarkdownNSTextView.swift */,
+				5F4315CD2FD270B200FAC621 /* CDMarkdownText.swift */,
 				B2B366111F324DE90078B962 /* CDMarkdownTextView.swift */,
+				5F4315CE2FD270B200FAC621 /* CDMarkdownView.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -763,6 +798,8 @@
 			files = (
 				5FB6FB962FB3FD6100E97C06 /* CDMarkdownKit.swift in Sources */,
 				5FE1B0F42FCBD76600D912E9 /* CDMarkdownHorizontalRule.swift in Sources */,
+				5F4315CF2FD270B200FAC621 /* CDMarkdownText.swift in Sources */,
+				5F4315D02FD270B200FAC621 /* CDMarkdownView.swift in Sources */,
 				5FE1B0F52FCBD76600D912E9 /* CDMarkdownTaskList.swift in Sources */,
 				5FB6FB972FB3FD6100E97C06 /* CDMarkdownParser.swift in Sources */,
 				5FB6FB982FB3FD6100E97C06 /* CDMarkdownAutomaticLink.swift in Sources */,
@@ -772,16 +809,19 @@
 				5F11F4532FCC6707003A1AFB /* CDMarkdownNSLayoutManager.swift in Sources */,
 				5F11F4542FCC6707003A1AFB /* CDMarkdownNSLabel.swift in Sources */,
 				5FB6FB9B2FB3FD6100E97C06 /* CDMarkdownHeader.swift in Sources */,
+				5F4315C32FD2707C00FAC621 /* CDMarkdownEnvironmentKey.swift in Sources */,
 				5FB6FB9C2FB3FD6100E97C06 /* CDMarkdownImage.swift in Sources */,
 				5FB6FB9D2FB3FD6100E97C06 /* CDMarkdownItalic.swift in Sources */,
 				5FB6FB9E2FB3FD6100E97C06 /* CDMarkdownLink.swift in Sources */,
 				5FB6FB9F2FB3FD6100E97C06 /* CDMarkdownList.swift in Sources */,
+				5F4315C92FD2709600FAC621 /* CDMarkdownTheme.swift in Sources */,
 				5FB6FBA02FB3FD6100E97C06 /* CDMarkdownQuote.swift in Sources */,
 				5FB6FBA12FB3FD6100E97C06 /* CDMarkdownStrikethrough.swift in Sources */,
 				5FB6FBA22FB3FD6100E97C06 /* CDMarkdownOrderedList.swift in Sources */,
 				5FB6FBA32FB3FD6100E97C06 /* CDMarkdownTable.swift in Sources */,
 				5FB6FBA42FB3FD6100E97C06 /* CDMarkdownSyntax.swift in Sources */,
 				5FB6FBA52FB3FD6100E97C06 /* CDMarkdownCodeEscaping.swift in Sources */,
+				5F4315BF2FD2705900FAC621 /* CDMarkdownLinkReference.swift in Sources */,
 				5FB6FBA62FB3FD6100E97C06 /* CDMarkdownEscaping.swift in Sources */,
 				5FB6FBA72FB3FD6100E97C06 /* CDMarkdownUnescaping.swift in Sources */,
 				5FB6FBA82FB3FD6100E97C06 /* CDColor+CDMarkdownKit.swift in Sources */,
@@ -814,6 +854,8 @@
 			files = (
 				B205C6671FC129EB00E74CBA /* CDColor.swift in Sources */,
 				5FE1B0F02FCBD76600D912E9 /* CDMarkdownHorizontalRule.swift in Sources */,
+				5F4315D12FD270B200FAC621 /* CDMarkdownText.swift in Sources */,
+				5F4315D22FD270B200FAC621 /* CDMarkdownView.swift in Sources */,
 				5FE1B0F12FCBD76600D912E9 /* CDMarkdownTaskList.swift in Sources */,
 				B205C66C1FC129FD00E74CBA /* CDFont.swift in Sources */,
 				B205C6711FC135DF00E74CBA /* CDImage.swift in Sources */,
@@ -823,16 +865,19 @@
 				5F11F4592FCC6707003A1AFB /* CDMarkdownNSLayoutManager.swift in Sources */,
 				5F11F45A2FCC6707003A1AFB /* CDMarkdownNSLabel.swift in Sources */,
 				B2ACA0A01FBF95A400EABEF6 /* CDMarkdownBold.swift in Sources */,
+				5F4315C42FD2707C00FAC621 /* CDMarkdownEnvironmentKey.swift in Sources */,
 				B2ACA0A11FBF95A400EABEF6 /* CDMarkdownCode.swift in Sources */,
 				B2ACA0A91FBF95A400EABEF6 /* CDMarkdownCodeEscaping.swift in Sources */,
 				B2ACA0AF1FBF95A400EABEF6 /* CDMarkdownCommonElement.swift in Sources */,
 				B2ACA0B01FBF95A400EABEF6 /* CDMarkdownElement.swift in Sources */,
+				5F4315CB2FD2709600FAC621 /* CDMarkdownTheme.swift in Sources */,
 				B2ACA0AA1FBF95A400EABEF6 /* CDMarkdownEscaping.swift in Sources */,
 				B2ACA0A21FBF95A400EABEF6 /* CDMarkdownHeader.swift in Sources */,
 				B267903B2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
 				B2CAD0A228FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */,
 				B2ACA0A31FBF95A400EABEF6 /* CDMarkdownImage.swift in Sources */,
 				B2ACA0A41FBF95A400EABEF6 /* CDMarkdownItalic.swift in Sources */,
+				5F4315BE2FD2705900FAC621 /* CDMarkdownLinkReference.swift in Sources */,
 				B29FE73D21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0B41FBF95A400EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0B51FBF95A400EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
@@ -865,6 +910,8 @@
 			files = (
 				B205C6681FC129EB00E74CBA /* CDColor.swift in Sources */,
 				5FE1B0F22FCBD76600D912E9 /* CDMarkdownHorizontalRule.swift in Sources */,
+				5F4315D72FD270B200FAC621 /* CDMarkdownText.swift in Sources */,
+				5F4315D82FD270B200FAC621 /* CDMarkdownView.swift in Sources */,
 				5FE1B0F32FCBD76600D912E9 /* CDMarkdownTaskList.swift in Sources */,
 				B205C66D1FC129FD00E74CBA /* CDFont.swift in Sources */,
 				B205C6721FC135DF00E74CBA /* CDImage.swift in Sources */,
@@ -874,16 +921,19 @@
 				5F11F45C2FCC6707003A1AFB /* CDMarkdownNSLayoutManager.swift in Sources */,
 				5F11F45D2FCC6707003A1AFB /* CDMarkdownNSLabel.swift in Sources */,
 				B2ACA0B91FBF960A00EABEF6 /* CDMarkdownBold.swift in Sources */,
+				5F4315C62FD2707C00FAC621 /* CDMarkdownEnvironmentKey.swift in Sources */,
 				B2ACA0BA1FBF960A00EABEF6 /* CDMarkdownCode.swift in Sources */,
 				B2ACA0C21FBF960A00EABEF6 /* CDMarkdownCodeEscaping.swift in Sources */,
 				B2ACA0C81FBF960A00EABEF6 /* CDMarkdownCommonElement.swift in Sources */,
 				B2ACA0C91FBF960A00EABEF6 /* CDMarkdownElement.swift in Sources */,
+				5F4315CA2FD2709600FAC621 /* CDMarkdownTheme.swift in Sources */,
 				B2ACA0C31FBF960A00EABEF6 /* CDMarkdownEscaping.swift in Sources */,
 				B2ACA0BB1FBF960A00EABEF6 /* CDMarkdownHeader.swift in Sources */,
 				B267903C2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
 				B2CAD0A328FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */,
 				B2ACA0BC1FBF960A00EABEF6 /* CDMarkdownImage.swift in Sources */,
 				B2ACA0BD1FBF960A00EABEF6 /* CDMarkdownItalic.swift in Sources */,
+				5F4315C02FD2705900FAC621 /* CDMarkdownLinkReference.swift in Sources */,
 				B29FE73E21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0CD1FBF960A00EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0CE1FBF960A00EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
@@ -916,6 +966,8 @@
 			files = (
 				B205C6691FC129EB00E74CBA /* CDColor.swift in Sources */,
 				5FE1B0EE2FCBD76600D912E9 /* CDMarkdownHorizontalRule.swift in Sources */,
+				5F4315D32FD270B200FAC621 /* CDMarkdownText.swift in Sources */,
+				5F4315D42FD270B200FAC621 /* CDMarkdownView.swift in Sources */,
 				5FE1B0EF2FCBD76600D912E9 /* CDMarkdownTaskList.swift in Sources */,
 				B205C66E1FC129FD00E74CBA /* CDFont.swift in Sources */,
 				B205C6731FC135DF00E74CBA /* CDImage.swift in Sources */,
@@ -925,16 +977,19 @@
 				5F11F4502FCC6707003A1AFB /* CDMarkdownNSLayoutManager.swift in Sources */,
 				5F11F4512FCC6707003A1AFB /* CDMarkdownNSLabel.swift in Sources */,
 				B2ACA0D21FBF967800EABEF6 /* CDMarkdownBold.swift in Sources */,
+				5F4315C52FD2707C00FAC621 /* CDMarkdownEnvironmentKey.swift in Sources */,
 				B2ACA0D31FBF967800EABEF6 /* CDMarkdownCode.swift in Sources */,
 				B2ACA0DB1FBF967800EABEF6 /* CDMarkdownCodeEscaping.swift in Sources */,
 				B2ACA0E11FBF967800EABEF6 /* CDMarkdownCommonElement.swift in Sources */,
 				B2ACA0E21FBF967800EABEF6 /* CDMarkdownElement.swift in Sources */,
+				5F4315CC2FD2709600FAC621 /* CDMarkdownTheme.swift in Sources */,
 				B2ACA0DC1FBF967800EABEF6 /* CDMarkdownEscaping.swift in Sources */,
 				B2ACA0D41FBF967800EABEF6 /* CDMarkdownHeader.swift in Sources */,
 				B267903D2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
 				B2CAD0A428FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */,
 				B2ACA0D51FBF967800EABEF6 /* CDMarkdownImage.swift in Sources */,
 				B2ACA0D61FBF967800EABEF6 /* CDMarkdownItalic.swift in Sources */,
+				5F4315BD2FD2705900FAC621 /* CDMarkdownLinkReference.swift in Sources */,
 				B29FE73F21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0E61FBF967800EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0E71FBF967800EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
@@ -967,6 +1022,8 @@
 			files = (
 				B205C6661FC129EB00E74CBA /* CDColor.swift in Sources */,
 				5FE1B0F62FCBD76600D912E9 /* CDMarkdownHorizontalRule.swift in Sources */,
+				5F4315D52FD270B200FAC621 /* CDMarkdownText.swift in Sources */,
+				5F4315D62FD270B200FAC621 /* CDMarkdownView.swift in Sources */,
 				5FE1B0F72FCBD76600D912E9 /* CDMarkdownTaskList.swift in Sources */,
 				B205C66B1FC129FC00E74CBA /* CDFont.swift in Sources */,
 				B205C6701FC135DF00E74CBA /* CDImage.swift in Sources */,
@@ -976,16 +1033,19 @@
 				5F11F4562FCC6707003A1AFB /* CDMarkdownNSLayoutManager.swift in Sources */,
 				5F11F4572FCC6707003A1AFB /* CDMarkdownNSLabel.swift in Sources */,
 				B2B366251F324DE90078B962 /* CDMarkdownBold.swift in Sources */,
+				5F4315C22FD2707C00FAC621 /* CDMarkdownEnvironmentKey.swift in Sources */,
 				B2B366261F324DE90078B962 /* CDMarkdownCode.swift in Sources */,
 				B2B3662B1F324DE90078B962 /* CDMarkdownCodeEscaping.swift in Sources */,
 				B2B3662C1F324DE90078B962 /* CDMarkdownCommonElement.swift in Sources */,
 				B2B3662D1F324DE90078B962 /* CDMarkdownElement.swift in Sources */,
+				5F4315C82FD2709600FAC621 /* CDMarkdownTheme.swift in Sources */,
 				B2B3662E1F324DE90078B962 /* CDMarkdownEscaping.swift in Sources */,
 				B2B366271F324DE90078B962 /* CDMarkdownHeader.swift in Sources */,
 				B267903A2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
 				B2CAD0A128FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */,
 				B2B366201F324DE90078B962 /* CDMarkdownImage.swift in Sources */,
 				B2B366281F324DE90078B962 /* CDMarkdownItalic.swift in Sources */,
+				5F4315BC2FD2705900FAC621 /* CDMarkdownLinkReference.swift in Sources */,
 				B29FE73C21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2B366231F324DE90078B962 /* CDMarkdownLabel.swift in Sources */,
 				B2B3662F1F324DE90078B962 /* CDMarkdownLayoutManager.swift in Sources */,
@@ -1298,7 +1358,7 @@
 				INFOPLIST_FILE = Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 2.5.1;
+				MARKETING_VERSION = 3.3.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
 				PRODUCT_NAME = CDMarkdownKit;
@@ -1364,7 +1424,7 @@
 				INFOPLIST_FILE = Source/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MARKETING_VERSION = 2.5.1;
+				MARKETING_VERSION = 3.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
 				PRODUCT_NAME = CDMarkdownKit;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;

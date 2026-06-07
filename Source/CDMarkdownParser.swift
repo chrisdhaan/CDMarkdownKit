@@ -65,6 +65,8 @@ open class CDMarkdownParser {
     public let link: CDMarkdownLink
     /// Handles automatic link detection for bare URLs.
     public let automaticLink: CDMarkdownAutomaticLink
+    /// Handles reference-style links using `[text][ref]` syntax.
+    public let linkReference: CDMarkdownLinkReference
     /// Handles bold text (**text** or __text__).
     public let bold: CDMarkdownBold
     /// Handles italic text (*text* or _text_).
@@ -188,6 +190,10 @@ open class CDMarkdownParser {
                                                 color: fontColor,
                                                 backgroundColor: backgroundColor,
                                                 paragraphStyle: paragraphStyle)
+        linkReference = CDMarkdownLinkReference(font: font,
+                                                color: fontColor,
+                                                backgroundColor: backgroundColor,
+                                                paragraphStyle: paragraphStyle)
         bold = CDMarkdownBold(font: font,
                               customBoldFont: boldFont,
                               color: fontColor,
@@ -224,12 +230,12 @@ open class CDMarkdownParser {
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
             self.defaultElements = [
                 table, horizontalRule, header, taskList, list, orderedList, quote, link,
-                automaticLink, image, bold, italic, strikethrough
+                automaticLink, linkReference, image, bold, italic, strikethrough
             ]
         #else
             self.defaultElements = [
                 table, horizontalRule, header, taskList, list, orderedList, quote, link,
-                automaticLink, bold, italic, strikethrough
+                automaticLink, linkReference, bold, italic, strikethrough
             ]
         #endif
         self.unescapingElements = [code, syntax, unescaping]
@@ -242,6 +248,103 @@ open class CDMarkdownParser {
             guard let self else { return NSAttributedString(string: cellText) }
             return self.parseInline(cellText)
         }
+    }
+
+    /// Creates a parser pre-styled with the provided theme.
+    /// Individual element properties can still be overridden after calling this initializer.
+    public convenience init(theme: CDMarkdownTheme) {
+        self.init(font: theme.font,
+                  fontColor: theme.fontColor,
+                  backgroundColor: theme.backgroundColor)
+
+        self.header.font = theme.header.font ?? self.header.font
+        self.header.color = theme.header.color
+        self.header.fontIncrease = theme.header.fontIncrease
+        self.header.paragraphStyle = theme.header.paragraphStyle ?? self.header.paragraphStyle
+        self.header.underlineColor = theme.header.underlineColor
+        self.header.underlineStyle = theme.header.underlineStyle
+
+        self.bold.font = theme.bold.font ?? self.bold.font
+        self.bold.color = theme.bold.color ?? self.bold.color
+        self.bold.backgroundColor = theme.bold.backgroundColor
+        self.bold.paragraphStyle = theme.bold.paragraphStyle
+        self.bold.underlineColor = theme.bold.underlineColor
+        self.bold.underlineStyle = theme.bold.underlineStyle
+
+        self.italic.font = theme.italic.font ?? self.italic.font
+        self.italic.color = theme.italic.color ?? self.italic.color
+        self.italic.backgroundColor = theme.italic.backgroundColor
+        self.italic.paragraphStyle = theme.italic.paragraphStyle
+        self.italic.underlineColor = theme.italic.underlineColor
+        self.italic.underlineStyle = theme.italic.underlineStyle
+
+        self.code.font = theme.code.font ?? self.code.font
+        self.code.color = theme.code.color ?? self.code.color
+        self.code.backgroundColor = theme.code.backgroundColor ?? self.code.backgroundColor
+        self.code.paragraphStyle = theme.code.paragraphStyle
+        self.code.underlineColor = theme.code.underlineColor
+        self.code.underlineStyle = theme.code.underlineStyle
+
+        self.syntax.font = theme.syntax.font ?? self.syntax.font
+        self.syntax.color = theme.syntax.color ?? self.syntax.color
+        self.syntax.backgroundColor = theme.syntax.backgroundColor ?? self.syntax.backgroundColor
+        self.syntax.paragraphStyle = theme.syntax.paragraphStyle
+        self.syntax.underlineColor = theme.syntax.underlineColor
+        self.syntax.underlineStyle = theme.syntax.underlineStyle
+
+        self.strikethrough.font = theme.strikethrough.font ?? self.strikethrough.font
+        self.strikethrough.color = theme.strikethrough.color ?? self.strikethrough.color
+        self.strikethrough.backgroundColor = theme.strikethrough.backgroundColor
+        self.strikethrough.paragraphStyle = theme.strikethrough.paragraphStyle
+        self.strikethrough.underlineColor = theme.strikethrough.underlineColor
+        self.strikethrough.underlineStyle = theme.strikethrough.underlineStyle
+
+        self.quote.font = theme.quote.font ?? self.quote.font
+        self.quote.color = theme.quote.color ?? self.quote.color
+        self.quote.backgroundColor = theme.quote.backgroundColor
+        self.quote.paragraphStyle = theme.quote.paragraphStyle
+        self.quote.underlineColor = theme.quote.underlineColor
+        self.quote.underlineStyle = theme.quote.underlineStyle
+
+        self.list.font = theme.list.font ?? self.list.font
+        self.list.color = theme.list.color ?? self.list.color
+        self.list.backgroundColor = theme.list.backgroundColor
+        self.list.paragraphStyle = theme.list.paragraphStyle
+        self.list.underlineColor = theme.list.underlineColor
+        self.list.underlineStyle = theme.list.underlineStyle
+
+        self.orderedList.font = theme.orderedList.font ?? self.orderedList.font
+        self.orderedList.color = theme.orderedList.color ?? self.orderedList.color
+        self.orderedList.backgroundColor = theme.orderedList.backgroundColor
+        self.orderedList.paragraphStyle = theme.orderedList.paragraphStyle
+        self.orderedList.underlineColor = theme.orderedList.underlineColor
+        self.orderedList.underlineStyle = theme.orderedList.underlineStyle
+
+        self.link.font = theme.link.font ?? self.link.font
+        self.link.color = theme.link.color ?? self.link.color
+        self.link.backgroundColor = theme.link.backgroundColor
+        self.link.underlineColor = theme.link.underlineColor
+        self.link.underlineStyle = theme.link.underlineStyle
+
+        self.linkReference.font = theme.linkReference.font ?? self.linkReference.font
+        self.linkReference.color = theme.linkReference.color ?? self.linkReference.color
+        self.linkReference.backgroundColor = theme.linkReference.backgroundColor
+        self.linkReference.underlineColor = theme.linkReference.underlineColor
+        self.linkReference.underlineStyle = theme.linkReference.underlineStyle
+
+        self.taskList.font = theme.taskList.font ?? self.taskList.font
+        self.taskList.color = theme.taskList.color ?? self.taskList.color
+        self.taskList.backgroundColor = theme.taskList.backgroundColor
+        self.taskList.paragraphStyle = theme.taskList.paragraphStyle
+        self.taskList.underlineColor = theme.taskList.underlineColor
+        self.taskList.underlineStyle = theme.taskList.underlineStyle
+
+        self.horizontalRule.font = theme.horizontalRule.font ?? self.horizontalRule.font
+        self.horizontalRule.color = theme.horizontalRule.color ?? self.horizontalRule.color
+        self.horizontalRule.backgroundColor = theme.horizontalRule.backgroundColor
+        self.horizontalRule.paragraphStyle = theme.horizontalRule.paragraphStyle
+        self.horizontalRule.underlineColor = theme.horizontalRule.underlineColor
+        self.horizontalRule.underlineStyle = theme.horizontalRule.underlineStyle
     }
 
     // MARK: - Element Extensibility
@@ -389,6 +492,74 @@ open class CDMarkdownParser {
         return result
     }
 
+    /// Returns the ranges of all fenced code blocks (``` ... ```) in `string`.
+    /// Used to exclude content inside code blocks from reference definition scanning.
+    private func fencedCodeBlockRanges(in string: String) -> [NSRange] {
+        let pattern = #"^```[^\n]*\n[\s\S]*?^```\s*$"#
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: .anchorsMatchLines) else {
+            return []
+        }
+        let fullRange = NSRange(location: 0, length: (string as NSString).length)
+        return regex.matches(in: string, options: [], range: fullRange).map(\.range)
+    }
+
+    /// Scans `attributedString` for reference link definitions, removes them from the string,
+    /// and returns a dictionary mapping lowercased reference IDs to their resolved URLs.
+    ///
+    /// Supported definition format (one per line):
+    /// `[id]: url`
+    /// `[id]: url "title"`
+    /// `[id]: url 'title'`
+    /// `[id]: url (title)`
+    private func parseReferenceDefinitions(
+        from attributedString: NSMutableAttributedString
+    ) -> [String: (url: String, title: String?)] {
+        var definitions: [String: (url: String, title: String?)] = [:]
+
+        let pattern = #"^\[([^\]]+)\]:\s+(\S+)(?:\s+"([^"]*)"|\s+'([^']*)'|\s+\(([^)]*)\))?\s*$"#
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: .anchorsMatchLines) else {
+            return definitions
+        }
+
+        let fullRange = NSRange(location: 0, length: attributedString.length)
+        let matches = regex.matches(in: attributedString.string, options: [], range: fullRange)
+        let fencedRanges = fencedCodeBlockRanges(in: attributedString.string)
+
+        // Iterate in reverse so that removing ranges doesn't shift subsequent indices
+        for match in matches.reversed() {
+            let matchRange = match.range(at: 0)
+            if fencedRanges.contains(where: { NSLocationInRange(matchRange.location, $0) }) {
+                continue
+            }
+            let idRange = match.range(at: 1)
+            let urlRange = match.range(at: 2)
+            // Title may be in group 3, 4, or 5 depending on which delimiter was used
+            let titleRange = [3, 4, 5].compactMap { match.range(at: $0) }
+                .first { $0.location != NSNotFound }
+
+            guard let referenceId = Range(idRange, in: attributedString.string).map({ String(attributedString.string[$0]) }),
+                  let url = Range(urlRange, in: attributedString.string).map({ String(attributedString.string[$0]) }) else {
+                continue
+            }
+
+            let title = titleRange.flatMap { Range($0, in: attributedString.string) }
+                .map { String(attributedString.string[$0]) }
+
+            definitions[referenceId.lowercased()] = (url: url, title: title)
+
+            // Remove the definition line (including its trailing newline if present)
+            var removeRange = match.range(at: 0)
+            let nsString = attributedString.string as NSString
+            if removeRange.location + removeRange.length < attributedString.length,
+               nsString.character(at: removeRange.location + removeRange.length) == (("\n" as Unicode.Scalar).value) {
+                removeRange.length += 1
+            }
+            attributedString.deleteCharacters(in: removeRange)
+        }
+
+        return definitions
+    }
+
     private func parse(_ markdown: NSAttributedString, loadImages: Bool) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         let mutableString = attributedString.mutableString
@@ -429,6 +600,10 @@ open class CDMarkdownParser {
                                             toRange: range)
         attributedString.addParagraphStyle(paragraphStyle,
                                            toRange: range)
+
+        // Phase 1.5 — Extract and strip reference link definitions
+        let referenceDefinitions = parseReferenceDefinitions(from: attributedString)
+        linkReference.references = referenceDefinitions
 
         var elements: [any CDMarkdownElement] = escapingElements
         let activeElements = defaultElements.filter { element in

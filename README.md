@@ -30,11 +30,15 @@ A pure-Swift, zero-dependency framework for parsing Markdown text into styled `N
 ## Features
 
 - [x] Parse Markdown to styled `NSAttributedString`
-- [x] Support for bold, italic, strikethrough, headers, lists, quotes, code blocks
+- [x] Support for bold, italic, strikethrough, headers, lists, ordered lists, task lists, quotes, horizontal rules, code blocks
+- [x] Tables with column alignment (GFM-style)
+- [x] Reference-style links (`[text][ref]` + `[ref]: url` definitions)
 - [x] Clickable links and automatic URL detection
 - [x] Image rendering (iOS, macOS, tvOS)
 - [x] Async image loading with `async/await`
 - [x] Custom Markdown elements
+- [x] `CDMarkdownTheme` for one-call parser styling
+- [x] Custom attribute keys: `.cdMarkdownCodeLanguage`, `.cdMarkdownLinkTitle`
 - [x] `UILabel` and `UITextView` subclasses with Markdown support
 - [x] macOS UI components (`NSTextView`, `NSLabel` subclasses)
 - [x] SwiftUI support via `CDMarkdownText` and `CDMarkdownView`

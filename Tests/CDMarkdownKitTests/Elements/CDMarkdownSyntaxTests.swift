@@ -49,4 +49,40 @@ struct CDMarkdownSyntaxTests {
         }
         #expect(found)
     }
+
+    @Test func syntaxWithLanguageHintWritesCodeLanguageAttribute() async {
+        let result = await parser.parse("```swift\nlet x = 1\n```")
+        var foundLanguage: String?
+        result.enumerateAttribute(.cdMarkdownCodeLanguage,
+                                  in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let lang = value as? String { foundLanguage = lang }
+        }
+        #expect(foundLanguage == "swift")
+    }
+
+    @Test func syntaxWithoutLanguageHintHasNoCodeLanguageAttribute() async {
+        let result = await parser.parse("```\nlet x = 1\n```")
+        var foundLanguage: String?
+        result.enumerateAttribute(.cdMarkdownCodeLanguage,
+                                  in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let lang = value as? String { foundLanguage = lang }
+        }
+        #expect(foundLanguage == nil)
+    }
+
+    @Test func syntaxLanguageHintIsStrippedFromContent() async {
+        let result = await parser.parse("```python\nprint('hello')\n```")
+        #expect(!result.string.contains("python"))
+        #expect(result.string.contains("print"))
+    }
+
+    @Test func syntaxLanguageHintIsCaseSensitive() async {
+        let result = await parser.parse("```Swift\nlet x = 1\n```")
+        var foundLanguage: String?
+        result.enumerateAttribute(.cdMarkdownCodeLanguage,
+                                  in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let lang = value as? String { foundLanguage = lang }
+        }
+        #expect(foundLanguage == "Swift")
+    }
 }

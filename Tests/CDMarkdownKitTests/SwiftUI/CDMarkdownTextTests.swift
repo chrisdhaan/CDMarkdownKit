@@ -20,10 +20,10 @@ struct CDMarkdownTextTests {
     }
 
     @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
-    @Test func environmentKeyDefaultValueIsNonNil() async {
+    @Test func environmentKeyDefaultThemeIsUsable() async {
         let env = EnvironmentValues()
-        let parser = env.markdownParser
-        // Default parser should be usable
+        let theme = env.markdownTheme
+        let parser = CDMarkdownParser(theme: theme)
         let result = await parser.parse("test")
         #expect(result.length > 0)
     }

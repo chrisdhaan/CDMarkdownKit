@@ -4,7 +4,7 @@
 
 CDMarkdownKit is a pure-Swift, zero-dependency framework for parsing Markdown text into `NSAttributedString`. It supports rendering inside custom `UILabel` and `UITextView` subclasses with optional rounded-corner background styling for code and syntax blocks.
 
-- **Current version**: 3.0.0
+- **Current version**: 3.3.0
 - **License**: MIT
 - **Author**: Christopher de Haan (contact@christopherdehaan.me)
 
@@ -15,24 +15,24 @@ CDMarkdownKit is a pure-Swift, zero-dependency framework for parsing Markdown te
 ```
 CDMarkdownKit/
 ├── Source/                    # All library source files (the package target)
-├── Tests/                     # SPM test target (61 tests across 13 suites)
+├── Tests/                     # SPM test target (189 tests across 31 suites)
 ├── Example/                   # iOS demo app
 │   ├── Source/                # Example view controllers
 │   └── Resources/             # Storyboards, assets, plist
 ├── Documentation/             # ARCHITECTURE.md, Usage.md, migration guide, images
-├── docs/                      # Jazzy-generated HTML docs (served via GitHub Pages)
+├── docs/                      # DocC-generated HTML docs (served via GitHub Pages)
 ├── .github/
 │   ├── workflows/ci.yml       # GitHub Actions CI
 │   ├── ISSUE_TEMPLATE/        # bug_report.md, feature_request.md, config.yml
 │   ├── FUNDING.yml            # GitHub Sponsors (chrisdhaan)
 │   └── PULL_REQUEST_TEMPLATE.md
-├── CDMarkdownKit.xcodeproj    # Xcode project (4 schemes: iOS, macOS, tvOS, watchOS)
+├── CDMarkdownKit.xcodeproj    # Xcode project (5 schemes: iOS, macOS, tvOS, watchOS, visionOS)
 ├── CDMarkdownKit.xcworkspace
-├── Package.swift              # SPM manifest (swift-tools 6.0, swiftLanguageModes: [.v5])
+├── Package.swift              # SPM manifest (swift-tools 6.0, swiftLanguageModes: [.v6])
 ├── CDMarkdownKit.podspec      # CocoaPods spec
-├── .jazzy.yaml                # Jazzy documentation config
 ├── .swiftlint.yml             # SwiftLint config (lints Source/ and Example/Source/)
-├── Gemfile / Gemfile.lock     # cocoapods + jazzy gems
+├── Gemfile / Gemfile.lock     # cocoapods gem
+├── scripts/generate-docs.sh  # Regenerates docs/ and adds GitHub Pages support files
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 └── README.md
@@ -48,8 +48,9 @@ CDMarkdownKit/
 | macOS    | 10.13+         | 10.13+  |
 | tvOS     | 12.0+          | 12.0+   |
 | watchOS  | 4.0+           | 4.0+    |
+| visionOS | 1.0+           | 1.0+    |
 
-Swift minimum: **5.3** (enforced in `CDMarkdownKit.swift` via `#error`). The SPM manifest uses swift-tools-version 6.0 with `swiftLanguageModes: [.v5]` — compiled in Swift 5 language mode while on a Swift 6 toolchain.
+Swift minimum: **5.3** (enforced in `CDMarkdownKit.swift` via `#error`). The SPM manifest uses swift-tools-version 6.0 with `swiftLanguageModes: [.v6]` — compiled in Swift 6 language mode.
 
 ---
 
@@ -67,12 +68,21 @@ Input String
     CDMarkdownEscaping       — UTF16-hex-encodes \-escaped characters
 
     ↓
+[Phase 1.5 — Reference Definition Extraction]
+    CDMarkdownLinkReference  — strips [ref]: url lines; populates references dict
+
+    ↓
 [Phase 2 — Element Parsing]  (order matters; earlier elements take priority)
+    CDMarkdownTable          — pipe-delimited GFM tables
+    CDMarkdownHorizontalRule — --- / *** / ___ dividers
     CDMarkdownHeader         — # H1 through ###### H6
+    CDMarkdownTaskList       — - [x] / - [ ] items
     CDMarkdownList           — * / - / + list items (nested)
+    CDMarkdownOrderedList    — 1. / 2. numbered items
     CDMarkdownQuote          — > blockquotes (nested)
     CDMarkdownLink           — [text](url)
     CDMarkdownAutomaticLink  — bare URLs via NSDataDetector
+    CDMarkdownLinkReference  — [text][ref] resolved references
     CDMarkdownImage          — ![alt](url)   (iOS/macOS/tvOS only)
     CDMarkdownBold           — **text** or __text__
     CDMarkdownItalic         — *text* or _text_
@@ -101,23 +111,27 @@ CDMarkdownElement          (parse loop + regex matching)
 ├── CDMarkdownCommonElement + CDMarkdownStyle
 │   ├── CDMarkdownBold
 │   ├── CDMarkdownItalic
-│   ├── CDMarkdownCode       (overrides addAttributes to unescape + strip \n)
-│   ├── CDMarkdownSyntax     (overrides addAttributes; manages bg wrapping at \n)
-│   └── CDMarkdownStrikethrough (adds strikethrough attrs beyond CDMarkdownStyle)
+│   ├── CDMarkdownCode           (overrides addAttributes to unescape + strip \n)
+│   ├── CDMarkdownSyntax         (overrides addAttributes; manages bg wrapping at \n)
+│   └── CDMarkdownStrikethrough  (adds strikethrough attrs beyond CDMarkdownStyle)
 ├── CDMarkdownLevelElement  + CDMarkdownStyle  (block elements with nesting depth)
-│   ├── CDMarkdownHeader     (font scales by heading level)
-│   ├── CDMarkdownList       (replaces marker with bullet; handles head indent)
-│   └── CDMarkdownQuote      (replaces > with indicator string)
-└── CDMarkdownLinkElement   + CDMarkdownStyle
-    ├── CDMarkdownLink       (builds NSAttributedString .link attribute)
-    ├── CDMarkdownAutomaticLink (extends CDMarkdownLink; uses NSDataDetector)
-    └── CDMarkdownImage      (placeholder image at parse time; async resolution in parser)
+│   ├── CDMarkdownHeader         (font scales by heading level)
+│   ├── CDMarkdownList           (replaces marker with bullet; handles head indent)
+│   ├── CDMarkdownOrderedList    (replaces N. marker; tracks item numbering)
+│   ├── CDMarkdownTaskList       (replaces - [x]/- [ ] with ✓/☐)
+│   └── CDMarkdownQuote          (replaces > with indicator string)
+├── CDMarkdownLinkElement   + CDMarkdownStyle
+│   ├── CDMarkdownLink           (builds NSAttributedString .link attribute)
+│   ├── CDMarkdownAutomaticLink  (extends CDMarkdownLink; uses NSDataDetector)
+│   ├── CDMarkdownLinkReference  (resolves [text][ref] against references dict)
+│   └── CDMarkdownImage          (placeholder image at parse time; async resolution in parser)
+└── Direct CDMarkdownElement implementations
+    ├── CDMarkdownTable          (pipe-delimited GFM tables)
+    ├── CDMarkdownHorizontalRule (---, ***, ___ rules)
+    ├── CDMarkdownCodeEscaping   (Phase 1 UTF16-hex encoding)
+    ├── CDMarkdownEscaping       (Phase 1 backslash encoding)
+    └── CDMarkdownUnescaping     (Phase 3 decode)
 ```
-
-**Internal (not protocol-based):**
-- `CDMarkdownCodeEscaping` — `CDMarkdownElement` direct
-- `CDMarkdownEscaping` — `CDMarkdownElement` direct
-- `CDMarkdownUnescaping` — `CDMarkdownElement` direct
 
 ---
 
@@ -141,9 +155,14 @@ CDMarkdownElement          (parse loop + regex matching)
 | `CDMarkdownItalic.swift` | Italic | `*text*` or `_text_` |
 | `CDMarkdownHeader.swift` | Header | `# H1` – `###### H6` |
 | `CDMarkdownList.swift` | List | `* / - / +` items |
+| `CDMarkdownOrderedList.swift` | Ordered List | `1. / 2.` items |
+| `CDMarkdownTaskList.swift` | Task List | `- [x]` / `- [ ]` items |
 | `CDMarkdownQuote.swift` | Quote | `> text` |
+| `CDMarkdownTable.swift` | Table | pipe-delimited rows |
+| `CDMarkdownHorizontalRule.swift` | Horizontal Rule | `---` / `***` / `___` |
 | `CDMarkdownLink.swift` | Link | `[text](url)` |
 | `CDMarkdownAutomaticLink.swift` | AutoLink | bare URLs |
+| `CDMarkdownLinkReference.swift` | Reference Link | `[text][ref]` + `[ref]: url` |
 | `CDMarkdownImage.swift` | Image | `![alt](url)` — iOS/macOS/tvOS |
 | `CDMarkdownCode.swift` | Inline code | `` `code` `` |
 | `CDMarkdownSyntax.swift` | Fenced code | ` ```block``` ` |
@@ -158,6 +177,17 @@ CDMarkdownElement          (parse loop + regex matching)
 | `CDMarkdownLabel.swift` | iOS/tvOS | `@MainActor UILabel` subclass with custom text stack and tap-to-open-URL |
 | `CDMarkdownTextView.swift` | iOS/tvOS | `@MainActor UITextView` subclass using `CDMarkdownLayoutManager` |
 | `CDMarkdownLayoutManager.swift` | iOS/tvOS | `NSLayoutManager` subclass that draws rounded-corner backgrounds |
+| `CDMarkdownNSTextView.swift` | macOS | `NSTextView` subclass for read-only markdown display |
+| `CDMarkdownNSLabel.swift` | macOS | Lightweight read-only `NSView` for simple markdown display |
+| `CDMarkdownNSLayoutManager.swift` | macOS | `NSLayoutManager` subclass with rounded-corner backgrounds |
+| `CDMarkdownText.swift` | all (SwiftUI) | Lightweight SwiftUI `Text`-backed markdown view |
+| `CDMarkdownView.swift` | iOS/tvOS/visionOS/macOS (SwiftUI) | Full-fidelity SwiftUI view with rounded corners and link handling |
+| `CDMarkdownEnvironmentKey.swift` | all (SwiftUI) | `.markdownParser(_:)` and `.markdownTheme(_:)` environment modifiers |
+
+### Theming
+| File | Purpose |
+|------|---------|
+| `CDMarkdownTheme.swift` | `CDMarkdownTheme` value type; bundles styling for all elements; built-in `default` and `systemDark` themes |
 
 ### Cross-Platform Abstractions
 | File | Exposes |
@@ -202,27 +232,28 @@ Defined in `.github/workflows/ci.yml`. Triggered on push to `master` and on pull
 | macOS | matrix: Xcode 26.0.1–26.4.1 (macos-26) / Xcode 16.0–16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
 | tvOS | matrix: Xcode 26.1.1–26.4.1 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
 | watchOS | matrix: Xcode 26.1.1–26.4.1 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| visionOS | matrix: Xcode 26.1.1–26.4.1 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
 | Catalyst | single | macos-15, Xcode 16.4 | xcodebuild |
 | CocoaPods | single | macos-15, Xcode 16.4 | pod lib lint |
 | SPM | single | macos-15, Xcode 16.4 | swift test |
 | SwiftLint | single | macos-15 | swiftlint --strict |
+| SwiftFormat | single | macos-15 | swiftformat --lint |
+| Documentation | single | macos-15, Xcode 16.4 | swift-docc-plugin |
 | CodeQL | single | macos-15, Xcode 16.4 | codeql-action |
 
-iOS/tvOS/watchOS jobs run 5 matrix entries each (4 Xcode 26.x on macos-26, 1 Xcode 16.4 on macos-15), both Debug and Release builds. macOS/Catalyst/CocoaPods/SPM/SwiftLint/CodeQL jobs run singles. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
+iOS/tvOS/watchOS/visionOS jobs run 5 matrix entries each (4 Xcode 26.x on macos-26, 1 Xcode 16.4 on macos-15), both Debug and Release builds. macOS/Catalyst/CocoaPods/SPM/SwiftLint/SwiftFormat/Documentation/CodeQL jobs run singles. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
 
 ---
 
 ## Known Issues & Tech Debt
 
 ### Medium Priority
-1. **`CDMarkdownLayoutManager` hardcodes color comparisons** — `fillBackgroundRectArray` compares against `codeBackgroundRed()` and `syntaxBackgroundGray()` by RGBA value to decide whether to round corners. This breaks if the caller customizes those colors and does not work with dynamic/adaptive colors.
-2. **Swift 6 strict concurrency not fully adopted** — the package builds with `swiftLanguageModes: [.v5]`. `CDMarkdownParser` is `@MainActor` and the UI types have `@preconcurrency` conformances, but a full Swift 6 strict-concurrency audit has not been completed.
+1. **Swift 6 strict concurrency not fully adopted** — the package builds with `swiftLanguageModes: [.v6]` but some types use `@unchecked Sendable` and `@preconcurrency` conformances. A full strict-concurrency audit has not been completed.
 
 ### Low Priority / Future
-3. **No DocC documentation** — API docs are generated with Jazzy (hosted at `https://chrisdhaan.github.io/CDMarkdownKit/`). A native DocC catalog does not exist.
-4. **`CDMarkdownStrikethrough`** has its own `strikethroughColor`/`strikethroughStyle` properties that are not part of the shared `CDMarkdownStyle` protocol, creating an inconsistency.
-5. **Carthage support** — README mentions Carthage compatibility but there is no `Cartfile`; Carthage is largely abandoned by the community.
-6. **TextKit 2 migration** — `CDMarkdownLayoutManager` is an `NSLayoutManager` subclass, which forces `CDMarkdownTextView` into TextKit 1 compatibility mode (expected one-time console warning). A future v4.0 migration to `NSTextLayoutManager` would eliminate this. See `Documentation/ARCHITECTURE.md` for the current TK1 wiring approach.
+2. **`CDMarkdownStrikethrough`** has its own `strikethroughColor`/`strikethroughStyle` properties that are not part of the shared `CDMarkdownStyle` protocol, creating an inconsistency.
+3. **Carthage support** — README mentions Carthage compatibility but there is no `Cartfile`; Carthage is largely abandoned by the community.
+4. **TextKit 2 migration** — `CDMarkdownLayoutManager` is an `NSLayoutManager` subclass, which forces `CDMarkdownTextView` into TextKit 1 compatibility mode (expected one-time console warning). A future v4.0 migration to `NSTextLayoutManager` would eliminate this. See `Documentation/ARCHITECTURE.md` for the current TK1 wiring approach.
 
 ---
 
@@ -269,13 +300,15 @@ Run `swiftformat Source Tests` before committing new or modified source files to
 
 ## How to Generate Documentation
 
-Uses Jazzy via Homebrew Ruby. **Always use the Homebrew bundle — the system Ruby (2.6) picks up the wrong bundler version and fails.**
+Uses the `swift-docc-plugin`. Always run via the wrapper script — it regenerates `docs/` and then adds `docs/.nojekyll` and `docs/404.html`, which DocC itself does not produce but GitHub Pages requires.
 
 ```bash
-/opt/homebrew/opt/ruby/bin/bundle exec jazzy
+./scripts/generate-docs.sh
 ```
 
 Output goes to `docs/`. The site is served from that directory via GitHub Pages at `https://chrisdhaan.github.io/CDMarkdownKit/`.
+
+Do **not** run `swift package generate-documentation` directly to publish docs — it will wipe `.nojekyll` and `404.html`, breaking the live site.
 
 ---
 
@@ -293,6 +326,9 @@ Output goes to `docs/`. The site is served from that directory via GitHub Pages 
 
 | Version | Date       | Notable Change |
 |---------|------------|----------------|
+| 3.3.0   | 2026-06-03 | Reference-style links, fenced code language hints, `CDMarkdownTheme`, theme environment key |
+| 3.2.0   | 2026-05-31 | Swift 6 language mode (`swiftLanguageModes: [.v6]`), task lists, horizontal rules, inline table cells, macOS AppKit components, SwiftUI wrappers |
+| 3.1.0   | 2026-05-12 | Tables, ordered lists, visionOS support, DocC documentation |
 | 3.0.0   | 2026-05-09 | Async parse, Swift 6 toolchain, unified Package.swift, Jazzy docs, modern CI |
 | 2.5.1   | 2022-12-13 | Swift 5.7 support |
 | 2.5.0   | 2022-12-12 | Underline color/style on all elements |

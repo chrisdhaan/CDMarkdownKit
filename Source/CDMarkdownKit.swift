@@ -33,4 +33,4 @@ import Foundation
 #endif
 
 /// Current CDMarkdownKit version. Necessary since SPM doesn't use dynamic libraries. Plus this will be more accurate.
-let version = "3.2.0"
+let version = "3.3.0"
