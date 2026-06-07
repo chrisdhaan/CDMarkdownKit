@@ -50,7 +50,7 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
     /// The underline style for code blocks.
     open var underlineStyle: NSUnderlineStyle?
 
-    nonisolated(unsafe) weak var parser: CDMarkdownParser?
+    weak var parser: CDMarkdownParser?
 
     open var regex: String {
         CDMarkdownSyntax.regex
