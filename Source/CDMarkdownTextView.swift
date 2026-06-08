@@ -105,7 +105,7 @@
             isScrollEnabled = true
             isSelectable = false
             #if os(iOS)
-            isEditable = false
+                isEditable = false
             #endif
         }
 
@@ -128,7 +128,7 @@
         /// Preferred factory for programmatic construction on iOS 16+.
         /// Falls back to the standard initializer on iOS 15.
         @MainActor
-        static func makeTextView(frame: CGRect) -> CDMarkdownTextView {
+        public static func makeTextView(frame: CGRect) -> CDMarkdownTextView {
             if #available(iOS 16.0, tvOS 16.0, *) {
                 let view = CDMarkdownTextView(frame: frame, usingTextLayoutManager: true)
                 view.configure()

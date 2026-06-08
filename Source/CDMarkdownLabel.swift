@@ -84,7 +84,7 @@
         open var roundAllCorners: Bool = false {
             didSet {
                 if #available(iOS 16.0, tvOS 16.0, *),
-                   let tk2Manager = textLayoutManager as? CDMarkdownTextLayoutManager {
+                   let tk2Manager = tk2LayoutManager {
                     tk2Manager.roundAllCorners = roundAllCorners
                 } else {
                     if let layoutManager = self.customLayoutManager {
@@ -140,9 +140,9 @@
                 }
 
                 #if os(iOS) || os(visionOS)
-                if let parser = markdownParser {
-                    self.accessibilityAttributedLabel = parser.accessibilityAttributedString(from: newValue)
-                }
+                    if let parser = markdownParser {
+                        self.accessibilityAttributedLabel = parser.accessibilityAttributedString(from: newValue)
+                    }
                 #endif
 
                 setNeedsDisplay()
@@ -226,7 +226,17 @@
             self.customTextContainer.size = self.bounds.size
             self.customTextContainer.maximumNumberOfLines = numberOfLines
             // Measure the text with the new state
-            var textBounds = self.customLayoutManager.usedRect(for: self.customTextContainer)
+            var textBounds: CGRect
+            if #available(iOS 16.0, tvOS 16.0, *), let tk2 = tk2LayoutManager {
+                tk2.ensureLayout(for: tk2.documentRange)
+                textBounds = .zero
+                tk2.enumerateTextLayoutFragments(from: tk2.documentRange.location, options: []) { fragment in
+                    textBounds = textBounds.union(fragment.layoutFragmentFrame)
+                    return true
+                }
+            } else {
+                textBounds = self.customLayoutManager.usedRect(for: self.customTextContainer)
+            }
             // Position the bounds and round up the size for good measure
             textBounds.origin = bounds.origin
             textBounds.size.width = ceil(bounds.width)
@@ -259,12 +269,13 @@
             let glyphsPosition = calculateGlyphsPositionInView()
             layoutManager.ensureLayout(for: layoutManager.documentRange)
 
-            for fragment in layoutManager.textLayoutFragments {
+            layoutManager.enumerateTextLayoutFragments(from: layoutManager.documentRange.location, options: []) { fragment in
                 let fragmentOrigin = CGPoint(
                     x: glyphsPosition.x + fragment.layoutFragmentFrame.origin.x,
                     y: glyphsPosition.y + fragment.layoutFragmentFrame.origin.y
                 )
                 fragment.draw(at: fragmentOrigin, in: context)
+                return true
             }
         }
 
@@ -281,14 +292,26 @@
             // Returns the XY offset of the range of glyphs from the view's origin
             var textOffset = CGPoint.zero
 
-            var textBounds = self.customLayoutManager.usedRect(for: self.customTextContainer)
-
-            textBounds.size.width = ceil(textBounds.width)
-            textBounds.size.height = ceil(textBounds.height)
-
-            if textBounds.size.height < self.bounds.size.height {
-                let paddingHeight = (self.bounds.height - textBounds.size.height) / 2
-                textOffset.y = paddingHeight
+            if #available(iOS 16.0, tvOS 16.0, *), let tk2 = tk2LayoutManager {
+                tk2.ensureLayout(for: tk2.documentRange)
+                var maxY: CGFloat = 0
+                tk2.enumerateTextLayoutFragments(from: tk2.documentRange.location, options: []) { fragment in
+                    let bottom = fragment.layoutFragmentFrame.maxY
+                    if bottom > maxY { maxY = bottom }
+                    return true
+                }
+                let textHeight = ceil(maxY)
+                if textHeight < self.bounds.size.height {
+                    textOffset.y = (self.bounds.height - textHeight) / 2
+                }
+            } else {
+                var textBounds = self.customLayoutManager.usedRect(for: self.customTextContainer)
+                textBounds.size.width = ceil(textBounds.width)
+                textBounds.size.height = ceil(textBounds.height)
+                if textBounds.size.height < self.bounds.size.height {
+                    let paddingHeight = (self.bounds.height - textBounds.size.height) / 2
+                    textOffset.y = paddingHeight
+                }
             }
 
             return textOffset
@@ -443,9 +466,9 @@
             if #available(iOS 16.0, tvOS 16.0, *),
                let tk2Manager = tk2LayoutManager,
                let textStorage = tk2Manager.textContentManager as? NSTextContentStorage {
-                return urlRangeTK2(at: location, layoutManager: tk2Manager, storage: textStorage)
+                urlRangeTK2(at: location, layoutManager: tk2Manager, storage: textStorage)
             } else {
-                return urlRangeTK1(at: location)
+                urlRangeTK1(at: location)
             }
         }
 
@@ -459,21 +482,34 @@
                 y: location.y - glyphsPosition.y
             )
 
-            for fragment in layoutManager.textLayoutFragments {
-                let fragmentFrame = fragment.layoutFragmentFrame
-                guard fragmentFrame.contains(adjustedLocation) else { continue }
+            var matchedCharIndex: Int?
+            layoutManager.enumerateTextLayoutFragments(from: layoutManager.documentRange.location, options: []) { fragment in
+                guard fragment.layoutFragmentFrame.contains(adjustedLocation) else { return true }
 
-                if let location = fragment.textLocation(for: adjustedLocation) {
-                    if let charIndex = layoutManager.offset(from: layoutManager.documentRange.location, to: location) {
-                        for urlRange in urlRanges {
-                            if charIndex >= urlRange.range.location && charIndex < urlRange.range.location + urlRange.range.length {
-                                return urlRange
-                            }
-                        }
-                    }
+                for lineFragment in fragment.textLineFragments {
+                    let lineOrigin = CGPoint(
+                        x: fragment.layoutFragmentFrame.minX + lineFragment.typographicBounds.minX,
+                        y: fragment.layoutFragmentFrame.minY + lineFragment.typographicBounds.minY
+                    )
+                    let lineFrame = CGRect(origin: lineOrigin, size: lineFragment.typographicBounds.size)
+                    guard lineFrame.contains(adjustedLocation) else { continue }
+
+                    let localPoint = CGPoint(
+                        x: adjustedLocation.x - lineOrigin.x,
+                        y: adjustedLocation.y - lineOrigin.y
+                    )
+                    matchedCharIndex = lineFragment.characterIndex(for: localPoint)
+                    return false
                 }
+                return true
             }
 
+            guard let charIndex = matchedCharIndex else { return nil }
+            for urlRange in urlRanges {
+                if charIndex >= urlRange.range.location, charIndex < urlRange.range.location + urlRange.range.length {
+                    return urlRange
+                }
+            }
             return nil
         }
 
@@ -481,8 +517,8 @@
             guard customTextStorage.length > 0 else { return nil }
 
             let boundingRect = customLayoutManager.boundingRect(forGlyphRange: NSRange(location: 0,
-                                                                                        length: customTextStorage.length),
-                                                                 in: customTextContainer)
+                                                                                       length: customTextStorage.length),
+                                                                in: customTextContainer)
 
             guard boundingRect.contains(location) else { return nil }
 
