@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'CDMarkdownKit'
-  s.version = '3.3.0'
+  s.version = '4.0.0'
   s.cocoapods_version = '>= 1.13.0'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
   s.summary = 'An extensive Swift framework providing simple and customizable markdown parsing.'
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.watchos.deployment_target = '6.0'
   s.visionos.deployment_target = '1.0'
 
-  s.swift_versions = ['5']
+  s.swift_versions = ['5', '6']
   
   s.source_files = 'Source/*.swift'
   s.resource_bundles = { 'CDMarkdownKit' => ['Source/PrivacyInfo.xcprivacy'] }
