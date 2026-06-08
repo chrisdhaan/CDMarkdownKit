@@ -59,10 +59,10 @@ label.attributedText = attributedString
 
 | Platform | Minimum OS | Swift | Installation |
 |----------|-----------|-------|--------------|
-| iOS      | 12.0+     | 5.3+  | SPM, CocoaPods |
-| macOS    | 10.13+    | 5.3+  | SPM, CocoaPods |
-| tvOS     | 12.0+     | 5.3+  | SPM, CocoaPods |
-| watchOS  | 4.0+      | 5.3+  | SPM, CocoaPods |
+| iOS      | 13.0+     | 5.3+  | SPM, CocoaPods |
+| macOS    | 10.15+    | 5.3+  | SPM, CocoaPods |
+| tvOS     | 13.0+     | 5.3+  | SPM, CocoaPods |
+| watchOS  | 6.0+      | 5.3+  | SPM, CocoaPods |
 | visionOS | 1.0+      | 5.3+  | SPM, CocoaPods |
 
 ## Installation
@@ -72,7 +72,7 @@ label.attributedText = attributedString
 Add to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", from: "3.0.0")
+.package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", from: "4.0.0")
 ```
 
 Or in Xcode: **File → Add Packages** and enter the repository URL.
@@ -82,7 +82,7 @@ Or in Xcode: **File → Add Packages** and enter the repository URL.
 Add to your `Podfile`:
 
 ```ruby
-pod 'CDMarkdownKit', '~> 3.0'
+pod 'CDMarkdownKit', '~> 4.0'
 ```
 
 Run `pod install`.
