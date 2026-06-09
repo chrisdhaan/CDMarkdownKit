@@ -31,7 +31,7 @@ jobs:
         include:
           - runner: macos-26
             xcode: /Applications/Xcode_26.4.1.app/Contents/Developer
-            destination: "OS=26.2,name=iPhone 17 Pro"
+            destination: "OS=26.4,name=iPhone 17 Pro"
             name: "iOS 26 (Xcode 26.4.1)"
           - runner: macos-26
             xcode: /Applications/Xcode_26.3.app/Contents/Developer
@@ -207,7 +207,7 @@ jobs:
         include:
           - runner: macos-26
             xcode: /Applications/Xcode_26.4.1.app/Contents/Developer
-            destination: "generic/platform=visionOS Simulator"
+            destination: "platform=visionOS Simulator,OS=26.4,name=Apple Vision Pro"
             name: "visionOS 26 (Xcode 26.4.1)"
           - runner: macos-26
             xcode: /Applications/Xcode_26.3.app/Contents/Developer
