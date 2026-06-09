@@ -230,11 +230,11 @@ Defined in `.github/workflows/ci.yml`. Triggered on push to `master` and on pull
 
 | Job | Strategy | Runner(s) | Tool |
 |-----|----------|-----------|------|
-| iOS | matrix: Xcode 26.2–26.4.1 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
-| macOS | matrix: Xcode 26.0.1–26.4.1 (macos-26) / Xcode 16.0–16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
-| tvOS | matrix: Xcode 26.2–26.4.1 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
-| watchOS | matrix: Xcode 26.2–26.4.1 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
-| visionOS | matrix: Xcode 26.2–26.4.1 (macos-26) | macos-26 | xcodebuild |
+| iOS | matrix: Xcode 26.2–26.5 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| macOS | matrix: Xcode 26.0.1–26.5 (macos-26) / Xcode 16.0–16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| tvOS | matrix: Xcode 26.2–26.5 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| watchOS | matrix: Xcode 26.2–26.5 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| visionOS | matrix: Xcode 26.2–26.5 (macos-26) | macos-26 | xcodebuild |
 | Catalyst | single | macos-15, Xcode 16.4 | xcodebuild |
 | CocoaPods | single | macos-15, Xcode 16.4 | pod lib lint |
 | SPM | single | macos-15, Xcode 16.4 | swift test |
@@ -243,7 +243,17 @@ Defined in `.github/workflows/ci.yml`. Triggered on push to `master` and on pull
 | Documentation | single | macos-15, Xcode 16.4 | swift-docc-plugin |
 | CodeQL | single | macos-15, Xcode 16.4 | codeql-action |
 
-iOS/tvOS/watchOS jobs run 4 matrix entries each (3 Xcode 26.x on macos-26, 1 Xcode 16.4 on macos-15), both Debug and Release builds. visionOS runs 3 entries (macos-26 only), both Debug and Release. macOS/Catalyst/CocoaPods/SPM/SwiftLint/SwiftFormat/Documentation/CodeQL jobs run singles. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
+iOS/tvOS/watchOS jobs run 5 matrix entries each (4 Xcode 26.x on macos-26, 1 Xcode 16.4 on macos-15), both Debug and Release builds. visionOS runs 4 entries (macos-26 only), both Debug and Release. macOS/Catalyst/CocoaPods/SPM/SwiftLint/SwiftFormat/Documentation/CodeQL jobs run singles. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
+
+### Debugging CI Destination Failures
+
+When an `xcodebuild` destination specifier fails (simulator not found, no matching device), check the runner's installed simulators at:
+
+**https://github.com/actions/runner-images** → `images/macos/macos-26-arm64-Readme.md` → "Installed Simulators" table
+
+The **OS** column in that table gives the exact version string required for the `OS=` parameter in xcodebuild destination specifiers. Key gotchas:
+
+- **iOS/visionOS point releases**: the iOS 26.4 and visionOS 26.4 simulators have OS `26.4.1` (not `26.4`) — tvOS and watchOS 26.4 stay at `26.4`
 
 ---
 
