@@ -207,7 +207,7 @@ jobs:
         include:
           - runner: macos-26
             xcode: /Applications/Xcode_26.4.1.app/Contents/Developer
-            destination: "OS=26.4,name=Apple Vision Pro"
+            destination: "generic/platform=visionOS Simulator"
             name: "visionOS 26 (Xcode 26.4.1)"
           - runner: macos-26
             xcode: /Applications/Xcode_26.3.app/Contents/Developer
@@ -221,6 +221,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         run: sudo xcode-select -s ${{ matrix.xcode }}
+      - name: List available simulators
+        run: xcrun simctl list
       - name: Install xcbeautify
         run: brew install xcbeautify
       - name: ${{ matrix.name }} - Debug
