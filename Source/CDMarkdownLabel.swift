@@ -547,8 +547,7 @@
 
     // MARK: - LayoutManagerDelegate Methods
 
-    @MainActor
-    extension CDMarkdownLabel: NSLayoutManagerDelegate {
+    extension CDMarkdownLabel: @preconcurrency NSLayoutManagerDelegate {
         public func layoutManager(_ layoutManager: NSLayoutManager,
                                   shouldBreakLineByWordBeforeCharacterAt charIndex: Int) -> Bool {
             var range = NSRange()

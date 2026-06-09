@@ -3,7 +3,7 @@
 
     @available(iOS 16.0, tvOS 16.0, *)
     @MainActor
-    final class CDMarkdownTextLayoutDelegate: NSObject, NSTextLayoutManagerDelegate {
+    final class CDMarkdownTextLayoutDelegate: NSObject, @preconcurrency NSTextLayoutManagerDelegate {
 
         var roundAllCorners: Bool = false {
             didSet {
