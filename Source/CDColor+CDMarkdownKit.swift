@@ -36,6 +36,11 @@
         /// The primary label color, adapts to light and dark mode.
         static var label: CDColor { NSColor.labelColor }
     }
+#elseif os(watchOS)
+    public extension CDColor {
+        /// The primary label color. watchOS is dark-first; white is the standard text color.
+        static var label: CDColor { .white }
+    }
 #endif
 
 public extension CDColor {
