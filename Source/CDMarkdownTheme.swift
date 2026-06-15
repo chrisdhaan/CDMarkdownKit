@@ -110,7 +110,7 @@ public struct CDMarkdownTheme {
 
     public init(
         font: CDFont = CDFont.systemFont(ofSize: 12),
-        fontColor: CDColor = CDColor.black,
+        fontColor: CDColor = CDColor.label,
         backgroundColor: CDColor = CDColor.clear,
         header: HeaderTheme = HeaderTheme(),
         bold: InlineTheme = InlineTheme(),

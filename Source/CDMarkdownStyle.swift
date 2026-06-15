@@ -40,7 +40,8 @@
 ///
 /// The ``attributes`` property computes the final `NSAttributedString` attribute dictionary
 /// from your style properties.
-public protocol CDMarkdownStyle: Sendable {
+@MainActor
+public protocol CDMarkdownStyle {
 
     /// The font to apply to this element. Return `nil` to use the parser's default font.
     var font: CDFont? { get }

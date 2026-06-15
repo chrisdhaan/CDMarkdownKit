@@ -31,10 +31,8 @@
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownTaskList: @unchecked Sendable {}
-
 /// Renders GFM task list items using `- [ ]` or `- [x]` syntax.
+@MainActor
 open class CDMarkdownTaskList: CDMarkdownElement, CDMarkdownStyle {
 
     // Matches: optional whitespace, list marker (- * +), space, [ ] or [x/X], space, content

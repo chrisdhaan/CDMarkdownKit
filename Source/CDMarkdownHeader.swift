@@ -31,10 +31,8 @@
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownHeader: @unchecked Sendable {}
-
 /// Renders headings using # through ###### syntax.
+@MainActor
 open class CDMarkdownHeader: CDMarkdownLevelElement {
 
     fileprivate static let regex = "^\\s*(#{1,%@})\\s*(.+)$\n*"

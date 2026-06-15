@@ -4,7 +4,7 @@
 
 CDMarkdownKit is a pure-Swift, zero-dependency framework for parsing Markdown text into `NSAttributedString`. It supports rendering inside custom `UILabel` and `UITextView` subclasses with optional rounded-corner background styling for code and syntax blocks.
 
-- **Current version**: 3.3.0
+- **Current version**: 4.0.0
 - **License**: MIT
 - **Author**: Christopher de Haan (contact@christopherdehaan.me)
 
@@ -44,10 +44,10 @@ CDMarkdownKit/
 
 | Platform | `Package.swift` | Podspec |
 |----------|----------------|---------|
-| iOS      | 12.0+          | 12.0+   |
-| macOS    | 10.13+         | 10.13+  |
-| tvOS     | 12.0+          | 12.0+   |
-| watchOS  | 4.0+           | 4.0+    |
+| iOS      | 13.0+          | 13.0+   |
+| macOS    | 10.15+         | 10.15+  |
+| tvOS     | 13.0+          | 13.0+   |
+| watchOS  | 6.0+           | 6.0+    |
 | visionOS | 1.0+           | 1.0+    |
 
 Swift minimum: **5.3** (enforced in `CDMarkdownKit.swift` via `#error`). The SPM manifest uses swift-tools-version 6.0 with `swiftLanguageModes: [.v6]` — compiled in Swift 6 language mode.
@@ -175,8 +175,10 @@ CDMarkdownElement          (parse loop + regex matching)
 | File | Platform | Purpose |
 |------|----------|---------|
 | `CDMarkdownLabel.swift` | iOS/tvOS | `@MainActor UILabel` subclass with custom text stack and tap-to-open-URL |
-| `CDMarkdownTextView.swift` | iOS/tvOS | `@MainActor UITextView` subclass using `CDMarkdownLayoutManager` |
-| `CDMarkdownLayoutManager.swift` | iOS/tvOS | `NSLayoutManager` subclass that draws rounded-corner backgrounds |
+| `CDMarkdownTextView.swift` | iOS/tvOS | `@MainActor UITextView` subclass using `CDMarkdownTextLayoutManager` (TextKit 2) |
+| `CDMarkdownTextLayoutManager.swift` | iOS/tvOS | `NSTextLayoutManager` subclass (TextKit 2) that coordinates rounded-corner background drawing |
+| `CDMarkdownTextLayoutFragment.swift` | iOS/tvOS | `NSTextLayoutFragment` subclass (TextKit 2) that draws rounded-corner backgrounds |
+| `CDMarkdownLayoutManager.swift` | iOS/tvOS | `NSLayoutManager` subclass (TextKit 1 fallback) that draws rounded-corner backgrounds |
 | `CDMarkdownNSTextView.swift` | macOS | `NSTextView` subclass for read-only markdown display |
 | `CDMarkdownNSLabel.swift` | macOS | Lightweight read-only `NSView` for simple markdown display |
 | `CDMarkdownNSLayoutManager.swift` | macOS | `NSLayoutManager` subclass with rounded-corner backgrounds |
@@ -228,11 +230,11 @@ Defined in `.github/workflows/ci.yml`. Triggered on push to `master` and on pull
 
 | Job | Strategy | Runner(s) | Tool |
 |-----|----------|-----------|------|
-| iOS | matrix: Xcode 26.1.1–26.4.1 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
-| macOS | matrix: Xcode 26.0.1–26.4.1 (macos-26) / Xcode 16.0–16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
-| tvOS | matrix: Xcode 26.1.1–26.4.1 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
-| watchOS | matrix: Xcode 26.1.1–26.4.1 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
-| visionOS | matrix: Xcode 26.1.1–26.4.1 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| iOS | matrix: Xcode 26.2–26.5 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| macOS | matrix: Xcode 26.0.1–26.5 (macos-26) / Xcode 16.0–16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| tvOS | matrix: Xcode 26.2–26.5 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| watchOS | matrix: Xcode 26.2–26.5 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
+| visionOS | matrix: Xcode 26.2–26.5 (macos-26) | macos-26 | xcodebuild |
 | Catalyst | single | macos-15, Xcode 16.4 | xcodebuild |
 | CocoaPods | single | macos-15, Xcode 16.4 | pod lib lint |
 | SPM | single | macos-15, Xcode 16.4 | swift test |
@@ -241,19 +243,28 @@ Defined in `.github/workflows/ci.yml`. Triggered on push to `master` and on pull
 | Documentation | single | macos-15, Xcode 16.4 | swift-docc-plugin |
 | CodeQL | single | macos-15, Xcode 16.4 | codeql-action |
 
-iOS/tvOS/watchOS/visionOS jobs run 5 matrix entries each (4 Xcode 26.x on macos-26, 1 Xcode 16.4 on macos-15), both Debug and Release builds. macOS/Catalyst/CocoaPods/SPM/SwiftLint/SwiftFormat/Documentation/CodeQL jobs run singles. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
+iOS/tvOS/watchOS jobs run 5 matrix entries each (4 Xcode 26.x on macos-26, 1 Xcode 16.4 on macos-15), both Debug and Release builds. visionOS runs 4 entries (macos-26 only), both Debug and Release. macOS/Catalyst/CocoaPods/SPM/SwiftLint/SwiftFormat/Documentation/CodeQL jobs run singles. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
+
+### Debugging CI Destination Failures
+
+When an `xcodebuild` destination specifier fails (simulator not found, no matching device), check the runner's installed simulators at:
+
+**https://github.com/actions/runner-images** → `images/macos/macos-26-arm64-Readme.md` → "Installed Simulators" table
+
+The **OS** column in that table gives the exact version string required for the `OS=` parameter in xcodebuild destination specifiers. Key gotchas:
+
+- **iOS/visionOS point releases**: the iOS 26.4 and visionOS 26.4 simulators have OS `26.4.1` (not `26.4`) — tvOS and watchOS 26.4 stay at `26.4`
 
 ---
 
 ## Known Issues & Tech Debt
 
 ### Medium Priority
-1. **Swift 6 strict concurrency not fully adopted** — the package builds with `swiftLanguageModes: [.v6]` but some types use `@unchecked Sendable` and `@preconcurrency` conformances. A full strict-concurrency audit has not been completed.
+1. **Swift 6 strict concurrency not fully adopted** — the package builds with `swiftLanguageModes: [.v6]` and most types are fully isolated, but `CDMarkdownTheme` still uses `@unchecked Sendable`.
 
 ### Low Priority / Future
 2. **`CDMarkdownStrikethrough`** has its own `strikethroughColor`/`strikethroughStyle` properties that are not part of the shared `CDMarkdownStyle` protocol, creating an inconsistency.
 3. **Carthage support** — README mentions Carthage compatibility but there is no `Cartfile`; Carthage is largely abandoned by the community.
-4. **TextKit 2 migration** — `CDMarkdownLayoutManager` is an `NSLayoutManager` subclass, which forces `CDMarkdownTextView` into TextKit 1 compatibility mode (expected one-time console warning). A future v4.0 migration to `NSTextLayoutManager` would eliminate this. See `Documentation/ARCHITECTURE.md` for the current TK1 wiring approach.
 
 ---
 
@@ -326,6 +337,7 @@ Do **not** run `swift package generate-documentation` directly to publish docs �
 
 | Version | Date       | Notable Change |
 |---------|------------|----------------|
+| 4.0.0   | 2026-06-15 | TextKit 2 migration (iOS/tvOS 16+), raised deployment targets, Swift 6 strict concurrency |
 | 3.3.0   | 2026-06-03 | Reference-style links, fenced code language hints, `CDMarkdownTheme`, theme environment key |
 | 3.2.0   | 2026-05-31 | Swift 6 language mode (`swiftLanguageModes: [.v6]`), task lists, horizontal rules, inline table cells, macOS AppKit components, SwiftUI wrappers |
 | 3.1.0   | 2026-05-12 | Tables, ordered lists, visionOS support, DocC documentation |

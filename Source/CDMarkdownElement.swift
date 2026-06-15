@@ -35,7 +35,8 @@ import Foundation
 ///
 /// See ``CDMarkdownCommonElement``, ``CDMarkdownLevelElement``, and ``CDMarkdownLinkElement``
 /// for specialized protocols that simplify common use cases.
-public protocol CDMarkdownElement: AnyObject, Sendable {
+@MainActor
+public protocol CDMarkdownElement: AnyObject {
 
     /// The regular expression pattern to match this element's syntax.
     ///

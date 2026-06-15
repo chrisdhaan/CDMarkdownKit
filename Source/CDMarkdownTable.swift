@@ -5,9 +5,7 @@ import Foundation
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownTable: @unchecked Sendable {}
-
+@MainActor
 open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
 
     /// Group 1: header row (line containing at least one |)

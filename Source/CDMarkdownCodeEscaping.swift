@@ -31,9 +31,7 @@
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownCodeEscaping: @unchecked Sendable {}
-
+@MainActor
 open class CDMarkdownCodeEscaping: CDMarkdownElement {
 
     fileprivate static let regex = "(?<!\\\\)(?:\\\\\\\\)*+(`+)(.*?[^`].*?)(\\1)(?!`)"

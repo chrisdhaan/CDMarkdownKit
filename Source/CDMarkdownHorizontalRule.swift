@@ -31,10 +31,8 @@
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownHorizontalRule: @unchecked Sendable {}
-
 /// Renders horizontal rules using `---`, `***`, or `___` syntax with optional spacing.
+@MainActor
 open class CDMarkdownHorizontalRule: CDMarkdownElement, CDMarkdownStyle {
 
     // Matches a line containing only 3+ dashes, asterisks, or underscores,

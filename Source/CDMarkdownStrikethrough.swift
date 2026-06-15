@@ -31,10 +31,8 @@
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownStrikethrough: @unchecked Sendable {}
-
 /// Renders strikethrough text using ~~text~~ syntax.
+@MainActor
 open class CDMarkdownStrikethrough: CDMarkdownCommonElement {
 
     fileprivate static let regex = "()(~~)(.*?)(\\2)"

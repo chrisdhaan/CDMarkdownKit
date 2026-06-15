@@ -51,6 +51,16 @@
 		5F4315D62FD270B200FAC621 /* CDMarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CE2FD270B200FAC621 /* CDMarkdownView.swift */; };
 		5F4315D72FD270B200FAC621 /* CDMarkdownText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CD2FD270B200FAC621 /* CDMarkdownText.swift */; };
 		5F4315D82FD270B200FAC621 /* CDMarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4315CE2FD270B200FAC621 /* CDMarkdownView.swift */; };
+		5F4316A32FD280B300FAC621 /* CDMarkdownTextLayoutFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4316A12FD280B100FAC621 /* CDMarkdownTextLayoutFragment.swift */; };
+		5F4316A42FD280B400FAC621 /* CDMarkdownTextLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4316A22FD280B200FAC621 /* CDMarkdownTextLayoutManager.swift */; };
+		5F4316A52FD280B500FAC621 /* CDMarkdownTextLayoutFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4316A12FD280B100FAC621 /* CDMarkdownTextLayoutFragment.swift */; };
+		5F4316A62FD280B600FAC621 /* CDMarkdownTextLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4316A22FD280B200FAC621 /* CDMarkdownTextLayoutManager.swift */; };
+		5F4316A72FD280B700FAC621 /* CDMarkdownTextLayoutFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4316A12FD280B100FAC621 /* CDMarkdownTextLayoutFragment.swift */; };
+		5F4316A82FD280B800FAC621 /* CDMarkdownTextLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4316A22FD280B200FAC621 /* CDMarkdownTextLayoutManager.swift */; };
+		5F4316A92FD280B900FAC621 /* CDMarkdownTextLayoutFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4316A12FD280B100FAC621 /* CDMarkdownTextLayoutFragment.swift */; };
+		5F4316AA2FD280BA00FAC621 /* CDMarkdownTextLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4316A22FD280B200FAC621 /* CDMarkdownTextLayoutManager.swift */; };
+		5F4316AB2FD280BB00FAC621 /* CDMarkdownTextLayoutFragment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4316A12FD280B100FAC621 /* CDMarkdownTextLayoutFragment.swift */; };
+		5F4316AC2FD280BC00FAC621 /* CDMarkdownTextLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4316A22FD280B200FAC621 /* CDMarkdownTextLayoutManager.swift */; };
 		5FB6FB962FB3FD6100E97C06 /* CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26790392868AC0E00DFAAA5 /* CDMarkdownKit.swift */; };
 		5FB6FB972FB3FD6100E97C06 /* CDMarkdownParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366091F324DE90078B962 /* CDMarkdownParser.swift */; };
 		5FB6FB982FB3FD6100E97C06 /* CDMarkdownAutomaticLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3660B1F324DE90078B962 /* CDMarkdownAutomaticLink.swift */; };
@@ -264,6 +274,8 @@
 		5F4315C72FD2709600FAC621 /* CDMarkdownTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownTheme.swift; sourceTree = "<group>"; };
 		5F4315CD2FD270B200FAC621 /* CDMarkdownText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownText.swift; sourceTree = "<group>"; };
 		5F4315CE2FD270B200FAC621 /* CDMarkdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownView.swift; sourceTree = "<group>"; };
+		5F4316A12FD280B100FAC621 /* CDMarkdownTextLayoutFragment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownTextLayoutFragment.swift; sourceTree = "<group>"; };
+		5F4316A22FD280B200FAC621 /* CDMarkdownTextLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownTextLayoutManager.swift; sourceTree = "<group>"; };
 		5FB6FB8C2FB3FCA500E97C06 /* CDMarkdownKit_visionOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CDMarkdownKit_visionOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FE1B0EC2FCBD76600D912E9 /* CDMarkdownHorizontalRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownHorizontalRule.swift; sourceTree = "<group>"; };
 		5FE1B0ED2FCBD76600D912E9 /* CDMarkdownTaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownTaskList.swift; sourceTree = "<group>"; };
@@ -512,6 +524,8 @@
 				5F11F44D2FCC6707003A1AFB /* CDMarkdownNSLayoutManager.swift */,
 				5F11F44E2FCC6707003A1AFB /* CDMarkdownNSTextView.swift */,
 				5F4315CD2FD270B200FAC621 /* CDMarkdownText.swift */,
+				5F4316A12FD280B100FAC621 /* CDMarkdownTextLayoutFragment.swift */,
+				5F4316A22FD280B200FAC621 /* CDMarkdownTextLayoutManager.swift */,
 				B2B366111F324DE90078B962 /* CDMarkdownTextView.swift */,
 				5F4315CE2FD270B200FAC621 /* CDMarkdownView.swift */,
 			);
@@ -529,6 +543,7 @@
 				5FB6FB892FB3FCA500E97C06 /* Frameworks */,
 				5FB6FB8A2FB3FCA500E97C06 /* Resources */,
 				5FB6FBBE2FB3FD8D00E97C06 /* Swift Lint */,
+				5FB6FBBE2FB3FD8D00E97C07 /* Swift Format */,
 			);
 			buildRules = (
 			);
@@ -549,6 +564,7 @@
 				B2ACA0731FBF93ED00EABEF6 /* Frameworks */,
 				B2ACA0751FBF93ED00EABEF6 /* Resources */,
 				B2CC862C20D4553C00170627 /* Swift Lint */,
+				B2CC862C20D4553C00170628 /* Swift Format */,
 			);
 			buildRules = (
 			);
@@ -567,6 +583,7 @@
 				B2ACA0801FBF940700EABEF6 /* Frameworks */,
 				B2ACA0821FBF940700EABEF6 /* Resources */,
 				B2CC862D20D4554B00170627 /* Swift Lint */,
+				B2CC862D20D4554B00170628 /* Swift Format */,
 			);
 			buildRules = (
 			);
@@ -585,6 +602,7 @@
 				B2ACA08D1FBF941B00EABEF6 /* Frameworks */,
 				B2ACA08F1FBF941B00EABEF6 /* Resources */,
 				B2CC862E20D4555900170627 /* Swift Lint */,
+				B2CC862E20D4555900170628 /* Swift Format */,
 			);
 			buildRules = (
 			);
@@ -603,6 +621,7 @@
 				B2B365B31F3245800078B962 /* Frameworks */,
 				B2B365B51F3245800078B962 /* Resources */,
 				B2CC862B20D4552C00170627 /* Swift Lint */,
+				B2CC862B20D4552C00170628 /* Swift Format */,
 			);
 			buildRules = (
 			);
@@ -789,6 +808,85 @@
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\n    cd \"$SRCROOT\" && swiftlint lint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
+		5FB6FBBE2FB3FD8D00E97C07 /* Swift Format */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Format";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftformat >/dev/null; then\n    cd \"$SRCROOT\" && swiftformat Source Tests --lint\nelse\n    echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+		};
+		B2CC862B20D4552C00170628 /* Swift Format */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Format";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftformat >/dev/null; then\n    cd \"$SRCROOT\" && swiftformat Source Tests --lint\nelse\n    echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+		};
+		B2CC862C20D4553C00170628 /* Swift Format */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Format";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftformat >/dev/null; then\n    cd \"$SRCROOT\" && swiftformat Source Tests --lint\nelse\n    echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+		};
+		B2CC862D20D4554B00170628 /* Swift Format */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Format";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftformat >/dev/null; then\n    cd \"$SRCROOT\" && swiftformat Source Tests --lint\nelse\n    echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+		};
+		B2CC862E20D4555900170628 /* Swift Format */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Format";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftformat >/dev/null; then\n    cd \"$SRCROOT\" && swiftformat Source Tests --lint\nelse\n    echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -844,6 +942,8 @@
 				5FB6FBB92FB3FD6100E97C06 /* CDMarkdownStyle.swift in Sources */,
 				5FB6FBBA2FB3FD6100E97C06 /* CDMarkdownLabel.swift in Sources */,
 				5FB6FBBB2FB3FD6100E97C06 /* CDMarkdownLayoutManager.swift in Sources */,
+				5F4316A32FD280B300FAC621 /* CDMarkdownTextLayoutFragment.swift in Sources */,
+				5F4316A42FD280B400FAC621 /* CDMarkdownTextLayoutManager.swift in Sources */,
 				5FB6FBBC2FB3FD6100E97C06 /* CDMarkdownTextView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -881,6 +981,8 @@
 				B29FE73D21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0B41FBF95A400EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0B51FBF95A400EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
+				5F4316A52FD280B500FAC621 /* CDMarkdownTextLayoutFragment.swift in Sources */,
+				5F4316A62FD280B600FAC621 /* CDMarkdownTextLayoutManager.swift in Sources */,
 				B2ACA0B11FBF95A400EABEF6 /* CDMarkdownLevelElement.swift in Sources */,
 				B2ACA0A51FBF95A400EABEF6 /* CDMarkdownLink.swift in Sources */,
 				B2ACA0B21FBF95A400EABEF6 /* CDMarkdownLinkElement.swift in Sources */,
@@ -937,6 +1039,8 @@
 				B29FE73E21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0CD1FBF960A00EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0CE1FBF960A00EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
+				5F4316A72FD280B700FAC621 /* CDMarkdownTextLayoutFragment.swift in Sources */,
+				5F4316A82FD280B800FAC621 /* CDMarkdownTextLayoutManager.swift in Sources */,
 				B2ACA0CA1FBF960A00EABEF6 /* CDMarkdownLevelElement.swift in Sources */,
 				B2ACA0BE1FBF960A00EABEF6 /* CDMarkdownLink.swift in Sources */,
 				B2ACA0CB1FBF960A00EABEF6 /* CDMarkdownLinkElement.swift in Sources */,
@@ -993,6 +1097,8 @@
 				B29FE73F21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2ACA0E61FBF967800EABEF6 /* CDMarkdownLabel.swift in Sources */,
 				B2ACA0E71FBF967800EABEF6 /* CDMarkdownLayoutManager.swift in Sources */,
+				5F4316A92FD280B900FAC621 /* CDMarkdownTextLayoutFragment.swift in Sources */,
+				5F4316AA2FD280BA00FAC621 /* CDMarkdownTextLayoutManager.swift in Sources */,
 				B2ACA0E31FBF967800EABEF6 /* CDMarkdownLevelElement.swift in Sources */,
 				B2ACA0D71FBF967800EABEF6 /* CDMarkdownLink.swift in Sources */,
 				B2ACA0E41FBF967800EABEF6 /* CDMarkdownLinkElement.swift in Sources */,
@@ -1049,6 +1155,8 @@
 				B29FE73C21AF01B6009A4BC1 /* Dictionary+CDMarkdownKit.swift in Sources */,
 				B2B366231F324DE90078B962 /* CDMarkdownLabel.swift in Sources */,
 				B2B3662F1F324DE90078B962 /* CDMarkdownLayoutManager.swift in Sources */,
+				5F4316AB2FD280BB00FAC621 /* CDMarkdownTextLayoutFragment.swift in Sources */,
+				5F4316AC2FD280BC00FAC621 /* CDMarkdownTextLayoutManager.swift in Sources */,
 				B2B366301F324DE90078B962 /* CDMarkdownLevelElement.swift in Sources */,
 				B2B366211F324DE90078B962 /* CDMarkdownLink.swift in Sources */,
 				B2B366311F324DE90078B962 /* CDMarkdownLinkElement.swift in Sources */,
@@ -1235,7 +1343,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
-				TVOS_DEPLOYMENT_TARGET = 12.0;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 			};
 			name = Debug;
 		};
@@ -1255,7 +1363,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
-				TVOS_DEPLOYMENT_TARGET = 12.0;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 			};
 			name = Release;
 		};
@@ -1276,7 +1384,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 			};
 			name = Debug;
 		};
@@ -1297,7 +1405,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 			};
 			name = Release;
 		};
@@ -1356,8 +1464,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Source/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 3.3.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
@@ -1366,10 +1474,10 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
-				TVOS_DEPLOYMENT_TARGET = 12.0;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 			};
 			name = Debug;
 		};
@@ -1422,8 +1530,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = Source/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MARKETING_VERSION = 3.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.christopherdehaan.CDMarkdownKit;
 				PRODUCT_NAME = CDMarkdownKit;
@@ -1432,11 +1540,11 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
-				TVOS_DEPLOYMENT_TARGET = 12.0;
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
 			};
 			name = Release;
 		};
@@ -1448,7 +1556,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1469,7 +1577,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

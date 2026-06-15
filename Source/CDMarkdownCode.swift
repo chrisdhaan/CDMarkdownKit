@@ -31,11 +31,9 @@
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownCode: @unchecked Sendable {}
-
 /// Renders inline code using `code` syntax.
-open class CDMarkdownCode: @preconcurrency CDMarkdownCommonElement {
+@MainActor
+open class CDMarkdownCode: CDMarkdownCommonElement {
 
     fileprivate static let regex = "(\\s+|^|\\()(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)(\\)?)"
 
@@ -52,7 +50,7 @@ open class CDMarkdownCode: @preconcurrency CDMarkdownCommonElement {
     /// The underline style for code.
     open var underlineStyle: NSUnderlineStyle?
 
-    nonisolated(unsafe) weak var parser: CDMarkdownParser?
+    weak var parser: CDMarkdownParser?
 
     open var regex: String {
         CDMarkdownCode.regex
@@ -73,7 +71,6 @@ open class CDMarkdownCode: @preconcurrency CDMarkdownCommonElement {
         self.underlineStyle = underlineStyle
     }
 
-    @MainActor
     open func addAttributes(_ attributedString: NSMutableAttributedString,
                             range: NSRange) {
         let matchString: String = attributedString.attributedSubstring(from: range).string

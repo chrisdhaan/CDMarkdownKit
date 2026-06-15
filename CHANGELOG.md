@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [4.0.0](#400)
 - [3.3.0](#330)
 - [3.2.0](#320)
 - [3.1.0](#310)
@@ -20,6 +21,38 @@ All notable changes to this project will be documented in this file.
 - [1.2.0](#120)
 - [1.1.0](#110)
 - [1.0.0](#100)
+
+---
+
+## [4.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.0.0)
+
+Released on 2026-06-15.
+
+### Added
+
+- Added `CDMarkdownTextLayoutManager`, a custom `NSTextLayoutManager` subclass used as the TextKit 2 layout manager for `CDMarkdownLabel` and `CDMarkdownTextView` on iOS/tvOS 16+. Delegates fragment creation to `CDMarkdownTextLayoutFragment` and exposes a `roundAllCorners` property that propagates to each fragment.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
+- Added `CDMarkdownTextLayoutFragment`, a custom `NSTextLayoutFragment` subclass that draws rounded-corner backgrounds for code and syntax spans in the TextKit 2 rendering path. Reads the `.backgroundColor` attribute from text storage at draw time so code and syntax blocks each use their correct color.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
+- Added TextKit 2 rendering path to `CDMarkdownLabel` on iOS/tvOS 16+. Text layout, rect measurement, glyph-position calculation, and link hit-testing all use `NSTextLayoutManager` when TextKit 2 is active; TextKit 1 fallback is preserved for iOS/tvOS 15.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
+- Added TextKit 2 rendering path to `CDMarkdownTextView` on iOS/tvOS 16+. `configureTK2()` installs `CDMarkdownTextLayoutManager` via KVC; `configureTK1()` continues to install `CDMarkdownLayoutManager` on iOS/tvOS 15.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
+- Added `CDMarkdownTextView.makeTextView(frame:)` public factory method. Preferred way to construct a `CDMarkdownTextView` programmatically — selects TextKit 2 on iOS/tvOS 16+ and TextKit 1 on iOS/tvOS 15 automatically.
+  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
+
+### Changed
+
+- Raised minimum deployment targets:
+  - iOS: 12.0 → 13.0
+  - macOS: 10.13 → 10.15
+  - tvOS: 12.0 → 13.0
+  - watchOS: 4.0 → 6.0
+  - Changed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
+- Improved Swift 6 strict concurrency: removed `@preconcurrency` imports, `@unchecked Sendable` conformances, and `nonisolated(unsafe)` from parser properties; added `@MainActor` to all sixteen element classes and base protocol declarations; added `@MainActor` to the `NSLayoutManagerDelegate` extension.
+  - Changed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
+- Replaced `DispatchQueue.main.asyncAfter` with `Task.sleep` in the async parsing pipeline to align with structured Swift concurrency.
+  - Changed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
 
 ---
 

@@ -31,11 +31,9 @@
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownLinkReference: @unchecked Sendable {}
-
 /// Resolves reference-style links of the form `[text][id]` and `[text][]`
 /// against a dictionary of definitions populated by `CDMarkdownParser`.
+@MainActor
 open class CDMarkdownLinkReference: CDMarkdownElement, CDMarkdownStyle {
 
     /// Matches:

@@ -124,7 +124,7 @@ open class CDMarkdownParser {
     ///   - font: The default font for all parsed text. Defaults to the system font at 12pt.
     ///   - boldFont: Optional custom font for bold text. If `nil`, the parser derives it from `font`.
     ///   - italicFont: Optional custom font for italic text. If `nil`, the parser derives it from `font`.
-    ///   - fontColor: The default text color. Defaults to black.
+    ///   - fontColor: The default text color. Defaults to the primary label color, which adapts to light and dark mode.
     ///   - backgroundColor: The default background color. Defaults to clear.
     ///   - paragraphStyle: Optional custom paragraph style (spacing, alignment, line height). If `nil`, a default style is created.
     ///   - imageSize: Optional size constraint for images. If `nil`, images render at their natural dimensions.
@@ -134,7 +134,7 @@ open class CDMarkdownParser {
     public init(font: CDFont = CDFont.systemFont(ofSize: 12),
                 boldFont: CDFont? = nil,
                 italicFont: CDFont? = nil,
-                fontColor: CDColor = CDColor.black,
+                fontColor: CDColor = CDColor.label,
                 backgroundColor: CDColor = CDColor.clear,
                 paragraphStyle: NSParagraphStyle? = nil,
                 imageSize: CGSize? = nil,

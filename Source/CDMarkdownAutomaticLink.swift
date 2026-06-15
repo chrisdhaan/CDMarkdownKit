@@ -31,10 +31,8 @@
     import Cocoa
 #endif
 
-/// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-extension CDMarkdownAutomaticLink: @unchecked Sendable {}
-
 /// Detects and renders bare URLs as clickable links without Markdown syntax.
+@MainActor
 open class CDMarkdownAutomaticLink: CDMarkdownLink {
 
     /// Automatically detects URLs using NSDataDetector.

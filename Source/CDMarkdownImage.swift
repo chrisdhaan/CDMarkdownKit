@@ -33,12 +33,9 @@
 
 #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
 
-    /// Open class: subclasses could add non-Sendable properties, so Sendable cannot be synthesized.
-    extension CDMarkdownImage: @unchecked Sendable {}
-
     /// Renders inline images using `![alt](url)` syntax. Available on iOS, macOS, and tvOS.
     @MainActor
-    open class CDMarkdownImage: @preconcurrency CDMarkdownLinkElement {
+    open class CDMarkdownImage: CDMarkdownLinkElement {
 
         fileprivate static let regex = "!\\[([^\\[]*?)\\]\\(([^\\)]*)\\)"
 

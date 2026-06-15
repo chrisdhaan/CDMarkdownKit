@@ -32,6 +32,7 @@
 #endif
 
 /// Protocol for link-based elements (e.g., links, images, automatic links).
+@MainActor
 public protocol CDMarkdownLinkElement: CDMarkdownElement, CDMarkdownStyle {
 
     /// Formats the display text for a link element.
