@@ -31,8 +31,7 @@ Released on 2026-06-15.
 
 ### Fixed
 
-- Fixed infinite recursion in `CDColor.label` on iOS, tvOS, watchOS, and visionOS. The property was defined in an extension on `CDColor` (a typealias for `UIColor`) and called `UIColor.label`, which resolved back to itself. The extension now only defines `label` on macOS where `NSColor.labelColor` requires bridging; on Apple's other platforms `UIColor.label` is used directly.
-  - Fixed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#58](https://github.com/chrisdhaan/CDMarkdownKit/pull/58).
+- Fixed infinite recursion in `CDColor.label` on iOS, tvOS, watchOS, and visionOS. The property was defined in an extension on `CDColor` (a typealias for `UIColor`) and called `UIColor.label`, which resolved back to itself. The extension now only defines `label` on macOS where `NSColor.labelColor` requires bridging; on Apple's other platforms `UIColor.label` is used directly. (#58)
 
 ---
 
@@ -42,29 +41,21 @@ Released on 2026-06-15.
 
 ### Added
 
-- Added `CDMarkdownTextLayoutManager`, a custom `NSTextLayoutManager` subclass used as the TextKit 2 layout manager for `CDMarkdownLabel` and `CDMarkdownTextView` on iOS/tvOS 16+. Delegates fragment creation to `CDMarkdownTextLayoutFragment` and exposes a `roundAllCorners` property that propagates to each fragment.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
-- Added `CDMarkdownTextLayoutFragment`, a custom `NSTextLayoutFragment` subclass that draws rounded-corner backgrounds for code and syntax spans in the TextKit 2 rendering path. Reads the `.backgroundColor` attribute from text storage at draw time so code and syntax blocks each use their correct color.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
-- Added TextKit 2 rendering path to `CDMarkdownLabel` on iOS/tvOS 16+. Text layout, rect measurement, glyph-position calculation, and link hit-testing all use `NSTextLayoutManager` when TextKit 2 is active; TextKit 1 fallback is preserved for iOS/tvOS 15.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
-- Added TextKit 2 rendering path to `CDMarkdownTextView` on iOS/tvOS 16+. `configureTK2()` installs `CDMarkdownTextLayoutManager` via KVC; `configureTK1()` continues to install `CDMarkdownLayoutManager` on iOS/tvOS 15.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
-- Added `CDMarkdownTextView.makeTextView(frame:)` public factory method. Preferred way to construct a `CDMarkdownTextView` programmatically — selects TextKit 2 on iOS/tvOS 16+ and TextKit 1 on iOS/tvOS 15 automatically.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
+- Added `CDMarkdownTextLayoutManager`, a custom `NSTextLayoutManager` subclass used as the TextKit 2 layout manager for `CDMarkdownLabel` and `CDMarkdownTextView` on iOS/tvOS 16+. Delegates fragment creation to `CDMarkdownTextLayoutFragment` and exposes a `roundAllCorners` property that propagates to each fragment. (#57)
+- Added `CDMarkdownTextLayoutFragment`, a custom `NSTextLayoutFragment` subclass that draws rounded-corner backgrounds for code and syntax spans in the TextKit 2 rendering path. Reads the `.backgroundColor` attribute from text storage at draw time so code and syntax blocks each use their correct color. (#57)
+- Added TextKit 2 rendering path to `CDMarkdownLabel` on iOS/tvOS 16+. Text layout, rect measurement, glyph-position calculation, and link hit-testing all use `NSTextLayoutManager` when TextKit 2 is active; TextKit 1 fallback is preserved for iOS/tvOS 15. (#57)
+- Added TextKit 2 rendering path to `CDMarkdownTextView` on iOS/tvOS 16+. `configureTK2()` installs `CDMarkdownTextLayoutManager` via KVC; `configureTK1()` continues to install `CDMarkdownLayoutManager` on iOS/tvOS 15. (#57)
+- Added `CDMarkdownTextView.makeTextView(frame:)` public factory method. Preferred way to construct a `CDMarkdownTextView` programmatically — selects TextKit 2 on iOS/tvOS 16+ and TextKit 1 on iOS/tvOS 15 automatically. (#57)
 
 ### Changed
 
-- Raised minimum deployment targets:
+- Raised minimum deployment targets: (#57)
   - iOS: 12.0 → 13.0
   - macOS: 10.13 → 10.15
   - tvOS: 12.0 → 13.0
   - watchOS: 4.0 → 6.0
-  - Changed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
-- Improved Swift 6 strict concurrency: removed `@preconcurrency` imports, `@unchecked Sendable` conformances, and `nonisolated(unsafe)` from parser properties; added `@MainActor` to all sixteen element classes and base protocol declarations; added `@MainActor` to the `NSLayoutManagerDelegate` extension.
-  - Changed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
-- Replaced `DispatchQueue.main.asyncAfter` with `Task.sleep` in the async parsing pipeline to align with structured Swift concurrency.
-  - Changed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#57](https://github.com/chrisdhaan/CDMarkdownKit/pull/57).
+- Improved Swift 6 strict concurrency: removed `@preconcurrency` imports, `@unchecked Sendable` conformances, and `nonisolated(unsafe)` from parser properties; added `@MainActor` to all sixteen element classes and base protocol declarations; added `@MainActor` to the `NSLayoutManagerDelegate` extension. (#57)
+- Replaced `DispatchQueue.main.asyncAfter` with `Task.sleep` in the async parsing pipeline to align with structured Swift concurrency. (#57)
 
 ---
 
@@ -74,33 +65,21 @@ Released on 2026-06-07.
 
 ### Added
 
-- Added `cdMarkdownCodeLanguage` attribute key. Applied to fenced code block ranges when a language hint is present (e.g. ` ```swift `). Value is a `String` containing the language identifier exactly as written after the opening fence.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
-- Added `CDMarkdownLinkReference` element for parsing reference-style links (`[text][ref]` with `[ref]: url` definitions). Reference definitions are stripped from the rendered output and resolved to `.link` attributes at parse time.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
-- Added `cdMarkdownLinkTitle` attribute key for the optional title string from a reference link definition. Value is a `String` (without surrounding quotes or parentheses). Present only when the definition included a title.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
-- Added `CDMarkdownTheme` struct for unified styling of all parser elements. Bundles font, color, and per-element overrides (`HeaderTheme`, `InlineTheme`, `LinkTheme`) into a single value.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
-- Added `CDMarkdownTheme.default` and `CDMarkdownTheme.systemDark` static factory themes.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
-- Added `CDMarkdownParser.init(theme:)` convenience initializer that configures the parser from a `CDMarkdownTheme`.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
-- Added theme convenience initializers to `CDMarkdownView` and `CDMarkdownText`.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
-- Added `markdownTheme` SwiftUI environment key and `.markdownTheme(_:)` view modifier so a theme can be injected into an entire view hierarchy.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
-- Added iOS 17+ `textView(_:primaryActionFor:defaultAction:)` delegate method to `CDMarkdownView.Coordinator` for correct link-tap behaviour on visionOS and iOS 17+.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Added `cdMarkdownCodeLanguage` attribute key. Applied to fenced code block ranges when a language hint is present (e.g. ` ```swift `). Value is a `String` containing the language identifier exactly as written after the opening fence. (#55)
+- Added `CDMarkdownLinkReference` element for parsing reference-style links (`[text][ref]` with `[ref]: url` definitions). Reference definitions are stripped from the rendered output and resolved to `.link` attributes at parse time. (#55)
+- Added `cdMarkdownLinkTitle` attribute key for the optional title string from a reference link definition. Value is a `String` (without surrounding quotes or parentheses). Present only when the definition included a title. (#55)
+- Added `CDMarkdownTheme` struct for unified styling of all parser elements. Bundles font, color, and per-element overrides (`HeaderTheme`, `InlineTheme`, `LinkTheme`) into a single value. (#55)
+- Added `CDMarkdownTheme.default` and `CDMarkdownTheme.systemDark` static factory themes. (#55)
+- Added `CDMarkdownParser.init(theme:)` convenience initializer that configures the parser from a `CDMarkdownTheme`. (#55)
+- Added theme convenience initializers to `CDMarkdownView` and `CDMarkdownText`. (#55)
+- Added `markdownTheme` SwiftUI environment key and `.markdownTheme(_:)` view modifier so a theme can be injected into an entire view hierarchy. (#55)
+- Added iOS 17+ `textView(_:primaryActionFor:defaultAction:)` delegate method to `CDMarkdownView.Coordinator` for correct link-tap behaviour on visionOS and iOS 17+. (#55)
 
 ### Fixed
 
-- Fixed reference link definitions inside fenced code blocks being incorrectly extracted as link definitions.
-  - Fixed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
-- Fixed `UITextItemInteraction` deprecation warning on visionOS.
-  - Fixed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
-- Fixed `CDMarkdownText` not re-parsing when the `markdownTheme` environment value changes.
-  - Fixed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#55](https://github.com/chrisdhaan/CDMarkdownKit/pull/55).
+- Fixed reference link definitions inside fenced code blocks being incorrectly extracted as link definitions. (#55)
+- Fixed `UITextItemInteraction` deprecation warning on visionOS. (#55)
+- Fixed `CDMarkdownText` not re-parsing when the `markdownTheme` environment value changes. (#55)
 
 ---
 
@@ -110,31 +89,20 @@ Released on 2026-05-31.
 
 ### Added
 
-- Added Swift 6 language mode (`swiftLanguageModes: [.v6]`) to `Package.swift`.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
-- Added `CDMarkdownTaskList` element for parsing GFM task list items (`- [ ]` / `- [x]`).
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
-- Added `CDMarkdownHorizontalRule` element for parsing horizontal rules (`---`, `***`, `___`).
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
-- Added inline markdown parsing inside GFM table cells (bold, italic, links, inline code).
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
-- Added `disabledElementTypes`, `disable(_:)`, and `enable(_:)` to `CDMarkdownParser` for opting out of individual default elements.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
-- Added `insertCustomElement(_:before:)` and `insertCustomElement(_:after:)` to `CDMarkdownParser` for precise pipeline positioning.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
-- Added accessibility attribute keys (`cdMarkdownHeadingLevel`, `cdMarkdownIsCode`, `cdMarkdownIsBlockquote`) and `accessibilityAttributedString(from:)` helper on `CDMarkdownParser`.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
-- Added `CDMarkdownNSLayoutManager`, `CDMarkdownNSTextView`, and `CDMarkdownNSLabel` — AppKit UI components for macOS.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
-- Added `CDMarkdownText` and `CDMarkdownView` — SwiftUI wrappers for iOS, tvOS, macOS, watchOS, and visionOS.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
-- Added `markdownParser` SwiftUI environment key and `.markdownParser(_:)` view modifier.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
+- Added Swift 6 language mode (`swiftLanguageModes: [.v6]`) to `Package.swift`. (#54)
+- Added `CDMarkdownTaskList` element for parsing GFM task list items (`- [ ]` / `- [x]`). (#54)
+- Added `CDMarkdownHorizontalRule` element for parsing horizontal rules (`---`, `***`, `___`). (#54)
+- Added inline markdown parsing inside GFM table cells (bold, italic, links, inline code). (#54)
+- Added `disabledElementTypes`, `disable(_:)`, and `enable(_:)` to `CDMarkdownParser` for opting out of individual default elements. (#54)
+- Added `insertCustomElement(_:before:)` and `insertCustomElement(_:after:)` to `CDMarkdownParser` for precise pipeline positioning. (#54)
+- Added accessibility attribute keys (`cdMarkdownHeadingLevel`, `cdMarkdownIsCode`, `cdMarkdownIsBlockquote`) and `accessibilityAttributedString(from:)` helper on `CDMarkdownParser`. (#54)
+- Added `CDMarkdownNSLayoutManager`, `CDMarkdownNSTextView`, and `CDMarkdownNSLabel` — AppKit UI components for macOS. (#54)
+- Added `CDMarkdownText` and `CDMarkdownView` — SwiftUI wrappers for iOS, tvOS, macOS, watchOS, and visionOS. (#54)
+- Added `markdownParser` SwiftUI environment key and `.markdownParser(_:)` view modifier. (#54)
 
 ### Updated
 
-- Deprecated synchronous `parse(_:)` overloads in favour of the async overloads.
-  - Updated by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#54](https://github.com/chrisdhaan/CDMarkdownKit/pull/54).
+- Deprecated synchronous `parse(_:)` overloads in favour of the async overloads. (#54)
 
 ---
 
@@ -144,25 +112,17 @@ Released on 2026-05-12.
 
 ### Added
 
-- Added `CDMarkdownOrderedList` element for parsing ordered (numbered) lists.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
-- Added `CDMarkdownTable` element for parsing GitHub Flavored Markdown pipe tables.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
-- Added `preserveLeadingWhitespace` configuration property to `CDMarkdownParser`. When `true`, leading whitespace is preserved in inline code spans and fenced code blocks.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
-- Added visionOS platform support to `Package.swift`, `CDMarkdownKit.podspec`, all source file platform guards, and CI.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
-- Added native DocC documentation catalog (`Source/CDMarkdownKit.docc/`) with landing page and Getting Started article.
-  - Added by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
+- Added `CDMarkdownOrderedList` element for parsing ordered (numbered) lists. (#53)
+- Added `CDMarkdownTable` element for parsing GitHub Flavored Markdown pipe tables. (#53)
+- Added `preserveLeadingWhitespace` configuration property to `CDMarkdownParser`. When `true`, leading whitespace is preserved in inline code spans and fenced code blocks. (#53)
+- Added visionOS platform support to `Package.swift`, `CDMarkdownKit.podspec`, all source file platform guards, and CI. (#53)
+- Added native DocC documentation catalog (`Source/CDMarkdownKit.docc/`) with landing page and Getting Started article. (#53)
 
 ### Updated
 
-- Migrated documentation hosting from Jazzy to DocC. Removed `.jazzy.yaml` and the `jazzy` gem; added `swift-docc-plugin` dependency to `Package.swift`; regenerated `docs/` with DocC static site output.
-  - Updated by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
-- Extended inline doc comments across all source files for full DocC compatibility.
-  - Updated by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
-- Updated CI to add a visionOS build job and replace the Jazzy documentation job with a DocC build job.
-  - Updated by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#53](https://github.com/chrisdhaan/CDMarkdownKit/pull/53).
+- Migrated documentation hosting from Jazzy to DocC. Removed `.jazzy.yaml` and the `jazzy` gem; added `swift-docc-plugin` dependency to `Package.swift`; regenerated `docs/` with DocC static site output. (#53)
+- Extended inline doc comments across all source files for full DocC compatibility. (#53)
+- Updated CI to add a visionOS build job and replace the Jazzy documentation job with a DocC build job. (#53)
 
 ---
 
