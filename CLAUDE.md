@@ -337,7 +337,7 @@ Do **not** run `swift package generate-documentation` directly to publish docs â
 
 | Version | Date       | Notable Change |
 |---------|------------|----------------|
-| 4.0.0   | 2026-06-14 | TextKit 2 migration (iOS/tvOS 16+), raised deployment targets, Swift 6 strict concurrency |
+| 4.0.0   | 2026-06-15 | TextKit 2 migration (iOS/tvOS 16+), raised deployment targets, Swift 6 strict concurrency |
 | 3.3.0   | 2026-06-03 | Reference-style links, fenced code language hints, `CDMarkdownTheme`, theme environment key |
 | 3.2.0   | 2026-05-31 | Swift 6 language mode (`swiftLanguageModes: [.v6]`), task lists, horizontal rules, inline table cells, macOS AppKit components, SwiftUI wrappers |
 | 3.1.0   | 2026-05-12 | Tables, ordered lists, visionOS support, DocC documentation |
