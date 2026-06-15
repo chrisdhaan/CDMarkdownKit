@@ -267,12 +267,16 @@ The **OS** column in that table gives the exact version string required for the 
 
 ## Known Issues & Tech Debt
 
-### Medium Priority
-1. **Swift 6 strict concurrency not fully adopted** — the package builds with `swiftLanguageModes: [.v6]` and most types are fully isolated, but `CDMarkdownTheme` still uses `@unchecked Sendable`.
+### Waiting on Apple dropping iOS 15
+
+These are intentionally deferred until Apple stops supporting iOS 15 (i.e., a future Xcode drops it as a deployment target). Do not raise them before then.
+
+1. **Remove TextKit 1 fallback** — `CDMarkdownLayoutManager` and the `configureTK1()` path in `CDMarkdownLabel`/`CDMarkdownTextView` can be deleted once iOS 15 is no longer a supported target.
+2. **`CDMarkdownTheme: @unchecked Sendable`** — `NSFont` and `NSParagraphStyle` are not `Sendable` below iOS 16; full Swift 6 strict concurrency for the theme requires the same deployment floor bump.
 
 ### Low Priority / Future
-2. **`CDMarkdownStrikethrough`** has its own `strikethroughColor`/`strikethroughStyle` properties that are not part of the shared `CDMarkdownStyle` protocol, creating an inconsistency.
-3. **Carthage support** — README mentions Carthage compatibility but there is no `Cartfile`; Carthage is largely abandoned by the community.
+3. **`CDMarkdownStrikethrough`** has its own `strikethroughColor`/`strikethroughStyle` properties that are not part of the shared `CDMarkdownStyle` protocol, creating an inconsistency.
+4. **Carthage support** — README mentions Carthage compatibility but there is no `Cartfile`; Carthage is largely abandoned by the community.
 
 ---
 
