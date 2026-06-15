@@ -31,16 +31,19 @@
     import Cocoa
 #endif
 
-public extension CDColor {
-
-    /// The primary label color, adapts to light and dark mode.
-    static var label: CDColor {
-        #if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
-            UIColor.label
-        #elseif os(macOS)
-            NSColor.labelColor
-        #endif
+#if os(macOS)
+    public extension CDColor {
+        /// The primary label color, adapts to light and dark mode.
+        static var label: CDColor { NSColor.labelColor }
     }
+#elseif os(watchOS)
+    public extension CDColor {
+        /// The primary label color. watchOS is dark-first; white is the standard text color.
+        static var label: CDColor { .white }
+    }
+#endif
+
+public extension CDColor {
 
     static func codeTextRed() -> CDColor {
         CDColor(red: 189 / 255.0,
