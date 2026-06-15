@@ -222,6 +222,14 @@ Three supported distribution methods:
 2. **CocoaPods** — `CDMarkdownKit.podspec`; `pod lib lint` runs in CI
 3. **Carthage** — README mentions it; no Cartfile in repo; largely deprecated
 
+### Publishing to CocoaPods
+
+`pod trunk push` requires `--allow-warnings` because the trunk server's validator does not yet recognise the `visionos` platform key, even though local `pod lib lint` passes clean:
+
+```bash
+pod trunk push CDMarkdownKit.podspec --allow-warnings
+```
+
 ---
 
 ## CI / GitHub Actions
