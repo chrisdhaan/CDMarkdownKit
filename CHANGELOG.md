@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [4.0.1](#401)
 - [4.0.0](#400)
 - [3.3.0](#330)
 - [3.2.0](#320)
@@ -21,6 +22,17 @@ All notable changes to this project will be documented in this file.
 - [1.2.0](#120)
 - [1.1.0](#110)
 - [1.0.0](#100)
+
+---
+
+## [4.0.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.0.1)
+
+Released on 2026-06-15.
+
+### Fixed
+
+- Fixed infinite recursion in `CDColor.label` on iOS, tvOS, watchOS, and visionOS. The property was defined in an extension on `CDColor` (a typealias for `UIColor`) and called `UIColor.label`, which resolved back to itself. The extension now only defines `label` on macOS where `NSColor.labelColor` requires bridging; on Apple's other platforms `UIColor.label` is used directly.
+  - Fixed by [Christopher de Haan](https://github.com/chrisdhaan) in Pull Request [#58](https://github.com/chrisdhaan/CDMarkdownKit/pull/58).
 
 ---
 
