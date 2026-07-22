@@ -81,4 +81,13 @@ struct CDMarkdownLinkTests {
         }
         #expect(linkURL?.absoluteString.hasPrefix("http://example.com/foo(bar") == true)
     }
+
+    @Test func regexDoesNotMatchImageSyntax() throws {
+        let link = CDMarkdownLink()
+        let regex = try link.regularExpression()
+        let input = "![alt](url)"
+        let range = NSRange(location: 0, length: (input as NSString).length)
+        let matches = regex.matches(in: input, options: [], range: range)
+        #expect(matches.isEmpty)
+    }
 }
