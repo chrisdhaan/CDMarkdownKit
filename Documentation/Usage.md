@@ -185,8 +185,9 @@ With `preserveLeadingWhitespace = true`, the indentation inside both inline code
 - ASCII art or diagrams
 - Poetry or formatted prose
 - Any content where whitespace spacing is meaningful
+- Indentation-based nested unordered lists (e.g. `- item` / `  - subitem`)
 
-**Note**: This setting only affects code elements. Other Markdown elements (bold, italic, lists, etc.) are not affected by this option.
+**Note**: This setting affects code elements (as above) and unordered list nesting. `CDMarkdownList` derives each item's nesting level from its leading whitespace when this option is enabled; other Markdown elements (bold, italic, headers, etc.) are unaffected. With the default `preserveLeadingWhitespace = false`, leading whitespace is stripped before any element sees it, so indentation-based list nesting has no effect — use repeated marker characters (`** item`, `*** item`) for nesting instead, or enable this option.
 
 ---
 
