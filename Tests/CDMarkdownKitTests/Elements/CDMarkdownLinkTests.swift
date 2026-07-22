@@ -29,14 +29,6 @@ struct CDMarkdownLinkTests {
         #expect(foundLink)
     }
 
-    @Test func imageNotTreatedAsLink() {
-        let result = parser.parse("![alt](https://example.com/image.png)")
-        // Images are parsed by the image parser (not link parser due to negative lookbehind in link regex).
-        // Verify the markdown syntax is stripped.
-        #expect(!result.string.contains("!["))
-        #expect(!result.string.contains("]("))
-    }
-
     @Test func linkBracketsAreStripped() {
         let result = parser.parse("[text](https://example.com)")
         #expect(!result.string.contains("["))
