@@ -34,7 +34,7 @@
 @MainActor
 open class CDMarkdownUnescaping: CDMarkdownElement {
 
-    fileprivate static let regex = "\\\\[0-9a-z]{4}"
+    fileprivate static let regex = "(?:\\\\[0-9a-z]{4})+"
 
     open var regex: String {
         CDMarkdownUnescaping.regex
@@ -47,10 +47,12 @@ open class CDMarkdownUnescaping: CDMarkdownElement {
 
     open func match(_ match: NSTextCheckingResult,
                     attributedString: NSMutableAttributedString) {
-        let range = NSRange(location: match.range.location + 1,
-                            length: 4)
-        let matchString = attributedString.attributedSubstring(from: range).string
-        guard let unescapedString = matchString.unescapeUTF16() else { return }
+        // May span multiple consecutive "\xxxx" groups (e.g. both halves of a surrogate
+        // pair); strip the backslashes and decode all the hex digits together so
+        // String(utf16CodeUnits:count:) can recombine a valid pair correctly.
+        let matchString = attributedString.attributedSubstring(from: match.range).string
+        let hexOnly = matchString.replacingOccurrences(of: "\\", with: "")
+        guard let unescapedString = hexOnly.unescapeUTF16() else { return }
         attributedString.replaceCharacters(in: match.range,
                                            with: unescapedString)
     }
