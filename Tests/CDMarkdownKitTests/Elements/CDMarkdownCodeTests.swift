@@ -11,7 +11,9 @@ struct CDMarkdownCodeTests {
         let result = parser.parse("`code`")
         var hasCodeColor = false
         result.enumerateAttribute(.foregroundColor, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { hasCodeColor = true }
+            if v != nil {
+                hasCodeColor = true
+            }
         }
         #expect(hasCodeColor)
     }
@@ -20,7 +22,9 @@ struct CDMarkdownCodeTests {
         let result = parser.parse("`**not bold**`")
         var hasBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isBold { hasBold = true }
+            if let f = v as? CDFont, f.isBold {
+                hasBold = true
+            }
         }
         #expect(!hasBold)
     }
@@ -45,8 +49,27 @@ struct CDMarkdownCodeTests {
         let result = parser.parse("`code`")
         var found = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.fontName.lowercased().contains("menlo") { found = true }
+            if let f = v as? CDFont, f.fontName.lowercased().contains("menlo") {
+                found = true
+            }
         }
         #expect(found)
+    }
+
+    @Test func codeSpanWithEmojiAppliesStylingToEntireSpan() {
+        let parser = CDMarkdownParser()
+        let result = parser.parse("before `code 👍 after` end")
+        guard let range = result.string.range(of: "code 👍 after") else {
+            Issue.record("expected decoded code span text not found")
+            return
+        }
+        let nsRange = NSRange(range, in: result.string)
+        var isCodeForEntireRange = true
+        result.enumerateAttribute(.cdMarkdownIsCode, in: nsRange) { value, subrange, _ in
+            if subrange.length > 0, !(value as? Bool ?? false) {
+                isCodeForEntireRange = false
+            }
+        }
+        #expect(isCodeForEntireRange)
     }
 }

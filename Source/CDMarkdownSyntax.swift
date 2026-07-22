@@ -98,7 +98,7 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                                            with: unescapedString)
 
         let range = NSRange(location: range.location,
-                            length: unescapedString.characterCount())
+                            length: unescapedString.utf16.count)
         attributedString.addAttributes(attributes,
                                        range: range)
         attributedString.addAttribute(.cdMarkdownRoundedBackground,
