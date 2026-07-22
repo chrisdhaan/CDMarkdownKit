@@ -547,12 +547,19 @@ open class CDMarkdownParser {
 
             definitions[referenceId.lowercased()] = (url: url, title: title)
 
-            // Remove the definition line (including its trailing newline if present)
+            // Remove the definition line (including its trailing line terminator, \n or \r\n, if present)
             var removeRange = match.range(at: 0)
             let nsString = attributedString.string as NSString
-            if removeRange.location + removeRange.length < attributedString.length,
-               nsString.character(at: removeRange.location + removeRange.length) == (("\n" as Unicode.Scalar).value) {
-                removeRange.length += 1
+            let afterMatch = removeRange.location + removeRange.length
+            if afterMatch < attributedString.length {
+                let nextCharacter = nsString.character(at: afterMatch)
+                if nextCharacter == ("\r" as Unicode.Scalar).value,
+                   afterMatch + 1 < attributedString.length,
+                   nsString.character(at: afterMatch + 1) == ("\n" as Unicode.Scalar).value {
+                    removeRange.length += 2
+                } else if nextCharacter == ("\n" as Unicode.Scalar).value {
+                    removeRange.length += 1
+                }
             }
             attributedString.deleteCharacters(in: removeRange)
         }
@@ -564,7 +571,7 @@ open class CDMarkdownParser {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         let mutableString = attributedString.mutableString
         if squashNewlines {
-            mutableString.replaceOccurrences(of: "\n\n+",
+            mutableString.replaceOccurrences(of: "(?:\r?\n){2,}",
                                              with: "\n",
                                              options: .regularExpression,
                                              range: NSRange(location: 0,

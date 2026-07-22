@@ -52,7 +52,9 @@ struct CDMarkdownParserTests {
         // Then
         var foundURL = false
         result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { foundURL = true }
+            if value != nil {
+                foundURL = true
+            }
         }
         #expect(foundURL)
     }
@@ -66,7 +68,9 @@ struct CDMarkdownParserTests {
         var foundStrikethrough = false
         result.enumerateAttribute(.strikethroughStyle,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { foundStrikethrough = true }
+            if value != nil {
+                foundStrikethrough = true
+            }
         }
         #expect(foundStrikethrough)
     }
@@ -80,7 +84,9 @@ struct CDMarkdownParserTests {
         // Then
         var foundBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont, font.isBold { foundBold = true }
+            if let font = value as? CDFont, font.isBold {
+                foundBold = true
+            }
         }
         #expect(!foundBold)
     }
@@ -102,7 +108,9 @@ struct CDMarkdownParserTests {
         // Then: the header text should have a larger font than the base font
         var foundLargerFont = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont, font.pointSize > 17 { foundLargerFont = true }
+            if let font = value as? CDFont, font.pointSize > 17 {
+                foundLargerFont = true
+            }
         }
         #expect(foundLargerFont)
     }
@@ -117,7 +125,9 @@ struct CDMarkdownParserTests {
         let result = parser.parse(input)
         var foundLink = false
         result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { foundLink = true }
+            if value != nil {
+                foundLink = true
+            }
         }
         #expect(!foundLink)
     }
@@ -140,7 +150,9 @@ struct CDMarkdownParserTests {
         // Then
         var foundBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont, font.isBold { foundBold = true }
+            if let font = value as? CDFont, font.isBold {
+                foundBold = true
+            }
         }
         #expect(foundBold)
     }
@@ -157,8 +169,12 @@ struct CDMarkdownParserTests {
         var foundItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
             if let font = value as? CDFont {
-                if font.isBold { foundBold = true }
-                if font.isItalic { foundItalic = true }
+                if font.isBold {
+                    foundBold = true
+                }
+                if font.isItalic {
+                    foundItalic = true
+                }
             }
         }
         #expect(foundBold)
@@ -174,10 +190,14 @@ struct CDMarkdownParserTests {
         var foundBold = false
         var foundCodeColor = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont, font.isBold { foundBold = true }
+            if let font = value as? CDFont, font.isBold {
+                foundBold = true
+            }
         }
         result.enumerateAttribute(.foregroundColor, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { foundCodeColor = true }
+            if value != nil {
+                foundCodeColor = true
+            }
         }
         #expect(foundBold)
         #expect(foundCodeColor)
@@ -191,7 +211,9 @@ struct CDMarkdownParserTests {
         // Then: header font is larger than body font — at least two distinct sizes
         var fontSizes = Set<CGFloat>()
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont { fontSizes.insert(font.pointSize) }
+            if let font = value as? CDFont {
+                fontSizes.insert(font.pointSize)
+            }
         }
         #expect(fontSizes.count >= 2)
     }
@@ -205,7 +227,9 @@ struct CDMarkdownParserTests {
             // Then: two distinct link attribute runs
             var linkedRuns = 0
             result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-                if value != nil { linkedRuns += 1 }
+                if value != nil {
+                    linkedRuns += 1
+                }
             }
             #expect(linkedRuns >= 2)
         }
@@ -252,11 +276,15 @@ struct CDMarkdownParserTests {
         // Then: markdown is parsed AND the pre-existing attribute survives
         var foundBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isBold { foundBold = true }
+            if let f = v as? CDFont, f.isBold {
+                foundBold = true
+            }
         }
         var foundCustom = false
         result.enumerateAttribute(customKey, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { foundCustom = true }
+            if v != nil {
+                foundCustom = true
+            }
         }
         #expect(foundBold)
         #expect(foundCustom)
@@ -289,9 +317,25 @@ struct CDMarkdownParserTests {
             // Then: resolveImages should have replaced the placeholder with a real attachment
             var foundAttachment = false
             result.enumerateAttribute(.attachment, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-                if v is NSTextAttachment { foundAttachment = true }
+                if v is NSTextAttachment {
+                    foundAttachment = true
+                }
             }
             #expect(foundAttachment)
         #endif
+    }
+
+    @Test func referenceDefinitionCleanupConsumesCRLFTerminator() {
+        // Given: a CRLF-terminated reference definition line between two paragraphs
+        let input = "Intro text\r\n[foo]: http://example.com\r\nBody text"
+        // When
+        let result = parser.parse(input)
+        // Then: the definition line and its CRLF terminator are fully consumed,
+        // leaving no stray blank line and no leftover reference syntax.
+        // Note: a doubled CRLF terminator ("\r\n\r\n") does not contain a bare "\n\n"
+        // substring (each \n is preceded by \r), so check for the doubled CRLF directly
+        // rather than relying on "\n\n" to detect the stray blank line left by the bug.
+        #expect(!result.string.contains("\r\n\r\n"))
+        #expect(!result.string.contains("[foo]:"))
     }
 }
