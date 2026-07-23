@@ -175,8 +175,8 @@ CDMarkdownElement          (parse loop + regex matching)
 | File | Platform | Purpose |
 |------|----------|---------|
 | `CDMarkdownLabel.swift` | iOS/tvOS | `@MainActor UILabel` subclass with custom text stack and tap-to-open-URL |
-| `CDMarkdownTextView.swift` | iOS/tvOS | `@MainActor UITextView` subclass using `CDMarkdownTextLayoutManager` (TextKit 2) |
-| `CDMarkdownTextLayoutManager.swift` | iOS/tvOS | `NSTextLayoutManager` subclass (TextKit 2) that coordinates rounded-corner background drawing |
+| `CDMarkdownTextView.swift` | iOS/tvOS/visionOS | `@MainActor UITextView` subclass; on iOS/tvOS 16+ assigns a `CDMarkdownTextLayoutDelegate` to the stock `NSTextLayoutManager` (TextKit 2), falls back to `CDMarkdownLayoutManager` (TextKit 1) on iOS/tvOS 15 |
+| `CDMarkdownTextLayoutManager.swift` | iOS/tvOS/visionOS | Defines `CDMarkdownTextLayoutDelegate`, an `NSTextLayoutManagerDelegate` (TextKit 2) that supplies `CDMarkdownTextLayoutFragment` instances for rounded-corner background drawing |
 | `CDMarkdownTextLayoutFragment.swift` | iOS/tvOS | `NSTextLayoutFragment` subclass (TextKit 2) that draws rounded-corner backgrounds |
 | `CDMarkdownLayoutManager.swift` | iOS/tvOS | `NSLayoutManager` subclass (TextKit 1 fallback) that draws rounded-corner backgrounds |
 | `CDMarkdownNSTextView.swift` | macOS | `NSTextView` subclass for read-only markdown display |

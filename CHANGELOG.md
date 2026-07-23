@@ -41,10 +41,10 @@ Released on 2026-06-15.
 
 ### Added
 
-- Added `CDMarkdownTextLayoutManager`, a custom `NSTextLayoutManager` subclass used as the TextKit 2 layout manager for `CDMarkdownLabel` and `CDMarkdownTextView` on iOS/tvOS 16+. Delegates fragment creation to `CDMarkdownTextLayoutFragment` and exposes a `roundAllCorners` property that propagates to each fragment.
+- Added `CDMarkdownTextLayoutDelegate` (in `CDMarkdownTextLayoutManager.swift`), an `NSTextLayoutManagerDelegate` assigned to the stock `NSTextLayoutManager` used by `CDMarkdownLabel` and `CDMarkdownTextView` on iOS/tvOS 16+. Delegates fragment creation to `CDMarkdownTextLayoutFragment` and exposes a `roundAllCorners` property that propagates to each fragment.
 - Added `CDMarkdownTextLayoutFragment`, a custom `NSTextLayoutFragment` subclass that draws rounded-corner backgrounds for code and syntax spans in the TextKit 2 rendering path. Reads the `.backgroundColor` attribute from text storage at draw time so code and syntax blocks each use their correct color.
 - Added TextKit 2 rendering path to `CDMarkdownLabel` on iOS/tvOS 16+. Text layout, rect measurement, glyph-position calculation, and link hit-testing all use `NSTextLayoutManager` when TextKit 2 is active; TextKit 1 fallback is preserved for iOS/tvOS 15.
-- Added TextKit 2 rendering path to `CDMarkdownTextView` on iOS/tvOS 16+. `configureTK2()` installs `CDMarkdownTextLayoutManager` via KVC; `configureTK1()` continues to install `CDMarkdownLayoutManager` on iOS/tvOS 15.
+- Added TextKit 2 rendering path to `CDMarkdownTextView` on iOS/tvOS 16+. `configureTK2()` assigns a `CDMarkdownTextLayoutDelegate` to the view's stock `NSTextLayoutManager`; `configureTK1()` continues to install `CDMarkdownLayoutManager` on iOS/tvOS 15.
 - Added `CDMarkdownTextView.makeTextView(frame:)` public factory method. Preferred way to construct a `CDMarkdownTextView` programmatically — selects TextKit 2 on iOS/tvOS 16+ and TextKit 1 on iOS/tvOS 15 automatically.
 
 ### Changed
