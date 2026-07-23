@@ -559,7 +559,7 @@
                                                        in: customTextContainer)
 
             for urlRange in urlRanges {
-                if index >= urlRange.range.location, index <= urlRange.range.location + urlRange.range.length {
+                if index >= urlRange.range.location, index < urlRange.range.location + urlRange.range.length {
                     return urlRange
                 }
             }
