@@ -68,9 +68,13 @@
             set {
                 super.attributedText = newValue
                 guard let newValue else { return }
-                self.customTextStorage = NSTextStorage(attributedString: newValue)
-                if let layoutManager = self.customLayoutManager {
-                    self.customTextStorage.addLayoutManager(layoutManager)
+                if let layoutManager = self.customLayoutManager,
+                   !self.textStorage.layoutManagers.contains(where: { $0 === layoutManager }) {
+                    // TextKit 1 fallback (iOS/tvOS 15): keep the custom layout manager attached
+                    // to the view's real, visible text storage rather than creating a second,
+                    // disconnected NSTextStorage that would silently detach it.
+                    self.textStorage.setAttributedString(newValue)
+                    self.customTextStorage = self.textStorage
                 }
             }
         }
