@@ -338,4 +338,11 @@ struct CDMarkdownParserTests {
         #expect(!result.string.contains("\r\n\r\n"))
         #expect(!result.string.contains("[foo]:"))
     }
+
+    @Test func referenceDefinitionLookingLineInsideUnclosedFenceIsNotExtracted() {
+        let parser = CDMarkdownParser()
+        let markdown = "```\nSome code\n[note]: http://example.com\nMore code, fence never closed"
+        let result = parser.parse(markdown)
+        #expect(result.string.contains("[note]: http://example.com"))
+    }
 }

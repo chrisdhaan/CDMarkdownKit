@@ -495,12 +495,33 @@ open class CDMarkdownParser {
     /// Returns the ranges of all fenced code blocks (``` ... ```) in `string`.
     /// Used to exclude content inside code blocks from reference definition scanning.
     private func fencedCodeBlockRanges(in string: String) -> [NSRange] {
-        let pattern = #"^```[^\n]*\n[\s\S]*?^```\s*$"#
-        guard let regex = try? NSRegularExpression(pattern: pattern, options: .anchorsMatchLines) else {
+        let nsString = string as NSString
+        let fullRange = NSRange(location: 0, length: nsString.length)
+
+        let closedPattern = #"^```[^\n]*\n[\s\S]*?^```\s*$"#
+        guard let closedRegex = try? NSRegularExpression(pattern: closedPattern, options: .anchorsMatchLines) else {
             return []
         }
-        let fullRange = NSRange(location: 0, length: (string as NSString).length)
-        return regex.matches(in: string, options: [], range: fullRange).map(\.range)
+        let closedRanges = closedRegex.matches(in: string, options: [], range: fullRange).map(\.range)
+
+        // An opening fence with no matching close: conservatively treat everything from
+        // that fence to the end of the string as code, so reference-definition-looking
+        // lines inside an unterminated fence aren't mistaken for real definitions.
+        guard let openPattern = try? NSRegularExpression(pattern: #"^```[^\n]*$"#, options: .anchorsMatchLines) else {
+            return closedRanges
+        }
+        var ranges = closedRanges
+        let openMatches = openPattern.matches(in: string, options: [], range: fullRange)
+        for openMatch in openMatches {
+            let alreadyCovered = closedRanges.contains { NSLocationInRange(openMatch.range.location, $0) }
+            if alreadyCovered {
+                continue
+            }
+            ranges.append(NSRange(location: openMatch.range.location,
+                                  length: nsString.length - openMatch.range.location))
+            break
+        }
+        return ranges
     }
 
     /// Scans `attributedString` for reference link definitions, removes them from the string,
