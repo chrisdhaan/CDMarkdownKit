@@ -113,7 +113,7 @@ CDMarkdownElement          (parse loop + regex matching)
 │   ├── CDMarkdownItalic
 │   ├── CDMarkdownCode           (overrides addAttributes to unescape + strip \n)
 │   ├── CDMarkdownSyntax         (overrides addAttributes; manages bg wrapping at \n)
-│   └── CDMarkdownStrikethrough  (adds strikethrough attrs beyond CDMarkdownStyle)
+│   └── CDMarkdownStrikethrough  (sets strikethroughColor/strikethroughStyle)
 ├── CDMarkdownLevelElement  + CDMarkdownStyle  (block elements with nesting depth)
 │   ├── CDMarkdownHeader         (font scales by heading level)
 │   ├── CDMarkdownList           (replaces marker with bullet; handles head indent)
@@ -275,8 +275,7 @@ These are intentionally deferred until Apple stops supporting iOS 15 (i.e., a fu
 2. **`CDMarkdownTheme: @unchecked Sendable`** — `NSFont` and `NSParagraphStyle` are not `Sendable` below iOS 16; full Swift 6 strict concurrency for the theme requires the same deployment floor bump.
 
 ### Low Priority / Future
-3. **`CDMarkdownStrikethrough`** has its own `strikethroughColor`/`strikethroughStyle` properties that are not part of the shared `CDMarkdownStyle` protocol, creating an inconsistency.
-4. **Carthage support** — README mentions Carthage compatibility but there is no `Cartfile`; Carthage is largely abandoned by the community.
+3. **Carthage support** — README mentions Carthage compatibility but there is no `Cartfile`; Carthage is largely abandoned by the community.
 
 ---
 

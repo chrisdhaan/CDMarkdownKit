@@ -113,7 +113,7 @@ CDMarkdownElement                          Foundation
 │   ├── CDMarkdownItalic         regex group [4]: ()(*|_)(content)(\2)
 │   ├── CDMarkdownCode           overrides addAttributes: unescape + strip \n
 │   ├── CDMarkdownSyntax         overrides addAttributes: unescape + bg wrapping
-│   └── CDMarkdownStrikethrough  overrides addAttributes: adds strikethrough attrs
+│   └── CDMarkdownStrikethrough  sets strikethroughColor/strikethroughStyle (default attributes impl covers the rest)
 │
 ├── CDMarkdownLevelElement : CDMarkdownElement, CDMarkdownStyle
 │   │  var maxLevel: Int
@@ -161,11 +161,13 @@ protocol CDMarkdownStyle {
     var paragraphStyle: NSParagraphStyle? { get }
     var underlineColor: CDColor? { get }
     var underlineStyle: NSUnderlineStyle? { get }
+    var strikethroughColor: CDColor? { get }
+    var strikethroughStyle: NSUnderlineStyle? { get }
     var attributes: [CDAttributedStringKey: AnyObject] { get }  // default impl
 }
 ```
 
-Every element that conforms to `CDMarkdownStyle` gets `attributes` for free: it assembles a dictionary from the non-nil properties. Elements can override `attributes` (none currently do) or override `addAttributes` to inject extra attributes (e.g., `CDMarkdownStrikethrough` adds strikethrough color/style on top of the base attributes).
+Every element that conforms to `CDMarkdownStyle` gets `attributes` for free: it assembles a dictionary from the non-nil properties, including `strikethroughColor`/`strikethroughStyle` for elements that set them (only `CDMarkdownStrikethrough` does by default). No element currently overrides `attributes` or `addAttributes` to inject extra attributes beyond what the default `attributes` dictionary provides.
 
 ---
 
