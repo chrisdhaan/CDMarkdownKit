@@ -258,7 +258,7 @@ open class CDMarkdownParser {
                   backgroundColor: theme.backgroundColor)
 
         self.header.font = theme.header.font ?? self.header.font
-        self.header.color = theme.header.color
+        self.header.color = theme.header.color ?? self.header.color
         self.header.fontIncrease = theme.header.fontIncrease
         self.header.paragraphStyle = theme.header.paragraphStyle ?? self.header.paragraphStyle
         self.header.underlineColor = theme.header.underlineColor
