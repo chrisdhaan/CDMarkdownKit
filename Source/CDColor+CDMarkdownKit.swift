@@ -81,6 +81,20 @@ public extension CDColor {
         let colorSpaceRGB = CGColorSpaceCreateDeviceRGB()
         let convertColorToRGBSpace: ((_ color: CDColor) -> CDColor?) = { color -> CDColor? in
             if color.cgColor.colorSpace?.model == CGColorSpaceModel.monochrome {
+                // Defensive guards: every monochrome CGColor produced by a documented,
+                // non-UB CoreGraphics API (CGColor(gray:alpha:), NSColor(white:alpha:),
+                // CGColorSpaceCreateDeviceGray()/linearGray/genericGrayGamma2_2 spaces
+                // fed with a correctly-sized components array, .copy(alpha:),
+                // .converted(to:), etc.) has been observed to always report exactly
+                // 2 components ([white, alpha]), since CGColor sizes its components
+                // storage as colorSpace.numberOfComponents + 1 regardless of the
+                // caller's input. No known, documented API path has been found that
+                // reaches this branch with a `components` array of fewer than 2
+                // entries, or that makes the RGB reconstruction below return nil.
+                // These guards are narrow, pre-existing, defensive-only insurance
+                // against a state not currently known to be reachable in practice —
+                // kept in place because a force-unwrap here would be a crash with no
+                // guaranteed safety net, not because a concrete reproduction exists.
                 guard let oldComponents = color.cgColor.components,
                       oldComponents.count >= 2 else { return nil }
                 let components: [CGFloat] = [oldComponents[0], oldComponents[0], oldComponents[0], oldComponents[1]]
