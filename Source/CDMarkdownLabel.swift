@@ -225,6 +225,7 @@
 
         private func configureTK1() {
             customLayoutManager = CDMarkdownLayoutManager()
+            customLayoutManager.delegate = self
 
             if let textContainer = customTextContainer {
                 customLayoutManager.addTextContainer(textContainer)
