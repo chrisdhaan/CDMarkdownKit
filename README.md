@@ -51,7 +51,7 @@ import CDMarkdownKit
 
 let parser = CDMarkdownParser()
 let markdown = "# Hello **World**\n\nThis is *italic* text."
-let attributedString = parser.parse(markdown)
+let attributedString = await parser.parse(markdown)
 label.attributedText = attributedString
 ```
 
