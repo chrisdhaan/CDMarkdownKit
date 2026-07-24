@@ -216,11 +216,10 @@ CDMarkdownElement          (parse loop + regex matching)
 
 ## Distribution
 
-Three supported distribution methods:
+Two supported distribution methods:
 
 1. **Swift Package Manager** — primary, preferred going forward
 2. **CocoaPods** — `CDMarkdownKit.podspec`; `pod lib lint` runs in CI
-3. **Carthage** — README mentions it; no Cartfile in repo; largely deprecated
 
 ### Publishing to CocoaPods
 
@@ -275,7 +274,7 @@ These are intentionally deferred until Apple stops supporting iOS 15 (i.e., a fu
 2. **`CDMarkdownTheme: @unchecked Sendable`** — `NSFont` and `NSParagraphStyle` are not `Sendable` below iOS 16; full Swift 6 strict concurrency for the theme requires the same deployment floor bump.
 
 ### Low Priority / Future
-3. **Carthage support** — README mentions Carthage compatibility but there is no `Cartfile`; Carthage is largely abandoned by the community.
+3. **Carthage** — removed as of 3.0.0 (see `Documentation/CDMarkdownKit 3.0 Migration Guide.md`). Not mentioned in README or current Usage.md; no further action needed.
 
 ---
 
