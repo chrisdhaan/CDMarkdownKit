@@ -57,8 +57,12 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
         let stripped = line.trimmingCharacters(in: .whitespacesAndNewlines)
         var parts = stripped.components(separatedBy: "|")
         // Remove empty strings produced by leading/trailing pipes
-        if parts.first?.trimmingCharacters(in: .whitespaces).isEmpty == true { parts.removeFirst() }
-        if parts.last?.trimmingCharacters(in: .whitespaces).isEmpty == true { parts.removeLast() }
+        if parts.first?.trimmingCharacters(in: .whitespaces).isEmpty == true {
+            parts.removeFirst()
+        }
+        if parts.last?.trimmingCharacters(in: .whitespaces).isEmpty == true {
+            parts.removeLast()
+        }
         return parts.map { $0.trimmingCharacters(in: .whitespaces) }
     }
 
@@ -69,8 +73,12 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
         return cells.map { cell in
             let left = cell.hasPrefix(":")
             let right = cell.hasSuffix(":")
-            if left, right { return .center }
-            if right { return .right }
+            if left, right {
+                return .center
+            }
+            if right {
+                return .right
+            }
             return .left
         }
     }

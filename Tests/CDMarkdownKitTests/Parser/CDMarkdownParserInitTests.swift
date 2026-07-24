@@ -21,7 +21,9 @@ struct CDMarkdownParserInitTests {
         // Then: every character should carry the 24pt font
         var found = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let f = value as? CDFont, f.pointSize == 24 { found = true }
+            if let f = value as? CDFont, f.pointSize == 24 {
+                found = true
+            }
         }
         #expect(found)
     }
@@ -35,7 +37,9 @@ struct CDMarkdownParserInitTests {
         var found = false
         result.enumerateAttribute(.foregroundColor,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let c = value as? CDColor, c == CDColor.blue { found = true }
+            if let c = value as? CDColor, c == CDColor.blue {
+                found = true
+            }
         }
         #expect(found)
     }
@@ -49,7 +53,9 @@ struct CDMarkdownParserInitTests {
         var found = false
         result.enumerateAttribute(.backgroundColor,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let c = value as? CDColor, c == CDColor.yellow { found = true }
+            if let c = value as? CDColor, c == CDColor.yellow {
+                found = true
+            }
         }
         #expect(found)
     }
@@ -72,7 +78,9 @@ struct CDMarkdownParserInitTests {
             // Then: no .link attribute should appear
             var foundLink = false
             result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-                if v != nil { foundLink = true }
+                if v != nil {
+                    foundLink = true
+                }
             }
             #expect(!foundLink)
         }
@@ -84,7 +92,9 @@ struct CDMarkdownParserInitTests {
             let result = parser.parse("[GitHub](https://github.com)")
             var foundLink = false
             result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-                if v != nil { foundLink = true }
+                if v != nil {
+                    foundLink = true
+                }
             }
             #expect(foundLink)
         }

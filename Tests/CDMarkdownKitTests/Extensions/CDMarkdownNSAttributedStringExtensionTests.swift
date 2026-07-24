@@ -12,7 +12,9 @@ struct CDMarkdownNSAttributedStringExtensionTests {
         // When: using the internal enumerateLinkAttribute helper
         var foundLink = false
         result.enumerateLinkAttribute(in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { foundLink = true }
+            if value != nil {
+                foundLink = true
+            }
         }
         // Then
         #expect(foundLink)
@@ -24,7 +26,9 @@ struct CDMarkdownNSAttributedStringExtensionTests {
         // When
         var foundLink = false
         plain.enumerateLinkAttribute(in: NSRange(location: 0, length: plain.length)) { value, _, _ in
-            if value != nil { foundLink = true }
+            if value != nil {
+                foundLink = true
+            }
         }
         // Then
         #expect(!foundLink)
@@ -36,7 +40,9 @@ struct CDMarkdownNSAttributedStringExtensionTests {
         let result = parser.parse("[Docs](https://example.com)")
         var foundURL = false
         result.enumerateLinkAttribute(in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value is URL { foundURL = true }
+            if value is URL {
+                foundURL = true
+            }
         }
         #expect(foundURL)
     }

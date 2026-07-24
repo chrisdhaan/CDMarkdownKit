@@ -12,7 +12,9 @@ struct AccessibilityTests {
         var foundLevel: Int?
         result.enumerateAttribute(.cdMarkdownHeadingLevel,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let level = value as? Int { foundLevel = level }
+            if let level = value as? Int {
+                foundLevel = level
+            }
         }
         #expect(foundLevel == 1)
     }
@@ -22,7 +24,9 @@ struct AccessibilityTests {
         var foundLevel: Int?
         result.enumerateAttribute(.cdMarkdownHeadingLevel,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let level = value as? Int { foundLevel = level }
+            if let level = value as? Int {
+                foundLevel = level
+            }
         }
         #expect(foundLevel == 3)
     }
@@ -32,7 +36,9 @@ struct AccessibilityTests {
         var foundCode = false
         result.enumerateAttribute(.cdMarkdownIsCode,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { foundCode = true }
+            if value != nil {
+                foundCode = true
+            }
         }
         #expect(foundCode)
     }
@@ -42,7 +48,9 @@ struct AccessibilityTests {
         var foundCode = false
         result.enumerateAttribute(.cdMarkdownIsCode,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { foundCode = true }
+            if value != nil {
+                foundCode = true
+            }
         }
         #expect(foundCode)
     }
@@ -52,7 +60,9 @@ struct AccessibilityTests {
         var foundQuote = false
         result.enumerateAttribute(.cdMarkdownIsBlockquote,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { foundQuote = true }
+            if value != nil {
+                foundQuote = true
+            }
         }
         #expect(foundQuote)
     }
@@ -62,7 +72,9 @@ struct AccessibilityTests {
         var found = false
         result.enumerateAttribute(.cdMarkdownHeadingLevel,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { found = true }
+            if value != nil {
+                found = true
+            }
         }
         #expect(!found)
     }

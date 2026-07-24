@@ -11,7 +11,9 @@ struct CDMarkdownBoldTests {
         let result = parser.parse("**bold**")
         var hasBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isBold { hasBold = true }
+            if let f = v as? CDFont, f.isBold {
+                hasBold = true
+            }
         }
         #expect(hasBold)
     }
@@ -20,7 +22,9 @@ struct CDMarkdownBoldTests {
         let result = parser.parse("__bold__")
         var hasBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isBold { hasBold = true }
+            if let f = v as? CDFont, f.isBold {
+                hasBold = true
+            }
         }
         #expect(hasBold)
     }
@@ -29,7 +33,9 @@ struct CDMarkdownBoldTests {
         let result = parser.parse("*not bold*")
         var hasBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isBold { hasBold = true }
+            if let f = v as? CDFont, f.isBold {
+                hasBold = true
+            }
         }
         #expect(!hasBold)
     }
