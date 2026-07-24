@@ -24,12 +24,14 @@ struct StringTests {
         #expect(escaped.unescapeUTF16() == original)
     }
 
-    @Test func unescapeUTF16ReturnsNilForInvalidInput() {
-        // Odd-length or non-hex content can't round-trip
+    @Test func unescapeUTF16ReturnsEmptyStringForInvalidInput() {
+        // Content shorter than one 4-hex-digit group can't be decoded into any UTF-16 code
+        // units, so this yields an empty string rather than nil -- unescapeUTF16()'s only
+        // construction path, String(utf16CodeUnits:count:), never actually fails, so the
+        // function's `String?` return type is vestigial.
         let bad = "xyz"
-        // unescapeUTF16 should not crash; it may return nil or empty
         let result = bad.unescapeUTF16()
-        #expect(result != nil)
+        #expect(result == "")
     }
 
     @Test func rangeFromNSRange() throws {
