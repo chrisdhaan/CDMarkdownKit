@@ -9,10 +9,10 @@ import Testing
 
 struct CDColorTests {
 
-    // Every documented CGColor construction path sizes `.components` as
-    // colorSpace.numberOfComponents + 1, so a monochrome color with fewer than 2
-    // components isn't reachable here — this exercises `isEqualTo`'s normal
-    // monochrome comparison, not the defensive guard itself.
+    /// Every documented CGColor construction path sizes `.components` as
+    /// colorSpace.numberOfComponents + 1, so a monochrome color with fewer than 2
+    /// components isn't reachable here — this exercises `isEqualTo`'s normal
+    /// monochrome comparison, not the defensive guard itself.
     @Test func isEqualToComparesMonochromeColorsWithoutCrashing() {
         let monochromeSpace = CGColorSpaceCreateDeviceGray()
         guard let grayColor = CGColor(colorSpace: monochromeSpace, components: [0.5, 1.0]) else {
