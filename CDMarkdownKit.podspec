@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'CDMarkdownKit'
-  s.version = '4.0.1'
+  s.version = '4.0.2'
   s.cocoapods_version = '>= 1.13.0'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
   s.summary = 'An extensive Swift framework providing simple and customizable markdown parsing.'

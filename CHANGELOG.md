@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
-- [Unreleased](#unreleased)
+- [4.0.2](#402)
 - [4.0.1](#401)
 - [4.0.0](#400)
 - [3.3.0](#330)
@@ -26,7 +26,9 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [Unreleased]
+## [4.0.2](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.0.2)
+
+Released on 2026-07-24.
 
 ### Fixed
 
