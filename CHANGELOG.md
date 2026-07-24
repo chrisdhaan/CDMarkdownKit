@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Unreleased](#unreleased)
 - [4.0.1](#401)
 - [4.0.0](#400)
 - [3.3.0](#330)
@@ -22,6 +23,28 @@ All notable changes to this project will be documented in this file.
 - [1.2.0](#120)
 - [1.1.0](#110)
 - [1.0.0](#100)
+
+---
+
+## [Unreleased]
+
+### Fixed
+
+- Fixed link and image URLs containing parentheses (e.g. `[text](https://example.com/(path))`) being truncated at the first inner `)` instead of the matching closing paren.
+- Fixed image attachments never becoming tappable — the `.link` attribute was being applied with the wrong delimiter and was silently dropped.
+- Fixed an off-by-one in list and blockquote nesting depth that added an extra, unwanted indent level to top-level (non-nested) lists and blockquotes.
+- Added support to `CDMarkdownList` for indentation-based nested lists when `preserveLeadingWhitespace` is set to `true` on the parser.
+- Fixed inline code spans and fenced code blocks silently losing styling on any content after an emoji or other astral-plane character, caused by measuring styled ranges in `Character` counts instead of UTF-16 code units.
+- Fixed backslash-escaped emoji round-tripping into replacement characters (`�`) instead of the original character.
+- Fixed `squashNewlines` and reference-link-definition stripping not recognizing Windows-style (CRLF) line endings, leaving blank lines unsquashed and reference definitions unstripped in CRLF-authored documents.
+- Fixed reference-definition-looking lines inside an unclosed code fence being incorrectly stripped as if they were real reference definitions.
+- Fixed a crash when setting `CDMarkdownLabel.attributedText = nil`.
+- Fixed `CDMarkdownTextView`'s iOS 15 (TextKit 1) fallback losing its layout manager on the second and later `attributedText` update, after the first update had already replaced it.
+- Fixed TextKit 2 rounded-corner code-block backgrounds painting the entire line instead of just the code span, and fixed backgrounds not rendering correctly for paragraphs after the first.
+- Fixed link tap hit-testing being inconsistent between the TextKit 1 and TextKit 2 rendering paths.
+- Fixed the TextKit 1 fallback's word-break-inside-URL prevention never activating because its layout manager delegate was never assigned.
+- Fixed `CDColor.isEqualTo` risking a crash when comparing an atypical monochrome `CGColor`.
+- Fixed `header.color` set via a `CDMarkdownTheme` not falling back to the parser's default color when the theme left it unspecified, unlike every other themed element.
 
 ---
 
