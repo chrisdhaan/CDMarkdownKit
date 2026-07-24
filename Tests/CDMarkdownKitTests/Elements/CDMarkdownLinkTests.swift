@@ -62,15 +62,10 @@ struct CDMarkdownLinkTests {
     @Test func linkURLContainingParenthesesIsNotCorrupted() {
         let result = parser.parse("[text](http://example.com/foo(bar))")
 
-        // Before the fix, the backward "(" search landed on the paren inside the URL
-        // instead of the real delimiter, corrupting the visible text down to something
-        // like "text](http://example.com/fo)" -- the markdown delimiter "]" leaking into
-        // the rendered text is the signature of the bug. (Note: the regex's URL capture
-        // group itself always stops at the *first* ")" it encounters, whether that paren
-        // belongs to the URL or the markdown syntax -- that's a separate, pre-existing
-        // regex limitation this fix does not attempt to change. This test only asserts
-        // the delimiter-detection bug is fixed, not that arbitrarily-parenthesized URLs
-        // round-trip perfectly.)
+        // The URL capture regex itself stops at the first ")" regardless of whether it
+        // belongs to the URL or the markdown syntax, so this only asserts the markdown
+        // delimiter "]" doesn't leak into the rendered text -- not that arbitrarily
+        // parenthesized URLs round-trip perfectly.
         #expect(!result.string.contains("]"))
 
         var linkURL: URL?

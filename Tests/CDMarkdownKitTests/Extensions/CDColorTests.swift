@@ -9,23 +9,10 @@ import Testing
 
 struct CDColorTests {
 
-    // NOTE ON SCOPE: this test does NOT reproduce the original force-unwrap crash
-    // that motivated the guards in `CDColor.isEqualTo`. Investigation (see
-    // .superpowers/sdd/task-13-report.md) found no documented, non-UB CoreGraphics
-    // API that constructs a monochrome CGColor whose `.components` array has fewer
-    // than 2 entries: every legitimate construction path (CGColor(gray:alpha:),
-    // NSColor(white:/calibratedWhite:/deviceWhite:alpha:).cgColor,
-    // CGColorSpaceCreateDeviceGray()/linearGray/genericGrayGamma2_2 fed a correctly
-    // sized components array, .copy(alpha:), .converted(to:)) always yields exactly
-    // 2 components, because CGColor sizes its storage as
-    // colorSpace.numberOfComponents + 1 regardless of caller input. Deliberately
-    // passing a too-short array to CGColor(colorSpace:components:) is undefined
-    // behavior (a buffer over-read), not a legitimate object state, and even that
-    // was observed to still report `.components.count == 2` on this platform, not
-    // fewer. So this is a behavioral test of `isEqualTo` for monochrome colors in
-    // general — confirming it correctly returns `false` for two colors that are not
-    // equal, without crashing — not a regression test forcing the specific guarded
-    // branch.
+    // Every documented CGColor construction path sizes `.components` as
+    // colorSpace.numberOfComponents + 1, so a monochrome color with fewer than 2
+    // components isn't reachable here — this exercises `isEqualTo`'s normal
+    // monochrome comparison, not the defensive guard itself.
     @Test func isEqualToComparesMonochromeColorsWithoutCrashing() {
         let monochromeSpace = CGColorSpaceCreateDeviceGray()
         guard let grayColor = CGColor(colorSpace: monochromeSpace, components: [0.5, 1.0]) else {
