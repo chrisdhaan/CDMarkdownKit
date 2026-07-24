@@ -352,7 +352,7 @@ Do **not** run `swift package generate-documentation` directly to publish docs â
 | 3.3.0   | 2026-06-03 | Reference-style links, fenced code language hints, `CDMarkdownTheme`, theme environment key |
 | 3.2.0   | 2026-05-31 | Swift 6 language mode (`swiftLanguageModes: [.v6]`), task lists, horizontal rules, inline table cells, macOS AppKit components, SwiftUI wrappers |
 | 3.1.0   | 2026-05-12 | Tables, ordered lists, visionOS support, DocC documentation |
-| 3.0.0   | 2026-05-09 | Async parse, Swift 6 toolchain, unified Package.swift, Jazzy docs, modern CI |
+| 3.0.0   | 2026-05-10 | Async parse, Swift 6 toolchain, unified Package.swift, Jazzy docs, modern CI |
 | 2.5.1   | 2022-12-13 | Swift 5.7 support |
 | 2.5.0   | 2022-12-12 | Underline color/style on all elements |
 | 2.4.0   | 2022-12-03 | Strikethrough element |

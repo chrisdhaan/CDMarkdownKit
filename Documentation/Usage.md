@@ -661,5 +661,7 @@ textView.attributedText = attributed
 textView.accessibilityAttributedLabel = parser.accessibilityAttributedString(from: attributed)
 ```
 
+**Note**: `accessibilityAttributedString(from:)` is available on iOS and visionOS only. It is not available on tvOS, where VoiceOver navigation works differently.
+
 VoiceOver will announce headings with their level ("Heading level 1: Introduction"),
 helping users navigate document structure with the rotor.

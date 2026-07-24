@@ -9,7 +9,7 @@ Please read it before you start participating.
 * [Reporting Security Issues](#reporting-security-issues)
 * [Reporting Issues](#reporting-other-issues)
 * [Submitting Pull Requests](#submitting-pull-requests)
-* [Developers Certificate of Origin](#developers-certificate-of-origin)
+* [Developer's Certificate of Origin](#developers-certificate-of-origin-11)
 * [Code of Conduct](#code-of-conduct)
 
 ## Asking Questions
