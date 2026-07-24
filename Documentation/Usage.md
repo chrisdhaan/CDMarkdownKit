@@ -11,7 +11,7 @@ CDMarkdownKit is distributed via Swift Package Manager and CocoaPods.
 Add to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", from: "3.0.0")
+.package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", from: "4.0.0")
 ```
 
 Or in Xcode: **File → Add Packages** and enter the repository URL.
@@ -21,7 +21,7 @@ Or in Xcode: **File → Add Packages** and enter the repository URL.
 Add to your `Podfile`:
 
 ```ruby
-pod 'CDMarkdownKit', '~> 3.0'
+pod 'CDMarkdownKit', '~> 4.0'
 ```
 
 Run `pod install`.
