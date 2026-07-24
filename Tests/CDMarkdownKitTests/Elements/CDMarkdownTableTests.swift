@@ -59,7 +59,9 @@ struct CDMarkdownTableTests {
         result.enumerateAttribute(.font,
                                   in: NSRange(location: afterHeader,
                                               length: result.length - afterHeader)) { value, _, _ in
-            if let font = value as? CDFont, font.isBold { foundBold = true }
+            if let font = value as? CDFont, font.isBold {
+                foundBold = true
+            }
         }
         #expect(!foundBold)
     }
@@ -112,7 +114,9 @@ struct CDMarkdownTableTests {
         var foundBold = false
         result.enumerateAttribute(.font,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont, font.isBold { foundBold = true }
+            if let font = value as? CDFont, font.isBold {
+                foundBold = true
+            }
         }
         #expect(foundBold)
     }
@@ -127,7 +131,9 @@ struct CDMarkdownTableTests {
         var foundItalic = false
         result.enumerateAttribute(.font,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont, font.isItalic { foundItalic = true }
+            if let font = value as? CDFont, font.isItalic {
+                foundItalic = true
+            }
         }
         #expect(foundItalic)
     }
@@ -142,7 +148,9 @@ struct CDMarkdownTableTests {
         var foundLink = false
         result.enumerateAttribute(.link,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { foundLink = true }
+            if value != nil {
+                foundLink = true
+            }
         }
         #expect(foundLink)
     }

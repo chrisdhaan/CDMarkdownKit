@@ -19,7 +19,9 @@ struct CDMarkdownAutomaticLinkTests {
             // Then
             var foundLink = false
             result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-                if v != nil { foundLink = true }
+                if v != nil {
+                    foundLink = true
+                }
             }
             #expect(foundLink)
         }
@@ -32,7 +34,9 @@ struct CDMarkdownAutomaticLinkTests {
             // Then
             var foundLink = false
             result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-                if v != nil { foundLink = true }
+                if v != nil {
+                    foundLink = true
+                }
             }
             #expect(foundLink)
         }
@@ -45,7 +49,9 @@ struct CDMarkdownAutomaticLinkTests {
             // Then
             var foundLink = false
             result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-                if v != nil { foundLink = true }
+                if v != nil {
+                    foundLink = true
+                }
             }
             #expect(foundLink)
         }
@@ -58,7 +64,9 @@ struct CDMarkdownAutomaticLinkTests {
             // Then
             var foundLink = false
             result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-                if v != nil { foundLink = true }
+                if v != nil {
+                    foundLink = true
+                }
             }
             #expect(!foundLink)
         }

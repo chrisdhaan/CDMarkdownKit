@@ -113,7 +113,7 @@ CDMarkdownElement                          Foundation
 │   ├── CDMarkdownItalic         regex group [4]: ()(*|_)(content)(\2)
 │   ├── CDMarkdownCode           overrides addAttributes: unescape + strip \n
 │   ├── CDMarkdownSyntax         overrides addAttributes: unescape + bg wrapping
-│   └── CDMarkdownStrikethrough  overrides addAttributes: adds strikethrough attrs
+│   └── CDMarkdownStrikethrough  sets strikethroughColor/strikethroughStyle (default attributes impl covers the rest)
 │
 ├── CDMarkdownLevelElement : CDMarkdownElement, CDMarkdownStyle
 │   │  var maxLevel: Int
@@ -161,11 +161,13 @@ protocol CDMarkdownStyle {
     var paragraphStyle: NSParagraphStyle? { get }
     var underlineColor: CDColor? { get }
     var underlineStyle: NSUnderlineStyle? { get }
+    var strikethroughColor: CDColor? { get }
+    var strikethroughStyle: NSUnderlineStyle? { get }
     var attributes: [CDAttributedStringKey: AnyObject] { get }  // default impl
 }
 ```
 
-Every element that conforms to `CDMarkdownStyle` gets `attributes` for free: it assembles a dictionary from the non-nil properties. Elements can override `attributes` (none currently do) or override `addAttributes` to inject extra attributes (e.g., `CDMarkdownStrikethrough` adds strikethrough color/style on top of the base attributes).
+Every element that conforms to `CDMarkdownStyle` gets `attributes` for free: it assembles a dictionary from the non-nil properties, including `strikethroughColor`/`strikethroughStyle` for elements that set them (only `CDMarkdownStrikethrough` does by default). No element currently overrides `attributes` or `addAttributes` to inject extra attributes beyond what the default `attributes` dictionary provides.
 
 ---
 
@@ -182,19 +184,25 @@ Corner radius is set to 3pt when:
 
 Rounding decisions are driven by the `.cdMarkdownRoundedBackground` custom attribute written during parsing — not by color comparison — so customized colors are handled correctly.
 
-### CDMarkdownTextView (iOS/tvOS)
+### CDMarkdownTextView (iOS/tvOS/visionOS)
 
-`@MainActor UITextView` subclass. `configure()` creates a `CDMarkdownLayoutManager`, wires it into the text container, and forces `isScrollEnabled = true`, `isSelectable = false`, `isEditable = false`. The `attributedText` setter keeps a separate `customTextStorage` wired to the layout manager so it has content to draw from.
+`@MainActor UITextView` subclass. `configure()` picks a rendering path based on OS availability:
+- **iOS/tvOS 16+ (TextKit 2)**: `configureTK2()` creates a `CDMarkdownTextLayoutDelegate` (an `NSTextLayoutManagerDelegate`, defined in `CDMarkdownTextLayoutManager.swift`) and assigns it to the view's stock `textLayoutManager`. The delegate supplies `CDMarkdownTextLayoutFragment` instances, which draw the rounded-corner backgrounds.
+- **iOS/tvOS 15 (TextKit 1 fallback)**: `configureTK1()` creates a `CDMarkdownLayoutManager`, wires it into the text container, and keeps a `customTextStorage` in sync with the layout manager on each `attributedText` update.
 
-**TextKit 1 note**: accessing `self.textContainer` in `configure()` opts UITextView into TextKit 1 compatibility mode. The one-time console warning this produces is expected and unavoidable until `CDMarkdownLayoutManager` is migrated to `NSTextLayoutManager`.
+`makeTextView(frame:)` is the preferred factory for programmatic construction — it calls `configure()`, which auto-selects TextKit 2 on iOS/tvOS 16+.
 
-### CDMarkdownLabel (iOS/tvOS)
+### CDMarkdownLabel (iOS/tvOS/visionOS)
 
-`@MainActor UILabel` subclass that maintains its own text rendering stack (`NSTextStorage + NSLayoutManager + NSTextContainer`). The text container is initialized with `maximumNumberOfLines = 0` (unlimited) regardless of `UILabel.numberOfLines`. Supports tapping links:
+`@MainActor UILabel` subclass that maintains its own text rendering stack, also TextKit-version-branched via `configure()`:
+- **iOS/tvOS 16+ (TextKit 2)**: `configureTK2()` builds an `NSTextContentStorage` + stock `NSTextLayoutManager`, assigns a `CDMarkdownTextLayoutDelegate`, and drives layout/drawing/hit-testing through that stack (`drawTextTK2`, `urlRangeTK2`, etc.).
+- **iOS/tvOS 15 (TextKit 1 fallback)**: `configureTK1()` builds `NSTextStorage + CDMarkdownLayoutManager + NSTextContainer` directly, with `maximumNumberOfLines = 0` (unlimited) regardless of `UILabel.numberOfLines`.
+
+Supports tapping links on both paths:
 - `touchesBegan/Moved/Ended` track which URL was tapped
 - `touchesEnded` opens a `UIAlertController` action sheet with Open / Add to Reading List / Copy / Share options
 - `CDMarkdownLabelDelegate.didSelect(_:URL)` is called on "Open"
-- Implements `NSLayoutManagerDelegate` to prevent line breaks mid-URL
+- On the TextKit 1 path, implements `NSLayoutManagerDelegate` to prevent line breaks mid-URL
 
 ### CDMarkdownNSTextView (macOS)
 

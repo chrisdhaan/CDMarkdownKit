@@ -34,7 +34,7 @@ A pure-Swift, zero-dependency framework for parsing Markdown text into styled `N
 - [x] Tables with column alignment (GFM-style)
 - [x] Reference-style links (`[text][ref]` + `[ref]: url` definitions)
 - [x] Clickable links and automatic URL detection
-- [x] Image rendering (iOS, macOS, tvOS)
+- [x] Image rendering (iOS, macOS, tvOS, visionOS)
 - [x] Async image loading with `async/await`
 - [x] Custom Markdown elements
 - [x] `CDMarkdownTheme` for one-call parser styling
@@ -51,7 +51,7 @@ import CDMarkdownKit
 
 let parser = CDMarkdownParser()
 let markdown = "# Hello **World**\n\nThis is *italic* text."
-let attributedString = parser.parse(markdown)
+let attributedString = await parser.parse(markdown)
 label.attributedText = attributedString
 ```
 

@@ -11,7 +11,9 @@ struct CDMarkdownHeaderTests {
         let result = parser.parse("# Heading 1")
         var hasLargeFont = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.pointSize > 17 { hasLargeFont = true }
+            if let f = v as? CDFont, f.pointSize > 17 {
+                hasLargeFont = true
+            }
         }
         #expect(hasLargeFont)
     }
@@ -20,7 +22,9 @@ struct CDMarkdownHeaderTests {
         let result = parser.parse("## Heading 2")
         var hasLargeFont = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.pointSize > 15 { hasLargeFont = true }
+            if let f = v as? CDFont, f.pointSize > 15 {
+                hasLargeFont = true
+            }
         }
         #expect(hasLargeFont)
     }
@@ -29,7 +33,9 @@ struct CDMarkdownHeaderTests {
         let result = parser.parse("### Heading 3")
         var hasLargeFont = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.pointSize > 13 { hasLargeFont = true }
+            if let f = v as? CDFont, f.pointSize > 13 {
+                hasLargeFont = true
+            }
         }
         #expect(hasLargeFont)
     }
@@ -50,7 +56,9 @@ struct CDMarkdownHeaderTests {
             let result = parser.parse(input)
             var largest: CGFloat = 0
             result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-                if let f = v as? CDFont, f.pointSize > largest { largest = f.pointSize }
+                if let f = v as? CDFont, f.pointSize > largest {
+                    largest = f.pointSize
+                }
             }
             return largest
         }
@@ -74,7 +82,9 @@ struct CDMarkdownHeaderTests {
             let result = parser.parse(input)
             var found = false
             result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-                if let f = v as? CDFont, f.pointSize > baseSize { found = true }
+                if let f = v as? CDFont, f.pointSize > baseSize {
+                    found = true
+                }
             }
             #expect(found)
         }

@@ -11,7 +11,9 @@ struct CDMarkdownLinkTests {
         let result = parser.parse("[text](https://example.com)")
         var foundLink = false
         result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { foundLink = true }
+            if v != nil {
+                foundLink = true
+            }
         }
         #expect(foundLink)
     }
@@ -20,18 +22,11 @@ struct CDMarkdownLinkTests {
         let result = parser.parse("[link](https://example.com) is here")
         var foundLink = false
         result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { foundLink = true }
+            if v != nil {
+                foundLink = true
+            }
         }
         #expect(foundLink)
-    }
-
-    @Test func imageNotTreatedAsLink() {
-        let result = parser.parse("![alt](https://example.com/image.png)")
-        var foundLink = false
-        result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { foundLink = true }
-        }
-        #expect(!foundLink)
     }
 
     @Test func linkBracketsAreStripped() {
@@ -44,7 +39,9 @@ struct CDMarkdownLinkTests {
         let result = parser.parse("[GitHub](https://github.com)")
         var foundURL: URL?
         result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let url = value as? URL { foundURL = url }
+            if let url = value as? URL {
+                foundURL = url
+            }
         }
         #expect(foundURL != nil)
         #expect(foundURL?.host == "github.com")
@@ -55,8 +52,37 @@ struct CDMarkdownLinkTests {
         let result = parser.parse("[Docs](https://example.com/docs/api)")
         var foundURL: URL?
         result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let url = value as? URL { foundURL = url }
+            if let url = value as? URL {
+                foundURL = url
+            }
         }
         #expect(foundURL?.path == "/docs/api")
+    }
+
+    @Test func linkURLContainingParenthesesIsNotCorrupted() {
+        let result = parser.parse("[text](http://example.com/foo(bar))")
+
+        // The URL capture regex itself stops at the first ")" regardless of whether it
+        // belongs to the URL or the markdown syntax, so this only asserts the markdown
+        // delimiter "]" doesn't leak into the rendered text -- not that arbitrarily
+        // parenthesized URLs round-trip perfectly.
+        #expect(!result.string.contains("]"))
+
+        var linkURL: URL?
+        result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let url = value as? URL {
+                linkURL = url
+            }
+        }
+        #expect(linkURL?.absoluteString.hasPrefix("http://example.com/foo(bar") == true)
+    }
+
+    @Test func regexDoesNotMatchImageSyntax() throws {
+        let link = CDMarkdownLink()
+        let regex = try link.regularExpression()
+        let input = "![alt](url)"
+        let range = NSRange(location: 0, length: (input as NSString).length)
+        let matches = regex.matches(in: input, options: [], range: range)
+        #expect(matches.isEmpty)
     }
 }

@@ -35,7 +35,33 @@ import Testing
             let result = parser.parse("![img](https://example.com/img.png) and [link](https://example.com)")
             var foundLink = false
             result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-                if v != nil { foundLink = true }
+                if v != nil {
+                    foundLink = true
+                }
+            }
+            #expect(foundLink)
+        }
+
+        @Test func imageURLContainingParenthesesIsNotCorrupted() {
+            let parser = CDMarkdownParser()
+            let result = parser.parse("![alt](http://example.com/foo(bar))")
+            var linkURL: URL?
+            result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
+                if let url = value as? URL {
+                    linkURL = url
+                }
+            }
+            #expect(linkURL?.absoluteString.hasPrefix("http://example.com/foo(bar") == true)
+        }
+
+        @Test func imageAttachmentReceivesLinkAttribute() {
+            let parser = CDMarkdownParser()
+            let result = parser.parse("![alt](http://example.com/image.png)")
+            var foundLink = false
+            result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, range, _ in
+                if value is URL, range.length > 0 {
+                    foundLink = true
+                }
             }
             #expect(foundLink)
         }

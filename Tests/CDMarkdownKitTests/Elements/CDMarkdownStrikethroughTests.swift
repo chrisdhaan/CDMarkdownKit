@@ -16,7 +16,9 @@ struct CDMarkdownStrikethroughTests {
         let result = parser.parse("~~strikethrough~~")
         var hasStrikethrough = false
         result.enumerateAttribute(.strikethroughStyle, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { hasStrikethrough = true }
+            if v != nil {
+                hasStrikethrough = true
+            }
         }
         #expect(hasStrikethrough)
     }
@@ -25,7 +27,9 @@ struct CDMarkdownStrikethroughTests {
         let result = parser.parse("~not strikethrough~")
         var hasStrikethrough = false
         result.enumerateAttribute(.strikethroughStyle, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { hasStrikethrough = true }
+            if v != nil {
+                hasStrikethrough = true
+            }
         }
         #expect(!hasStrikethrough)
     }
@@ -48,7 +52,9 @@ struct CDMarkdownStrikethroughTests {
         var found = false
         result.enumerateAttribute(.strikethroughColor,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let color = value as? CDColor, color == CDColor.red { found = true }
+            if let color = value as? CDColor, color == CDColor.red {
+                found = true
+            }
         }
         #expect(found)
     }
@@ -61,7 +67,9 @@ struct CDMarkdownStrikethroughTests {
         result.enumerateAttribute(.strikethroughStyle,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
             let raw = (value as? NSNumber)?.intValue ?? (value as? Int ?? -1)
-            if raw == NSUnderlineStyle.double.rawValue { foundDouble = true }
+            if raw == NSUnderlineStyle.double.rawValue {
+                foundDouble = true
+            }
         }
         #expect(foundDouble)
     }

@@ -11,7 +11,9 @@ struct CDMarkdownItalicTests {
         let result = parser.parse("*italic*")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isItalic { hasItalic = true }
+            if let f = v as? CDFont, f.isItalic {
+                hasItalic = true
+            }
         }
         #expect(hasItalic)
     }
@@ -20,7 +22,9 @@ struct CDMarkdownItalicTests {
         let result = parser.parse("_italic_")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isItalic { hasItalic = true }
+            if let f = v as? CDFont, f.isItalic {
+                hasItalic = true
+            }
         }
         #expect(hasItalic)
     }
@@ -29,7 +33,9 @@ struct CDMarkdownItalicTests {
         let result = parser.parse("**not italic**")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isItalic { hasItalic = true }
+            if let f = v as? CDFont, f.isItalic {
+                hasItalic = true
+            }
         }
         #expect(!hasItalic)
     }

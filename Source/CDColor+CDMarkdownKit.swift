@@ -81,11 +81,15 @@ public extension CDColor {
         let colorSpaceRGB = CGColorSpaceCreateDeviceRGB()
         let convertColorToRGBSpace: ((_ color: CDColor) -> CDColor?) = { color -> CDColor? in
             if color.cgColor.colorSpace?.model == CGColorSpaceModel.monochrome {
-                let oldComponents = color.cgColor.components
-                let components: [CGFloat] = [oldComponents![0], oldComponents![0], oldComponents![0], oldComponents![1]]
-                let colorRef = CGColor(colorSpace: colorSpaceRGB,
-                                       components: components)
-                return CDColor(cgColor: colorRef!)
+                // Defensive: no known documented CGColor API produces a monochrome
+                // color with fewer than 2 components, but a force-unwrap here would
+                // crash with no fallback if one ever did.
+                guard let oldComponents = color.cgColor.components,
+                      oldComponents.count >= 2 else { return nil }
+                let components: [CGFloat] = [oldComponents[0], oldComponents[0], oldComponents[0], oldComponents[1]]
+                guard let colorRef = CGColor(colorSpace: colorSpaceRGB,
+                                             components: components) else { return nil }
+                return CDColor(cgColor: colorRef)
             } else {
                 return color
             }

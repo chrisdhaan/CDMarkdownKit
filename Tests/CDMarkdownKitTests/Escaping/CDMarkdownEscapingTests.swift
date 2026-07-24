@@ -12,7 +12,9 @@ struct CDMarkdownEscapingTests {
         let result = parser.parse("`**text**`")
         var hasBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isBold { hasBold = true }
+            if let f = v as? CDFont, f.isBold {
+                hasBold = true
+            }
         }
         #expect(!hasBold)
     }
@@ -21,7 +23,9 @@ struct CDMarkdownEscapingTests {
         let result = parser.parse("`*text*`")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isItalic { hasItalic = true }
+            if let f = v as? CDFont, f.isItalic {
+                hasItalic = true
+            }
         }
         #expect(!hasItalic)
     }
@@ -30,7 +34,9 @@ struct CDMarkdownEscapingTests {
         let result = parser.parse("```\n**not bold**\n```")
         var hasBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isBold { hasBold = true }
+            if let f = v as? CDFont, f.isBold {
+                hasBold = true
+            }
         }
         #expect(!hasBold)
     }
@@ -42,7 +48,9 @@ struct CDMarkdownEscapingTests {
         let result = parser.parse("\\*not italic\\*")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isItalic { hasItalic = true }
+            if let f = v as? CDFont, f.isItalic {
+                hasItalic = true
+            }
         }
         #expect(!hasItalic)
         #expect(result.string.contains("*"))
@@ -53,7 +61,9 @@ struct CDMarkdownEscapingTests {
         let result = parser.parse("\\_not italic\\_")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let f = v as? CDFont, f.isItalic { hasItalic = true }
+            if let f = v as? CDFont, f.isItalic {
+                hasItalic = true
+            }
         }
         #expect(!hasItalic)
         #expect(result.string.contains("_"))
@@ -65,7 +75,9 @@ struct CDMarkdownEscapingTests {
         // Code spans apply a distinct foreground color (red); plain text should not have it
         var hasCodeColor = false
         result.enumerateAttribute(.foregroundColor, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if let color = v as? CDColor, color == CDColor.codeTextRed() { hasCodeColor = true }
+            if let color = v as? CDColor, color == CDColor.codeTextRed() {
+                hasCodeColor = true
+            }
         }
         #expect(!hasCodeColor)
         #expect(result.string.contains("`"))
@@ -76,9 +88,18 @@ struct CDMarkdownEscapingTests {
         let result = parser.parse("\\[not a link")
         var hasLink = false
         result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { hasLink = true }
+            if v != nil {
+                hasLink = true
+            }
         }
         #expect(!hasLink)
         #expect(result.string.contains("["))
+    }
+
+    @Test func backslashEscapedEmojiRoundTripsCorrectly() {
+        let parser = CDMarkdownParser()
+        let result = parser.parse("\\😀 text")
+        #expect(result.string.hasPrefix("😀"))
+        #expect(!result.string.contains("\u{FFFD}"))
     }
 }

@@ -258,7 +258,7 @@ open class CDMarkdownParser {
                   backgroundColor: theme.backgroundColor)
 
         self.header.font = theme.header.font ?? self.header.font
-        self.header.color = theme.header.color
+        self.header.color = theme.header.color ?? self.header.color
         self.header.fontIncrease = theme.header.fontIncrease
         self.header.paragraphStyle = theme.header.paragraphStyle ?? self.header.paragraphStyle
         self.header.underlineColor = theme.header.underlineColor
@@ -495,12 +495,33 @@ open class CDMarkdownParser {
     /// Returns the ranges of all fenced code blocks (``` ... ```) in `string`.
     /// Used to exclude content inside code blocks from reference definition scanning.
     private func fencedCodeBlockRanges(in string: String) -> [NSRange] {
-        let pattern = #"^```[^\n]*\n[\s\S]*?^```\s*$"#
-        guard let regex = try? NSRegularExpression(pattern: pattern, options: .anchorsMatchLines) else {
+        let nsString = string as NSString
+        let fullRange = NSRange(location: 0, length: nsString.length)
+
+        let closedPattern = #"^```[^\n]*\n[\s\S]*?^```\s*$"#
+        guard let closedRegex = try? NSRegularExpression(pattern: closedPattern, options: .anchorsMatchLines) else {
             return []
         }
-        let fullRange = NSRange(location: 0, length: (string as NSString).length)
-        return regex.matches(in: string, options: [], range: fullRange).map(\.range)
+        let closedRanges = closedRegex.matches(in: string, options: [], range: fullRange).map(\.range)
+
+        // An opening fence with no matching close: conservatively treat everything from
+        // that fence to the end of the string as code, so reference-definition-looking
+        // lines inside an unterminated fence aren't mistaken for real definitions.
+        guard let openPattern = try? NSRegularExpression(pattern: #"^```[^\n]*$"#, options: .anchorsMatchLines) else {
+            return closedRanges
+        }
+        var ranges = closedRanges
+        let openMatches = openPattern.matches(in: string, options: [], range: fullRange)
+        for openMatch in openMatches {
+            let alreadyCovered = closedRanges.contains { NSLocationInRange(openMatch.range.location, $0) }
+            if alreadyCovered {
+                continue
+            }
+            ranges.append(NSRange(location: openMatch.range.location,
+                                  length: nsString.length - openMatch.range.location))
+            break
+        }
+        return ranges
     }
 
     /// Scans `attributedString` for reference link definitions, removes them from the string,
@@ -547,12 +568,19 @@ open class CDMarkdownParser {
 
             definitions[referenceId.lowercased()] = (url: url, title: title)
 
-            // Remove the definition line (including its trailing newline if present)
+            // Remove the definition line (including its trailing line terminator, \n or \r\n, if present)
             var removeRange = match.range(at: 0)
             let nsString = attributedString.string as NSString
-            if removeRange.location + removeRange.length < attributedString.length,
-               nsString.character(at: removeRange.location + removeRange.length) == (("\n" as Unicode.Scalar).value) {
-                removeRange.length += 1
+            let afterMatch = removeRange.location + removeRange.length
+            if afterMatch < attributedString.length {
+                let nextCharacter = nsString.character(at: afterMatch)
+                if nextCharacter == ("\r" as Unicode.Scalar).value,
+                   afterMatch + 1 < attributedString.length,
+                   nsString.character(at: afterMatch + 1) == ("\n" as Unicode.Scalar).value {
+                    removeRange.length += 2
+                } else if nextCharacter == ("\n" as Unicode.Scalar).value {
+                    removeRange.length += 1
+                }
             }
             attributedString.deleteCharacters(in: removeRange)
         }
@@ -564,7 +592,7 @@ open class CDMarkdownParser {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         let mutableString = attributedString.mutableString
         if squashNewlines {
-            mutableString.replaceOccurrences(of: "\n\n+",
+            mutableString.replaceOccurrences(of: "(?:\r?\n){2,}",
                                              with: "\n",
                                              options: .regularExpression,
                                              range: NSRange(location: 0,

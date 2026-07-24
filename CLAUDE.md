@@ -4,7 +4,7 @@
 
 CDMarkdownKit is a pure-Swift, zero-dependency framework for parsing Markdown text into `NSAttributedString`. It supports rendering inside custom `UILabel` and `UITextView` subclasses with optional rounded-corner background styling for code and syntax blocks.
 
-- **Current version**: 4.0.1
+- **Current version**: 4.0.2
 - **License**: MIT
 - **Author**: Christopher de Haan (contact@christopherdehaan.me)
 
@@ -83,7 +83,7 @@ Input String
     CDMarkdownLink           — [text](url)
     CDMarkdownAutomaticLink  — bare URLs via NSDataDetector
     CDMarkdownLinkReference  — [text][ref] resolved references
-    CDMarkdownImage          — ![alt](url)   (iOS/macOS/tvOS only)
+    CDMarkdownImage          — ![alt](url)   (iOS/macOS/tvOS/visionOS only)
     CDMarkdownBold           — **text** or __text__
     CDMarkdownItalic         — *text* or _text_
     CDMarkdownStrikethrough  — ~~text~~
@@ -113,7 +113,7 @@ CDMarkdownElement          (parse loop + regex matching)
 │   ├── CDMarkdownItalic
 │   ├── CDMarkdownCode           (overrides addAttributes to unescape + strip \n)
 │   ├── CDMarkdownSyntax         (overrides addAttributes; manages bg wrapping at \n)
-│   └── CDMarkdownStrikethrough  (adds strikethrough attrs beyond CDMarkdownStyle)
+│   └── CDMarkdownStrikethrough  (sets strikethroughColor/strikethroughStyle)
 ├── CDMarkdownLevelElement  + CDMarkdownStyle  (block elements with nesting depth)
 │   ├── CDMarkdownHeader         (font scales by heading level)
 │   ├── CDMarkdownList           (replaces marker with bullet; handles head indent)
@@ -163,7 +163,7 @@ CDMarkdownElement          (parse loop + regex matching)
 | `CDMarkdownLink.swift` | Link | `[text](url)` |
 | `CDMarkdownAutomaticLink.swift` | AutoLink | bare URLs |
 | `CDMarkdownLinkReference.swift` | Reference Link | `[text][ref]` + `[ref]: url` |
-| `CDMarkdownImage.swift` | Image | `![alt](url)` — iOS/macOS/tvOS |
+| `CDMarkdownImage.swift` | Image | `![alt](url)` — iOS/macOS/tvOS/visionOS |
 | `CDMarkdownCode.swift` | Inline code | `` `code` `` |
 | `CDMarkdownSyntax.swift` | Fenced code | ` ```block``` ` |
 | `CDMarkdownStrikethrough.swift` | Strikethrough | `~~text~~` |
@@ -174,11 +174,11 @@ CDMarkdownElement          (parse loop + regex matching)
 ### UI Components
 | File | Platform | Purpose |
 |------|----------|---------|
-| `CDMarkdownLabel.swift` | iOS/tvOS | `@MainActor UILabel` subclass with custom text stack and tap-to-open-URL |
-| `CDMarkdownTextView.swift` | iOS/tvOS | `@MainActor UITextView` subclass using `CDMarkdownTextLayoutManager` (TextKit 2) |
-| `CDMarkdownTextLayoutManager.swift` | iOS/tvOS | `NSTextLayoutManager` subclass (TextKit 2) that coordinates rounded-corner background drawing |
-| `CDMarkdownTextLayoutFragment.swift` | iOS/tvOS | `NSTextLayoutFragment` subclass (TextKit 2) that draws rounded-corner backgrounds |
-| `CDMarkdownLayoutManager.swift` | iOS/tvOS | `NSLayoutManager` subclass (TextKit 1 fallback) that draws rounded-corner backgrounds |
+| `CDMarkdownLabel.swift` | iOS/tvOS/visionOS | `@MainActor UILabel` subclass with custom text stack and tap-to-open-URL |
+| `CDMarkdownTextView.swift` | iOS/tvOS/visionOS | `@MainActor UITextView` subclass; on iOS/tvOS 16+ assigns a `CDMarkdownTextLayoutDelegate` to the stock `NSTextLayoutManager` (TextKit 2), falls back to `CDMarkdownLayoutManager` (TextKit 1) on iOS/tvOS 15 |
+| `CDMarkdownTextLayoutManager.swift` | iOS/tvOS/visionOS | Defines `CDMarkdownTextLayoutDelegate`, an `NSTextLayoutManagerDelegate` (TextKit 2) that supplies `CDMarkdownTextLayoutFragment` instances for rounded-corner background drawing |
+| `CDMarkdownTextLayoutFragment.swift` | iOS/tvOS/visionOS | `NSTextLayoutFragment` subclass (TextKit 2) that draws rounded-corner backgrounds |
+| `CDMarkdownLayoutManager.swift` | iOS/tvOS/visionOS | `NSLayoutManager` subclass (TextKit 1 fallback) that draws rounded-corner backgrounds |
 | `CDMarkdownNSTextView.swift` | macOS | `NSTextView` subclass for read-only markdown display |
 | `CDMarkdownNSLabel.swift` | macOS | Lightweight read-only `NSView` for simple markdown display |
 | `CDMarkdownNSLayoutManager.swift` | macOS | `NSLayoutManager` subclass with rounded-corner backgrounds |
@@ -216,11 +216,10 @@ CDMarkdownElement          (parse loop + regex matching)
 
 ## Distribution
 
-Three supported distribution methods:
+Two supported distribution methods:
 
 1. **Swift Package Manager** — primary, preferred going forward
 2. **CocoaPods** — `CDMarkdownKit.podspec`; `pod lib lint` runs in CI
-3. **Carthage** — README mentions it; no Cartfile in repo; largely deprecated
 
 ### Publishing to CocoaPods
 
@@ -275,8 +274,7 @@ These are intentionally deferred until Apple stops supporting iOS 15 (i.e., a fu
 2. **`CDMarkdownTheme: @unchecked Sendable`** — `NSFont` and `NSParagraphStyle` are not `Sendable` below iOS 16; full Swift 6 strict concurrency for the theme requires the same deployment floor bump.
 
 ### Low Priority / Future
-3. **`CDMarkdownStrikethrough`** has its own `strikethroughColor`/`strikethroughStyle` properties that are not part of the shared `CDMarkdownStyle` protocol, creating an inconsistency.
-4. **Carthage support** — README mentions Carthage compatibility but there is no `Cartfile`; Carthage is largely abandoned by the community.
+3. **Carthage** — removed as of 3.0.0 (see `Documentation/CDMarkdownKit 3.0 Migration Guide.md`). Not mentioned in README or current Usage.md; no further action needed.
 
 ---
 
@@ -349,12 +347,13 @@ Do **not** run `swift package generate-documentation` directly to publish docs �
 
 | Version | Date       | Notable Change |
 |---------|------------|----------------|
+| 4.0.2   | 2026-07-24 | Monthly review bug-fix pass: parsing (URL parens, emoji code spans, CRLF), UI rendering (TextKit 1/2, nil crash), doc accuracy |
 | 4.0.1   | 2026-06-15 | Fix infinite recursion in `CDColor.label` on iOS/tvOS/watchOS/visionOS |
 | 4.0.0   | 2026-06-15 | TextKit 2 migration (iOS/tvOS 16+), raised deployment targets, Swift 6 strict concurrency |
 | 3.3.0   | 2026-06-03 | Reference-style links, fenced code language hints, `CDMarkdownTheme`, theme environment key |
 | 3.2.0   | 2026-05-31 | Swift 6 language mode (`swiftLanguageModes: [.v6]`), task lists, horizontal rules, inline table cells, macOS AppKit components, SwiftUI wrappers |
 | 3.1.0   | 2026-05-12 | Tables, ordered lists, visionOS support, DocC documentation |
-| 3.0.0   | 2026-05-09 | Async parse, Swift 6 toolchain, unified Package.swift, Jazzy docs, modern CI |
+| 3.0.0   | 2026-05-10 | Async parse, Swift 6 toolchain, unified Package.swift, Jazzy docs, modern CI |
 | 2.5.1   | 2022-12-13 | Swift 5.7 support |
 | 2.5.0   | 2022-12-12 | Underline color/style on all elements |
 | 2.4.0   | 2022-12-03 | Strikethrough element |

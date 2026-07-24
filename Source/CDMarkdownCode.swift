@@ -86,7 +86,7 @@ open class CDMarkdownCode: CDMarkdownCommonElement {
         attributedString.replaceCharacters(in: range,
                                            with: unescapedString)
         let range = NSRange(location: range.location,
-                            length: unescapedString.characterCount())
+                            length: unescapedString.utf16.count)
         attributedString.addAttributes(attributes,
                                        range: range)
         attributedString.addAttribute(.cdMarkdownRoundedBackground,

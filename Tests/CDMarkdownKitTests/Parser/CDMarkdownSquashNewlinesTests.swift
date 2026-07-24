@@ -25,6 +25,19 @@ struct CDMarkdownSquashNewlinesTests {
         #expect(result.string.contains("second"))
     }
 
+    @Test func squashNewlinesCollapsesCRLFBlankLines() {
+        let parser = CDMarkdownParser()
+        parser.squashNewlines = true
+        let result = parser.parse("Line1\r\n\r\n\r\nLine2")
+        // Note: "\r\n\r\n\r\n" never contains a bare "\n\n" substring (each \n is preceded
+        // by \r), so that check alone can't distinguish squashed from unsquashed CRLF runs.
+        // Assert the CRLF run actually collapsed to a single "\n" instead, and that
+        // no CR characters (U+000D) remain after collapsing.
+        #expect(!result.string.contains("\n\n"))
+        #expect(!result.string.unicodeScalars.contains(where: { $0.value == 0x0D }))
+        #expect(result.string.contains("Line1\nLine2"))
+    }
+
     @Test func squashNewlinesFalsePropertyRoundtrips() {
         // Verify the property can be toggled off
         let parser = CDMarkdownParser()

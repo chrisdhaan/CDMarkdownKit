@@ -4,14 +4,14 @@ A pure-Swift, zero-dependency framework for parsing Markdown text into styled `N
 
 ## Basic Setup
 
-CDMarkdownKit is distributed via Swift Package Manager, CocoaPods, and Carthage.
+CDMarkdownKit is distributed via Swift Package Manager and CocoaPods.
 
 ### Swift Package Manager
 
 Add to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", from: "3.0.0")
+.package(url: "https://github.com/chrisdhaan/CDMarkdownKit.git", from: "4.0.0")
 ```
 
 Or in Xcode: **File → Add Packages** and enter the repository URL.
@@ -21,20 +21,10 @@ Or in Xcode: **File → Add Packages** and enter the repository URL.
 Add to your `Podfile`:
 
 ```ruby
-pod 'CDMarkdownKit', '~> 3.0'
+pod 'CDMarkdownKit', '~> 4.0'
 ```
 
 Run `pod install`.
-
-### Carthage
-
-Add to your `Cartfile`:
-
-```
-github "chrisdhaan/CDMarkdownKit" ~> 3.0
-```
-
-Run `carthage update`.
 
 ---
 
@@ -185,8 +175,9 @@ With `preserveLeadingWhitespace = true`, the indentation inside both inline code
 - ASCII art or diagrams
 - Poetry or formatted prose
 - Any content where whitespace spacing is meaningful
+- Indentation-based nested unordered lists (e.g. `- item` / `  - subitem`)
 
-**Note**: This setting only affects code elements. Other Markdown elements (bold, italic, lists, etc.) are not affected by this option.
+**Note**: This setting affects code elements (as above) and unordered list nesting. `CDMarkdownList` derives each item's nesting level from its leading whitespace when this option is enabled; other Markdown elements (bold, italic, headers, etc.) are unaffected. With the default `preserveLeadingWhitespace = false`, leading whitespace is stripped before any element sees it, so indentation-based list nesting has no effect — use repeated marker characters (`** item`, `*** item`) for nesting instead, or enable this option.
 
 ---
 
@@ -669,6 +660,8 @@ let attributed = await parser.parse(markdown)
 textView.attributedText = attributed
 textView.accessibilityAttributedLabel = parser.accessibilityAttributedString(from: attributed)
 ```
+
+**Note**: `accessibilityAttributedString(from:)` is available on iOS and visionOS only. It is not available on tvOS, where VoiceOver navigation works differently.
 
 VoiceOver will announce headings with their level ("Heading level 1: Introduction"),
 helping users navigate document structure with the rotor.

@@ -39,7 +39,9 @@ struct CDMarkdownCustomElementTests {
         var found = false
         result.enumerateAttribute(highlightKey,
                                   in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { found = true }
+            if v != nil {
+                found = true
+            }
         }
         #expect(found)
     }
@@ -55,7 +57,9 @@ struct CDMarkdownCustomElementTests {
         var found = false
         result.enumerateAttribute(highlightKey,
                                   in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { found = true }
+            if v != nil {
+                found = true
+            }
         }
         #expect(found)
     }
@@ -72,7 +76,9 @@ struct CDMarkdownCustomElementTests {
         var found = false
         result.enumerateAttribute(highlightKey,
                                   in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { found = true }
+            if v != nil {
+                found = true
+            }
         }
         #expect(!found)
     }
@@ -87,7 +93,9 @@ struct CDMarkdownCustomElementTests {
         var found = false
         result.enumerateAttribute(highlightKey,
                                   in: NSRange(location: 0, length: result.length)) { v, _, _ in
-            if v != nil { found = true }
+            if v != nil {
+                found = true
+            }
         }
         #expect(!found)
     }

@@ -98,9 +98,7 @@
         open func match(_ match: NSTextCheckingResult,
                         attributedString: NSMutableAttributedString) {
             let nsString = attributedString.string as NSString
-            let linkStartInResult = nsString.range(of: "(",
-                                                   options: .backwards,
-                                                   range: match.range).location
+            let linkStartInResult = match.nsRange(atIndex: 2).location - 1
             let linkRange = NSRange(location: linkStartInResult,
                                     length: match.range.length + match.range.location - linkStartInResult - 1)
             let linkURLString = nsString.substring(with: NSRange(location: linkRange.location + 1,
@@ -146,8 +144,10 @@
                                                    with: textAttachmentAttributedString)
             }
 
+            // Covers the single attachment/placeholder character just inserted above,
+            // so its .link attribute (and any other styling) actually applies.
             let formatRange = NSRange(location: match.range.location,
-                                      length: 0)
+                                      length: 1)
 
             formatText(attributedString,
                        range: formatRange,

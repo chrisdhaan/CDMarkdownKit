@@ -26,8 +26,8 @@ CDMarkdownKit 4.0 migrates `CDMarkdownLabel` and `CDMarkdownTextView` to TextKit
 
 ### What changed
 
-- `CDMarkdownLabel` now uses `CDMarkdownTextLayoutManager` internally on iOS 16+. All layout, text rect measurement, and link hit-testing go through the TextKit 2 path.
-- `CDMarkdownTextView` installs `CDMarkdownTextLayoutManager` on iOS 16+ via `makeTextView(frame:)` or `configure()`.
+- `CDMarkdownLabel` now assigns a `CDMarkdownTextLayoutDelegate` to a stock `NSTextLayoutManager` internally on iOS 16+. All layout, text rect measurement, and link hit-testing go through the TextKit 2 path.
+- `CDMarkdownTextView` assigns a `CDMarkdownTextLayoutDelegate` on iOS 16+ via `makeTextView(frame:)` or `configure()`.
 - Rounded-corner backgrounds are drawn by `CDMarkdownTextLayoutFragment` in the TextKit 2 path, replacing the `NSLayoutManager`-based drawing in `CDMarkdownLayoutManager`.
 
 ### Constructing CDMarkdownTextView

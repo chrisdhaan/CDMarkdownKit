@@ -125,6 +125,21 @@
                 super.attributedText
             }
             set {
+                guard let newValue else {
+                    urlRanges.removeAll()
+                    if #available(iOS 16.0, tvOS 16.0, *),
+                       let contentStorage = tk2ContentStorage as? NSTextContentStorage {
+                        contentStorage.textStorage?.setAttributedString(NSAttributedString())
+                    } else if let customTextStorage {
+                        customTextStorage.setAttributedString(NSAttributedString())
+                    }
+                    #if os(iOS) || os(visionOS)
+                        self.accessibilityAttributedLabel = nil
+                    #endif
+                    setNeedsDisplay()
+                    return
+                }
+
                 parseTextAndExtractURLRanges(newValue)
 
                 if #available(iOS 16.0, tvOS 16.0, *),
@@ -210,6 +225,7 @@
 
         private func configureTK1() {
             customLayoutManager = CDMarkdownLayoutManager()
+            customLayoutManager.delegate = self
 
             if let textContainer = customTextContainer {
                 customLayoutManager.addTextContainer(textContainer)
@@ -307,7 +323,9 @@
                 var maxY: CGFloat = 0
                 tk2.enumerateTextLayoutFragments(from: tk2.documentRange.location, options: []) { fragment in
                     let bottom = fragment.layoutFragmentFrame.maxY
-                    if bottom > maxY { maxY = bottom }
+                    if bottom > maxY {
+                        maxY = bottom
+                    }
                     return true
                 }
                 let textHeight = ceil(maxY)
@@ -331,13 +349,17 @@
 
         override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             guard let touch = touches.first else { return }
-            if self.onTouch(touch) { return }
+            if self.onTouch(touch) {
+                return
+            }
             super.touchesBegan(touches, with: event)
         }
 
         override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
             guard let touch = touches.first else { return }
-            if self.onTouch(touch) { return }
+            if self.onTouch(touch) {
+                return
+            }
             super.touchesMoved(touches, with: event)
         }
 
@@ -349,7 +371,9 @@
 
         override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
             guard let touch = touches.first else { return }
-            if self.onTouch(touch) { return }
+            if self.onTouch(touch) {
+                return
+            }
             super.touchesEnded(touches, with: event)
         }
 
@@ -536,7 +560,7 @@
                                                        in: customTextContainer)
 
             for urlRange in urlRanges {
-                if index >= urlRange.range.location, index <= urlRange.range.location + urlRange.range.length {
+                if index >= urlRange.range.location, index < urlRange.range.location + urlRange.range.length {
                     return urlRange
                 }
             }

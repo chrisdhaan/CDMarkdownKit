@@ -16,7 +16,9 @@ struct CDMarkdownParserDisabledElementTests {
         let result = await parser.parse("# Heading")
         var foundLargeFont = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont, font.pointSize > 17 { foundLargeFont = true }
+            if let font = value as? CDFont, font.pointSize > 17 {
+                foundLargeFont = true
+            }
         }
         #expect(!foundLargeFont)
         #expect(result.string.contains("#"))
@@ -28,7 +30,9 @@ struct CDMarkdownParserDisabledElementTests {
         let result = await parser.parse("**bold**")
         var foundBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont, font.isBold { foundBold = true }
+            if let font = value as? CDFont, font.isBold {
+                foundBold = true
+            }
         }
         #expect(!foundBold)
     }
@@ -40,7 +44,9 @@ struct CDMarkdownParserDisabledElementTests {
         let result = await parser.parse("**bold**")
         var foundBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont, font.isBold { foundBold = true }
+            if let font = value as? CDFont, font.isBold {
+                foundBold = true
+            }
         }
         #expect(foundBold)
     }

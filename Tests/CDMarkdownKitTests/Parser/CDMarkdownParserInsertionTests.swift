@@ -17,7 +17,9 @@ struct CDMarkdownParserInsertionTests {
         let result = await parser.parse("**bold**")
         var foundBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont, font.isBold { foundBold = true }
+            if let font = value as? CDFont, font.isBold {
+                foundBold = true
+            }
         }
         #expect(foundBold)
     }
@@ -38,7 +40,9 @@ struct CDMarkdownParserInsertionTests {
         let result = await parser.parse("# Heading")
         var foundHeading = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let font = value as? CDFont, font.pointSize > 17 { foundHeading = true }
+            if let font = value as? CDFont, font.pointSize > 17 {
+                foundHeading = true
+            }
         }
         #expect(foundHeading)
     }

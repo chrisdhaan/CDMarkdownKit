@@ -13,7 +13,9 @@ struct CDMarkdownLinkReferenceTests {
         var foundURL: URL?
         result.enumerateAttribute(.link,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let url = value as? URL { foundURL = url }
+            if let url = value as? URL {
+                foundURL = url
+            }
         }
         #expect(foundURL?.absoluteString == "https://example.com")
         #expect(result.string.contains("the guide"))
@@ -26,7 +28,9 @@ struct CDMarkdownLinkReferenceTests {
         var foundURL: URL?
         result.enumerateAttribute(.link,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let url = value as? URL { foundURL = url }
+            if let url = value as? URL {
+                foundURL = url
+            }
         }
         #expect(foundURL?.absoluteString == "https://example.com")
     }
@@ -37,7 +41,9 @@ struct CDMarkdownLinkReferenceTests {
         var foundURL: URL?
         result.enumerateAttribute(.link,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let url = value as? URL { foundURL = url }
+            if let url = value as? URL {
+                foundURL = url
+            }
         }
         #expect(foundURL?.absoluteString == "https://example.com")
     }
@@ -55,7 +61,9 @@ struct CDMarkdownLinkReferenceTests {
         var foundTitle: String?
         result.enumerateAttribute(.cdMarkdownLinkTitle,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let title = value as? String { foundTitle = title }
+            if let title = value as? String {
+                foundTitle = title
+            }
         }
         #expect(foundTitle == "My Title")
     }
@@ -66,7 +74,9 @@ struct CDMarkdownLinkReferenceTests {
         var foundURL: URL?
         result.enumerateAttribute(.link,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let url = value as? URL { foundURL = url }
+            if let url = value as? URL {
+                foundURL = url
+            }
         }
         #expect(foundURL == nil)
         #expect(result.string.contains("[link][unknown]"))
@@ -78,7 +88,9 @@ struct CDMarkdownLinkReferenceTests {
         var urls: [String] = []
         result.enumerateAttribute(.link,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let url = value as? URL { urls.append(url.absoluteString) }
+            if let url = value as? URL {
+                urls.append(url.absoluteString)
+            }
         }
         #expect(urls.contains("https://a.com"))
         #expect(urls.contains("https://b.com"))
@@ -96,7 +108,9 @@ struct CDMarkdownLinkReferenceTests {
         var foundURL: URL?
         result.enumerateAttribute(.link,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let url = value as? URL { foundURL = url }
+            if let url = value as? URL {
+                foundURL = url
+            }
         }
         #expect(foundURL?.absoluteString == "https://example.com")
     }

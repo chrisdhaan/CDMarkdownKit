@@ -20,7 +20,9 @@ struct CDMarkdownParserStyleTests {
         var found = false
         result.enumerateAttribute(.foregroundColor,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let color = value as? CDColor, color == CDColor.red { found = true }
+            if let color = value as? CDColor, color == CDColor.red {
+                found = true
+            }
         }
         #expect(found)
     }
@@ -35,7 +37,9 @@ struct CDMarkdownParserStyleTests {
         var found = false
         result.enumerateAttribute(.backgroundColor,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let color = value as? CDColor, color == CDColor.yellow { found = true }
+            if let color = value as? CDColor, color == CDColor.yellow {
+                found = true
+            }
         }
         #expect(found)
     }
@@ -50,7 +54,9 @@ struct CDMarkdownParserStyleTests {
         var found = false
         result.enumerateAttribute(.foregroundColor,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let color = value as? CDColor, color == CDColor.blue { found = true }
+            if let color = value as? CDColor, color == CDColor.blue {
+                found = true
+            }
         }
         #expect(found)
     }
@@ -65,7 +71,9 @@ struct CDMarkdownParserStyleTests {
         var found = false
         result.enumerateAttribute(.backgroundColor,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if let color = value as? CDColor, color == CDColor.green { found = true }
+            if let color = value as? CDColor, color == CDColor.green {
+                found = true
+            }
         }
         #expect(found)
     }
@@ -80,7 +88,9 @@ struct CDMarkdownParserStyleTests {
         var found = false
         result.enumerateAttribute(.underlineStyle,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
-            if value != nil { found = true }
+            if value != nil {
+                found = true
+            }
         }
         #expect(found)
     }

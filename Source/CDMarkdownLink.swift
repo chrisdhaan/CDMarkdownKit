@@ -92,9 +92,7 @@ open class CDMarkdownLink: CDMarkdownLinkElement {
         guard match.numberOfRanges == 3 else { return }
 
         let nsString = attributedString.string as NSString
-        let linkStartInResult = nsString.range(of: "(",
-                                               options: .backwards,
-                                               range: match.range).location
+        let linkStartInResult = match.nsRange(atIndex: 2).location - 1
         let linkRange = NSRange(location: linkStartInResult,
                                 length: match.range.length + match.range.location - linkStartInResult - 1)
         let linkURLString = nsString.substring(with: NSRange(location: linkRange.location + 1,

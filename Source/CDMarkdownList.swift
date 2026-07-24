@@ -35,7 +35,7 @@
 @MainActor
 open class CDMarkdownList: CDMarkdownLevelElement {
 
-    fileprivate static let regex = "^\\s*([\\*\\+\\-]{1,%@})[ \t]+(.+)$"
+    fileprivate static let regex = "^(\\s*)([\\*\\+\\-]{1,%@})[ \t]+(.+)$"
 
     /// The font for list item text.
     open var font: CDFont?
@@ -92,10 +92,44 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         self.underlineStyle = underlineStyle
     }
 
+    /// Nesting level is `markerLength + indentLevel`. Indentation only contributes to the
+    /// level when the caller has set `CDMarkdownParser.preserveLeadingWhitespace = true` --
+    /// by default the parser strips all leading whitespace before this regex ever runs, so
+    /// indentation-based nesting is a documented no-op under default settings.
+    open func match(_ match: NSTextCheckingResult,
+                    attributedString: NSMutableAttributedString) {
+        guard match.numberOfRanges == 4 else { return }
+
+        let indentRange = match.nsRange(atIndex: 1)
+        let markerRange = match.nsRange(atIndex: 2)
+        let contentRange = match.nsRange(atIndex: 3)
+        let indentString = (attributedString.string as NSString).substring(with: indentRange)
+        let level = markerRange.length + indentLevel(for: indentString)
+
+        addFullAttributes(attributedString,
+                          range: match.nsRange(atIndex: 0),
+                          level: level)
+        addAttributes(attributedString,
+                      range: contentRange,
+                      level: level)
+        let formatRange = NSRange(location: indentRange.location,
+                                  length: contentRange.location - indentRange.location)
+        formatText(attributedString,
+                   range: formatRange,
+                   level: level)
+    }
+
+    private func indentLevel(for indentString: String) -> Int {
+        let tabCount = indentString.filter { $0 == "\t" }.count
+        let spaceCount = indentString.count - tabCount
+        let separatorWidth = max(separator.count, 1)
+        return tabCount + (spaceCount / separatorWidth)
+    }
+
     open func formatText(_ attributedString: NSMutableAttributedString,
                          range: NSRange,
                          level: Int) {
-        var string = (0 ..< level).reduce("") { string, _ -> String in
+        var string = (0 ..< (level - 1)).reduce("") { string, _ -> String in
             return "\(string)\(separator)"
         }
         string = "\(string)\(indicator) "
@@ -108,7 +142,7 @@ open class CDMarkdownList: CDMarkdownLevelElement {
                                 level: Int) {
         let indicatorSize = "\(indicator) ".sizeWithAttributes(attributes)
         let separatorSize = separator.sizeWithAttributes(attributes)
-        let floatLevel = CGFloat(level)
+        let floatLevel = CGFloat(level - 1)
         guard let paragraphStyle = self.paragraphStyle else { return }
         let updatedParagraphStyle = paragraphStyle.mutableCopy() as? NSMutableParagraphStyle ?? NSMutableParagraphStyle()
         updatedParagraphStyle.headIndent = indicatorSize.width + (separatorSize.width * floatLevel)

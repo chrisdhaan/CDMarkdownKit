@@ -47,15 +47,16 @@ open class CDMarkdownEscaping: CDMarkdownElement {
 
     open func match(_ match: NSTextCheckingResult,
                     attributedString: NSMutableAttributedString) {
-        let range = NSRange(location: match.range.location + 1,
-                            length: 1)
-        // escape one character
-        let matchString = attributedString.attributedSubstring(from: range).string
-        if let escapedString = [UInt16](matchString.utf16).first
-            .flatMap({ (value: UInt16) -> String in String(format: "%04x",
-                                                           value) }) {
-            attributedString.replaceCharacters(in: range,
-                                               with: escapedString)
-        }
+        // The escaped character may be a single UTF-16 unit or a surrogate pair (e.g. most
+        // emoji); replace the whole match (backslash + character) with one "\xxxx" group per
+        // UTF-16 unit so CDMarkdownUnescaping can decode multi-unit characters together.
+        let characterRange = NSRange(location: match.range.location + 1,
+                                     length: match.range.length - 1)
+        let matchString = attributedString.attributedSubstring(from: characterRange).string
+        let escapedString = matchString.utf16.map { unit -> String in
+            "\\" + String(format: "%04x", unit)
+        }.joined()
+        attributedString.replaceCharacters(in: match.range,
+                                           with: escapedString)
     }
 }

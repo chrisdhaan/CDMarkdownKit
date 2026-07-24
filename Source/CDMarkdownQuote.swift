@@ -86,7 +86,7 @@ open class CDMarkdownQuote: CDMarkdownLevelElement {
     open func formatText(_ attributedString: NSMutableAttributedString,
                          range: NSRange,
                          level: Int) {
-        var string = (0 ..< level).reduce("") { (string: String, _: Int) -> String in
+        var string = (0 ..< (level - 1)).reduce("") { (string: String, _: Int) -> String in
             return "\(string)\(separator)"
         }
         string = "\(string)\(indicator) "
