@@ -65,14 +65,17 @@
         /// The custom text storage that holds the attributed text and layout information.
         open var customTextStorage: NSTextStorage!
 
-        /// Holds an NSTextLayoutManager on iOS/tvOS 16+.
-        private var tk2LayoutManager: Any?
+        /// Holds an NSTextLayoutManager on iOS/tvOS 16+. Internal (not `private`) so tests can
+        /// inspect and force TextKit 2 wiring via `@testable import`.
+        internal var tk2LayoutManager: Any?
 
-        /// Holds an NSTextContentStorage on iOS/tvOS 16+.
-        private var tk2ContentStorage: Any?
+        /// Holds an NSTextContentStorage on iOS/tvOS 16+. Internal (not `private`) so tests can
+        /// inspect and force TextKit 2 wiring via `@testable import`.
+        internal var tk2ContentStorage: Any?
 
-        /// Holds a CDMarkdownTextLayoutDelegate on iOS/tvOS 16+.
-        private var tk2LayoutDelegate: Any?
+        /// Holds a CDMarkdownTextLayoutDelegate on iOS/tvOS 16+. Internal (not `private`) so tests can
+        /// inspect and force TextKit 2 wiring via `@testable import`.
+        internal var tk2LayoutDelegate: Any?
 
         /// Delegate that receives callbacks when links in the label are tapped.
         /// Set this to handle link navigation, e.g., opening URLs in Safari.
@@ -168,7 +171,8 @@
         }
 
         private var selectedURLRange: URLRange?
-        private lazy var urlRanges = [URLRange]()
+        /// Internal (not `private`) so tests can assert on extracted link ranges via `@testable import`.
+        internal lazy var urlRanges = [URLRange]()
 
         override public init(frame: CGRect) {
             super.init(frame: frame)
@@ -200,8 +204,11 @@
             }
         }
 
+        /// Internal (not `private`) so tests can force the TextKit 2 configuration path
+        /// deterministically via `@testable import`, independent of the automatic
+        /// `configure()` call already made during `init`.
         @available(iOS 16.0, tvOS 16.0, *)
-        private func configureTK2() {
+        internal func configureTK2() {
             if customTextContainer == nil {
                 customTextContainer = NSTextContainer()
                 customTextContainer.lineFragmentPadding = 0
@@ -223,7 +230,10 @@
             tk2LayoutDelegate = delegate
         }
 
-        private func configureTK1() {
+        /// Internal (not `private`) so tests can force the TextKit 1 fallback path via
+        /// `@testable import` — every CI/local simulator is iOS 16+, so `#available` alone
+        /// can never select this branch inside a test.
+        internal func configureTK1() {
             customLayoutManager = CDMarkdownLayoutManager()
             customLayoutManager.delegate = self
 
@@ -314,7 +324,9 @@
                                            at: glyphsPosition)
         }
 
-        private func calculateGlyphsPositionInView() -> CGPoint {
+        /// Internal (not `private`) so tests can compute the same view-space offset the
+        /// hit-testing and drawing code uses, to build correct input points for `urlRange(at:)`.
+        internal func calculateGlyphsPositionInView() -> CGPoint {
             // Returns the XY offset of the range of glyphs from the view's origin
             var textOffset = CGPoint.zero
 
@@ -496,7 +508,11 @@
             }
         }
 
-        private func urlRange(at location: CGPoint) -> URLRange? {
+        /// Internal (not `private`) — this is the core tap-to-link hit-testing entry point
+        /// (dispatches to the TK1/TK2 variants below). Exposed so tests can drive it directly
+        /// with a `CGPoint`, since `UITouch` has no public initializer and can't be synthesized
+        /// in a unit test.
+        internal func urlRange(at location: CGPoint) -> URLRange? {
             if #available(iOS 16.0, tvOS 16.0, *),
                let tk2Manager = tk2LayoutManager as? NSTextLayoutManager,
                let textStorage = tk2Manager.textContentManager as? NSTextContentStorage {
