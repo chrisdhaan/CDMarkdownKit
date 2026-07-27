@@ -218,7 +218,7 @@
             }
 
             let contentStorage = NSTextContentStorage()
-            guard let layoutManager = contentStorage.textLayoutManagers.first else { return }
+            let layoutManager = NSTextLayoutManager()
             let delegate = CDMarkdownTextLayoutDelegate()
             delegate.layoutManager = layoutManager
             layoutManager.delegate = delegate
