@@ -124,5 +124,30 @@ import Testing
 
             #expect(label.urlRange(at: CGPoint(x: -1000, y: -1000)) == nil)
         }
+
+        @available(iOS 16.0, tvOS 16.0, *)
+        @Test func roundAllCornersPropagatesToTK2Delegate() {
+            let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
+            label.configureTK2()
+            label.roundAllCorners = true
+
+            guard let delegate = label.tk2LayoutDelegate as? CDMarkdownTextLayoutDelegate else {
+                Issue.record("expected a CDMarkdownTextLayoutDelegate")
+                return
+            }
+            #expect(delegate.roundAllCorners == true)
+        }
+
+        @Test func roundAllCornersPropagatesToTK1LayoutManagerWhenTK2NotConfigured() {
+            let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
+            // roundAllCorners's didSet routes on whether tk2LayoutDelegate currently holds a
+            // CDMarkdownTextLayoutDelegate; clear it so the TK1 branch is exercised even
+            // though init() already ran configureTK2() on a modern simulator.
+            label.tk2LayoutDelegate = nil
+            label.configureTK1()
+            label.roundAllCorners = true
+
+            #expect(label.customLayoutManager.roundAllCorners == true)
+        }
     }
 #endif
