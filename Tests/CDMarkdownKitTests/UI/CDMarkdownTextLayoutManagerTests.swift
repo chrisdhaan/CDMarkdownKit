@@ -6,10 +6,10 @@ import Testing
 @testable import CDMarkdownKit
 
 #if os(iOS) || os(tvOS) || os(visionOS)
-    @available(iOS 16.0, tvOS 16.0, *)
     @MainActor
     struct CDMarkdownTextLayoutManagerTests {
 
+        @available(iOS 16.0, tvOS 16.0, *)
         @Test func delegateSuppliesCustomFragmentType() {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
             label.configureTK2()
@@ -32,6 +32,7 @@ import Testing
             #expect(sawCustomFragment)
         }
 
+        @available(iOS 16.0, tvOS 16.0, *)
         @Test func roundAllCornersPropagatesToNewlyCreatedFragments() {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
             label.configureTK2()
@@ -56,6 +57,7 @@ import Testing
             #expect(checkedAtLeastOneFragment)
         }
 
+        @available(iOS 16.0, tvOS 16.0, *)
         @Test func changingRoundAllCornersInvalidatesLayoutAndRecreatesFragments() {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
             label.configureTK2()

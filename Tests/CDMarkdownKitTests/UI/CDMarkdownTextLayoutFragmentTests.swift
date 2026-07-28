@@ -6,7 +6,6 @@ import Testing
 @testable import CDMarkdownKit
 
 #if os(iOS) || os(tvOS) || os(visionOS)
-    @available(iOS 16.0, tvOS 16.0, *)
     @MainActor
     struct CDMarkdownTextLayoutFragmentTests {
 
@@ -18,6 +17,7 @@ import Testing
         /// `NSTextLayoutManager` — `.textLayoutManagers` stays empty until one is explicitly
         /// created and added via `addTextLayoutManager(_:)`. This mirrors the construction
         /// pattern in `CDMarkdownLabel.configureTK2()`.
+        @available(iOS 16.0, tvOS 16.0, *)
         private func layOutFragments(markdown: String) -> (
             textStorage: NSTextStorage,
             fragments: [(rangeStart: Int, lineFragments: [NSTextLineFragment])]
@@ -47,6 +47,7 @@ import Testing
             return (textStorage, fragments)
         }
 
+        @available(iOS 16.0, tvOS 16.0, *)
         @Test func roundedBackgroundFillIsNarrowerThanFullLineWhenCodeSharesLineWithPlainText() {
             let (textStorage, fragments) = layOutFragments(markdown: "before `code` after")
             guard let firstFragment = fragments.first, let firstLine = firstFragment.lineFragments.first else {
@@ -68,6 +69,7 @@ import Testing
             #expect(fill.rect.minX > 0)
         }
 
+        @available(iOS 16.0, tvOS 16.0, *)
         @Test func roundedBackgroundFillUsesCorrectOffsetAcrossParagraphs() {
             // squashNewlines (default true) collapses "\n\n" to "\n" before parsing, so this still yields
             // exactly 2 paragraphs/fragments — not 3, and not 1.
@@ -110,6 +112,7 @@ import Testing
             #expect(zeroOffsetFills != correctFills)
         }
 
+        @available(iOS 16.0, tvOS 16.0, *)
         @Test func roundedBackgroundFillsEmptyWhenNoRoundedAttributePresent() {
             let (textStorage, fragments) = layOutFragments(markdown: "just plain text, no code spans")
             guard let firstFragment = fragments.first else {
@@ -124,6 +127,7 @@ import Testing
             #expect(fills.isEmpty)
         }
 
+        @available(iOS 16.0, tvOS 16.0, *)
         @Test func roundedBackgroundFillsSkipsOutOfBoundsLines() {
             let (textStorage, fragments) = layOutFragments(markdown: "before `code` after")
             guard let firstFragment = fragments.first else {
