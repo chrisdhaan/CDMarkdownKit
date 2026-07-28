@@ -45,5 +45,81 @@ import Testing
             #expect(label.tk2LayoutManager is NSTextLayoutManager)
             #expect(label.tk2LayoutDelegate is CDMarkdownTextLayoutDelegate)
         }
+
+        @available(iOS 16.0, tvOS 16.0, *)
+        @Test func urlRangeAtLocationFindsLinkTK2() {
+            let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
+            label.configureTK2()
+            let parser = CDMarkdownParser()
+            label.attributedText = parser.parse("[a link](https://example.com)")
+
+            guard let layoutManager = label.tk2LayoutManager as? NSTextLayoutManager else {
+                Issue.record("expected a TextKit 2 layout manager")
+                return
+            }
+            layoutManager.ensureLayout(for: layoutManager.documentRange)
+
+            var firstFragmentFrame: CGRect = .zero
+            layoutManager.enumerateTextLayoutFragments(from: layoutManager.documentRange.location, options: []) { fragment in
+                firstFragmentFrame = fragment.layoutFragmentFrame
+                return false
+            }
+            #expect(firstFragmentFrame != .zero)
+
+            let glyphsPosition = label.calculateGlyphsPositionInView()
+            let hitPoint = CGPoint(x: glyphsPosition.x + firstFragmentFrame.midX,
+                                   y: glyphsPosition.y + firstFragmentFrame.midY)
+
+            #expect(label.urlRange(at: hitPoint)?.url == URL(string: "https://example.com"))
+        }
+
+        @available(iOS 16.0, tvOS 16.0, *)
+        @Test func urlRangeAtLocationReturnsNilFarOutsideTextTK2() {
+            let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
+            label.configureTK2()
+            let parser = CDMarkdownParser()
+            label.attributedText = parser.parse("[a link](https://example.com)")
+
+            guard let layoutManager = label.tk2LayoutManager as? NSTextLayoutManager else {
+                Issue.record("expected a TextKit 2 layout manager")
+                return
+            }
+            layoutManager.ensureLayout(for: layoutManager.documentRange)
+
+            #expect(label.urlRange(at: CGPoint(x: -1000, y: -1000)) == nil)
+        }
+
+        @Test func urlRangeAtLocationFindsLinkTK1() {
+            let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
+            // Force the TK1 dispatch branch: urlRange(at:) routes on whether tk2LayoutManager
+            // currently holds an NSTextLayoutManager, not merely on #available.
+            label.tk2LayoutManager = nil
+            label.configureTK1()
+            let parser = CDMarkdownParser()
+            label.attributedText = parser.parse("[a link](https://example.com)")
+
+            label.customLayoutManager.ensureLayout(for: label.customTextContainer)
+            let glyphRange = label.customLayoutManager.glyphRange(for: label.customTextContainer)
+            let boundingRect = label.customLayoutManager.boundingRect(forGlyphRange: glyphRange, in: label.customTextContainer)
+            #expect(boundingRect != .zero)
+
+            let glyphsPosition = label.calculateGlyphsPositionInView()
+            let hitPoint = CGPoint(x: glyphsPosition.x + boundingRect.midX,
+                                   y: glyphsPosition.y + boundingRect.midY)
+
+            #expect(label.urlRange(at: hitPoint)?.url == URL(string: "https://example.com"))
+        }
+
+        @Test func urlRangeAtLocationReturnsNilOutsideBoundingRectTK1() {
+            let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
+            label.tk2LayoutManager = nil
+            label.configureTK1()
+            let parser = CDMarkdownParser()
+            label.attributedText = parser.parse("[a link](https://example.com)")
+
+            label.customLayoutManager.ensureLayout(for: label.customTextContainer)
+
+            #expect(label.urlRange(at: CGPoint(x: -1000, y: -1000)) == nil)
+        }
     }
 #endif
