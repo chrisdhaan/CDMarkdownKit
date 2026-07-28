@@ -59,7 +59,7 @@ import Testing
         @Test func fillBackgroundRectArrayThreeWrappedRectsDoesNotCrash() {
             let layoutManager = CDMarkdownLayoutManager()
             let textStorage = NSTextStorage(string: "a longer wrapped code span")
-            textStorage.addAttribute(.cdMarkdownRoundedBackground, value: true, range: NSRange(location: 0, length: 27))
+            textStorage.addAttribute(.cdMarkdownRoundedBackground, value: true, range: NSRange(location: 0, length: 26))
             textStorage.addLayoutManager(layoutManager)
 
             let renderer = UIGraphicsImageRenderer(size: CGSize(width: 100, height: 60))
@@ -74,7 +74,7 @@ import Testing
                 rects.withUnsafeBufferPointer { buffer in
                     layoutManager.fillBackgroundRectArray(buffer.baseAddress!,
                                                           count: buffer.count,
-                                                          forCharacterRange: NSRange(location: 0, length: 27),
+                                                          forCharacterRange: NSRange(location: 0, length: 26),
                                                           color: .red)
                 }
             }
