@@ -69,6 +69,8 @@ import Testing
         }
 
         @Test func roundedBackgroundFillUsesCorrectOffsetAcrossParagraphs() {
+            // squashNewlines (default true) collapses "\n\n" to "\n" before parsing, so this still yields
+            // exactly 2 paragraphs/fragments — not 3, and not 1.
             let (textStorage, fragments) = layOutFragments(markdown: "first `alpha` line\n\nsecond `beta` line")
             #expect(fragments.count >= 2)
             guard fragments.count >= 2 else { return }
@@ -82,6 +84,21 @@ import Testing
                                                                                    origin: .zero)
             #expect(correctFills.count == 1)
 
+            guard let correctFill = correctFills.first, let secondLine = secondParagraph.lineFragments.first else {
+                Issue.record("expected a fill and a line fragment")
+                return
+            }
+            // Positive geometry regression: a `subrangeInLine` translation regression (e.g.
+            // `subrange.location - absoluteLocation` accidentally becoming `subrange.location`)
+            // would still produce a single fill, but with garbage/clamped geometry. Asserting on
+            // the fill's actual rect — not just its count — catches that case.
+            #expect(correctFill.rect.width < secondLine.typographicBounds.width)
+            #expect(correctFill.rect.minX > 0)
+
+            // zeroOffsetFills still differs from correctFills here because "alpha" and "beta" sit at
+            // different local character indices within their lines — but the geometry assertions above
+            // are the real regression guard; this comparison is a secondary signal, not the primary one.
+            //
             // Cross-paragraph regression: the pre-fix code used the fragment-local range
             // directly (equivalent to always passing a start offset of 0). Reproducing that
             // here on the second paragraph's real line fragments must NOT reproduce the
@@ -101,6 +118,20 @@ import Testing
             }
 
             let fills = CDMarkdownTextLayoutFragment.roundedBackgroundFills(fragmentRangeStart: firstFragment.rangeStart,
+                                                                            textLineFragments: firstFragment.lineFragments,
+                                                                            textStorage: textStorage,
+                                                                            origin: .zero)
+            #expect(fills.isEmpty)
+        }
+
+        @Test func roundedBackgroundFillsSkipsOutOfBoundsLines() {
+            let (textStorage, fragments) = layOutFragments(markdown: "before `code` after")
+            guard let firstFragment = fragments.first else {
+                Issue.record("expected at least one laid-out fragment")
+                return
+            }
+
+            let fills = CDMarkdownTextLayoutFragment.roundedBackgroundFills(fragmentRangeStart: textStorage.length + 1000,
                                                                             textLineFragments: firstFragment.lineFragments,
                                                                             textStorage: textStorage,
                                                                             origin: .zero)
