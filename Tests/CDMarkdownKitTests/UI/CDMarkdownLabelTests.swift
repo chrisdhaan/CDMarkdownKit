@@ -92,8 +92,10 @@ import Testing
         @Test func urlRangeAtLocationFindsLinkTK1() {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
             // Force the TK1 dispatch branch: urlRange(at:) routes on whether tk2LayoutManager
-            // currently holds an NSTextLayoutManager, not merely on #available.
+            // holds an NSTextLayoutManager, while attributedText's setter routes separately on
+            // tk2ContentStorage, so both must be cleared before assigning attributedText.
             label.tk2LayoutManager = nil
+            label.tk2ContentStorage = nil
             label.configureTK1()
             let parser = CDMarkdownParser()
             label.attributedText = parser.parse("[a link](https://example.com)")
@@ -113,6 +115,7 @@ import Testing
         @Test func urlRangeAtLocationReturnsNilOutsideBoundingRectTK1() {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
             label.tk2LayoutManager = nil
+            label.tk2ContentStorage = nil
             label.configureTK1()
             let parser = CDMarkdownParser()
             label.attributedText = parser.parse("[a link](https://example.com)")
