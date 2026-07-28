@@ -31,5 +31,54 @@ import Testing
 
             #expect(textView.textStorage.layoutManagers.contains(where: { $0 === textView.customLayoutManager }))
         }
+
+        @available(iOS 16.0, tvOS 16.0, *)
+        @Test func configureTK2SetsTK2Delegate() {
+            let textContainer = NSTextContainer()
+            let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                              textContainer: textContainer)
+            textView.configureTK2()
+            #expect(textView.tk2Delegate is CDMarkdownTextLayoutDelegate)
+        }
+
+        @Test func configureTK1AttachesCustomLayoutManagerToTextStorage() {
+            let textContainer = NSTextContainer()
+            let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                              textContainer: textContainer)
+            textView.configureTK1()
+            #expect(textView.customLayoutManager != nil)
+            #expect(textView.textStorage.layoutManagers.contains(where: { $0 === textView.customLayoutManager }))
+        }
+
+        @Test func makeTextViewFactoryConfiguresTextView() {
+            let textView = CDMarkdownTextView.makeTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
+            #expect(textView.isScrollEnabled == true)
+            #expect(textView.isSelectable == false)
+        }
+
+        @available(iOS 16.0, tvOS 16.0, *)
+        @Test func roundAllCornersPropagatesToTK2Delegate() {
+            let textContainer = NSTextContainer()
+            let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                              textContainer: textContainer)
+            textView.configureTK2()
+            textView.roundAllCorners = true
+
+            guard let delegate = textView.tk2Delegate as? CDMarkdownTextLayoutDelegate else {
+                Issue.record("expected a CDMarkdownTextLayoutDelegate")
+                return
+            }
+            #expect(delegate.roundAllCorners == true)
+        }
+
+        @Test func roundAllCornersPropagatesToTK1LayoutManagerWhenTK2NotConfigured() {
+            let textContainer = NSTextContainer()
+            let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                              textContainer: textContainer)
+            textView.configureTK1()
+            textView.roundAllCorners = true
+
+            #expect(textView.customLayoutManager.roundAllCorners == true)
+        }
     }
 #endif
