@@ -566,13 +566,25 @@
         private func urlRangeTK1(at location: CGPoint) -> URLRange? {
             guard customTextStorage.length > 0 else { return nil }
 
+            // Mirrors urlRangeTK2's adjustment: boundingRect/glyphIndex operate in the text
+            // container's own coordinate space, which doesn't include the vertical-centering
+            // offset drawText(in:)/calculateGlyphsPositionInView() apply when the text is
+            // shorter than the label's bounds. Without subtracting it here, a tap on a
+            // vertically-centered short label would compare against the wrong rect and never
+            // register a hit.
+            let glyphsPosition = calculateGlyphsPositionInView()
+            let adjustedLocation = CGPoint(
+                x: location.x - glyphsPosition.x,
+                y: location.y - glyphsPosition.y
+            )
+
             let boundingRect = customLayoutManager.boundingRect(forGlyphRange: NSRange(location: 0,
                                                                                        length: customTextStorage.length),
                                                                 in: customTextContainer)
 
-            guard boundingRect.contains(location) else { return nil }
+            guard boundingRect.contains(adjustedLocation) else { return nil }
 
-            let index = customLayoutManager.glyphIndex(for: location,
+            let index = customLayoutManager.glyphIndex(for: adjustedLocation,
                                                        in: customTextContainer)
 
             for urlRange in urlRanges {
