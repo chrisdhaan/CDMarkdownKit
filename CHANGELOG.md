@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [Unreleased](#unreleased)
 - [4.0.3](#403)
 - [4.0.2](#402)
 - [4.0.1](#401)
@@ -24,6 +25,18 @@ All notable changes to this project will be documented in this file.
 - [1.2.0](#120)
 - [1.1.0](#110)
 - [1.0.0](#100)
+
+---
+
+## [Unreleased]
+
+### Added
+
+- CI now runs the full test suite against real iOS, tvOS, and visionOS simulators, in addition to the existing build-only checks for those platforms.
+
+### Fixed
+
+- Fixed several test files failing to compile for visionOS, due to a platform check that predated visionOS support and was never updated to include it.
 
 ---
 
