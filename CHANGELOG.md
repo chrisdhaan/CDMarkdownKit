@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## Table of Contents
 
+- [4.0.3](#403)
 - [4.0.2](#402)
 - [4.0.1](#401)
 - [4.0.0](#400)
@@ -23,6 +24,21 @@ All notable changes to this project will be documented in this file.
 - [1.2.0](#120)
 - [1.1.0](#110)
 - [1.0.0](#100)
+
+---
+
+## [4.0.3](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.0.3)
+
+Released on 2026-07-31.
+
+### Fixed
+
+- Fixed `CDMarkdownLabel` never rendering any text on iOS and tvOS 16+. Its TextKit 2 setup checked a freshly created content storage for a layout manager it hadn't created yet, so the check always failed and the label silently never configured itself.
+- Fixed link tap hit-testing on `CDMarkdownLabel`'s TextKit 1 (iOS 15) fallback failing to register whenever the label's frame was taller than its displayed text, due to a missing coordinate-space adjustment present on the TextKit 2 path but not the TextKit 1 one.
+
+### Added
+
+- Added test coverage for the TextKit 2 rendering path: `CDMarkdownLabel`/`CDMarkdownTextView`'s TextKit 1/TextKit 2 configuration branching, link tap hit-testing, rounded-corner background drawing (including regression coverage for bugs fixed in 4.0.2), and `roundAllCorners` propagation.
 
 ---
 
