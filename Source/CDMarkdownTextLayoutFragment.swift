@@ -4,6 +4,13 @@
     @available(iOS 16.0, tvOS 16.0, *)
     final class CDMarkdownTextLayoutFragment: NSTextLayoutFragment {
 
+        /// One rounded-corner background rectangle computed for a single attribute run within
+        /// a laid-out line.
+        struct RoundedBackgroundFill: Equatable {
+            let rect: CGRect
+            let color: UIColor
+        }
+
         var roundAllCorners: Bool = false
 
         override func draw(at renderingOrigin: CGPoint, in context: CGContext) {
@@ -18,17 +25,48 @@
                   let tcs = tlm.textContentManager as? NSTextContentStorage,
                   let textStorage = tcs.textStorage else { return }
 
-            // rangeInElement is relative to the document origin (it is not optional on
-            // NSTextLayoutFragment), but its NSTextLocation representation must still be
-            // translated into an absolute integer offset so we can index into the
-            // document-wide textStorage. Without this translation, every paragraph after
-            // the first looks up attributes at the wrong location.
-            let fragmentDocumentRange = rangeInElement
-            let fragmentStart = tcs.offset(from: tcs.documentRange.location, to: fragmentDocumentRange.location)
+            let fragmentStart = tcs.offset(from: tcs.documentRange.location, to: rangeInElement.location)
+
+            for fill in Self.roundedBackgroundFills(fragmentRangeStart: fragmentStart,
+                                                    textLineFragments: textLineFragments,
+                                                    textStorage: textStorage,
+                                                    origin: origin) {
+                let path = UIBezierPath(roundedRect: fill.rect, cornerRadius: 3)
+                context.saveGState()
+                fill.color.setFill()
+                path.fill()
+                context.restoreGState()
+            }
+        }
+
+        /// Computes the rounded-background fill rectangles for a set of laid-out line
+        /// fragments, restricted to the `.cdMarkdownRoundedBackground`-attributed sub-ranges
+        /// within each line.
+        ///
+        /// Pulled out of `drawRoundedBackgrounds` as a pure function (no `CGContext`, no live
+        /// `NSTextLayoutManager`) so the geometry math — including the document-absolute
+        /// offset translation and the per-run rect narrowing — can be unit tested directly
+        /// with real-but-manually-driven `NSTextLineFragment`/`NSTextStorage` instances,
+        /// instead of only being exercisable by rendering and diffing pixels.
+        ///
+        /// - Parameters:
+        ///   - fragmentRangeStart: The document-absolute character offset where this text
+        ///     layout fragment's range begins. Every paragraph after the first has a non-zero
+        ///     offset; using the fragment-local range directly here (instead of translating
+        ///     it) was a cross-paragraph bug.
+        ///   - textLineFragments: The line fragments belonging to this text layout fragment.
+        ///   - textStorage: The document's text storage, used to read
+        ///     `.cdMarkdownRoundedBackground` and `.backgroundColor` attributes.
+        ///   - origin: The rendering origin the caller is about to draw at.
+        static func roundedBackgroundFills(fragmentRangeStart: Int,
+                                           textLineFragments: [NSTextLineFragment],
+                                           textStorage: NSTextStorage,
+                                           origin: CGPoint) -> [RoundedBackgroundFill] {
+            var fills: [RoundedBackgroundFill] = []
 
             for lineFragment in textLineFragments {
                 let lineRange = lineFragment.characterRange
-                let absoluteLocation = fragmentStart + lineRange.location
+                let absoluteLocation = fragmentRangeStart + lineRange.location
                 let absoluteRange = NSRange(location: absoluteLocation, length: lineRange.length)
                 guard absoluteRange.location >= 0,
                       NSMaxRange(absoluteRange) <= textStorage.length else { continue }
@@ -44,27 +82,23 @@
 
                     // Restrict the fill rect to the actual background sub-range within this
                     // line, not the entire line's typographic bounds, so plain text sharing a
-                    // line with a code span doesn't get painted too. locationForCharacter(at:)
-                    // returns the horizontal position (line-fragment-local coordinates, upstream
-                    // glyph edge) of a character index within the line; it is not optional.
+                    // line with a code span doesn't get painted too.
                     let subrangeInLine = NSRange(location: subrange.location - absoluteLocation,
                                                  length: subrange.length)
                     let lowerBound = lineFragment.locationForCharacter(at: subrangeInLine.location)
                     let upperBound = lineFragment.locationForCharacter(at: NSMaxRange(subrangeInLine))
 
-                    let fillRect = CGRect(x: min(lowerBound.x, upperBound.x),
-                                          y: lineFragment.typographicBounds.minY,
-                                          width: abs(upperBound.x - lowerBound.x),
-                                          height: lineFragment.typographicBounds.height)
+                    let rect = CGRect(x: min(lowerBound.x, upperBound.x),
+                                      y: lineFragment.typographicBounds.minY,
+                                      width: abs(upperBound.x - lowerBound.x),
+                                      height: lineFragment.typographicBounds.height)
                         .offsetBy(dx: origin.x, dy: origin.y)
                         .insetBy(dx: 0, dy: 1)
-                    let path = UIBezierPath(roundedRect: fillRect, cornerRadius: 3)
-                    context.saveGState()
-                    backgroundColor.setFill()
-                    path.fill()
-                    context.restoreGState()
+                    fills.append(RoundedBackgroundFill(rect: rect, color: backgroundColor))
                 }
             }
+
+            return fills
         }
     }
 #endif

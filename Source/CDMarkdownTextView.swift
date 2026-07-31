@@ -43,8 +43,9 @@
         /// The custom text storage that holds the attributed text and layout information.
         open var customTextStorage: NSTextStorage!
 
-        /// Holds a CDMarkdownTextLayoutDelegate on iOS/tvOS 16+.
-        private var tk2Delegate: Any?
+        /// Holds a CDMarkdownTextLayoutDelegate on iOS/tvOS 16+. Internal (not `private`) so
+        /// tests can inspect TextKit 2 wiring via `@testable import`.
+        internal var tk2Delegate: Any?
 
         /// When `true`, all background color regions (code blocks, syntax blocks, etc.) are drawn with rounded corners.
         /// When `false` (default), backgrounds are drawn as rectangles. Set to `true` for a softer appearance.
@@ -116,9 +117,10 @@
             #endif
         }
 
-        /// Configures TextKit 2 rendering (iOS 16+).
+        /// Configures TextKit 2 rendering (iOS 16+). Internal (not `private`) so tests can
+        /// force this path deterministically via `@testable import`.
         @available(iOS 16.0, tvOS 16.0, *)
-        private func configureTK2() {
+        internal func configureTK2() {
             guard let layoutManager = textLayoutManager else {
                 configureTK1()
                 return
@@ -129,8 +131,10 @@
             tk2Delegate = delegate
         }
 
-        /// Configures TextKit 1 rendering (iOS 15).
-        private func configureTK1() {
+        /// Configures TextKit 1 rendering (iOS 15). Internal (not `private`) so tests can
+        /// force this path deterministically via `@testable import` — every CI/local
+        /// simulator is iOS 16+, so `#available` alone can never select this branch in a test.
+        internal func configureTK1() {
             textStorage.removeLayoutManager(layoutManager)
             customLayoutManager = CDMarkdownLayoutManager()
             textStorage.addLayoutManager(customLayoutManager)

@@ -4,7 +4,7 @@
 
 CDMarkdownKit is a pure-Swift, zero-dependency framework for parsing Markdown text into `NSAttributedString`. It supports rendering inside custom `UILabel` and `UITextView` subclasses with optional rounded-corner background styling for code and syntax blocks.
 
-- **Current version**: 4.0.2
+- **Current version**: 4.0.3
 - **License**: MIT
 - **Author**: Christopher de Haan (contact@christopherdehaan.me)
 
@@ -298,6 +298,28 @@ xcodebuild -project CDMarkdownKit.xcodeproj \
            clean build
 ```
 
+### Running iOS/tvOS/visionOS-gated tests locally (workaround for missing CI test wiring)
+
+`swift test` only runs on the macOS host, where every file under `#if os(iOS) || os(tvOS) || os(visionOS)` compiles to nothing — it cannot execute or even compile-check UIKit-gated tests (e.g. everything in `Tests/CDMarkdownKitTests/UI/`). `xcodebuild -project CDMarkdownKit.xcodeproj` doesn't help either: none of its 5 schemes have `CDMarkdownKitTests` wired into their Testables, and `xcodebuild -list` run from the repo root never shows an SPM package scheme, because the `.xcodeproj`'s presence shadows it.
+
+There is a working command-line path today, discovered while building out TextKit 2 test coverage: copy just the SPM package files into a directory that does **not** contain `CDMarkdownKit.xcodeproj`, so `xcodebuild` falls back to the package's own auto-generated scheme:
+
+```bash
+# From the repo root:
+SCRATCH=$(mktemp -d)
+cp -R Source Tests Package.swift Package.resolved "$SCRATCH"/
+cd "$SCRATCH"
+
+xcodebuild -list   # confirm "CDMarkdownKit-Package" now appears under Schemes
+
+xcodebuild test -scheme CDMarkdownKit-Package \
+                -destination "platform=iOS Simulator,name=iPhone 17 Pro"
+
+rm -rf "$SCRATCH"
+```
+
+This actually compiles and runs the full suite (Swift Testing + XCTest) against a real simulator — not just a typecheck. It's how a handful of real production bugs (`configureTK2()` never configuring TextKit 2, `urlRangeTK1(at:)` missing a coordinate-space offset, a `CDMarkdownTextView` initializer crash) were actually caught: none of them were visible to `swift build`, `swift test`, or `xcodebuild clean build`, only to a real test run. This is a local workaround, not a CI fix — wiring this into `.github/workflows/ci.yml` and the checked-in `.xcodeproj` schemes properly is still an open item.
+
 ---
 
 ## How to Format
@@ -347,6 +369,7 @@ Do **not** run `swift package generate-documentation` directly to publish docs �
 
 | Version | Date       | Notable Change |
 |---------|------------|----------------|
+| 4.0.3   | 2026-07-31 | Fixed `CDMarkdownLabel` never rendering on iOS/tvOS 16+ (TextKit 2 setup always failed); fixed TextKit 1 link-tap hit-testing; added TextKit 2 test coverage |
 | 4.0.2   | 2026-07-24 | Monthly review bug-fix pass: parsing (URL parens, emoji code spans, CRLF), UI rendering (TextKit 1/2, nil crash), doc accuracy |
 | 4.0.1   | 2026-06-15 | Fix infinite recursion in `CDColor.label` on iOS/tvOS/watchOS/visionOS |
 | 4.0.0   | 2026-06-15 | TextKit 2 migration (iOS/tvOS 16+), raised deployment targets, Swift 6 strict concurrency |
