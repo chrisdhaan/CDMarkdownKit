@@ -242,6 +242,7 @@ Defined in `.github/workflows/ci.yml`. Triggered on push to `master` and on pull
 | tvOS | matrix: Xcode 26.2–26.5 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
 | watchOS | matrix: Xcode 26.2–26.5 (macos-26) / Xcode 16.4 (macos-15) | macos-26 / macos-15 | xcodebuild |
 | visionOS | matrix: Xcode 26.2–26.5 (macos-26) | macos-26 | xcodebuild |
+| UITests | single, per-platform (iOS/tvOS/visionOS) | macos-26, Xcode 26.5 | xcodebuild test |
 | Catalyst | single | macos-15, Xcode 16.4 | xcodebuild |
 | CocoaPods | single | macos-15, Xcode 16.4 | pod lib lint |
 | SPM | single | macos-15, Xcode 16.4 | swift test |
@@ -251,6 +252,8 @@ Defined in `.github/workflows/ci.yml`. Triggered on push to `master` and on pull
 | CodeQL | single | macos-15, Xcode 16.4 | codeql-action |
 
 iOS/tvOS/watchOS jobs run 5 matrix entries each (4 Xcode 26.x on macos-26, 1 Xcode 16.4 on macos-15), both Debug and Release builds. visionOS runs 4 entries (macos-26 only), both Debug and Release. macOS/Catalyst/CocoaPods/SPM/SwiftLint/SwiftFormat/Documentation/CodeQL jobs run singles. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
+
+`UITests` actually executes the iOS/tvOS/visionOS-gated test suite (`Tests/CDMarkdownKitTests/UI/` and friends) against a real simulator, one platform per matrix entry — see "Running iOS/tvOS/visionOS-gated tests locally" below for why it stages a bare copy of `Source/`/`Tests/`/`Package.swift` rather than using `CDMarkdownKit.xcodeproj` directly. watchOS has no UI-gated components (see the UI Components table above) so it's excluded from this job's matrix.
 
 ### Debugging CI Destination Failures
 
@@ -298,7 +301,7 @@ xcodebuild -project CDMarkdownKit.xcodeproj \
            clean build
 ```
 
-### Running iOS/tvOS/visionOS-gated tests locally (workaround for missing CI test wiring)
+### Running iOS/tvOS/visionOS-gated tests locally
 
 `swift test` only runs on the macOS host, where every file under `#if os(iOS) || os(tvOS) || os(visionOS)` compiles to nothing — it cannot execute or even compile-check UIKit-gated tests (e.g. everything in `Tests/CDMarkdownKitTests/UI/`). `xcodebuild -project CDMarkdownKit.xcodeproj` doesn't help either: none of its 5 schemes have `CDMarkdownKitTests` wired into their Testables, and `xcodebuild -list` run from the repo root never shows an SPM package scheme, because the `.xcodeproj`'s presence shadows it.
 
@@ -318,7 +321,7 @@ xcodebuild test -scheme CDMarkdownKit-Package \
 rm -rf "$SCRATCH"
 ```
 
-This actually compiles and runs the full suite (Swift Testing + XCTest) against a real simulator — not just a typecheck. It's how a handful of real production bugs (`configureTK2()` never configuring TextKit 2, `urlRangeTK1(at:)` missing a coordinate-space offset, a `CDMarkdownTextView` initializer crash) were actually caught: none of them were visible to `swift build`, `swift test`, or `xcodebuild clean build`, only to a real test run. This is a local workaround, not a CI fix — wiring this into `.github/workflows/ci.yml` and the checked-in `.xcodeproj` schemes properly is still an open item.
+This actually compiles and runs the full suite (Swift Testing + XCTest) against a real simulator — not just a typecheck. It's how a handful of real production bugs (`configureTK2()` never configuring TextKit 2, `urlRangeTK1(at:)` missing a coordinate-space offset, a `CDMarkdownTextView` initializer crash) were actually caught: none of them were visible to `swift build`, `swift test`, or `xcodebuild clean build`, only to a real test run. This is now automated as CI's `UITests` job (see the CI table above). Wiring `CDMarkdownKitTests` into the checked-in `.xcodeproj` schemes' native Testables directly (rather than working around the `.xcodeproj`'s presence) remains an open item — it needs the Xcode GUI, since hand-editing `project.pbxproj`'s Swift package product references for a test-only target isn't reliably reproducible via script (confirmed: `xcodebuild` reports "Missing package product" even when the object graph looks correct).
 
 ---
 

@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-#if os(iOS) || os(tvOS) || os(watchOS)
+#if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
     import UIKit
 #elseif os(macOS)
     import Cocoa

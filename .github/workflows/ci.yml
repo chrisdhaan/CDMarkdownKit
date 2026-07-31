@@ -66,6 +66,42 @@ jobs:
           set -o pipefail
           env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "${{ matrix.destination }}" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
 
+  UITests:
+    name: Run Tests (${{ matrix.name }})
+    runs-on: macos-26
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - destination: "OS=26.5,name=iPhone 17 Pro"
+            name: "iOS 26"
+          - destination: "OS=26.5,name=Apple TV 4K (3rd generation) (at 1080p)"
+            name: "tvOS 26"
+          - destination: "OS=26.5,name=Apple Vision Pro"
+            name: "visionOS 26"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_26.5.app/Contents/Developer
+      - name: Install xcbeautify
+        run: brew install xcbeautify
+      - name: List available simulators
+        run: xcrun simctl list
+      # CDMarkdownKit.xcodeproj's 5 native schemes have no Testables wired (see #61), and its
+      # mere presence in this directory shadows the SPM package's own auto-generated
+      # "CDMarkdownKit-Package" scheme, which DOES run tests. Staging the package files alone
+      # in a directory without the .xcodeproj lets xcodebuild fall back to that scheme instead.
+      - name: Stage bare SPM package
+        run: |
+          mkdir -p "${{ runner.temp }}/cdmk-package"
+          cp -R Source Tests Package.swift Package.resolved "${{ runner.temp }}/cdmk-package/"
+      - name: ${{ matrix.name }}
+        run: |
+          set -o pipefail
+          cd "${{ runner.temp }}/cdmk-package"
+          env NSUnbufferedIO=YES xcodebuild test -scheme CDMarkdownKit-Package -destination "${{ matrix.destination }}" 2>&1 | xcbeautify --renderer github-actions
+
   macOS:
     name: Test ${{ matrix.name }}
     runs-on: ${{ matrix.runner }}
