@@ -17,15 +17,6 @@ import Testing
             #expect(label.attributedText == nil || label.attributedText?.string.isEmpty == true)
         }
 
-        @Test func tk1LayoutManagerDelegateIsAssigned() {
-            let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
-            // configureTK1() only runs below iOS 16; call it indirectly via configure() on a
-            // fresh instance and inspect the resulting delegate assignment directly, which is
-            // valid regardless of which OS branch actually executed at runtime since
-            // customLayoutManager is always populated by configureTK1() specifically.
-            #expect(label.customLayoutManager == nil || label.customLayoutManager.delegate === label)
-        }
-
         @Test func configureTK1SetsUpCustomLayoutManagerAndTextContainer() {
             // #available alone can never select the TK1 branch on a modern simulator, so this
             // calls configureTK1() directly (Task 1 made it `internal` for exactly this reason).
@@ -96,6 +87,7 @@ import Testing
             // tk2ContentStorage, so both must be cleared before assigning attributedText.
             label.tk2LayoutManager = nil
             label.tk2ContentStorage = nil
+            label.tk2LayoutDelegate = nil
             label.configureTK1()
             let parser = CDMarkdownParser()
             label.attributedText = parser.parse("[a link](https://example.com)")
@@ -116,6 +108,7 @@ import Testing
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
             label.tk2LayoutManager = nil
             label.tk2ContentStorage = nil
+            label.tk2LayoutDelegate = nil
             label.configureTK1()
             let parser = CDMarkdownParser()
             label.attributedText = parser.parse("[a link](https://example.com)")
@@ -148,6 +141,26 @@ import Testing
             label.roundAllCorners = true
 
             #expect(label.customLayoutManager.roundAllCorners == true)
+        }
+
+        @Test func textRectForBoundsReturnsNonZeroForLaidOutText() {
+            let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
+            let parser = CDMarkdownParser()
+            label.attributedText = parser.parse("some text to measure")
+
+            let rect = label.textRect(forBounds: label.bounds, limitedToNumberOfLines: 0)
+            #expect(rect != .zero)
+        }
+
+        @Test func drawTextDoesNotCrashForTK2ConfiguredLabel() {
+            let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
+            let parser = CDMarkdownParser()
+            label.attributedText = parser.parse("plain `code` text")
+
+            let renderer = UIGraphicsImageRenderer(bounds: label.bounds)
+            _ = renderer.image { _ in
+                label.drawText(in: label.bounds)
+            }
         }
     }
 #endif

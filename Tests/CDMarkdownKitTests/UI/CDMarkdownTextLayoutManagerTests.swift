@@ -84,12 +84,17 @@ import Testing
             layoutManager.ensureLayout(for: layoutManager.documentRange)
 
             var sawRoundedFragment = false
+            var checkedAtLeastOneFragment = false
             layoutManager.enumerateTextLayoutFragments(from: layoutManager.documentRange.location, options: []) { fragment in
-                if let customFragment = fragment as? CDMarkdownTextLayoutFragment, customFragment.roundAllCorners {
-                    sawRoundedFragment = true
+                if let customFragment = fragment as? CDMarkdownTextLayoutFragment {
+                    checkedAtLeastOneFragment = true
+                    if customFragment.roundAllCorners {
+                        sawRoundedFragment = true
+                    }
                 }
                 return true
             }
+            #expect(checkedAtLeastOneFragment)
             #expect(sawRoundedFragment == false)
         }
     }
