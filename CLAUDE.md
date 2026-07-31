@@ -298,11 +298,11 @@ xcodebuild -project CDMarkdownKit.xcodeproj \
            clean build
 ```
 
-### Running iOS/tvOS/visionOS-gated tests locally (workaround for #61)
+### Running iOS/tvOS/visionOS-gated tests locally (workaround for missing CI test wiring)
 
-`swift test` only runs on the macOS host, where every file under `#if os(iOS) || os(tvOS) || os(visionOS)` compiles to nothing — it cannot execute or even compile-check UIKit-gated tests (e.g. everything in `Tests/CDMarkdownKitTests/UI/`). `xcodebuild -project CDMarkdownKit.xcodeproj` doesn't help either: none of its 5 schemes have `CDMarkdownKitTests` wired into their Testables, and `xcodebuild -list` run from the repo root never shows an SPM package scheme, because the `.xcodeproj`'s presence shadows it (this is exactly the gap #61 tracks).
+`swift test` only runs on the macOS host, where every file under `#if os(iOS) || os(tvOS) || os(visionOS)` compiles to nothing — it cannot execute or even compile-check UIKit-gated tests (e.g. everything in `Tests/CDMarkdownKitTests/UI/`). `xcodebuild -project CDMarkdownKit.xcodeproj` doesn't help either: none of its 5 schemes have `CDMarkdownKitTests` wired into their Testables, and `xcodebuild -list` run from the repo root never shows an SPM package scheme, because the `.xcodeproj`'s presence shadows it.
 
-There is a working command-line path today, discovered while building #60's TextKit 2 test suite: copy just the SPM package files into a directory that does **not** contain `CDMarkdownKit.xcodeproj`, so `xcodebuild` falls back to the package's own auto-generated scheme:
+There is a working command-line path today, discovered while building out TextKit 2 test coverage: copy just the SPM package files into a directory that does **not** contain `CDMarkdownKit.xcodeproj`, so `xcodebuild` falls back to the package's own auto-generated scheme:
 
 ```bash
 # From the repo root:
@@ -318,7 +318,7 @@ xcodebuild test -scheme CDMarkdownKit-Package \
 rm -rf "$SCRATCH"
 ```
 
-This actually compiles and runs the full suite (Swift Testing + XCTest) against a real simulator — not just a typecheck. It's how the production bugs fixed in #60 (`configureTK2()` never configuring TextKit 2, `urlRangeTK1(at:)` missing a coordinate-space offset, a `CDMarkdownTextView` initializer crash) were actually caught: none of them were visible to `swift build`, `swift test`, or `xcodebuild clean build`, only to a real test run. This is a local workaround, not a CI fix — #61 is still open for wiring this into `.github/workflows/ci.yml` and the checked-in `.xcodeproj` schemes properly.
+This actually compiles and runs the full suite (Swift Testing + XCTest) against a real simulator — not just a typecheck. It's how a handful of real production bugs (`configureTK2()` never configuring TextKit 2, `urlRangeTK1(at:)` missing a coordinate-space offset, a `CDMarkdownTextView` initializer crash) were actually caught: none of them were visible to `swift build`, `swift test`, or `xcodebuild clean build`, only to a real test run. This is a local workaround, not a CI fix — wiring this into `.github/workflows/ci.yml` and the checked-in `.xcodeproj` schemes properly is still an open item.
 
 ---
 
