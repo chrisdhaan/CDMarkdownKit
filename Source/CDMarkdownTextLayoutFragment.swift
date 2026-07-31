@@ -53,7 +53,7 @@
         ///   - fragmentRangeStart: The document-absolute character offset where this text
         ///     layout fragment's range begins. Every paragraph after the first has a non-zero
         ///     offset; using the fragment-local range directly here (instead of translating
-        ///     it) was a cross-paragraph bug fixed in #59.
+        ///     it) was a cross-paragraph bug.
         ///   - textLineFragments: The line fragments belonging to this text layout fragment.
         ///   - textStorage: The document's text storage, used to read
         ///     `.cdMarkdownRoundedBackground` and `.backgroundColor` attributes.

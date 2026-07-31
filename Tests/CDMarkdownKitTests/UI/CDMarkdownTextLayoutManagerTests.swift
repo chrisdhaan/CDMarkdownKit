@@ -70,8 +70,8 @@ import Testing
             }
             layoutManager.ensureLayout(for: layoutManager.documentRange)
 
-            // KNOWN LIMITATION (github.com/chrisdhaan/CDMarkdownKit/issues/68): flipping
-            // roundAllCorners after text is already laid out calls invalidateLayout(for:), but
+            // KNOWN LIMITATION: flipping roundAllCorners after text is already laid out
+            // calls invalidateLayout(for:), but
             // NSTextLayoutManager does not re-invoke the delegate's fragment factory for
             // unchanged content -- it reuses the already-created NSTextLayoutFragment
             // instances, and CDMarkdownTextLayoutFragment.roundAllCorners is a plain stored
