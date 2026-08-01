@@ -60,6 +60,7 @@ class ModernElementsViewController: UIViewController {
         ])
 
         self.codeTextView = codeTextView
+        self.codeTextView.roundAllCorners = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
