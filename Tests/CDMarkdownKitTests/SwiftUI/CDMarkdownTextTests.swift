@@ -6,10 +6,27 @@ import Testing
 struct CDMarkdownTextTests {
 
     @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
-    @Test func cdMarkdownTextInitializesWithString() {
-        let view = CDMarkdownText("Hello **world**")
-        // Verify the view can be created without crashing
-        #expect(type(of: view) == CDMarkdownText.self)
+    @Test func convertProducesPlainTextWithMarkdownStripped() async {
+        let nsAttributed = await CDMarkdownParser().parse("Hello **world**")
+        let converted = CDMarkdownText.convert(nsAttributed, fallback: "Hello **world**")
+        #expect(String(converted.characters) == "Hello world")
+    }
+
+    @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
+    @Test func convertPreservesBoldFormatting() async {
+        let nsAttributed = await CDMarkdownParser().parse("Hello **world**")
+        let converted = CDMarkdownText.convert(nsAttributed, fallback: "Hello **world**")
+
+        let boldRunExists = converted.runs.contains { run in
+            let substring = String(converted[run.range].characters)
+            guard substring == "world" else { return false }
+            #if os(macOS)
+                return run.appKit.font?.fontDescriptor.symbolicTraits.contains(.bold) ?? false
+            #else
+                return run.uiKit.font?.fontDescriptor.symbolicTraits.contains(.traitBold) ?? false
+            #endif
+        }
+        #expect(boldRunExists)
     }
 
     @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)

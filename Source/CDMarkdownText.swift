@@ -57,11 +57,19 @@ public struct CDMarkdownText: View {
         Text(attributedString)
             .task(id: taskID) {
                 let nsAttributed = await parser.parse(string)
-                #if os(macOS)
-                    attributedString = (try? AttributedString(nsAttributed, including: \.appKit)) ?? AttributedString(string)
-                #else
-                    attributedString = (try? AttributedString(nsAttributed, including: \.uiKit)) ?? AttributedString(string)
-                #endif
+                attributedString = Self.convert(nsAttributed, fallback: string)
             }
+    }
+
+    /// Converts the parser's `NSAttributedString` output into the `AttributedString` that
+    /// `Text` actually renders, falling back to the plain (unstyled) source string if the
+    /// scoped conversion fails. Pulled out as a pure, `internal` function so the real
+    /// parse → convert pipeline is testable via `@testable import` without hosting the view.
+    internal static func convert(_ nsAttributedString: NSAttributedString, fallback string: String) -> AttributedString {
+        #if os(macOS)
+            (try? AttributedString(nsAttributedString, including: \.appKit)) ?? AttributedString(string)
+        #else
+            (try? AttributedString(nsAttributedString, including: \.uiKit)) ?? AttributedString(string)
+        #endif
     }
 }
