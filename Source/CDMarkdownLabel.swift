@@ -230,6 +230,18 @@
             tk2LayoutDelegate = delegate
         }
 
+        /// Enumerates every text layout fragment in `layoutManager`'s document, forcing each
+        /// one to complete real layout via `.ensuresLayout`. Internal (not `private`) so tests
+        /// can verify this doesn't yield degenerate zero-frame fragments for content taller
+        /// than the label's own container (e.g. a fixed-height label with no scroll view) —
+        /// a bare `enumerateTextLayoutFragments(options: [])` hands back zero-sized fragments
+        /// for content beyond what fits, which still get drawn (at the view's origin) and
+        /// corrupt the visible text with overlapping garbage above the real content.
+        @available(iOS 16.0, tvOS 16.0, *)
+        internal func enumerateTK2Fragments(_ layoutManager: NSTextLayoutManager, _ body: (NSTextLayoutFragment) -> Bool) {
+            layoutManager.enumerateTextLayoutFragments(from: layoutManager.documentRange.location, options: [.ensuresLayout], using: body)
+        }
+
         /// Internal (not `private`) so tests can force the TextKit 1 fallback path via
         /// `@testable import` — every CI/local simulator is iOS 16+, so `#available` alone
         /// can never select this branch inside a test.
@@ -266,7 +278,7 @@
             if #available(iOS 16.0, tvOS 16.0, *), let tk2 = tk2LayoutManager as? NSTextLayoutManager {
                 tk2.ensureLayout(for: tk2.documentRange)
                 textBounds = .zero
-                tk2.enumerateTextLayoutFragments(from: tk2.documentRange.location, options: []) { fragment in
+                enumerateTK2Fragments(tk2) { fragment in
                     textBounds = textBounds.union(fragment.layoutFragmentFrame)
                     return true
                 }
@@ -305,7 +317,7 @@
             let glyphsPosition = calculateGlyphsPositionInView()
             layoutManager.ensureLayout(for: layoutManager.documentRange)
 
-            layoutManager.enumerateTextLayoutFragments(from: layoutManager.documentRange.location, options: []) { fragment in
+            enumerateTK2Fragments(layoutManager) { fragment in
                 let fragmentOrigin = CGPoint(
                     x: glyphsPosition.x + fragment.layoutFragmentFrame.origin.x,
                     y: glyphsPosition.y + fragment.layoutFragmentFrame.origin.y
@@ -333,7 +345,7 @@
             if #available(iOS 16.0, tvOS 16.0, *), let tk2 = tk2LayoutManager as? NSTextLayoutManager {
                 tk2.ensureLayout(for: tk2.documentRange)
                 var maxY: CGFloat = 0
-                tk2.enumerateTextLayoutFragments(from: tk2.documentRange.location, options: []) { fragment in
+                enumerateTK2Fragments(tk2) { fragment in
                     let bottom = fragment.layoutFragmentFrame.maxY
                     if bottom > maxY {
                         maxY = bottom
@@ -533,7 +545,7 @@
             )
 
             var matchedCharIndex: Int?
-            layoutManager.enumerateTextLayoutFragments(from: layoutManager.documentRange.location, options: []) { fragment in
+            enumerateTK2Fragments(layoutManager) { fragment in
                 guard fragment.layoutFragmentFrame.contains(adjustedLocation) else { return true }
 
                 for lineFragment in fragment.textLineFragments {

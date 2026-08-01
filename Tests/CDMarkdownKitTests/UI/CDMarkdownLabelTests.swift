@@ -152,6 +152,38 @@ import Testing
             #expect(rect != .zero)
         }
 
+        @available(iOS 16.0, tvOS 16.0, *)
+        @Test func fragmentEnumerationHasNoDegenerateFramesWhenContentExceedsContainerHeight() {
+            // Mirrors CodeLabelViewController/StoryboardLabelViewController: a fixed-height
+            // label (no scroll view) showing content taller than its own bounds.
+            let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
+            label.configureTK2()
+            let parser = CDMarkdownParser()
+            let paragraphs = (1 ... 40).map { "Paragraph \($0) with enough text to wrap across a couple of lines in a narrow label." }
+            label.attributedText = parser.parse(paragraphs.joined(separator: "\n\n"))
+
+            guard let layoutManager = label.tk2LayoutManager as? NSTextLayoutManager else {
+                Issue.record("expected a TextKit 2 layout manager")
+                return
+            }
+            layoutManager.ensureLayout(for: layoutManager.documentRange)
+
+            var fragmentFrames: [CGRect] = []
+            label.enumerateTK2Fragments(layoutManager) { fragment in
+                fragmentFrames.append(fragment.layoutFragmentFrame)
+                return true
+            }
+
+            // With content taller than the container, TextKit 2 should cleanly stop
+            // enumeration once content exceeds what can be laid out, rather than continuing
+            // to hand back degenerate zero-sized frames for the remaining document — those
+            // degenerate frames still get drawn (at the view's origin, regardless of their
+            // claimed zero size), producing overlapping/garbled text stacked above the real
+            // content that IS laid out correctly.
+            #expect(!fragmentFrames.isEmpty)
+            #expect(fragmentFrames.allSatisfy { $0 != .zero })
+        }
+
         @Test func drawTextDoesNotCrashForTK2ConfiguredLabel() {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
             let parser = CDMarkdownParser()
