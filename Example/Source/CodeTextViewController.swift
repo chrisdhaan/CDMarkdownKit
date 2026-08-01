@@ -51,6 +51,9 @@ class CodeTextViewController: BaseViewController {
         // Example initialization of CDMarkdownTextView via the preferred factory
         let codeTextView = CDMarkdownTextView.makeTextView(frame: self.rect)
         codeTextView.translatesAutoresizingMaskIntoConstraints = false
+        // Links are inert until isSelectable is enabled and a delegate handles taps
+        codeTextView.isSelectable = true
+        codeTextView.delegate = self
         self.view.addSubview(codeTextView)
 
         NSLayoutConstraint.activate([
@@ -79,5 +82,20 @@ class CodeTextViewController: BaseViewController {
             guard let self else { return }
             self.codeTextView.attributedText = await self.configure()
         }
+    }
+}
+
+// MARK: - UITextViewDelegate Methods
+
+extension CodeTextViewController: UITextViewDelegate {
+
+    func textView(_: UITextView,
+                  shouldInteractWith url: URL,
+                  in _: NSRange,
+                  interaction _: UITextItemInteraction) -> Bool {
+        UIApplication.shared.open(url,
+                                  options: [:],
+                                  completionHandler: nil)
+        return false
     }
 }

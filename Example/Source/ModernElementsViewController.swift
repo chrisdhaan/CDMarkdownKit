@@ -50,6 +50,9 @@ class ModernElementsViewController: UIViewController {
         // Example initialization of CDMarkdownTextView via the preferred factory
         let codeTextView = CDMarkdownTextView.makeTextView(frame: .zero)
         codeTextView.translatesAutoresizingMaskIntoConstraints = false
+        // Links are inert until isSelectable is enabled and a delegate handles taps
+        codeTextView.isSelectable = true
+        codeTextView.delegate = self
         self.view.addSubview(codeTextView)
 
         NSLayoutConstraint.activate([
@@ -90,5 +93,20 @@ class ModernElementsViewController: UIViewController {
         let attributedString = NSAttributedString(string: self.modernElementsString)
         self.codeTextView.attributedText = await parser.parse(attributedString)
         self.codeTextView.backgroundColor = theme.backgroundColor
+    }
+}
+
+// MARK: - UITextViewDelegate Methods
+
+extension ModernElementsViewController: UITextViewDelegate {
+
+    func textView(_: UITextView,
+                  shouldInteractWith url: URL,
+                  in _: NSRange,
+                  interaction _: UITextItemInteraction) -> Bool {
+        UIApplication.shared.open(url,
+                                  options: [:],
+                                  completionHandler: nil)
+        return false
     }
 }
