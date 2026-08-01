@@ -33,6 +33,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - CI now runs the full test suite against real iOS, tvOS, and visionOS simulators, in addition to the existing build-only checks for those platforms.
+- Replaced near-tautological `CDMarkdownText` SwiftUI tests (which only asserted the view's type) with real coverage of its parser-selection precedence and its `NSAttributedString`-to-`AttributedString` conversion, following the existing `CDMarkdownLabel` pattern of exposing testable seams as `internal` rather than adding a view-inspection dependency.
 
 ### Fixed
 
