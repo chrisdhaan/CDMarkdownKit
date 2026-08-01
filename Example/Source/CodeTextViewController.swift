@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CodeTextViewController.swift
 //  iOS Example
 //
 //  Created by Christopher de Haan on 8/2/17.
@@ -28,9 +28,6 @@
 import CDMarkdownKit
 import UIKit
 
-public typealias CDLayoutConstraintAttribute = NSLayoutConstraint.Attribute
-public typealias CDLayoutConstraintRelation = NSLayoutConstraint.Relation
-
 class CodeTextViewController: BaseViewController {
 
     fileprivate var codeTextView: CDMarkdownTextView!
@@ -51,51 +48,17 @@ class CodeTextViewController: BaseViewController {
             self?.codeTextView.roundAllCorners = true
         }
 
-        // Initialize textContainer and layoutManager for CDMarkdownTextView
-        let textContainer = NSTextContainer(size: self.rect.size)
-        let layoutManager = CDMarkdownLayoutManager()
-        layoutManager.addTextContainer(textContainer)
-
-        // Example initialization of CDMarkdownTextView
-        let codeTextView = CDMarkdownTextView(frame: self.rect,
-                                              textContainer: textContainer,
-                                              layoutManager: layoutManager)
+        // Example initialization of CDMarkdownTextView via the preferred factory
+        let codeTextView = CDMarkdownTextView.makeTextView(frame: self.rect)
         codeTextView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(codeTextView)
 
-        // Add constraints so intrinsic content size is set correctly
-        let topConstraint = NSLayoutConstraint(item: codeTextView,
-                                               attribute: CDLayoutConstraintAttribute.top,
-                                               relatedBy: CDLayoutConstraintRelation.equal,
-                                               toItem: self.segmentedControl,
-                                               attribute: CDLayoutConstraintAttribute.bottom,
-                                               multiplier: 1,
-                                               constant: 8)
-        let leadingConstraint = NSLayoutConstraint(item: codeTextView,
-                                                   attribute: CDLayoutConstraintAttribute.leading,
-                                                   relatedBy: CDLayoutConstraintRelation.equal,
-                                                   toItem: codeTextView.superview,
-                                                   attribute: CDLayoutConstraintAttribute.leadingMargin,
-                                                   multiplier: 1,
-                                                   constant: 0)
-        let trailingConstraint = NSLayoutConstraint(item: codeTextView,
-                                                    attribute: CDLayoutConstraintAttribute.trailing,
-                                                    relatedBy: CDLayoutConstraintRelation.equal,
-                                                    toItem: codeTextView.superview,
-                                                    attribute: CDLayoutConstraintAttribute.trailingMargin,
-                                                    multiplier: 1,
-                                                    constant: 0)
-        let bottomConstraint = NSLayoutConstraint(item: self.view.safeAreaLayoutGuide,
-                                                  attribute: CDLayoutConstraintAttribute.bottom,
-                                                  relatedBy: CDLayoutConstraintRelation.equal,
-                                                  toItem: codeTextView,
-                                                  attribute: CDLayoutConstraintAttribute.bottom,
-                                                  multiplier: 1,
-                                                  constant: 20)
-        self.view.addConstraints([topConstraint,
-                                  leadingConstraint,
-                                  trailingConstraint,
-                                  bottomConstraint])
+        NSLayoutConstraint.activate([
+            codeTextView.topAnchor.constraint(equalTo: self.segmentedControl.bottomAnchor, constant: 8),
+            codeTextView.leadingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.leadingAnchor),
+            codeTextView.trailingAnchor.constraint(equalTo: self.view.layoutMarginsGuide.trailingAnchor),
+            codeTextView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        ])
 
         self.codeTextView = codeTextView
     }
