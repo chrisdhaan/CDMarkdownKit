@@ -181,7 +181,7 @@ import Testing
             // claimed zero size), producing overlapping/garbled text stacked above the real
             // content that IS laid out correctly.
             #expect(!fragmentFrames.isEmpty)
-            #expect(fragmentFrames.allSatisfy { $0 != .zero })
+            #expect(fragmentFrames.allSatisfy { $0.width > 0 && $0.height > 0 })
         }
 
         @Test func drawTextDoesNotCrashForTK2ConfiguredLabel() {
