@@ -13,10 +13,26 @@ struct CDMarkdownTextTests {
     }
 
     @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
-    @Test func cdMarkdownTextAcceptsExplicitParser() {
-        let parser = CDMarkdownParser()
-        let view = CDMarkdownText("Hello", parser: parser)
-        #expect(type(of: view) == CDMarkdownText.self)
+    @Test func resolveParserPrefersExplicitOverEnvironmentAndDefault() {
+        let explicit = CDMarkdownParser()
+        let environment = CDMarkdownParser()
+        let resolved = CDMarkdownText.resolveParser(explicit: explicit, environment: environment, theme: .default)
+        #expect(resolved === explicit)
+    }
+
+    @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
+    @Test func resolveParserPrefersEnvironmentOverDefault() {
+        let environment = CDMarkdownParser()
+        let resolved = CDMarkdownText.resolveParser(explicit: nil, environment: environment, theme: .default)
+        #expect(resolved === environment)
+    }
+
+    @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
+    @Test func resolveParserFallsBackToThemedDefault() {
+        var theme = CDMarkdownTheme.default
+        theme.fontColor = .red
+        let resolved = CDMarkdownText.resolveParser(explicit: nil, environment: nil, theme: theme)
+        #expect(resolved.fontColor == theme.fontColor)
     }
 
     @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
