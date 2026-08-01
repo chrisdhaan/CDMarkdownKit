@@ -47,6 +47,10 @@ class StoryboardTextViewController: BaseViewController {
             // Configure text view
             self?.storyboardTextView.roundAllCorners = true
         }
+
+        // Links are inert until isSelectable is enabled and a delegate handles taps
+        self.storyboardTextView.isSelectable = true
+        self.storyboardTextView.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -65,5 +69,20 @@ class StoryboardTextViewController: BaseViewController {
             guard let self else { return }
             self.storyboardTextView.attributedText = await self.configure()
         }
+    }
+}
+
+// MARK: - UITextViewDelegate Methods
+
+extension StoryboardTextViewController: UITextViewDelegate {
+
+    func textView(_: UITextView,
+                  shouldInteractWith url: URL,
+                  in _: NSRange,
+                  interaction _: UITextItemInteraction) -> Bool {
+        UIApplication.shared.open(url,
+                                  options: [:],
+                                  completionHandler: nil)
+        return false
     }
 }

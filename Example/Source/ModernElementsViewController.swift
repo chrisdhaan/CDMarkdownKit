@@ -1,8 +1,8 @@
 //
-//  CodeTextViewController.swift
+//  ModernElementsViewController.swift
 //  iOS Example
 //
-//  Created by Christopher de Haan on 8/2/17.
+//  Created by Christopher de Haan on 7/31/26.
 //
 //  Copyright © 2016-2026 Christopher de Haan <contact@christopherdehaan.me>
 //
@@ -28,28 +28,27 @@
 import CDMarkdownKit
 import UIKit
 
-class CodeTextViewController: BaseViewController {
+class ModernElementsViewController: UIViewController {
+
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
 
     fileprivate var codeTextView: CDMarkdownTextView!
+
+    private let defaultParser = CDMarkdownParser(theme: .default)
+    private let darkParser = CDMarkdownParser(theme: .systemDark)
+    private let modernElementsString = NSLocalizedString("ModernElementsMarkdown",
+                                                          tableName: nil,
+                                                          bundle: Bundle.main,
+                                                          value: "",
+                                                          comment: "")
 
     // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-
-        self.onCustomParser = { [weak self] in
-            // Configure text view
-            self?.codeTextView.roundAllCorners = true
-        }
-
-        self.onDefaultParser = { [weak self] in
-            // Configure text view
-            self?.codeTextView.roundAllCorners = true
-        }
 
         // Example initialization of CDMarkdownTextView via the preferred factory
-        let codeTextView = CDMarkdownTextView.makeTextView(frame: self.rect)
+        let codeTextView = CDMarkdownTextView.makeTextView(frame: .zero)
         codeTextView.translatesAutoresizingMaskIntoConstraints = false
         // Links are inert until isSelectable is enabled and a delegate handles taps
         codeTextView.isSelectable = true
@@ -64,6 +63,7 @@ class CodeTextViewController: BaseViewController {
         ])
 
         self.codeTextView = codeTextView
+        self.codeTextView.roundAllCorners = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -71,7 +71,7 @@ class CodeTextViewController: BaseViewController {
 
         Task { [weak self] in
             guard let self else { return }
-            self.codeTextView.attributedText = await self.configure()
+            await self.render()
         }
     }
 
@@ -80,14 +80,25 @@ class CodeTextViewController: BaseViewController {
     @IBAction private func clickedSegmentedControl(_: UISegmentedControl) {
         Task { [weak self] in
             guard let self else { return }
-            self.codeTextView.attributedText = await self.configure()
+            await self.render()
         }
+    }
+
+    // MARK: - Private Methods
+
+    private func render() async {
+        let isDefaultTheme = self.segmentedControl.selectedSegmentIndex == 0
+        let theme: CDMarkdownTheme = isDefaultTheme ? .default : .systemDark
+        let parser = isDefaultTheme ? self.defaultParser : self.darkParser
+        let attributedString = NSAttributedString(string: self.modernElementsString)
+        self.codeTextView.attributedText = await parser.parse(attributedString)
+        self.codeTextView.backgroundColor = theme.backgroundColor
     }
 }
 
 // MARK: - UITextViewDelegate Methods
 
-extension CodeTextViewController: UITextViewDelegate {
+extension ModernElementsViewController: UITextViewDelegate {
 
     func textView(_: UITextView,
                   shouldInteractWith url: URL,

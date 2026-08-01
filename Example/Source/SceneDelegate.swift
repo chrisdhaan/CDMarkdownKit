@@ -25,6 +25,7 @@
 //  THE SOFTWARE.
 //
 
+import SwiftUI
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -37,7 +38,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        window.rootViewController = storyboard.instantiateInitialViewController()
+        let rootViewController = storyboard.instantiateInitialViewController()
+
+        if #available(iOS 15.0, *),
+           let tabBarController = rootViewController as? UITabBarController {
+            let swiftUIViewController = UIHostingController(rootView: SwiftUIExampleView())
+            swiftUIViewController.tabBarItem = UITabBarItem(title: "SwiftUI", image: nil, tag: 5)
+            tabBarController.viewControllers = (tabBarController.viewControllers ?? []) + [swiftUIViewController]
+        }
+
+        window.rootViewController = rootViewController
         self.window = window
         window.makeKeyAndVisible()
     }
