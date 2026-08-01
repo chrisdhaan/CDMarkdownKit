@@ -19,6 +19,7 @@
 		B2D61BD020CF4C510091BFFF /* StoryboardLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D61BCF20CF4C510091BFFF /* StoryboardLabelViewController.swift */; };
 		B2F8EE912059DD4F00B5B54D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B2F8EE902059DD4F00B5B54D /* Localizable.strings */; };
 		CD0000001000000000000002 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0000001000000000000001 /* SceneDelegate.swift */; };
+		CDDA00002100000000000002 /* SwiftUIExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDA00002100000000000001 /* SwiftUIExampleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		B2D61BCF20CF4C510091BFFF /* StoryboardLabelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardLabelViewController.swift; sourceTree = "<group>"; };
 		B2F8EE902059DD4F00B5B54D /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		CD0000001000000000000001 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		CDDA00002100000000000001 /* SwiftUIExampleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUIExampleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 				B2B365E91F324BDA0078B962 /* CodeTextViewController.swift */,
 				B2D61BCF20CF4C510091BFFF /* StoryboardLabelViewController.swift */,
 				B2D61BCD20CF4C470091BFFF /* StoryboardTextViewController.swift */,
+				CDDA00002100000000000001 /* SwiftUIExampleView.swift */,
 				B2B365EC1F324BDF0078B962 /* Resources */,
 				B2B365ED1F324BE40078B962 /* Supporting Files */,
 			);
@@ -285,6 +288,7 @@
 				B2D61BCC20CF4C390091BFFF /* CodeLabelViewController.swift in Sources */,
 				B2D61BC720CF4A950091BFFF /* BaseViewController.swift in Sources */,
 				B2D61BCE20CF4C470091BFFF /* StoryboardTextViewController.swift in Sources */,
+				CDDA00002100000000000002 /* SwiftUIExampleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
