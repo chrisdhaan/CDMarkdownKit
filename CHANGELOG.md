@@ -37,6 +37,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fixed several test files failing to compile for visionOS, due to a platform check that predated visionOS support and was never updated to include it.
+- Fixed `CDMarkdownLabel` rendering garbled, overlapping text on iOS/tvOS 16+ whenever its content was taller than the label's own bounds, such as a fixed-height label without a scroll view. TextKit 2 fragments beyond what fit the container were drawn at the wrong position instead of being cleanly excluded.
 
 ---
 
