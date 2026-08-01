@@ -12,6 +12,7 @@ identifier_name:
   excluded:
     - to
     - i  # loop counter in NSLayoutManager
+    - id  # Identifiable protocol requirement
 # number of characters allowed in a line
 line_length:
   error: 200

@@ -64,6 +64,9 @@ struct SwiftUIExampleView: View {
                                                           bundle: Bundle.main,
                                                           value: "",
                                                           comment: "")
+    private let explicitParserExampleText = "**This bold text is purple** because an explicitly-built " +
+        "`CDMarkdownParser` is injected via `.markdownParser(_:)`, which takes precedence over " +
+        "`.markdownTheme(_:)`."
 
     var body: some View {
         ScrollView {
@@ -102,7 +105,7 @@ struct SwiftUIExampleView: View {
                 Text("Explicit parser via .markdownParser(_:)")
                     .font(.headline)
 
-                CDMarkdownText("**This bold text is purple** because an explicitly-built `CDMarkdownParser` is injected via `.markdownParser(_:)`, which takes precedence over `.markdownTheme(_:)`.")
+                CDMarkdownText(self.explicitParserExampleText)
                     .markdownParser(self.explicitParser())
             }
             .padding()
