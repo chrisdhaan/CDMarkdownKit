@@ -118,15 +118,21 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
         let columnCount = max(headerCells.count, dataRows.first?.count ?? 0)
         guard columnCount > 0 else { return }
 
-        // Measure the maximum rendered width of each column
+        /// Measure the maximum rendered width of each column. Cells are measured using the
+        /// post-unescape rendered text (not the raw, possibly UTF16-hex-escaped cell string)
+        /// so that a column containing e.g. inline code is sized to what's actually drawn.
+        func renderedText(for cell: String) -> String {
+            inlineParser?(cell).string ?? cell
+        }
+
         var columnWidths = [CGFloat](repeating: columnPadding, count: columnCount)
         for (columnIndex, cell) in headerCells.enumerated() where columnIndex < columnCount {
-            let columnWidth = cell.sizeWithAttributes(boldAttributes).width + columnPadding
+            let columnWidth = renderedText(for: cell).sizeWithAttributes(boldAttributes).width + columnPadding
             columnWidths[columnIndex] = max(columnWidths[columnIndex], columnWidth)
         }
         for row in dataRows {
             for (columnIndex, cell) in row.enumerated() where columnIndex < columnCount {
-                let columnWidth = cell.sizeWithAttributes(attributes).width + columnPadding
+                let columnWidth = renderedText(for: cell).sizeWithAttributes(attributes).width + columnPadding
                 columnWidths[columnIndex] = max(columnWidths[columnIndex], columnWidth)
             }
         }

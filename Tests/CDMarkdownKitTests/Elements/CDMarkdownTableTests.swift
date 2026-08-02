@@ -171,4 +171,45 @@ struct CDMarkdownTableTests {
         }
         #expect(foundCode)
     }
+
+    @Test func tableCellWithInlineCodeRendersOriginalText() async {
+        let input = """
+        | Header |
+        | ------ |
+        | `code` |
+        """
+        let result = await parser.parse(input)
+        #expect(result.string.contains("code"))
+        #expect(!result.string.contains("0063"))
+    }
+
+    @Test func tableNonFinalColumnWithInlineCodeMeasuresRenderedWidth() async {
+        let codeContent = "abcdefghijklmnopqrst"
+        let input = """
+        | A | Code | B |
+        | --- | ---- | --- |
+        | 1 | `\(codeContent)` | 2 |
+        """
+        let result = await parser.parse(input)
+
+        guard let tableStyle = result.attribute(.paragraphStyle,
+                                                at: 0,
+                                                effectiveRange: nil) as? NSParagraphStyle,
+            tableStyle.tabStops.count == 3 else {
+            #expect(Bool(false), "Expected a paragraph style with 3 tab stops")
+            return
+        }
+
+        // Column 0's measured width is unaffected by the bug (it contains no inline code),
+        // so it's a reliable baseline: tabStops[1].location == columnWidths[0].
+        let column0Width = tableStyle.tabStops[1].location
+        let actualColumn1Width = tableStyle.tabStops[2].location - column0Width
+
+        // The correct column width comes from the *rendered* (unescaped) cell text, not
+        // the UTF16-hex-escaped placeholder Phase 1 produces for the backtick span.
+        let expectedColumn1Width = codeContent.sizeWithAttributes(parser.table.attributes).width +
+            parser.table.columnPadding
+
+        #expect(abs(actualColumn1Width - expectedColumn1Width) < 1.0)
+    }
 }
