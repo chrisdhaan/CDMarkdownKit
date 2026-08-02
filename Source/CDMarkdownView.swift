@@ -13,7 +13,20 @@ import SwiftUI
         public var onLinkTap: ((URL) -> Void)?
 
         private var parser: CDMarkdownParser {
-            explicitParser ?? environmentParser ?? CDMarkdownParser(theme: environmentTheme)
+            Self.resolveParser(explicit: explicitParser, environment: environmentParser, theme: environmentTheme)
+        }
+
+        /// Picks the parser `makeUIView`/`updateUIView` render with: an explicitly-injected
+        /// parser always wins, then an environment-injected one, falling back to a fresh parser
+        /// built from `theme`. Pulled out as a pure, `internal` function so it's reachable from
+        /// `@testable import` without hosting the view — this project has no SwiftUI
+        /// view-inspection dependency.
+        internal static func resolveParser(
+            explicit: CDMarkdownParser?,
+            environment: CDMarkdownParser?,
+            theme: CDMarkdownTheme
+        ) -> CDMarkdownParser {
+            explicit ?? environment ?? CDMarkdownParser(theme: theme)
         }
 
         /// Creates a full-fidelity Markdown view with rounded-corner support.
@@ -33,15 +46,24 @@ import SwiftUI
         }
 
         public func makeUIView(context: Context) -> CDMarkdownTextView {
+            let textView = Self.configuredTextView()
+            textView.delegate = context.coordinator
+            return textView
+        }
+
+        /// Builds and configures the text view `makeUIView` returns, overriding
+        /// `CDMarkdownTextView.configure()`'s scrolling/selection/editing defaults for this
+        /// view's rounded-corner, tap-to-follow-link presentation. Pulled out as a pure,
+        /// `internal` function (independent of `Context`) so it's testable via `@testable import`.
+        internal static func configuredTextView() -> CDMarkdownTextView {
             let textView = CDMarkdownTextView(frame: .zero)
-            textView.configure() // sets up customLayoutManager for rounded corners
+            textView.configure() // sets up rounded-corner background rendering (TK2 delegate on iOS/tvOS 16+, customLayoutManager on iOS 15)
             textView.isScrollEnabled = false // override configure()'s default of true
             textView.isSelectable = true // override configure()'s default of false
             #if os(visionOS)
                 textView.isEditable = false // configure() only handles this on iOS
             #endif
             textView.backgroundColor = .clear
-            textView.delegate = context.coordinator
             return textView
         }
 
@@ -83,6 +105,16 @@ import SwiftUI
                                      primaryActionFor textItem: UITextItem,
                                      defaultAction: UIAction) -> UIAction? {
                     guard case let .link(url) = textItem.content else { return defaultAction }
+                    return Self.primaryAction(forLinkURL: url, onLinkTap: onLinkTap, defaultAction: defaultAction)
+                }
+
+                /// Core decision for `textView(_:primaryActionFor:defaultAction:)`, factored out
+                /// because `UITextItem` has no public initializer and can't be constructed in
+                /// tests — `URL` and `UIAction` can.
+                @available(iOS 17.0, visionOS 1.0, *)
+                internal static func primaryAction(forLinkURL url: URL,
+                                                   onLinkTap: ((URL) -> Void)?,
+                                                   defaultAction: UIAction) -> UIAction? {
                     if let handler = onLinkTap {
                         handler(url)
                         return nil // returning nil suppresses UIKit's default open-URL behaviour
@@ -106,7 +138,20 @@ import SwiftUI
         public var onLinkTap: ((URL) -> Bool)?
 
         private var parser: CDMarkdownParser {
-            explicitParser ?? environmentParser ?? CDMarkdownParser(theme: environmentTheme)
+            Self.resolveParser(explicit: explicitParser, environment: environmentParser, theme: environmentTheme)
+        }
+
+        /// Picks the parser `makeNSView`/`updateNSView` render with: an explicitly-injected
+        /// parser always wins, then an environment-injected one, falling back to a fresh parser
+        /// built from `theme`. Pulled out as a pure, `internal` function so it's reachable from
+        /// `@testable import` without hosting the view — this project has no SwiftUI
+        /// view-inspection dependency.
+        internal static func resolveParser(
+            explicit: CDMarkdownParser?,
+            environment: CDMarkdownParser?,
+            theme: CDMarkdownTheme
+        ) -> CDMarkdownParser {
+            explicit ?? environment ?? CDMarkdownParser(theme: theme)
         }
 
         /// Creates a full-fidelity Markdown view with rounded-corner support.
