@@ -44,6 +44,7 @@ All notable changes to this project will be documented in this file.
 
 - Fixed several test files failing to compile for visionOS, due to a platform check that predated visionOS support and was never updated to include it.
 - Fixed `CDMarkdownLabel` rendering garbled, overlapping text on iOS/tvOS 16+ whenever its content was taller than the label's own bounds, such as a fixed-height label without a scroll view. TextKit 2 fragments beyond what fit the container were drawn at the wrong position instead of being cleanly excluded.
+- Fixed `CDMarkdownLabel`/`CDMarkdownTextView`'s `roundAllCorners` flag not retroactively rounding already-displayed code and syntax backgrounds on TextKit 2 (iOS/tvOS 16+) when toggled after `attributedText` had already been laid out. The corner-rounding flag is now read live at draw time instead of being cached on each text layout fragment when it was created, matching the behavior already present on the TextKit 1 fallback.
 
 ---
 

@@ -58,7 +58,7 @@ import Testing
         }
 
         @available(iOS 16.0, tvOS 16.0, *)
-        @Test func togglingRoundAllCornersAfterInitialLayoutDoesNotRetroactivelyUpdateAlreadyCreatedFragments() {
+        @Test func togglingRoundAllCornersAfterInitialLayoutRetroactivelyUpdatesAlreadyCreatedFragments() {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
             label.configureTK2()
             let parser = CDMarkdownParser()
@@ -70,16 +70,10 @@ import Testing
             }
             layoutManager.ensureLayout(for: layoutManager.documentRange)
 
-            // KNOWN LIMITATION: flipping roundAllCorners after text is already laid out
-            // calls invalidateLayout(for:), but
-            // NSTextLayoutManager does not re-invoke the delegate's fragment factory for
-            // unchanged content -- it reuses the already-created NSTextLayoutFragment
-            // instances, and CDMarkdownTextLayoutFragment.roundAllCorners is a plain stored
-            // property set only once at creation time. Verified empirically against the real
-            // TextKit 2 API: creationCount does not increase after invalidateLayout + a second
-            // ensureLayout call. Set roundAllCorners before assigning attributedText to avoid
-            // this -- fragments created after the flag is set do pick it up correctly (see
-            // roundAllCornersPropagatesToNewlyCreatedFragments above).
+            // CDMarkdownTextLayoutFragment.roundAllCorners reads live from the delegate
+            // (mirroring the TK1 CDMarkdownLayoutManager approach) instead of caching a value
+            // snapshotted at fragment-creation time, so already-created fragments pick up a
+            // post-layout toggle without needing to be recreated.
             label.roundAllCorners = true
             layoutManager.ensureLayout(for: layoutManager.documentRange)
 
@@ -95,7 +89,7 @@ import Testing
                 return true
             }
             #expect(checkedAtLeastOneFragment)
-            #expect(sawRoundedFragment == false)
+            #expect(sawRoundedFragment == true)
         }
     }
 #endif

@@ -17,10 +17,8 @@
         func textLayoutManager(_ textLayoutManager: NSTextLayoutManager,
                                textLayoutFragmentFor location: any NSTextLocation,
                                in textElement: NSTextElement) -> NSTextLayoutFragment {
-            let fragment = CDMarkdownTextLayoutFragment(textElement: textElement,
-                                                        range: textElement.elementRange)
-            fragment.roundAllCorners = roundAllCorners
-            return fragment
+            CDMarkdownTextLayoutFragment(textElement: textElement,
+                                         range: textElement.elementRange)
         }
     }
 #endif
