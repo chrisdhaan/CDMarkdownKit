@@ -32,9 +32,13 @@ import Testing
         @Test func configureTK2SetsUpContentStorageLayoutManagerAndDelegate() {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
             label.configureTK2()
-            #expect(label.tk2ContentStorage is NSTextContentStorage)
-            #expect(label.tk2LayoutManager is NSTextLayoutManager)
-            #expect(label.tk2LayoutDelegate is CDMarkdownTextLayoutDelegate)
+            guard let stack = label.tk2Stack as? CDMarkdownLabel.TK2Stack else {
+                Issue.record("expected a TK2Stack")
+                return
+            }
+            #expect(stack.contentStorage is NSTextContentStorage)
+            #expect(stack.layoutManager is NSTextLayoutManager)
+            #expect(stack.delegate is CDMarkdownTextLayoutDelegate)
         }
 
         @available(iOS 16.0, tvOS 16.0, *)
@@ -44,7 +48,7 @@ import Testing
             let parser = CDMarkdownParser()
             label.attributedText = parser.parse("[a link](https://example.com)")
 
-            guard let layoutManager = label.tk2LayoutManager as? NSTextLayoutManager else {
+            guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")
                 return
             }
@@ -71,7 +75,7 @@ import Testing
             let parser = CDMarkdownParser()
             label.attributedText = parser.parse("[a link](https://example.com)")
 
-            guard let layoutManager = label.tk2LayoutManager as? NSTextLayoutManager else {
+            guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")
                 return
             }
@@ -82,12 +86,9 @@ import Testing
 
         @Test func urlRangeAtLocationFindsLinkTK1() {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
-            // Force the TK1 dispatch branch: urlRange(at:) routes on whether tk2LayoutManager
-            // holds an NSTextLayoutManager, while attributedText's setter routes separately on
-            // tk2ContentStorage, so both must be cleared before assigning attributedText.
-            label.tk2LayoutManager = nil
-            label.tk2ContentStorage = nil
-            label.tk2LayoutDelegate = nil
+            // Force the TK1 dispatch branch: every dispatch site routes on whether tk2Stack
+            // holds a TK2Stack, so clearing the one property is enough to force TK1 everywhere.
+            label.tk2Stack = nil
             label.configureTK1()
             let parser = CDMarkdownParser()
             label.attributedText = parser.parse("[a link](https://example.com)")
@@ -106,9 +107,7 @@ import Testing
 
         @Test func urlRangeAtLocationReturnsNilOutsideBoundingRectTK1() {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
-            label.tk2LayoutManager = nil
-            label.tk2ContentStorage = nil
-            label.tk2LayoutDelegate = nil
+            label.tk2Stack = nil
             label.configureTK1()
             let parser = CDMarkdownParser()
             label.attributedText = parser.parse("[a link](https://example.com)")
@@ -124,7 +123,7 @@ import Testing
             label.configureTK2()
             label.roundAllCorners = true
 
-            guard let delegate = label.tk2LayoutDelegate as? CDMarkdownTextLayoutDelegate else {
+            guard let delegate = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.delegate else {
                 Issue.record("expected a CDMarkdownTextLayoutDelegate")
                 return
             }
@@ -133,10 +132,10 @@ import Testing
 
         @Test func roundAllCornersPropagatesToTK1LayoutManagerWhenTK2NotConfigured() {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
-            // roundAllCorners's didSet routes on whether tk2LayoutDelegate currently holds a
-            // CDMarkdownTextLayoutDelegate; clear it so the TK1 branch is exercised even
-            // though init() already ran configureTK2() on a modern simulator.
-            label.tk2LayoutDelegate = nil
+            // roundAllCorners's didSet routes on whether tk2Stack currently holds a TK2Stack;
+            // clear it so the TK1 branch is exercised even though init() already ran
+            // configureTK2() on a modern simulator.
+            label.tk2Stack = nil
             label.configureTK1()
             label.roundAllCorners = true
 
@@ -162,7 +161,7 @@ import Testing
             let paragraphs = (1 ... 40).map { "Paragraph \($0) with enough text to wrap across a couple of lines in a narrow label." }
             label.attributedText = parser.parse(paragraphs.joined(separator: "\n\n"))
 
-            guard let layoutManager = label.tk2LayoutManager as? NSTextLayoutManager else {
+            guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")
                 return
             }

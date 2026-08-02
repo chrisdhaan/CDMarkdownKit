@@ -16,7 +16,7 @@ import Testing
             let parser = CDMarkdownParser()
             label.attributedText = parser.parse("plain `code` text")
 
-            guard let layoutManager = label.tk2LayoutManager as? NSTextLayoutManager else {
+            guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")
                 return
             }
@@ -40,7 +40,7 @@ import Testing
             let parser = CDMarkdownParser()
             label.attributedText = parser.parse("plain `code` text")
 
-            guard let layoutManager = label.tk2LayoutManager as? NSTextLayoutManager else {
+            guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")
                 return
             }
@@ -64,7 +64,7 @@ import Testing
             let parser = CDMarkdownParser()
             label.attributedText = parser.parse("plain `code` text")
 
-            guard let layoutManager = label.tk2LayoutManager as? NSTextLayoutManager else {
+            guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")
                 return
             }
