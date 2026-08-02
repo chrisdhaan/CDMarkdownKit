@@ -65,17 +65,21 @@
         /// The custom text storage that holds the attributed text and layout information.
         open var customTextStorage: NSTextStorage!
 
-        /// Holds an NSTextLayoutManager on iOS/tvOS 16+. Internal (not `private`) so tests can
-        /// inspect and force TextKit 2 wiring via `@testable import`.
-        internal var tk2LayoutManager: Any?
+        /// Bundles the three objects that make up the TextKit 2 stack, so every dispatch site
+        /// checks one thing instead of independently downcasting whichever of the three it
+        /// happens to need — the previous split let the objects drift out of sync with each
+        /// other. Internal (not `private`) so tests can inspect its fields via `@testable import`.
+        @available(iOS 16.0, tvOS 16.0, *)
+        internal struct TK2Stack {
+            let contentStorage: NSTextContentStorage
+            let layoutManager: NSTextLayoutManager
+            let delegate: CDMarkdownTextLayoutDelegate
+        }
 
-        /// Holds an NSTextContentStorage on iOS/tvOS 16+. Internal (not `private`) so tests can
-        /// inspect and force TextKit 2 wiring via `@testable import`.
-        internal var tk2ContentStorage: Any?
-
-        /// Holds a CDMarkdownTextLayoutDelegate on iOS/tvOS 16+. Internal (not `private`) so tests can
-        /// inspect and force TextKit 2 wiring via `@testable import`.
-        internal var tk2LayoutDelegate: Any?
+        /// Holds a `TK2Stack` on iOS/tvOS 16+. Type-erased to `Any?` so the property can exist
+        /// unconditionally (the stack type itself is `@available`). Internal (not `private`) so
+        /// tests can inspect and force TextKit 2 wiring via `@testable import`.
+        internal var tk2Stack: Any?
 
         /// Delegate that receives callbacks when links in the label are tapped.
         /// Set this to handle link navigation, e.g., opening URLs in Safari.
@@ -90,8 +94,8 @@
         open var roundAllCorners: Bool = false {
             didSet {
                 if #available(iOS 16.0, tvOS 16.0, *),
-                   let delegate = tk2LayoutDelegate as? CDMarkdownTextLayoutDelegate {
-                    delegate.roundAllCorners = roundAllCorners
+                   let stack = tk2Stack as? TK2Stack {
+                    stack.delegate.roundAllCorners = roundAllCorners
                 } else {
                     if let layoutManager = self.customLayoutManager {
                         layoutManager.roundAllCorners = roundAllCorners
@@ -131,8 +135,8 @@
                 guard let newValue else {
                     urlRanges.removeAll()
                     if #available(iOS 16.0, tvOS 16.0, *),
-                       let contentStorage = tk2ContentStorage as? NSTextContentStorage {
-                        contentStorage.textStorage?.setAttributedString(NSAttributedString())
+                       let stack = tk2Stack as? TK2Stack {
+                        stack.contentStorage.textStorage?.setAttributedString(NSAttributedString())
                     } else if let customTextStorage {
                         customTextStorage.setAttributedString(NSAttributedString())
                     }
@@ -146,12 +150,12 @@
                 parseTextAndExtractURLRanges(newValue)
 
                 if #available(iOS 16.0, tvOS 16.0, *),
-                   let contentStorage = tk2ContentStorage as? NSTextContentStorage {
-                    if let textStorage = contentStorage.textStorage {
+                   let stack = tk2Stack as? TK2Stack {
+                    if let textStorage = stack.contentStorage.textStorage {
                         textStorage.setAttributedString(newValue)
                     } else {
                         let textStorage = NSTextStorage(attributedString: newValue)
-                        contentStorage.textStorage = textStorage
+                        stack.contentStorage.textStorage = textStorage
                     }
                 } else if customTextContainer != nil,
                           let layoutManager = customLayoutManager {
@@ -225,9 +229,7 @@
             layoutManager.textContainer = customTextContainer
             contentStorage.addTextLayoutManager(layoutManager)
 
-            tk2ContentStorage = contentStorage
-            tk2LayoutManager = layoutManager
-            tk2LayoutDelegate = delegate
+            tk2Stack = TK2Stack(contentStorage: contentStorage, layoutManager: layoutManager, delegate: delegate)
         }
 
         /// Enumerates every text layout fragment in `layoutManager`'s document, forcing each
@@ -275,7 +277,7 @@
             self.customTextContainer.maximumNumberOfLines = numberOfLines
             // Measure the text with the new state
             var textBounds: CGRect
-            if #available(iOS 16.0, tvOS 16.0, *), let tk2 = tk2LayoutManager as? NSTextLayoutManager {
+            if #available(iOS 16.0, tvOS 16.0, *), let tk2 = (tk2Stack as? TK2Stack)?.layoutManager {
                 tk2.ensureLayout(for: tk2.documentRange)
                 textBounds = .zero
                 enumerateTK2Fragments(tk2) { fragment in
@@ -303,8 +305,8 @@
 
         override open func drawText(in rect: CGRect) {
             if #available(iOS 16.0, tvOS 16.0, *),
-               let tk2Manager = tk2LayoutManager as? NSTextLayoutManager {
-                drawTextTK2(in: rect, layoutManager: tk2Manager)
+               let stack = tk2Stack as? TK2Stack {
+                drawTextTK2(in: rect, layoutManager: stack.layoutManager)
             } else {
                 drawTextTK1(in: rect)
             }
@@ -342,7 +344,7 @@
             // Returns the XY offset of the range of glyphs from the view's origin
             var textOffset = CGPoint.zero
 
-            if #available(iOS 16.0, tvOS 16.0, *), let tk2 = tk2LayoutManager as? NSTextLayoutManager {
+            if #available(iOS 16.0, tvOS 16.0, *), let tk2 = (tk2Stack as? TK2Stack)?.layoutManager {
                 tk2.ensureLayout(for: tk2.documentRange)
                 var maxY: CGFloat = 0
                 enumerateTK2Fragments(tk2) { fragment in
@@ -526,9 +528,9 @@
         /// in a unit test.
         internal func urlRange(at location: CGPoint) -> URLRange? {
             if #available(iOS 16.0, tvOS 16.0, *),
-               let tk2Manager = tk2LayoutManager as? NSTextLayoutManager,
-               let textStorage = tk2Manager.textContentManager as? NSTextContentStorage {
-                urlRangeTK2(at: location, layoutManager: tk2Manager, storage: textStorage)
+               let stack = tk2Stack as? TK2Stack,
+               let textStorage = stack.layoutManager.textContentManager as? NSTextContentStorage {
+                urlRangeTK2(at: location, layoutManager: stack.layoutManager, storage: textStorage)
             } else {
                 urlRangeTK1(at: location)
             }

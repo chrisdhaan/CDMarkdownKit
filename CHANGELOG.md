@@ -36,6 +36,10 @@ All notable changes to this project will be documented in this file.
 - Replaced near-tautological `CDMarkdownText` SwiftUI tests (which only asserted the view's type) with real coverage of its parser-selection precedence and its `NSAttributedString`-to-`AttributedString` conversion, following the existing `CDMarkdownLabel` pattern of exposing testable seams as `internal` rather than adding a view-inspection dependency.
 - Added test coverage for `CDMarkdownView` (previously untested), covering parser-selection precedence and link-tap handling on both the iOS/tvOS/visionOS and macOS variants, plus iOS/tvOS/visionOS-specific text-view configuration, following the same "expose testable seams as `internal`" pattern used for `CDMarkdownText`.
 
+### Changed
+
+- Collapsed `CDMarkdownLabel`'s three independent TextKit 2 state properties (`tk2LayoutManager`, `tk2ContentStorage`, `tk2LayoutDelegate`) into a single atomic `tk2Stack`, so every dispatch site checks one thing instead of downcasting whichever of the three it happens to need — eliminating a bug class where the three could drift out of sync.
+
 ### Fixed
 
 - Fixed several test files failing to compile for visionOS, due to a platform check that predated visionOS support and was never updated to include it.
