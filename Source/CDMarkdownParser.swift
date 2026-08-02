@@ -481,7 +481,6 @@ open class CDMarkdownParser {
                                                          .foregroundColor: fontColor as AnyObject]
         let result = NSMutableAttributedString(string: string, attributes: attrs)
         let inlineElements: [any CDMarkdownElement] = [
-            codeEscaping, escaping,
             link, automaticLink,
             bold, italic, strikethrough,
             code, unescaping
