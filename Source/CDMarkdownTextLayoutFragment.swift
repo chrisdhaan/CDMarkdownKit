@@ -11,7 +11,16 @@
             let color: UIColor
         }
 
-        var roundAllCorners: Bool = false
+        /// Shared with the `CDMarkdownTextLayoutDelegate` that created this fragment; see
+        /// `CDMarkdownRoundAllCornersBox`. Reading its `.value` live at draw time (rather than
+        /// copying a `Bool` onto this fragment at creation time) is what lets a `roundAllCorners`
+        /// toggle reach fragments `NSTextLayoutManager` already created and is reusing across an
+        /// `invalidateLayout(for:)`.
+        var roundAllCornersBox: CDMarkdownRoundAllCornersBox?
+
+        var roundAllCorners: Bool {
+            roundAllCornersBox?.value ?? false
+        }
 
         override func draw(at renderingOrigin: CGPoint, in context: CGContext) {
             if roundAllCorners {
