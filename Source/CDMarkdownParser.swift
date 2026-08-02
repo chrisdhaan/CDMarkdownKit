@@ -96,8 +96,11 @@ open class CDMarkdownParser {
     /// When enabled, collapses multiple consecutive newlines into a single newline.
     /// Default is `true`. Set to `false` to preserve blank lines exactly as they appear in input.
     open var squashNewlines: Bool = true
-    /// When enabled, preserves leading whitespace (spaces and tabs) on each line.
-    /// Default is `false` (leading whitespace is stripped). Set to `true` to preserve indentation in code and quoted text.
+    /// When enabled, preserves leading whitespace (spaces and tabs) on each line exactly as written.
+    /// Default is `false`, in which case the document is dedented: only the whitespace common to
+    /// every line is removed, so relative indentation between lines (e.g. nested list markers) is
+    /// preserved while incidental uniform indentation is still cleaned up. Set to `true` to skip
+    /// this entirely and preserve indentation in code and quoted text unconditionally.
     open var preserveLeadingWhitespace: Bool = false
     /// Element types listed here are excluded from the parsing pipeline.
     /// Use this to opt out of specific default elements without subclassing.
@@ -587,6 +590,54 @@ open class CDMarkdownParser {
         return definitions
     }
 
+    /// Strips only the whitespace common to every non-blank line (a dedent, like Python's
+    /// `textwrap.dedent` or Swift's own multi-line string literals) rather than stripping every
+    /// line's leading whitespace outright. This still cleans up incidental uniform indentation
+    /// (e.g. markdown embedded in indented Swift source) while preserving the *relative*
+    /// indentation that nested list markers depend on. Blank/whitespace-only lines are excluded
+    /// from the margin computation and always normalized to empty, so a stray blank line can't
+    /// zero out the margin for the rest of the document.
+    private static func dedent(_ text: String) -> String {
+        let lines = text.components(separatedBy: "\n")
+
+        func isBlank(_ line: String) -> Bool {
+            line.allSatisfy { $0 == " " || $0 == "\t" || $0 == "\r" }
+        }
+
+        func leadingWhitespace(of line: String) -> String {
+            let end = line.firstIndex { $0 != " " && $0 != "\t" } ?? line.endIndex
+            return String(line[line.startIndex ..< end])
+        }
+
+        func commonPrefix(_ lhs: String, _ rhs: String) -> String {
+            var result = ""
+            for (left, right) in zip(lhs, rhs) {
+                guard left == right else { break }
+                result.append(left)
+            }
+            return result
+        }
+
+        let nonBlankLines = lines.filter { !isBlank($0) }
+        var margin = ""
+        if let first = nonBlankLines.first {
+            margin = leadingWhitespace(of: first)
+            for line in nonBlankLines.dropFirst() {
+                margin = commonPrefix(margin, leadingWhitespace(of: line))
+                if margin.isEmpty {
+                    break
+                }
+            }
+        }
+
+        let marginLength = margin.count
+        return lines.map { line in
+            isBlank(line)
+                ? String(line.filter { $0 != " " && $0 != "\t" })
+                : String(line.dropFirst(marginLength))
+        }.joined(separator: "\n")
+    }
+
     private func parse(_ markdown: NSAttributedString, loadImages: Bool) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         let mutableString = attributedString.mutableString
@@ -601,20 +652,10 @@ open class CDMarkdownParser {
                                          with: " ",
                                          range: NSRange(location: 0,
                                                         length: mutableString.length))
-        // Conditionally strip leading whitespace. When preserveLeadingWhitespace is true,
+        // Conditionally dedent leading whitespace. When preserveLeadingWhitespace is true,
         // skip this step to maintain spaces at the beginning of lines.
         if !preserveLeadingWhitespace {
-            // Use [ \t]+ rather than \s+ so blank lines (\n only) are not consumed.
-            // \s includes \n, which would collapse blank lines even when squashNewlines is false.
-            let regExp = try? NSRegularExpression(pattern: "^[ \\t]+",
-                                                  options: .anchorsMatchLines)
-            if let regExp {
-                regExp.replaceMatches(in: mutableString,
-                                      options: [],
-                                      range: NSRange(location: 0,
-                                                     length: mutableString.length),
-                                      withTemplate: "")
-            }
+            mutableString.setString(CDMarkdownParser.dedent(mutableString as String))
         }
         let range = NSRange(location: 0,
                             length: attributedString.length)
