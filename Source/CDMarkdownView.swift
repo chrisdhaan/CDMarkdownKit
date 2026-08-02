@@ -57,7 +57,7 @@ import SwiftUI
         /// `internal` function (independent of `Context`) so it's testable via `@testable import`.
         internal static func configuredTextView() -> CDMarkdownTextView {
             let textView = CDMarkdownTextView(frame: .zero)
-            textView.configure() // sets up customLayoutManager for rounded corners
+            textView.configure() // sets up rounded-corner background rendering (TK2 delegate on iOS/tvOS 16+, customLayoutManager on iOS 15)
             textView.isScrollEnabled = false // override configure()'s default of true
             textView.isSelectable = true // override configure()'s default of false
             #if os(visionOS)

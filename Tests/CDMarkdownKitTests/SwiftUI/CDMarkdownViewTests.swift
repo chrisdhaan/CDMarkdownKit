@@ -38,6 +38,9 @@ import Testing
             #expect(textView.isScrollEnabled == false)
             #expect(textView.isSelectable == true)
             #expect(textView.backgroundColor == .clear)
+            if #available(iOS 16.0, tvOS 16.0, *) {
+                #expect(textView.tk2Delegate is CDMarkdownTextLayoutDelegate)
+            }
         }
 
         #if os(visionOS)
@@ -49,18 +52,35 @@ import Testing
         #endif
 
         @available(iOS 15.0, tvOS 15.0, visionOS 1.0, *)
-        @Test func makeCoordinatorCarriesOnLinkTapHandler() {
-            let view = CDMarkdownView("test", onLinkTap: { _ in })
+        @Test func makeCoordinatorCarriesOnLinkTapHandler() throws {
+            var tappedURL: URL?
+            let view = CDMarkdownView("test", onLinkTap: { tappedURL = $0 })
             let coordinator = view.makeCoordinator()
-            #expect(coordinator.onLinkTap != nil)
+            let url = try #require(URL(string: "https://example.com"))
+            #if !os(visionOS)
+                _ = coordinator.textView(UITextView(),
+                                         shouldInteractWith: url,
+                                         in: NSRange(location: 0, length: 1),
+                                         interaction: .invokeDefaultAction)
+            #else
+                coordinator.onLinkTap?(url)
+            #endif
+            #expect(tappedURL == url)
+        }
+
+        @available(iOS 15.0, tvOS 15.0, visionOS 1.0, *)
+        @Test func makeCoordinatorWithNilHandlerHasNilOnLinkTap() {
+            let view = CDMarkdownView("test", onLinkTap: nil)
+            let coordinator = view.makeCoordinator()
+            #expect(coordinator.onLinkTap == nil)
         }
 
         #if !os(visionOS)
             @available(iOS 15.0, tvOS 15.0, *)
-            @Test func shouldInteractWithFiresHandlerAndReturnsFalse() {
+            @Test func shouldInteractWithFiresHandlerAndReturnsFalse() throws {
                 var tappedURL: URL?
                 let coordinator = CDMarkdownView.Coordinator(onLinkTap: { tappedURL = $0 })
-                let url = URL(string: "https://example.com")! // swiftformat:disable:this:line noForceUnwrapInTests
+                let url = try #require(URL(string: "https://example.com"))
                 let result = coordinator.textView(UITextView(),
                                                   shouldInteractWith: url,
                                                   in: NSRange(location: 0, length: 1),
@@ -70,9 +90,9 @@ import Testing
             }
 
             @available(iOS 15.0, tvOS 15.0, *)
-            @Test func shouldInteractWithReturnsTrueWhenNoHandler() {
+            @Test func shouldInteractWithReturnsTrueWhenNoHandler() throws {
                 let coordinator = CDMarkdownView.Coordinator(onLinkTap: nil)
-                let url = URL(string: "https://example.com")! // swiftformat:disable:this:line noForceUnwrapInTests
+                let url = try #require(URL(string: "https://example.com"))
                 let result = coordinator.textView(UITextView(),
                                                   shouldInteractWith: url,
                                                   in: NSRange(location: 0, length: 1),
@@ -83,9 +103,9 @@ import Testing
 
         #if os(iOS) || os(visionOS)
             @available(iOS 17.0, visionOS 1.0, *)
-            @Test func primaryActionFiresHandlerAndReturnsNil() {
+            @Test func primaryActionFiresHandlerAndReturnsNil() throws {
                 var tappedURL: URL?
-                let url = URL(string: "https://example.com")! // swiftformat:disable:this:line noForceUnwrapInTests
+                let url = try #require(URL(string: "https://example.com"))
                 let defaultAction = UIAction { _ in }
                 let result = CDMarkdownView.Coordinator.primaryAction(forLinkURL: url,
                                                                       onLinkTap: { tappedURL = $0 },
@@ -95,8 +115,8 @@ import Testing
             }
 
             @available(iOS 17.0, visionOS 1.0, *)
-            @Test func primaryActionReturnsDefaultActionWhenNoHandler() {
-                let url = URL(string: "https://example.com")! // swiftformat:disable:this:line noForceUnwrapInTests
+            @Test func primaryActionReturnsDefaultActionWhenNoHandler() throws {
+                let url = try #require(URL(string: "https://example.com"))
                 let defaultAction = UIAction { _ in }
                 let result = CDMarkdownView.Coordinator.primaryAction(forLinkURL: url,
                                                                       onLinkTap: nil,
@@ -136,10 +156,23 @@ import Testing
         }
 
         @available(macOS 12.0, *)
-        @Test func makeCoordinatorCarriesOnLinkTapHandler() {
-            let view = CDMarkdownView("test", onLinkTap: { _ in true })
+        @Test func makeCoordinatorCarriesOnLinkTapHandler() throws {
+            var tappedURL: URL?
+            let view = CDMarkdownView("test", onLinkTap: { url in
+                tappedURL = url
+                return true
+            })
             let coordinator = view.makeCoordinator()
-            #expect(coordinator.onLinkTap != nil)
+            let url = try #require(URL(string: "https://example.com"))
+            _ = coordinator.textView(NSTextView(), clickedOnLink: url, at: 0)
+            #expect(tappedURL == url)
+        }
+
+        @available(macOS 12.0, *)
+        @Test func makeCoordinatorWithNilHandlerHasNilOnLinkTap() {
+            let view = CDMarkdownView("test", onLinkTap: nil)
+            let coordinator = view.makeCoordinator()
+            #expect(coordinator.onLinkTap == nil)
         }
 
         @available(macOS 12.0, *)

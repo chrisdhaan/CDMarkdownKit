@@ -34,7 +34,7 @@ All notable changes to this project will be documented in this file.
 
 - CI now runs the full test suite against real iOS, tvOS, and visionOS simulators, in addition to the existing build-only checks for those platforms.
 - Replaced near-tautological `CDMarkdownText` SwiftUI tests (which only asserted the view's type) with real coverage of its parser-selection precedence and its `NSAttributedString`-to-`AttributedString` conversion, following the existing `CDMarkdownLabel` pattern of exposing testable seams as `internal` rather than adding a view-inspection dependency.
-- Added test coverage for `CDMarkdownView` (previously untested), covering parser-selection precedence, text-view configuration, and link-tap handling on both the iOS/tvOS/visionOS and macOS variants, following the same "expose testable seams as `internal`" pattern used for `CDMarkdownText`.
+- Added test coverage for `CDMarkdownView` (previously untested), covering parser-selection precedence and link-tap handling on both the iOS/tvOS/visionOS and macOS variants, plus iOS/tvOS/visionOS-specific text-view configuration, following the same "expose testable seams as `internal`" pattern used for `CDMarkdownText`.
 
 ### Fixed
 
