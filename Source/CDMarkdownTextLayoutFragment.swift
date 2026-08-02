@@ -2,7 +2,6 @@
     import UIKit
 
     @available(iOS 16.0, tvOS 16.0, *)
-    @MainActor
     final class CDMarkdownTextLayoutFragment: NSTextLayoutFragment {
 
         /// One rounded-corner background rectangle computed for a single attribute run within
@@ -12,13 +11,15 @@
             let color: UIColor
         }
 
-        /// Read live from the owning layout manager's delegate at draw time — mirroring
-        /// `CDMarkdownLayoutManager`'s TextKit 1 approach — rather than cached on the fragment
-        /// at creation time. `NSTextLayoutManager` reuses already-created fragment instances
-        /// across `invalidateLayout(for:)`; a stored value snapshotted in the delegate's
-        /// factory method would never see a later toggle on already-laid-out content.
+        /// Shared with the `CDMarkdownTextLayoutDelegate` that created this fragment; see
+        /// `CDMarkdownRoundAllCornersBox`. Reading its `.value` live at draw time (rather than
+        /// copying a `Bool` onto this fragment at creation time) is what lets a `roundAllCorners`
+        /// toggle reach fragments `NSTextLayoutManager` already created and is reusing across an
+        /// `invalidateLayout(for:)`.
+        var roundAllCornersBox: CDMarkdownRoundAllCornersBox?
+
         var roundAllCorners: Bool {
-            (textLayoutManager?.delegate as? CDMarkdownTextLayoutDelegate)?.roundAllCorners ?? false
+            roundAllCornersBox?.value ?? false
         }
 
         override func draw(at renderingOrigin: CGPoint, in context: CGContext) {
