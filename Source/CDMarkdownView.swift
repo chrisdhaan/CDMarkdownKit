@@ -138,7 +138,20 @@ import SwiftUI
         public var onLinkTap: ((URL) -> Bool)?
 
         private var parser: CDMarkdownParser {
-            explicitParser ?? environmentParser ?? CDMarkdownParser(theme: environmentTheme)
+            Self.resolveParser(explicit: explicitParser, environment: environmentParser, theme: environmentTheme)
+        }
+
+        /// Picks the parser `makeNSView`/`updateNSView` render with: an explicitly-injected
+        /// parser always wins, then an environment-injected one, falling back to a fresh parser
+        /// built from `theme`. Pulled out as a pure, `internal` function so it's reachable from
+        /// `@testable import` without hosting the view — this project has no SwiftUI
+        /// view-inspection dependency.
+        internal static func resolveParser(
+            explicit: CDMarkdownParser?,
+            environment: CDMarkdownParser?,
+            theme: CDMarkdownTheme
+        ) -> CDMarkdownParser {
+            explicit ?? environment ?? CDMarkdownParser(theme: theme)
         }
 
         /// Creates a full-fidelity Markdown view with rounded-corner support.

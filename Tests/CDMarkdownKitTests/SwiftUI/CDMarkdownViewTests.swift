@@ -105,4 +105,68 @@ import Testing
             }
         #endif
     }
+
+#elseif os(macOS)
+    import Cocoa
+
+    @MainActor
+    struct CDMarkdownViewTests {
+
+        @available(macOS 12.0, *)
+        @Test func resolveParserPrefersExplicitOverEnvironmentAndDefault() {
+            let explicit = CDMarkdownParser()
+            let environment = CDMarkdownParser()
+            let resolved = CDMarkdownView.resolveParser(explicit: explicit, environment: environment, theme: .default)
+            #expect(resolved === explicit)
+        }
+
+        @available(macOS 12.0, *)
+        @Test func resolveParserPrefersEnvironmentOverDefault() {
+            let environment = CDMarkdownParser()
+            let resolved = CDMarkdownView.resolveParser(explicit: nil, environment: environment, theme: .default)
+            #expect(resolved === environment)
+        }
+
+        @available(macOS 12.0, *)
+        @Test func resolveParserFallsBackToThemedDefault() {
+            var theme = CDMarkdownTheme.default
+            theme.fontColor = .red
+            let resolved = CDMarkdownView.resolveParser(explicit: nil, environment: nil, theme: theme)
+            #expect(resolved.fontColor == theme.fontColor)
+        }
+
+        @available(macOS 12.0, *)
+        @Test func makeCoordinatorCarriesOnLinkTapHandler() {
+            let view = CDMarkdownView("test", onLinkTap: { _ in true })
+            let coordinator = view.makeCoordinator()
+            #expect(coordinator.onLinkTap != nil)
+        }
+
+        @available(macOS 12.0, *)
+        @Test func clickedOnLinkReturnsHandlerResultForURL() throws {
+            var tappedURL: URL?
+            let coordinator = CDMarkdownView.Coordinator(onLinkTap: { url in
+                tappedURL = url
+                return true
+            })
+            let url = try #require(URL(string: "https://example.com"))
+            let result = coordinator.textView(NSTextView(), clickedOnLink: url, at: 0)
+            #expect(tappedURL == url)
+            #expect(result == true)
+        }
+
+        @available(macOS 12.0, *)
+        @Test func clickedOnLinkReturnsFalseWhenNoHandler() throws {
+            let coordinator = CDMarkdownView.Coordinator(onLinkTap: nil)
+            let result = try coordinator.textView(NSTextView(), clickedOnLink: #require(URL(string: "https://example.com")), at: 0)
+            #expect(result == false)
+        }
+
+        @available(macOS 12.0, *)
+        @Test func clickedOnLinkReturnsFalseWhenLinkIsNotAURL() {
+            let coordinator = CDMarkdownView.Coordinator(onLinkTap: { _ in true })
+            let result = coordinator.textView(NSTextView(), clickedOnLink: "not a url", at: 0)
+            #expect(result == false)
+        }
+    }
 #endif
