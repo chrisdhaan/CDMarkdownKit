@@ -69,9 +69,9 @@ struct CDMarkdownListTests {
     /// `CDMarkdownList.addAttributes` re-applies the instance's own base paragraphStyle over
     /// the content-only range after `addFullAttributes` sets the level-derived headIndent over
     /// the full match, making "last enumerated value" an unreliable proxy for the effective indent.
-    private func effectiveHeadIndent(of attributed: NSAttributedString) -> CGFloat {
-        guard attributed.length > 0,
-              let style = attributed.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle else {
+    private func effectiveHeadIndent(of attributed: NSAttributedString, atCharacterIndex index: Int = 0) -> CGFloat {
+        guard attributed.length > index,
+              let style = attributed.attribute(.paragraphStyle, at: index, effectiveRange: nil) as? NSParagraphStyle else {
             return 0
         }
         return style.headIndent
@@ -88,13 +88,30 @@ struct CDMarkdownListTests {
     }
 
     @Test func indentationNestingRequiresPreserveLeadingWhitespace() {
-        // Under default settings, leading whitespace is stripped before CDMarkdownList
-        // ever sees it, so indentation-based nesting is a documented no-op unless the
-        // caller opts in via preserveLeadingWhitespace.
+        // A single indented line has no sibling line to establish *relative* indentation
+        // against -- its whole leading whitespace run is the whole-document dedent margin, so
+        // it's still fully stripped under default settings. Multi-line nesting (see
+        // nestedListItemIndentsDeeperThanParentUnderDefaultSettings) works without opting in;
+        // this single-line case specifically does not, and preserveLeadingWhitespace remains
+        // the way to force it.
         let defaultParser = CDMarkdownParser()
         let topLevel = defaultParser.parse("* item")
         let indented = defaultParser.parse("  * item")
 
         #expect(effectiveHeadIndent(of: indented) == effectiveHeadIndent(of: topLevel))
+    }
+
+    @Test func nestedListItemIndentsDeeperThanParentUnderDefaultSettings() {
+        // Two lines in one parse call: the parent has no leading whitespace, so the
+        // whole-document margin is zero and the nested item's 2-space indent survives.
+        let result = parser.parse("* item\n  * nested item")
+        let nsString = result.string as NSString
+        let newlineRange = nsString.range(of: "\n")
+        #expect(newlineRange.location != NSNotFound)
+        let secondLineStart = newlineRange.location + newlineRange.length
+
+        let topLevelIndent = effectiveHeadIndent(of: result)
+        let nestedIndent = effectiveHeadIndent(of: result, atCharacterIndex: secondLineStart)
+        #expect(nestedIndent > topLevelIndent)
     }
 }
