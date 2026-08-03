@@ -47,6 +47,20 @@ struct CDMarkdownQuoteTests {
         #expect(result.string == "> quote")
     }
 
+    @Test func indentedQuoteStillRecognizedAlongsideFlushLeftText() {
+        // Under the dedent-based whitespace handling, a document containing at least one
+        // flush-left line leaves other lines' indentation untouched -- including indentation
+        // in front of a blockquote marker. The quote regex must still match it.
+        let result = parser.parse("Text\n  > quoted line")
+        var foundQuote = false
+        result.enumerateAttribute(.cdMarkdownIsBlockquote, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if v != nil {
+                foundQuote = true
+            }
+        }
+        #expect(foundQuote)
+    }
+
     @Test func nestedMarkdownInQuoteWorks() {
         let result = parser.parse("> **bold** quote")
         var hasBold = false

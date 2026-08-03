@@ -7,7 +7,7 @@
 @MainActor
 open class CDMarkdownOrderedList: CDMarkdownElement, CDMarkdownStyle {
 
-    fileprivate static let regex = "^(\\d+\\.)([ \\t]+)(.+)$"
+    fileprivate static let regex = "^[ \\t]*(\\d+\\.)([ \\t]+)(.+)$"
 
     open var font: CDFont?
     open var color: CDColor?

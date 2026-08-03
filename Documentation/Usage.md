@@ -156,7 +156,7 @@ Per-element overrides always win over theme values.
 
 ### Preserving Leading Whitespace
 
-By default, CDMarkdownKit strips leading whitespace (spaces and tabs) from each line. This is suitable for most Markdown text, but if you need to preserve indentation in code blocks or other contexts, enable the `preserveLeadingWhitespace` option:
+By default, CDMarkdownKit dedents leading whitespace: it only strips whitespace common to every line, preserving relative indentation between lines (similar to Python's `textwrap.dedent`). This is suitable for most Markdown text, but if you need to preserve indentation unconditionally — such as in code blocks or other contexts where even a lone indented line should keep its whitespace — enable the `preserveLeadingWhitespace` option:
 
 ```swift
 let parser = CDMarkdownParser()
@@ -177,7 +177,7 @@ With `preserveLeadingWhitespace = true`, the indentation inside both inline code
 - Any content where whitespace spacing is meaningful
 - Indentation-based nested unordered lists (e.g. `- item` / `  - subitem`)
 
-**Note**: This setting affects code elements (as above) and unordered list nesting. `CDMarkdownList` derives each item's nesting level from its leading whitespace when this option is enabled; other Markdown elements (bold, italic, headers, etc.) are unaffected. With the default `preserveLeadingWhitespace = false`, leading whitespace is stripped before any element sees it, so indentation-based list nesting has no effect — use repeated marker characters (`** item`, `*** item`) for nesting instead, or enable this option.
+**Note**: This setting affects code elements (as above) and unordered list nesting. `CDMarkdownList` derives each item's nesting level from its leading whitespace. With the default `preserveLeadingWhitespace = false`, the parser dedents rather than stripping outright, so indentation-based nested unordered lists already work across multi-line input without opting in — a margin only gets stripped if it's common to every line in the document. A single orphaned indented line is the exception: its entire indent *is* the margin, so it gets fully stripped by default. Enable `preserveLeadingWhitespace = true` when you need indentation preserved unconditionally, including for a lone indented line or for code blocks. Repeated marker characters (`** item`, `*** item`) remain an alternative for list nesting that works regardless of indentation or whitespace settings.
 
 ---
 

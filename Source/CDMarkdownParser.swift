@@ -661,7 +661,11 @@ open class CDMarkdownParser {
         // Conditionally dedent leading whitespace. When preserveLeadingWhitespace is true,
         // skip this step to maintain spaces at the beginning of lines.
         if !preserveLeadingWhitespace {
-            mutableString.setString(CDMarkdownParser.dedent(mutableString as String))
+            let original = mutableString as String
+            let dedented = CDMarkdownParser.dedent(original)
+            if dedented != original {
+                mutableString.setString(dedented)
+            }
         }
         let range = NSRange(location: 0,
                             length: attributedString.length)
