@@ -39,6 +39,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Collapsed `CDMarkdownLabel`'s three independent TextKit 2 state properties (`tk2LayoutManager`, `tk2ContentStorage`, `tk2LayoutDelegate`) into a single atomic `tk2Stack`, so every dispatch site checks one thing instead of downcasting whichever of the three it happens to need — eliminating a bug class where the three could drift out of sync.
+- The parser's leading-whitespace handling now dedents rather than stripping every line outright: only whitespace common to every line is removed, so relative indentation between lines is preserved. This means indentation-based nested lists now work under the parser's default settings, without needing to opt in via `preserveLeadingWhitespace`.
 
 ### Fixed
 
