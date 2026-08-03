@@ -448,6 +448,9 @@ open class CDMarkdownParser {
     /// - Returns: An `NSAttributedString` with styling applied for all recognized Markdown syntax.
     ///
     /// Images are not loaded in the synchronous overload. Use the async overload to download remote images.
+    ///
+    /// Note: Input attributes other than font, foregroundColor, backgroundColor, and paragraphStyle are not guaranteed to survive parsing, as the
+    /// leading-whitespace dedent step performs a full-string replacement that can collapse attribute-run boundaries.
     @available(*, deprecated, renamed: "parse(_:)")
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         parse(markdown, loadImages: false)
@@ -472,6 +475,9 @@ open class CDMarkdownParser {
     ///
     /// Use this overload for Markdown containing image references. Remote images are downloaded
     /// asynchronously.
+    ///
+    /// Note: Input attributes other than font, foregroundColor, backgroundColor, and paragraphStyle are not guaranteed to survive parsing, as the
+    /// leading-whitespace dedent step performs a full-string replacement that can collapse attribute-run boundaries.
     @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     open func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
         let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))
