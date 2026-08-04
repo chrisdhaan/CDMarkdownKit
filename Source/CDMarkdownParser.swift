@@ -596,54 +596,6 @@ open class CDMarkdownParser {
         return definitions
     }
 
-    /// Strips only the whitespace common to every non-blank line (a dedent, like Python's
-    /// `textwrap.dedent` or Swift's own multi-line string literals) rather than stripping every
-    /// line's leading whitespace outright. This still cleans up incidental uniform indentation
-    /// (e.g. markdown embedded in indented Swift source) while preserving the *relative*
-    /// indentation that nested list markers depend on. Blank/whitespace-only lines are excluded
-    /// from the margin computation and always normalized to empty, so a stray blank line can't
-    /// zero out the margin for the rest of the document.
-    private static func dedent(_ text: String) -> String {
-        let lines = text.components(separatedBy: "\n")
-
-        func isBlank(_ line: String) -> Bool {
-            line.allSatisfy { $0 == " " || $0 == "\t" || $0 == "\r" }
-        }
-
-        func leadingWhitespace(of line: String) -> String {
-            let end = line.firstIndex { $0 != " " && $0 != "\t" } ?? line.endIndex
-            return String(line[line.startIndex ..< end])
-        }
-
-        func commonPrefix(_ lhs: String, _ rhs: String) -> String {
-            var result = ""
-            for (left, right) in zip(lhs, rhs) {
-                guard left == right else { break }
-                result.append(left)
-            }
-            return result
-        }
-
-        let nonBlankLines = lines.filter { !isBlank($0) }
-        var margin = ""
-        if let first = nonBlankLines.first {
-            margin = leadingWhitespace(of: first)
-            for line in nonBlankLines.dropFirst() {
-                margin = commonPrefix(margin, leadingWhitespace(of: line))
-                if margin.isEmpty {
-                    break
-                }
-            }
-        }
-
-        let marginLength = margin.count
-        return lines.map { line in
-            isBlank(line)
-                ? String(line.filter { $0 != " " && $0 != "\t" })
-                : String(line.dropFirst(marginLength))
-        }.joined(separator: "\n")
-    }
-
     private func parse(_ markdown: NSAttributedString, loadImages: Bool) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         let mutableString = attributedString.mutableString
