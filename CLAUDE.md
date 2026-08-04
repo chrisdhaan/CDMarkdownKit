@@ -4,7 +4,7 @@
 
 CDMarkdownKit is a pure-Swift, zero-dependency framework for parsing Markdown text into `NSAttributedString`. It supports rendering inside custom `UILabel` and `UITextView` subclasses with optional rounded-corner background styling for code and syntax blocks.
 
-- **Current version**: 4.0.3
+- **Current version**: 4.1.0
 - **License**: MIT
 - **Author**: Christopher de Haan (contact@christopherdehaan.me)
 
@@ -372,6 +372,7 @@ Do **not** run `swift package generate-documentation` directly to publish docs â
 
 | Version | Date       | Notable Change |
 |---------|------------|----------------|
+| 4.1.0   | 2026-08-03 | Leading-whitespace handling now dedents instead of stripping every line outright, fixing indentation-based nested unordered lists under default settings; fixed indented blockquote/ordered-list parsing regressions from that change; `CDMarkdownTable` column-width and `CDMarkdownLabel` TK2 fixes; `CDMarkdownView`/`CDMarkdownText` test coverage |
 | 4.0.3   | 2026-07-31 | Fixed `CDMarkdownLabel` never rendering on iOS/tvOS 16+ (TextKit 2 setup always failed); fixed TextKit 1 link-tap hit-testing; added TextKit 2 test coverage |
 | 4.0.2   | 2026-07-24 | Monthly review bug-fix pass: parsing (URL parens, emoji code spans, CRLF), UI rendering (TextKit 1/2, nil crash), doc accuracy |
 | 4.0.1   | 2026-06-15 | Fix infinite recursion in `CDColor.label` on iOS/tvOS/watchOS/visionOS |
