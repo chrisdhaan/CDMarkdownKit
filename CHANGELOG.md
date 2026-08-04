@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## Table of Contents
 
 - [Unreleased](#unreleased)
+- [4.2.0](#420)
 - [4.1.0](#410)
 - [4.0.3](#403)
 - [4.0.2](#402)
@@ -30,6 +31,20 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## [4.2.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.2.0)
+
+Released on 2026-08-04.
+
+### Removed
+- CocoaPods distribution support (`CDMarkdownKit.podspec`, `Gemfile`,
+  `Gemfile.lock`, the `pod lib lint` CI job, and all CocoaPods installation
+  docs), ahead of CocoaPods Trunk going read-only on 2026-12-02. Swift
+  Package Manager is now the sole supported distribution method. Existing
+  CocoaPods installs will keep resolving indefinitely but will no longer
+  receive updates — switch to SPM to continue getting new releases.
 
 ---
 
