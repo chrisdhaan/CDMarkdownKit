@@ -35,7 +35,7 @@
 @MainActor
 open class CDMarkdownQuote: CDMarkdownLevelElement {
 
-    fileprivate static let regex = "^(\\>{1,%@})\\s*(.+)$"
+    fileprivate static let regex = "^[ \\t]*(\\>{1,%@})\\s*(.+)$"
 
     /// The font for blockquote text.
     open var font: CDFont?

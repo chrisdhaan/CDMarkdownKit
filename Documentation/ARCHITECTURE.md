@@ -12,7 +12,7 @@ Input: String or NSAttributedString
 │  Pre-processing                                             │
 │  • squashNewlines: collapse \n\n+ → \n                     │
 │  • replace &nbsp; → space                                   │
-│  • strip leading whitespace on each line                    │
+│  • dedent leading whitespace (strip only the common margin) │
 │  • apply base font / color / background / paragraphStyle   │
 └─────────────────────────────────────────────────────────────┘
 │

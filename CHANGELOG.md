@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## Table of Contents
 
 - [Unreleased](#unreleased)
+- [4.1.0](#410)
 - [4.0.3](#403)
 - [4.0.2](#402)
 - [4.0.1](#401)
@@ -30,6 +31,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+---
+
+## [4.1.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.1.0)
+
+Released on 2026-08-03.
+
 ### Added
 
 - CI now runs the full test suite against real iOS, tvOS, and visionOS simulators, in addition to the existing build-only checks for those platforms.
@@ -39,6 +46,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Collapsed `CDMarkdownLabel`'s three independent TextKit 2 state properties (`tk2LayoutManager`, `tk2ContentStorage`, `tk2LayoutDelegate`) into a single atomic `tk2Stack`, so every dispatch site checks one thing instead of downcasting whichever of the three it happens to need — eliminating a bug class where the three could drift out of sync.
+- The parser's leading-whitespace handling now dedents rather than stripping every line outright: only whitespace common to every line is removed, so relative indentation between lines is preserved. This means indentation-based nested unordered lists now work under the parser's default settings, without needing to opt in via `preserveLeadingWhitespace`.
 
 ### Fixed
 
@@ -46,6 +54,7 @@ All notable changes to this project will be documented in this file.
 - Fixed `CDMarkdownLabel` rendering garbled, overlapping text on iOS/tvOS 16+ whenever its content was taller than the label's own bounds, such as a fixed-height label without a scroll view. TextKit 2 fragments beyond what fit the container were drawn at the wrong position instead of being cleanly excluded.
 - Fixed `CDMarkdownLabel`/`CDMarkdownTextView`'s `roundAllCorners` flag not retroactively rounding already-displayed code and syntax backgrounds on TextKit 2 (iOS/tvOS 16+) when toggled after `attributedText` had already been laid out. The corner-rounding flag is now read live at draw time instead of being cached on each text layout fragment when it was created, matching the behavior already present on the TextKit 1 fallback.
 - Fixed Markdown tables measuring a column's width from its escaped, not rendered, cell text, so a column containing inline code was sized far too wide and threw off tab-stop alignment for any columns after it. Fixed alongside a related, more severe bug where inline code inside a table cell rendered as leftover escaped placeholder text instead of the original code.
+- Fixed indented blockquotes and indented ordered-list items failing to parse under the parser's default settings, a regression introduced by the leading-whitespace dedent change above — both elements' marker regexes assumed markers were always flush-left.
 
 ---
 

@@ -92,10 +92,12 @@ open class CDMarkdownList: CDMarkdownLevelElement {
         self.underlineStyle = underlineStyle
     }
 
-    /// Nesting level is `markerLength + indentLevel`. Indentation only contributes to the
-    /// level when the caller has set `CDMarkdownParser.preserveLeadingWhitespace = true` --
-    /// by default the parser strips all leading whitespace before this regex ever runs, so
-    /// indentation-based nesting is a documented no-op under default settings.
+    /// Nesting level is `markerLength + indentLevel`. Under default settings the parser dedents
+    /// the whole document (stripping only whitespace common to every line) before this regex
+    /// runs, so a list item indented relative to another line elsewhere in the document keeps
+    /// that indentation and nests correctly. A single indented item with no such sibling has no
+    /// relative indentation to preserve and is still fully stripped;
+    /// `CDMarkdownParser.preserveLeadingWhitespace = true` preserves indentation unconditionally.
     open func match(_ match: NSTextCheckingResult,
                     attributedString: NSMutableAttributedString) {
         guard match.numberOfRanges == 4 else { return }

@@ -96,8 +96,11 @@ open class CDMarkdownParser {
     /// When enabled, collapses multiple consecutive newlines into a single newline.
     /// Default is `true`. Set to `false` to preserve blank lines exactly as they appear in input.
     open var squashNewlines: Bool = true
-    /// When enabled, preserves leading whitespace (spaces and tabs) on each line.
-    /// Default is `false` (leading whitespace is stripped). Set to `true` to preserve indentation in code and quoted text.
+    /// When enabled, preserves leading whitespace (spaces and tabs) on each line exactly as written.
+    /// Default is `false`, in which case the document is dedented: only the whitespace common to
+    /// every line is removed, so relative indentation between lines (e.g. nested list markers) is
+    /// preserved while incidental uniform indentation is still cleaned up. Set to `true` to skip
+    /// this entirely and preserve indentation in code and quoted text unconditionally.
     open var preserveLeadingWhitespace: Bool = false
     /// Element types listed here are excluded from the parsing pipeline.
     /// Use this to opt out of specific default elements without subclassing.
@@ -445,6 +448,9 @@ open class CDMarkdownParser {
     /// - Returns: An `NSAttributedString` with styling applied for all recognized Markdown syntax.
     ///
     /// Images are not loaded in the synchronous overload. Use the async overload to download remote images.
+    ///
+    /// Note: Input attributes other than font, foregroundColor, backgroundColor, and paragraphStyle are not guaranteed to survive parsing, as the
+    /// leading-whitespace dedent step performs a full-string replacement that can collapse attribute-run boundaries.
     @available(*, deprecated, renamed: "parse(_:)")
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
         parse(markdown, loadImages: false)
@@ -469,6 +475,9 @@ open class CDMarkdownParser {
     ///
     /// Use this overload for Markdown containing image references. Remote images are downloaded
     /// asynchronously.
+    ///
+    /// Note: Input attributes other than font, foregroundColor, backgroundColor, and paragraphStyle are not guaranteed to survive parsing, as the
+    /// leading-whitespace dedent step performs a full-string replacement that can collapse attribute-run boundaries.
     @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     open func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
         let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))
@@ -601,19 +610,13 @@ open class CDMarkdownParser {
                                          with: " ",
                                          range: NSRange(location: 0,
                                                         length: mutableString.length))
-        // Conditionally strip leading whitespace. When preserveLeadingWhitespace is true,
+        // Conditionally dedent leading whitespace. When preserveLeadingWhitespace is true,
         // skip this step to maintain spaces at the beginning of lines.
         if !preserveLeadingWhitespace {
-            // Use [ \t]+ rather than \s+ so blank lines (\n only) are not consumed.
-            // \s includes \n, which would collapse blank lines even when squashNewlines is false.
-            let regExp = try? NSRegularExpression(pattern: "^[ \\t]+",
-                                                  options: .anchorsMatchLines)
-            if let regExp {
-                regExp.replaceMatches(in: mutableString,
-                                      options: [],
-                                      range: NSRange(location: 0,
-                                                     length: mutableString.length),
-                                      withTemplate: "")
+            let original = mutableString as String
+            let dedented = CDMarkdownParser.dedent(original)
+            if dedented != original {
+                mutableString.setString(dedented)
             }
         }
         let range = NSRange(location: 0,

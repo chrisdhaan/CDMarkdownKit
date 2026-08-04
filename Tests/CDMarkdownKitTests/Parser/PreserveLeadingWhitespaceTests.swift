@@ -110,4 +110,31 @@ struct PreserveLeadingWhitespaceTests {
         // because bold element doesn't check preserveLeadingWhitespace
         #expect(resultDefault.string == resultPreserve.string)
     }
+
+    @Test @MainActor func uniformIndentationAcrossDocumentStillFullyStrippedByDefault() {
+        let input = "    first line\n    second line"
+        let result = Self.parser.parse(input)
+        #expect(result.string == "first line\nsecond line")
+    }
+
+    @Test @MainActor func relativeIndentationBetweenLinesIsPreservedByDefault() {
+        let input = "first line\n  second line"
+        let result = Self.parser.parse(input)
+        #expect(result.string == "first line\n  second line")
+    }
+
+    @Test @MainActor func blankLineDoesNotZeroOutMarginByDefault() {
+        // The blank line has 3 spaces -- fewer than the 4-space margin shared by the
+        // real content lines -- and must not force the margin to zero.
+        let input = "    first line\n   \n    second line"
+        let result = Self.parser.parse(input)
+        #expect(result.string == "first line\n\nsecond line")
+    }
+
+    @Test @MainActor func mixedTabAndSpaceIndentationDoesNotFalselyDedent() {
+        // A tab and four spaces share no common literal prefix, so nothing is stripped.
+        let input = "\tfirst line\n    second line"
+        let result = Self.parser.parse(input)
+        #expect(result.string == "\tfirst line\n    second line")
+    }
 }
