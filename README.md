@@ -61,6 +61,12 @@ label.attributedText = attributedString
 
 ## Installation
 
+> **Note:** CocoaPods support was removed in v4.2.0 ahead of CocoaPods Trunk
+> going read-only on 2026-12-02. The last version published via CocoaPods was
+> 4.1.0. If you're installing via CocoaPods, switch to Swift Package Manager
+> below — already-installed versions will keep resolving, but the pod will no
+> longer receive updates.
+
 ### Swift Package Manager
 
 Add to your `Package.swift`:
@@ -70,11 +76,6 @@ Add to your `Package.swift`:
 ```
 
 Or in Xcode: **File → Add Packages** and enter the repository URL.
-
-> **Note:** CocoaPods support was removed in v4.2.0 ahead of CocoaPods Trunk
-> going read-only on 2026-12-02. If you're installing via CocoaPods, switch to
-> Swift Package Manager above — already-installed versions will keep resolving,
-> but the pod will no longer receive updates.
 
 ## Usage
 

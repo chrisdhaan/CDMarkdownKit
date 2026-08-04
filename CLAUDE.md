@@ -215,8 +215,8 @@ CDMarkdownElement          (parse loop + regex matching)
 ## Distribution
 
 **Swift Package Manager** is the sole supported distribution method. CocoaPods
-support was removed in v4.2.0 (issue #65) ahead of CocoaPods Trunk going
-read-only on 2026-12-02.
+support was removed in v4.2.0 ahead of CocoaPods Trunk going read-only on
+2026-12-02.
 
 ---
 
