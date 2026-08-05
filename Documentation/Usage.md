@@ -4,7 +4,7 @@ A pure-Swift, zero-dependency framework for parsing Markdown text into styled `N
 
 ## Basic Setup
 
-CDMarkdownKit is distributed via Swift Package Manager and CocoaPods.
+CDMarkdownKit is distributed via Swift Package Manager.
 
 ### Swift Package Manager
 
@@ -15,16 +15,6 @@ Add to your `Package.swift`:
 ```
 
 Or in Xcode: **File → Add Packages** and enter the repository URL.
-
-### CocoaPods
-
-Add to your `Podfile`:
-
-```ruby
-pod 'CDMarkdownKit', '~> 4.0'
-```
-
-Run `pod install`.
 
 ---
 

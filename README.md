@@ -9,17 +9,11 @@
     <a href="https://www.swift.org">
         <img src="https://img.shields.io/badge/Swift-5.3%2B-orange?style=flat" alt="Swift Versions">
     </a>
-    <a href="http://cocoapods.org/pods/CDMarkdownKit">
-        <img src="https://img.shields.io/cocoapods/p/CDMarkdownKit.svg?style=flat" alt="Platforms">
-    </a>
-    <a href="http://cocoapods.org/pods/CDMarkdownKit">
-        <img src="https://img.shields.io/cocoapods/v/CDMarkdownKit.svg?style=flat" alt="CocoaPods Compatible">
-    </a>
     <a href="https://www.swift.org/package-manager">
         <img src="https://img.shields.io/badge/Swift_Package_Manager-compatible-orange?style=flat" alt="Swift Package Manager Compatible">
     </a>
-    <a href="http://cocoapods.org/pods/CDMarkdownKit">
-        <img src="https://img.shields.io/cocoapods/l/CDMarkdownKit.svg?style=flat" alt="License">
+    <a href="https://github.com/chrisdhaan/CDMarkdownKit/blob/master/LICENSE">
+        <img src="https://img.shields.io/github/license/chrisdhaan/CDMarkdownKit.svg?style=flat" alt="License">
     </a>
 </p>
 
@@ -59,13 +53,19 @@ label.attributedText = attributedString
 
 | Platform | Minimum OS | Swift | Installation |
 |----------|-----------|-------|--------------|
-| iOS      | 13.0+     | 5.3+  | SPM, CocoaPods |
-| macOS    | 10.15+    | 5.3+  | SPM, CocoaPods |
-| tvOS     | 13.0+     | 5.3+  | SPM, CocoaPods |
-| watchOS  | 6.0+      | 5.3+  | SPM, CocoaPods |
-| visionOS | 1.0+      | 5.3+  | SPM, CocoaPods |
+| iOS      | 13.0+     | 5.3+  | SPM |
+| macOS    | 10.15+    | 5.3+  | SPM |
+| tvOS     | 13.0+     | 5.3+  | SPM |
+| watchOS  | 6.0+      | 5.3+  | SPM |
+| visionOS | 1.0+      | 5.3+  | SPM |
 
 ## Installation
+
+> **Note:** CocoaPods support was removed in v4.2.0 ahead of CocoaPods Trunk
+> going read-only on 2026-12-02. The last version published via CocoaPods was
+> 4.1.0. If you're installing via CocoaPods, switch to Swift Package Manager
+> below — already-installed versions will keep resolving, but the pod will no
+> longer receive updates.
 
 ### Swift Package Manager
 
@@ -76,16 +76,6 @@ Add to your `Package.swift`:
 ```
 
 Or in Xcode: **File → Add Packages** and enter the repository URL.
-
-### CocoaPods
-
-Add to your `Podfile`:
-
-```ruby
-pod 'CDMarkdownKit', '~> 4.0'
-```
-
-Run `pod install`.
 
 ## Usage
 

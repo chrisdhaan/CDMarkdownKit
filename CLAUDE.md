@@ -4,7 +4,7 @@
 
 CDMarkdownKit is a pure-Swift, zero-dependency framework for parsing Markdown text into `NSAttributedString`. It supports rendering inside custom `UILabel` and `UITextView` subclasses with optional rounded-corner background styling for code and syntax blocks.
 
-- **Current version**: 4.1.0
+- **Current version**: 4.2.0
 - **License**: MIT
 - **Author**: Christopher de Haan (contact@christopherdehaan.me)
 
@@ -29,9 +29,7 @@ CDMarkdownKit/
 ├── CDMarkdownKit.xcodeproj    # Xcode project (5 schemes: iOS, macOS, tvOS, watchOS, visionOS)
 ├── CDMarkdownKit.xcworkspace
 ├── Package.swift              # SPM manifest (swift-tools 6.0, swiftLanguageModes: [.v6])
-├── CDMarkdownKit.podspec      # CocoaPods spec
 ├── .swiftlint.yml             # SwiftLint config (lints Source/ and Example/Source/)
-├── Gemfile / Gemfile.lock     # cocoapods gem
 ├── scripts/generate-docs.sh  # Regenerates docs/ and adds GitHub Pages support files
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
@@ -42,13 +40,13 @@ CDMarkdownKit/
 
 ## Platform & Swift Support
 
-| Platform | `Package.swift` | Podspec |
-|----------|----------------|---------|
-| iOS      | 13.0+          | 13.0+   |
-| macOS    | 10.15+         | 10.15+  |
-| tvOS     | 13.0+          | 13.0+   |
-| watchOS  | 6.0+           | 6.0+    |
-| visionOS | 1.0+           | 1.0+    |
+| Platform | `Package.swift` |
+|----------|----------------|
+| iOS      | 13.0+          |
+| macOS    | 10.15+         |
+| tvOS     | 13.0+          |
+| watchOS  | 6.0+           |
+| visionOS | 1.0+           |
 
 Swift minimum: **5.3** (enforced in `CDMarkdownKit.swift` via `#error`). The SPM manifest uses swift-tools-version 6.0 with `swiftLanguageModes: [.v6]` — compiled in Swift 6 language mode.
 
@@ -216,18 +214,9 @@ CDMarkdownElement          (parse loop + regex matching)
 
 ## Distribution
 
-Two supported distribution methods:
-
-1. **Swift Package Manager** — primary, preferred going forward
-2. **CocoaPods** — `CDMarkdownKit.podspec`; `pod lib lint` runs in CI
-
-### Publishing to CocoaPods
-
-`pod trunk push` requires `--allow-warnings` because the trunk server's validator does not yet recognise the `visionos` platform key, even though local `pod lib lint` passes clean:
-
-```bash
-pod trunk push CDMarkdownKit.podspec --allow-warnings
-```
+**Swift Package Manager** is the sole supported distribution method. CocoaPods
+support was removed in v4.2.0 ahead of CocoaPods Trunk going read-only on
+2026-12-02.
 
 ---
 
@@ -244,14 +233,13 @@ Defined in `.github/workflows/ci.yml`. Triggered on push to `master` and on pull
 | visionOS | matrix: Xcode 26.2–26.5 (macos-26) | macos-26 | xcodebuild |
 | UITests | single, per-platform (iOS/tvOS/visionOS) | macos-26, Xcode 26.5 | xcodebuild test |
 | Catalyst | single | macos-15, Xcode 16.4 | xcodebuild |
-| CocoaPods | single | macos-15, Xcode 16.4 | pod lib lint |
 | SPM | single | macos-15, Xcode 16.4 | swift test |
 | SwiftLint | single | macos-15 | swiftlint --strict |
 | SwiftFormat | single | macos-15 | swiftformat --lint |
 | Documentation | single | macos-15, Xcode 16.4 | swift-docc-plugin |
 | CodeQL | single | macos-15, Xcode 16.4 | codeql-action |
 
-iOS/tvOS/watchOS jobs run 5 matrix entries each (4 Xcode 26.x on macos-26, 1 Xcode 16.4 on macos-15), both Debug and Release builds. visionOS runs 4 entries (macos-26 only), both Debug and Release. macOS/Catalyst/CocoaPods/SPM/SwiftLint/SwiftFormat/Documentation/CodeQL jobs run singles. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
+iOS/tvOS/watchOS jobs run 5 matrix entries each (4 Xcode 26.x on macos-26, 1 Xcode 16.4 on macos-15), both Debug and Release builds. visionOS runs 4 entries (macos-26 only), both Debug and Release. macOS/Catalyst/SPM/SwiftLint/SwiftFormat/Documentation/CodeQL jobs run singles. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
 
 `UITests` actually executes the iOS/tvOS/visionOS-gated test suite (`Tests/CDMarkdownKitTests/UI/` and friends) against a real simulator, one platform per matrix entry — see "Running iOS/tvOS/visionOS-gated tests locally" below for why it stages a bare copy of `Source/`/`Tests/`/`Package.swift` rather than using `CDMarkdownKit.xcodeproj` directly. watchOS has no UI-gated components (see the UI Components table above) so it's excluded from this job's matrix.
 
@@ -372,6 +360,7 @@ Do **not** run `swift package generate-documentation` directly to publish docs �
 
 | Version | Date       | Notable Change |
 |---------|------------|----------------|
+| 4.2.0   | 2026-08-04 | Removed CocoaPods distribution support (podspec, Gemfile, CI job, docs) ahead of CocoaPods Trunk going read-only 2026-12-02; SPM is now the sole supported distribution method |
 | 4.1.0   | 2026-08-03 | Leading-whitespace handling now dedents instead of stripping every line outright, fixing indentation-based nested unordered lists under default settings; fixed indented blockquote/ordered-list parsing regressions from that change; `CDMarkdownTable` column-width and `CDMarkdownLabel` TK2 fixes; `CDMarkdownView`/`CDMarkdownText` test coverage |
 | 4.0.3   | 2026-07-31 | Fixed `CDMarkdownLabel` never rendering on iOS/tvOS 16+ (TextKit 2 setup always failed); fixed TextKit 1 link-tap hit-testing; added TextKit 2 test coverage |
 | 4.0.2   | 2026-07-24 | Monthly review bug-fix pass: parsing (URL parens, emoji code spans, CRLF), UI rendering (TextKit 1/2, nil crash), doc accuracy |

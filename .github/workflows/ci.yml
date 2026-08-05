@@ -308,25 +308,6 @@ jobs:
           set -o pipefail
           env NSUnbufferedIO=YES xcodebuild -project "CDMarkdownKit.xcodeproj" -scheme "CDMarkdownKit iOS" -destination "platform=macOS" -configuration Release clean build 2>&1 | xcbeautify --renderer github-actions
 
-  CocoaPods:
-    name: pod lib lint
-    runs-on: macos-15
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
-      - uses: actions/cache@v4
-        with:
-          path: Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
-      - name: Install Gems
-        run: bundle install
-      - name: pod lib lint
-        run: bundle exec pod lib lint --allow-warnings
-
   SPM:
     name: Test with SPM
     runs-on: macos-15
