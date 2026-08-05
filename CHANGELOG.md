@@ -36,7 +36,7 @@ All notable changes to this project will be documented in this file.
 
 ## [4.2.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.2.0)
 
-Released on 2026-08-04.
+Released on 2026-08-05.
 
 ### Removed
 - CocoaPods distribution support (`CDMarkdownKit.podspec`, `Gemfile`,
