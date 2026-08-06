@@ -122,4 +122,11 @@ struct CDMarkdownSyntaxTests {
         let elapsed = Date().timeIntervalSince(start)
         #expect(elapsed < 2.0)
     }
+
+    @Test func fencedCodeBlockAtEndOfDocumentExtendsBackgroundUnderTrailingNewline() {
+        let result = parser.parse("```\ncode```\n")
+        let lastIndex = result.length - 1
+        let backgroundColor = result.attribute(.backgroundColor, at: lastIndex, effectiveRange: nil)
+        #expect(backgroundColor != nil)
+    }
 }
