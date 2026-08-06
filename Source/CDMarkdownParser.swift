@@ -599,12 +599,19 @@ open class CDMarkdownParser {
     private func parse(_ markdown: NSAttributedString, loadImages: Bool) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         let mutableString = attributedString.mutableString
-        if squashNewlines {
-            mutableString.replaceOccurrences(of: "(?:\r?\n){2,}",
-                                             with: "\n",
-                                             options: .regularExpression,
-                                             range: NSRange(location: 0,
-                                                            length: mutableString.length))
+        if squashNewlines,
+           let squashRegex = try? NSRegularExpression(pattern: "(?:\r?\n){2,}") {
+            let fencedRanges = fencedCodeBlockRanges(in: mutableString as String)
+            let fullRange = NSRange(location: 0, length: mutableString.length)
+            let matches = squashRegex.matches(in: mutableString as String, options: [], range: fullRange)
+            for match in matches.reversed() {
+                let matchRange = match.range
+                let isInsideFencedBlock = fencedRanges.contains { NSLocationInRange(matchRange.location, $0) }
+                if isInsideFencedBlock {
+                    continue
+                }
+                mutableString.replaceCharacters(in: matchRange, with: "\n")
+            }
         }
         mutableString.replaceOccurrences(of: "&nbsp;",
                                          with: " ",

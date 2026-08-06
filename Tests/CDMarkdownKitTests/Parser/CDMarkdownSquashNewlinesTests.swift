@@ -61,4 +61,18 @@ struct CDMarkdownSquashNewlinesTests {
         let result = parser.parse(input)
         #expect(result.string.contains("\n\n"))
     }
+
+    @Test func squashNewlinesTruePreservesBlankLinesInsideFencedCodeBlock() {
+        let parser = CDMarkdownParser()
+        let input = "```\nfunc a() {}\n\nfunc b() {}\n```"
+        let result = parser.parse(input)
+        #expect(result.string.contains("func a() {}\n\nfunc b() {}"))
+    }
+
+    @Test func squashNewlinesTrueStillCollapsesBlankLinesOutsideFencedCodeBlock() {
+        let parser = CDMarkdownParser()
+        let input = "first\n\nsecond\n\n```\ncode\n```"
+        let result = parser.parse(input)
+        #expect(result.string.contains("first\nsecond"))
+    }
 }
