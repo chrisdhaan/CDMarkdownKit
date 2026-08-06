@@ -132,6 +132,7 @@
                 super.attributedText
             }
             set {
+                super.attributedText = newValue
                 guard let newValue else {
                     urlRanges.removeAll()
                     if #available(iOS 16.0, tvOS 16.0, *),
