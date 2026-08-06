@@ -35,7 +35,7 @@
 @MainActor
 open class CDMarkdownList: CDMarkdownLevelElement {
 
-    fileprivate static let regex = "^(\\s*)([\\*\\+\\-]{1,%@})[ \t]+(.+)$"
+    fileprivate static let regex = "^([ \\t]*)([\\*\\+\\-]{1,%@})[ \t]+(.+)$"
 
     /// The font for list item text.
     open var font: CDFont?
