@@ -114,4 +114,12 @@ struct CDMarkdownSyntaxTests {
         }
         #expect(isCodeForEntireRange)
     }
+
+    @Test func unterminatedFenceWithLongTrailingTextParsesQuickly() {
+        let input = "```\n" + String(repeating: " ", count: 1500)
+        let start = Date()
+        _ = parser.parse(input)
+        let elapsed = Date().timeIntervalSince(start)
+        #expect(elapsed < 2.0)
+    }
 }
