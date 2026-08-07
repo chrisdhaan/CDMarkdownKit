@@ -506,7 +506,7 @@ open class CDMarkdownParser {
         let nsString = string as NSString
         let fullRange = NSRange(location: 0, length: nsString.length)
 
-        let closedPattern = #"^```[^\n]*\n[\s\S]*?^```\s*$"#
+        let closedPattern = #"^```[^\n]*\n[\s\S]*?^```[ \t]*$"#
         guard let closedRegex = try? NSRegularExpression(pattern: closedPattern, options: .anchorsMatchLines) else {
             return []
         }

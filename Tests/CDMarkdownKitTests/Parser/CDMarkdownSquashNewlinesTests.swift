@@ -75,4 +75,18 @@ struct CDMarkdownSquashNewlinesTests {
         let result = parser.parse(input)
         #expect(result.string.contains("first\nsecond"))
     }
+
+    @Test func squashNewlinesTrueCollapsesBlankLineImmediatelyAfterClosingFence() {
+        // A blank line right after a closing ``` fence, followed by a paragraph, must still
+        // be squashed under default settings. The fence-detection regex used to exclude
+        // fenced ranges from squashing greedily matched the newline right after the closing
+        // fence as part of the fence itself, which made the following blank line look like it
+        // was "inside" the fence and get skipped by the squash — leaving a spurious extra
+        // blank line after the code block.
+        let parser = CDMarkdownParser()
+        let input = "```\ncode\n```\n\npara"
+        let result = parser.parse(input)
+        #expect(result.string.contains("code\n\npara"))
+        #expect(!result.string.contains("code\n\n\npara"))
+    }
 }
