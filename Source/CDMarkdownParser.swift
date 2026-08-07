@@ -93,7 +93,8 @@ open class CDMarkdownParser {
     /// Enables automatic detection of bare URLs (without explicit Markdown link syntax) via ``CDMarkdownAutomaticLink``.
     /// Default is `true`. Set to `false` to skip automatic link detection.
     open var automaticLinkDetectionEnabled: Bool = true
-    /// When enabled, collapses multiple consecutive newlines into a single newline.
+    /// When enabled, collapses multiple consecutive newlines into a single newline, except inside
+    /// fenced code blocks, where blank lines are always preserved.
     /// Default is `true`. Set to `false` to preserve blank lines exactly as they appear in input.
     open var squashNewlines: Bool = true
     /// When enabled, preserves leading whitespace (spaces and tabs) on each line exactly as written.

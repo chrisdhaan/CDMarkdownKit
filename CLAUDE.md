@@ -310,6 +310,8 @@ xcodebuild test -scheme CDMarkdownKit-Package \
 rm -rf "$SCRATCH"
 ```
 
+When narrowing down to a specific area, filter with `-only-testing:CDMarkdownKitTests/<Suite>` rather than drilling down to `-only-testing:CDMarkdownKitTests/<Suite>/<method>` — a single-method filter has been observed, under some Xcode/toolchain combinations, to silently match 0 tests while still reporting `** TEST SUCCEEDED **`, a false pass where nothing actually ran. Suite-level filtering does not have this problem and is the safer default.
+
 This actually compiles and runs the full suite (Swift Testing + XCTest) against a real simulator — not just a typecheck. It's how a handful of real production bugs (`configureTK2()` never configuring TextKit 2, `urlRangeTK1(at:)` missing a coordinate-space offset, a `CDMarkdownTextView` initializer crash) were actually caught: none of them were visible to `swift build`, `swift test`, or `xcodebuild clean build`, only to a real test run. This is now automated as CI's `UITests` job (see the CI table above). Wiring `CDMarkdownKitTests` into the checked-in `.xcodeproj` schemes' native Testables directly (rather than working around the `.xcodeproj`'s presence) remains an open item — it needs the Xcode GUI, since hand-editing `project.pbxproj`'s Swift package product references for a test-only target isn't reliably reproducible via script (confirmed: `xcodebuild` reports "Missing package product" even when the object graph looks correct).
 
 ---

@@ -32,6 +32,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed a catastrophic-backtracking regular expression used to parse inline code and fenced code blocks, which could freeze the app for seconds on realistic input, such as a document containing a single unclosed backtick.
+- Fixed a fenced code block's rounded-corner background not extending under its own trailing newline when the block was the last thing in the document.
+- Fixed blank lines inside fenced code blocks being silently deleted by the default newline-collapsing behavior.
+- Fixed blank lines before a list item, when newline-collapsing is disabled, being miscounted as indentation and causing spurious list nesting.
+- Fixed a Markdown table silently dropping extra cells from a ragged row that was wider than its header or first row.
+- Fixed `CDMarkdownLabel`'s `attributedText` property not reflecting what was actually set when read back. As a result, `CDMarkdownLabel` now also correctly reports an intrinsic content size derived from its text, which was previously always absent — this may affect Auto Layout for existing consumers relying on the old always-zero-ish sizing behavior.
+
 ---
 
 ## [4.2.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.2.0)
