@@ -39,8 +39,8 @@
 
             let image = NSImage(size: NSSize(width: 100, height: 60))
             image.lockFocus()
-            // Two rects with a gap (rects[1].maxX < rects[0].minX) -- exercises the
-            // "2 rects without edges in contact" branch.
+            // Two rects with a gap (rects[1].maxX < rects[0].minX) -- macOS draws every rect through
+            // the same uniform loop regardless of count; this exercises it with two disjoint rects.
             let rects = [
                 NSRect(x: 60, y: 0, width: 40, height: 20),
                 NSRect(x: 0, y: 20, width: 20, height: 20)
@@ -62,7 +62,8 @@
 
             let image = NSImage(size: NSSize(width: 100, height: 60))
             image.lockFocus()
-            // Three rects spanning wrapped lines -- exercises the hand-rolled multi-rect path.
+            // Three rects spanning wrapped lines -- macOS draws every rect through
+            // the same uniform loop regardless of count; this exercises it with three rects.
             let rects = [
                 NSRect(x: 40, y: 0, width: 40, height: 20),
                 NSRect(x: 0, y: 20, width: 100, height: 20),
