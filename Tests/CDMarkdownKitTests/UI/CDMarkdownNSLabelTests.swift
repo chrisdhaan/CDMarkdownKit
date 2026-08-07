@@ -27,9 +27,9 @@
             #expect(label.roundAllCorners == true)
         }
 
-        @Test func labelDrawWithCodeSpanDoesNotCrash() {
+        @Test func labelDrawWithCodeSpanDoesNotCrash() async {
             let label = CDMarkdownNSLabel(frame: NSRect(x: 0, y: 0, width: 200, height: 60))
-            label.attributedText = parser.parse("`code span`")
+            label.attributedText = await parser.parse("`code span`")
             label.layout()
 
             guard let rep = label.bitmapImageRepForCachingDisplay(in: label.bounds) else {
@@ -41,11 +41,16 @@
             #expect(rep.tiffRepresentation != nil)
         }
 
-        @Test func labelRoundAllCornersChangesRenderedPixelsForCodeSpan() {
+        @Test func labelRoundAllCornersChangesRenderedPixelsForBackgroundColoredText() {
             func renderedTIFF(roundAllCorners: Bool) -> Data? {
+                let attributedString = NSMutableAttributedString(string: "background text")
+                attributedString.addAttribute(.backgroundColor,
+                                              value: CDColor.red,
+                                              range: NSRange(location: 0, length: attributedString.length))
+
                 let label = CDMarkdownNSLabel(frame: NSRect(x: 0, y: 0, width: 200, height: 60))
                 label.roundAllCorners = roundAllCorners
-                label.attributedText = parser.parse("`code span`")
+                label.attributedText = attributedString
                 label.layout()
                 guard let rep = label.bitmapImageRepForCachingDisplay(in: label.bounds) else { return nil }
                 label.cacheDisplay(in: label.bounds, to: rep)
