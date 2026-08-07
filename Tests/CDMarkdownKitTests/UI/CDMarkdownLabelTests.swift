@@ -17,6 +17,14 @@ import Testing
             #expect(label.attributedText == nil || label.attributedText?.string.isEmpty == true)
         }
 
+        @Test func attributedTextGetterReflectsWhatWasSet() {
+            let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
+            let parser = CDMarkdownParser()
+            let parsed = parser.parse("Hello **world**")
+            label.attributedText = parsed
+            #expect(label.attributedText?.string == parsed.string)
+        }
+
         @Test func configureTK1SetsUpCustomLayoutManagerAndTextContainer() {
             // #available alone can never select the TK1 branch on a modern simulator, so this
             // calls configureTK1() directly (Task 1 made it `internal` for exactly this reason).

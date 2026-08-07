@@ -115,7 +115,7 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
             .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
             .map { parseCells(from: $0) }
 
-        let columnCount = max(headerCells.count, dataRows.first?.count ?? 0)
+        let columnCount = max(headerCells.count, dataRows.map(\.count).max() ?? 0)
         guard columnCount > 0 else { return }
 
         /// Measure the maximum rendered width of each column. Cells are measured using the

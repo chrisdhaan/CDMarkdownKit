@@ -35,7 +35,7 @@
 @MainActor
 open class CDMarkdownSyntax: CDMarkdownCommonElement {
 
-    fileprivate static let regex = "(\\s+|^)(`{3})(\\s*[^`]*?\\s*)(\\2)(?!`)"
+    fileprivate static let regex = "(\\s+|^)(`{3})([^`]*)(\\2)(?!`)"
 
     /// The font for code block text.
     open var font: CDFont?
@@ -142,7 +142,7 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
             // to fully wrap the background color to the end of the current line.
             let addBackgroundColorAttributeRange = NSRange(location: range.location + range.length,
                                                            length: 1)
-            if range.location + range.length + 1 < attributedString.length,
+            if range.location + range.length < attributedString.length,
                let nextCharacterRange = attributedString.string.range(from: addBackgroundColorAttributeRange),
                attributedString.string[nextCharacterRange] == "\n",
                let backgroundColor = self.backgroundColor {

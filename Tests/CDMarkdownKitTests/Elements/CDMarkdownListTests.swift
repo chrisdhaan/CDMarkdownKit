@@ -114,4 +114,18 @@ struct CDMarkdownListTests {
         let nestedIndent = effectiveHeadIndent(of: result, atCharacterIndex: secondLineStart)
         #expect(nestedIndent > topLevelIndent)
     }
+
+    @Test func blankLinesBeforeListItemDoNotAddSpuriousIndentationWhenSquashNewlinesDisabled() {
+        let noSquashParser = CDMarkdownParser()
+        noSquashParser.squashNewlines = false
+
+        let result = noSquashParser.parse("Some text.\n\n\n* item")
+        let nsString = result.string as NSString
+        let markerRange = nsString.range(of: "• item")
+        #expect(markerRange.location != NSNotFound)
+
+        let indentedIndent = effectiveHeadIndent(of: result, atCharacterIndex: markerRange.location)
+        let topLevelIndent = effectiveHeadIndent(of: noSquashParser.parse("* item"))
+        #expect(indentedIndent == topLevelIndent)
+    }
 }

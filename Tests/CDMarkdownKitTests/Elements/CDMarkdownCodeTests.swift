@@ -72,4 +72,12 @@ struct CDMarkdownCodeTests {
         }
         #expect(isCodeForEntireRange)
     }
+
+    @Test func unterminatedBacktickWithLongTrailingTextParsesQuickly() {
+        let input = "`" + String(repeating: " ", count: 1500)
+        let start = Date()
+        _ = parser.parse(input)
+        let elapsed = Date().timeIntervalSince(start)
+        #expect(elapsed < 2.0)
+    }
 }

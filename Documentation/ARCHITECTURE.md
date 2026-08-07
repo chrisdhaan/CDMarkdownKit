@@ -10,7 +10,7 @@ Input: String or NSAttributedString
 ▼
 ┌─────────────────────────────────────────────────────────────┐
 │  Pre-processing                                             │
-│  • squashNewlines: collapse \n\n+ → \n                     │
+│  • squashNewlines: collapse \n\n+ → \n except in fences     │
 │  • replace &nbsp; → space                                   │
 │  • dedent leading whitespace (strip only the common margin) │
 │  • apply base font / color / background / paragraphStyle   │

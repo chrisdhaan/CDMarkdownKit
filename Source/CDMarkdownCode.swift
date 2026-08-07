@@ -35,7 +35,7 @@
 @MainActor
 open class CDMarkdownCode: CDMarkdownCommonElement {
 
-    fileprivate static let regex = "(\\s+|^|\\()(`{1})(\\s*[^`]*?\\s*)(\\2)(?!`)(\\)?)"
+    fileprivate static let regex = "(\\s+|^|\\()(`{1})([^`]*)(\\2)(?!`)(\\)?)"
 
     /// The font for code text.
     open var font: CDFont?

@@ -212,4 +212,15 @@ struct CDMarkdownTableTests {
 
         #expect(abs(actualColumn1Width - expectedColumn1Width) < 1.0)
     }
+
+    @Test func raggedTableWithWiderLaterRowKeepsAllCells() async {
+        let raggedTable = """
+        | A | B |
+        | --- | --- |
+        | 1 | 2 |
+        | 3 | 4 | 5 |
+        """
+        let result = await parser.parse(raggedTable)
+        #expect(result.string.contains("5"))
+    }
 }

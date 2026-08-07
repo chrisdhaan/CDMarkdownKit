@@ -15,7 +15,7 @@ CDMarkdownKit is a pure-Swift, zero-dependency framework for parsing Markdown te
 ```
 CDMarkdownKit/
 ├── Source/                    # All library source files (the package target)
-├── Tests/                     # SPM test target (189 tests across 31 suites)
+├── Tests/                     # SPM test target (231 tests across 33 suites)
 ├── Example/                   # iOS demo app
 │   ├── Source/                # Example view controllers
 │   └── Resources/             # Storyboards, assets, plist
@@ -140,6 +140,7 @@ CDMarkdownElement          (parse loop + regex matching)
 |------|---------|
 | `CDMarkdownKit.swift` | Version constant; enforces Swift ≥ 5.3 |
 | `CDMarkdownParser.swift` | `@MainActor` open class; orchestrates the 3-phase pipeline; `parse(_:)` is async |
+| `CDMarkdownParser+Dedent.swift` | `CDMarkdownParser` extension; `dedent(_:)` strips only the common leading-whitespace margin shared by all non-blank lines |
 | `CDMarkdownElement.swift` | Base `CDMarkdownElement` protocol + default `parse()` loop |
 | `CDMarkdownStyle.swift` | `CDMarkdownStyle` protocol; builds `attributes` dict |
 | `CDMarkdownCommonElement.swift` | `CDMarkdownCommonElement` protocol; `match()` strips delimiters |
@@ -236,10 +237,10 @@ Defined in `.github/workflows/ci.yml`. Triggered on push to `master` and on pull
 | SPM | single | macos-15, Xcode 16.4 | swift test |
 | SwiftLint | single | macos-15 | swiftlint --strict |
 | SwiftFormat | single | macos-15 | swiftformat --lint |
-| Documentation | single | macos-15, Xcode 16.4 | swift-docc-plugin |
+| Documentation | single | macos-15, default Xcode (unpinned) | swift-docc-plugin |
 | CodeQL | single | macos-15, Xcode 16.4 | codeql-action |
 
-iOS/tvOS/watchOS jobs run 5 matrix entries each (4 Xcode 26.x on macos-26, 1 Xcode 16.4 on macos-15), both Debug and Release builds. visionOS runs 4 entries (macos-26 only), both Debug and Release. macOS/Catalyst/SPM/SwiftLint/SwiftFormat/Documentation/CodeQL jobs run singles. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
+iOS/tvOS/watchOS jobs run 5 matrix entries each (4 Xcode 26.x on macos-26, 1 Xcode 16.4 on macos-15), both Debug and Release builds. macOS runs 11 matrix entries (6 Xcode 26.x on macos-26, 5 Xcode 16.x on macos-15), both Debug and Release. visionOS runs 4 entries (macos-26 only), both Debug and Release. Catalyst/SPM/SwiftLint/SwiftFormat/Documentation/CodeQL jobs run singles. All jobs use `actions/checkout@v4`, `xcbeautify --renderer github-actions`, and `set -o pipefail`.
 
 `UITests` actually executes the iOS/tvOS/visionOS-gated test suite (`Tests/CDMarkdownKitTests/UI/` and friends) against a real simulator, one platform per matrix entry — see "Running iOS/tvOS/visionOS-gated tests locally" below for why it stages a bare copy of `Source/`/`Tests/`/`Package.swift` rather than using `CDMarkdownKit.xcodeproj` directly. watchOS has no UI-gated components (see the UI Components table above) so it's excluded from this job's matrix.
 
@@ -309,6 +310,8 @@ xcodebuild test -scheme CDMarkdownKit-Package \
 rm -rf "$SCRATCH"
 ```
 
+When narrowing down to a specific area, filter with `-only-testing:CDMarkdownKitTests/<Suite>` rather than drilling down to `-only-testing:CDMarkdownKitTests/<Suite>/<method>` — a single-method filter has been observed, under some Xcode/toolchain combinations, to silently match 0 tests while still reporting `** TEST SUCCEEDED **`, a false pass where nothing actually ran. Suite-level filtering does not have this problem and is the safer default.
+
 This actually compiles and runs the full suite (Swift Testing + XCTest) against a real simulator — not just a typecheck. It's how a handful of real production bugs (`configureTK2()` never configuring TextKit 2, `urlRangeTK1(at:)` missing a coordinate-space offset, a `CDMarkdownTextView` initializer crash) were actually caught: none of them were visible to `swift build`, `swift test`, or `xcodebuild clean build`, only to a real test run. This is now automated as CI's `UITests` job (see the CI table above). Wiring `CDMarkdownKitTests` into the checked-in `.xcodeproj` schemes' native Testables directly (rather than working around the `.xcodeproj`'s presence) remains an open item — it needs the Xcode GUI, since hand-editing `project.pbxproj`'s Swift package product references for a test-only target isn't reliably reproducible via script (confirmed: `xcodebuild` reports "Missing package product" even when the object graph looks correct).
 
 ---
@@ -360,7 +363,7 @@ Do **not** run `swift package generate-documentation` directly to publish docs �
 
 | Version | Date       | Notable Change |
 |---------|------------|----------------|
-| 4.2.0   | 2026-08-04 | Removed CocoaPods distribution support (podspec, Gemfile, CI job, docs) ahead of CocoaPods Trunk going read-only 2026-12-02; SPM is now the sole supported distribution method |
+| 4.2.0   | 2026-08-05 | Removed CocoaPods distribution support (podspec, Gemfile, CI job, docs) ahead of CocoaPods Trunk going read-only 2026-12-02; SPM is now the sole supported distribution method |
 | 4.1.0   | 2026-08-03 | Leading-whitespace handling now dedents instead of stripping every line outright, fixing indentation-based nested unordered lists under default settings; fixed indented blockquote/ordered-list parsing regressions from that change; `CDMarkdownTable` column-width and `CDMarkdownLabel` TK2 fixes; `CDMarkdownView`/`CDMarkdownText` test coverage |
 | 4.0.3   | 2026-07-31 | Fixed `CDMarkdownLabel` never rendering on iOS/tvOS 16+ (TextKit 2 setup always failed); fixed TextKit 1 link-tap hit-testing; added TextKit 2 test coverage |
 | 4.0.2   | 2026-07-24 | Monthly review bug-fix pass: parsing (URL parens, emoji code spans, CRLF), UI rendering (TextKit 1/2, nil crash), doc accuracy |

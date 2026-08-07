@@ -114,4 +114,25 @@ struct CDMarkdownSyntaxTests {
         }
         #expect(isCodeForEntireRange)
     }
+
+    @Test func unterminatedFenceWithLongTrailingTextParsesQuickly() {
+        let input = "```\n" + String(repeating: " ", count: 1500)
+        let start = Date()
+        _ = parser.parse(input)
+        let elapsed = Date().timeIntervalSince(start)
+        #expect(elapsed < 2.0)
+    }
+
+    @Test func fencedCodeBlockAtEndOfDocumentExtendsBackgroundUnderTrailingNewline() {
+        let parser = CDMarkdownParser()
+        parser.syntax.backgroundColor = CDColor.syntaxBackgroundGray()
+        let result = parser.parse("```\ncode```\n")
+        let lastIndex = result.length - 1
+
+        // Verify the trailing newline has the background color applied (not the parser's default .clear).
+        // This directly tests that the fix allows the backgroundColor to be extended to the trailing newline
+        // when the code block ends at end-of-document.
+        let trailingNewlineColor = result.attribute(.backgroundColor, at: lastIndex, effectiveRange: nil) as? CDColor
+        #expect(trailingNewlineColor == CDColor.syntaxBackgroundGray())
+    }
 }
