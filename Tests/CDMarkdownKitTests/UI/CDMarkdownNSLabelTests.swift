@@ -26,6 +26,39 @@
             label.roundAllCorners = true
             #expect(label.roundAllCorners == true)
         }
+
+        @Test func labelDrawWithCodeSpanDoesNotCrash() {
+            let label = CDMarkdownNSLabel(frame: NSRect(x: 0, y: 0, width: 200, height: 60))
+            label.attributedText = parser.parse("`code span`")
+            label.layout()
+
+            guard let rep = label.bitmapImageRepForCachingDisplay(in: label.bounds) else {
+                Issue.record("expected a bitmap image rep for caching display")
+                return
+            }
+            label.cacheDisplay(in: label.bounds, to: rep)
+
+            #expect(rep.tiffRepresentation != nil)
+        }
+
+        @Test func labelRoundAllCornersChangesRenderedPixelsForCodeSpan() {
+            func renderedTIFF(roundAllCorners: Bool) -> Data? {
+                let label = CDMarkdownNSLabel(frame: NSRect(x: 0, y: 0, width: 200, height: 60))
+                label.roundAllCorners = roundAllCorners
+                label.attributedText = parser.parse("`code span`")
+                label.layout()
+                guard let rep = label.bitmapImageRepForCachingDisplay(in: label.bounds) else { return nil }
+                label.cacheDisplay(in: label.bounds, to: rep)
+                return rep.tiffRepresentation
+            }
+
+            let square = renderedTIFF(roundAllCorners: false)
+            let rounded = renderedTIFF(roundAllCorners: true)
+
+            #expect(square != nil)
+            #expect(rounded != nil)
+            #expect(square != rounded)
+        }
     }
 
 #endif
