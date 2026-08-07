@@ -29,8 +29,7 @@
 
         override public init(frame: NSRect) {
             let container = NSTextContainer()
-            let layoutManager = CDMarkdownNSLayoutManager()
-            let textStorage = NSTextStorage()
+            let (layoutManager, textStorage) = Self.makeLayoutManagerAndTextStorage()
             textStorage.addLayoutManager(layoutManager)
             layoutManager.addTextContainer(container)
 
@@ -44,23 +43,36 @@
         public required init?(coder: NSCoder) {
             super.init(coder: coder)
 
-            let container = NSTextContainer()
-            let layoutManager = CDMarkdownNSLayoutManager()
-            let textStorage = NSTextStorage()
+            // `super.init(coder:)` has already created and attached AppKit's own default
+            // text container/layout manager/text storage to `self`. Unlike `init(frame:)`,
+            // there's no way to hand a pre-wired container into `super.init(coder:)`, so
+            // instead we reuse the text container AppKit already created and swap in our
+            // own layout manager as its active layout manager. `replaceLayoutManager(_:)`
+            // pulls the *old* layout manager's text storage association onto the new one,
+            // so `addLayoutManager(_:)` must run afterward to make our own text storage
+            // the active one instead.
+            let (layoutManager, textStorage) = Self.makeLayoutManagerAndTextStorage()
+            textContainer?.replaceLayoutManager(layoutManager)
             textStorage.addLayoutManager(layoutManager)
-            layoutManager.addTextContainer(container)
 
             customLayoutManager = layoutManager
             customTextStorage = textStorage
             configure()
         }
 
+        /// Constructs a fresh, not-yet-wired ``CDMarkdownNSLayoutManager``/`NSTextStorage`
+        /// pair for use by either initializer; each initializer wires them into the text
+        /// system in the order its own initialization path requires.
+        private static func makeLayoutManagerAndTextStorage() -> (CDMarkdownNSLayoutManager, NSTextStorage) {
+            (CDMarkdownNSLayoutManager(), NSTextStorage())
+        }
+
         // MARK: - Configuration
 
-        /// Configures the text view's custom layout manager and text storage.
+        /// Configures the text view for read-only Markdown display.
         ///
-        /// Called automatically during initialization. This method sets up the ``CDMarkdownNSLayoutManager``
-        /// and `NSTextStorage` for rendering with rounded-corner backgrounds.
+        /// Called automatically during initialization, after the custom text system
+        /// (``customLayoutManager``/``customTextStorage``) has already been wired up.
         open func configure() {
             isEditable = false
             isSelectable = true // required for link clicks on macOS

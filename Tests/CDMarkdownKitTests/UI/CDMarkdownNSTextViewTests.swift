@@ -48,6 +48,25 @@
             #expect(textView.roundAllCorners == false)
             #expect(textView.customLayoutManager.roundAllCorners == false)
         }
+
+        @Test func initWithCoderWiresCustomLayoutManagerAndTextStorageAsTextViewsActiveTextSystem() throws {
+            let original = CDMarkdownNSTextView(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
+            let data = try NSKeyedArchiver.archivedData(withRootObject: original, requiringSecureCoding: false)
+
+            let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
+            unarchiver.requiresSecureCoding = false
+            let decoded = unarchiver.decodeObject(
+                of: CDMarkdownNSTextView.self,
+                forKey: NSKeyedArchiveRootObjectKey
+            )
+            unarchiver.finishDecoding()
+            let textView = try #require(decoded)
+
+            #expect(textView.customLayoutManager != nil)
+            #expect(textView.customTextStorage != nil)
+            #expect(textView.layoutManager === textView.customLayoutManager)
+            #expect(textView.textStorage === textView.customTextStorage)
+        }
     }
 
 #endif
