@@ -28,12 +28,30 @@
         // MARK: - Initializers
 
         override public init(frame: NSRect) {
-            super.init(frame: frame, textContainer: nil)
+            let container = NSTextContainer()
+            let layoutManager = CDMarkdownNSLayoutManager()
+            let textStorage = NSTextStorage()
+            textStorage.addLayoutManager(layoutManager)
+            layoutManager.addTextContainer(container)
+
+            super.init(frame: frame, textContainer: container)
+
+            customLayoutManager = layoutManager
+            customTextStorage = textStorage
             configure()
         }
 
         public required init?(coder: NSCoder) {
             super.init(coder: coder)
+
+            let container = NSTextContainer()
+            let layoutManager = CDMarkdownNSLayoutManager()
+            let textStorage = NSTextStorage()
+            textStorage.addLayoutManager(layoutManager)
+            layoutManager.addTextContainer(container)
+
+            customLayoutManager = layoutManager
+            customTextStorage = textStorage
             configure()
         }
 
@@ -44,16 +62,6 @@
         /// Called automatically during initialization. This method sets up the ``CDMarkdownNSLayoutManager``
         /// and `NSTextStorage` for rendering with rounded-corner backgrounds.
         open func configure() {
-            // Replace the default layout manager with our custom one
-            if let defaultLM = layoutManager {
-                textStorage?.removeLayoutManager(defaultLM)
-            }
-
-            customLayoutManager = CDMarkdownNSLayoutManager()
-            customTextStorage = NSTextStorage()
-            customTextStorage.addLayoutManager(customLayoutManager)
-            customLayoutManager.addTextContainer(textContainer!)
-
             isEditable = false
             isSelectable = true // required for link clicks on macOS
         }
