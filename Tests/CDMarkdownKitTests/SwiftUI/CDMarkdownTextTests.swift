@@ -67,4 +67,30 @@ struct CDMarkdownTextTests {
         let view = CDMarkdownText("test").markdownParser(customParser)
         #expect(type(of: view) != CDMarkdownText.self) // wrapped in modifier
     }
+
+    #if !os(watchOS)
+        @available(iOS 16.0, tvOS 16.0, macOS 13.0, visionOS 1.0, *)
+        @Test func markdownThemeModifierPropagatesThroughLiveViewHierarchy() {
+            final class ThemeBox {
+                var captured: CDMarkdownTheme?
+            }
+            struct ThemeCapturingView: View {
+                @Environment(\.markdownTheme) var theme
+                let box: ThemeBox
+                var body: some View {
+                    box.captured = theme
+                    return Color.clear.frame(width: 1, height: 1)
+                }
+            }
+
+            var theme = CDMarkdownTheme.default
+            theme.fontColor = .red
+            let box = ThemeBox()
+
+            let renderer = ImageRenderer(content: ThemeCapturingView(box: box).markdownTheme(theme))
+            _ = renderer.cgImage
+
+            #expect(box.captured?.fontColor == theme.fontColor)
+        }
+    #endif
 }
