@@ -40,8 +40,9 @@ All notable changes to this project will be documented in this file.
 - Fixed blank lines before a list item, when newline-collapsing is disabled, being miscounted as indentation and causing spurious list nesting.
 - Fixed a Markdown table silently dropping extra cells from a ragged row that was wider than its header or first row.
 - Fixed `CDMarkdownLabel`'s `attributedText` property not reflecting what was actually set when read back. As a result, `CDMarkdownLabel` now also correctly reports an intrinsic content size derived from its text, which was previously always absent — this may affect Auto Layout for existing consumers relying on the old always-zero-ish sizing behavior.
-- Fixed `CDMarkdownNSTextView` never actually adopting its own rounded-corner-drawing layout manager and text storage. Creating one programmatically could crash during initialization; code span backgrounds never rendered; and using the view from a storyboard or XIB could leave any text that was set on it invisible, since it was written into a text storage the view never displayed.
-- Fixed `CDMarkdownNSLabel` not redrawing when its `roundAllCorners` property was toggled after the label had already been displayed, leaving rounded corners visually stale until some unrelated state change happened to force a redraw.
+- Fixed `CDMarkdownNSTextView` never actually adopting its own rounded-corner-drawing layout manager and text storage. Creating one programmatically crashed during initialization; code span backgrounds never rendered; and using the view from a storyboard or XIB could leave any text that was set on it invisible, since it was written into a text storage the view never displayed.
+- Fixed `CDMarkdownNSLabel` and `CDMarkdownNSTextView` not redrawing when their `roundAllCorners` property was toggled after the view had already been displayed, leaving rounded corners visually stale until some unrelated state change happened to force a redraw.
+- Fixed `CDMarkdownNSTextView` never wrapping its text when created programmatically. Its text container was given no width, so every line ran off the right edge instead of wrapping, and resizing the view never re-wrapped the content.
 
 ---
 
