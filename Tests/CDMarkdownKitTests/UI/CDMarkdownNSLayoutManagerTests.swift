@@ -78,40 +78,35 @@
             image.unlockFocus()
         }
 
-        @Test func fillBackgroundRectArrayHonorsRoundAllCornersWhenAttributeAbsent() {
-            let layoutManager = CDMarkdownNSLayoutManager()
-            layoutManager.roundAllCorners = true
-            let textStorage = NSTextStorage(string: "plain text, no code attribute")
-            textStorage.addLayoutManager(layoutManager)
+        @Test func fillBackgroundRectArrayRoundAllCornersProducesDifferentPixelsThanSquareFallback() {
+            func renderedTIFF(roundAllCorners: Bool) -> Data? {
+                let layoutManager = CDMarkdownNSLayoutManager()
+                layoutManager.roundAllCorners = roundAllCorners
+                let textStorage = NSTextStorage(string: "plain text, no code attribute")
+                textStorage.addLayoutManager(layoutManager)
 
-            let image = NSImage(size: NSSize(width: 100, height: 40))
-            image.lockFocus()
-            let rects = [NSRect(x: 0, y: 0, width: 80, height: 20)]
-            rects.withUnsafeBufferPointer { buffer in
-                layoutManager.fillBackgroundRectArray(buffer.baseAddress!,
-                                                      count: buffer.count,
-                                                      forCharacterRange: NSRange(location: 0, length: 5),
-                                                      color: .blue)
+                let image = NSImage(size: NSSize(width: 100, height: 40))
+                image.lockFocus()
+                let rects = [NSRect(x: 0, y: 0, width: 80, height: 20)]
+                rects.withUnsafeBufferPointer { buffer in
+                    layoutManager.fillBackgroundRectArray(buffer.baseAddress!,
+                                                          count: buffer.count,
+                                                          forCharacterRange: NSRange(location: 0, length: 5),
+                                                          color: .blue)
+                }
+                // Must be captured while focus is still locked -- `NSBitmapImageRep(focusedViewRect:)`
+                // reads back the currently focused drawing destination.
+                let rep = NSBitmapImageRep(focusedViewRect: NSRect(x: 0, y: 0, width: 100, height: 40))
+                image.unlockFocus()
+                return rep?.tiffRepresentation
             }
-            image.unlockFocus()
-        }
 
-        @Test func fillBackgroundRectArrayFallsBackToSuperWhenNeitherRoundAllCornersNorAttributeSet() {
-            let layoutManager = CDMarkdownNSLayoutManager()
-            let textStorage = NSTextStorage(string: "plain text")
-            textStorage.addLayoutManager(layoutManager)
+            let square = renderedTIFF(roundAllCorners: false)
+            let rounded = renderedTIFF(roundAllCorners: true)
 
-            let image = NSImage(size: NSSize(width: 100, height: 40))
-            image.lockFocus()
-            let rects = [NSRect(x: 0, y: 0, width: 80, height: 20)]
-            rects.withUnsafeBufferPointer { buffer in
-                layoutManager.fillBackgroundRectArray(buffer.baseAddress!,
-                                                      count: buffer.count,
-                                                      forCharacterRange: NSRange(location: 0, length: 5),
-                                                      color: .green)
-            }
-            image.unlockFocus()
-            #expect(layoutManager.roundAllCorners == false)
+            #expect(square != nil)
+            #expect(rounded != nil)
+            #expect(square != rounded)
         }
 
         @Test func hasRoundedAttributeReturnsFalseWhenRangeAtTextStorageLength() {

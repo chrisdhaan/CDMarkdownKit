@@ -22,13 +22,19 @@
         open var roundAllCorners: Bool = false {
             didSet {
                 customLayoutManager?.roundAllCorners = roundAllCorners
+                needsDisplay = true
             }
         }
 
         // MARK: - Initializers
 
         override public init(frame: NSRect) {
-            let container = NSTextContainer()
+            // A manually constructed `NSTextContainer` has no size and does not track its
+            // text view's width, which makes AppKit stretch it to its 10,000,000pt maximum.
+            // Text would then never wrap, and resizing the view would never re-wrap it.
+            let container = NSTextContainer(size: NSSize(width: frame.width,
+                                                         height: .greatestFiniteMagnitude))
+            container.widthTracksTextView = true
             let (layoutManager, textStorage) = Self.makeLayoutManagerAndTextStorage()
             textStorage.addLayoutManager(layoutManager)
             layoutManager.addTextContainer(container)

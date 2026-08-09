@@ -27,9 +27,15 @@
             #expect(textView.isSelectable == true)
         }
 
-        @Test func setAttributedStringUpdatesCustomTextStorage() {
+        @Test func configureGivesTextContainerAFiniteWidthThatTracksTheView() {
             let textView = CDMarkdownNSTextView(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
-            let attributed = parser.parse("Hello **world**")
+            #expect(textView.textContainer?.widthTracksTextView == true)
+            #expect(textView.textContainer?.containerSize.width == 300)
+        }
+
+        @Test func setAttributedStringUpdatesCustomTextStorage() async {
+            let textView = CDMarkdownNSTextView(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
+            let attributed = await parser.parse("Hello **world**")
 
             textView.setAttributedString(attributed)
 
