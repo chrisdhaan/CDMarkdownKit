@@ -454,7 +454,7 @@ open class CDMarkdownParser {
     /// leading-whitespace dedent step performs a full-string replacement that can collapse attribute-run boundaries.
     @available(*, deprecated, renamed: "parse(_:)")
     open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
-        parse(markdown, loadImages: false)
+        runParsePipeline(markdown)
     }
 
     /// Asynchronously parses a Markdown string with image loading support.
@@ -481,7 +481,7 @@ open class CDMarkdownParser {
     /// leading-whitespace dedent step performs a full-string replacement that can collapse attribute-run boundaries.
     @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     open func parse(_ attributedString: NSAttributedString) async -> NSAttributedString {
-        let result = NSMutableAttributedString(attributedString: parse(attributedString, loadImages: false))
+        let result = NSMutableAttributedString(attributedString: runParsePipeline(attributedString))
         await resolveImages(in: result)
         return result
     }
@@ -597,7 +597,7 @@ open class CDMarkdownParser {
         return definitions
     }
 
-    private func parse(_ markdown: NSAttributedString, loadImages: Bool) -> NSAttributedString {
+    private func runParsePipeline(_ markdown: NSAttributedString) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: markdown)
         let mutableString = attributedString.mutableString
         if squashNewlines,
@@ -652,9 +652,7 @@ open class CDMarkdownParser {
         elements.append(contentsOf: unescapingElements)
 
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
-            if !loadImages {
-                image.placeholderOnly = true
-            }
+            image.placeholderOnly = true
         #endif
 
         for element in elements {
@@ -664,9 +662,7 @@ open class CDMarkdownParser {
         }
 
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
-            if !loadImages {
-                image.placeholderOnly = false
-            }
+            image.placeholderOnly = false
         #endif
 
         return attributedString
