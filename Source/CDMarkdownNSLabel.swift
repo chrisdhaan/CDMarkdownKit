@@ -26,6 +26,7 @@
         open var roundAllCorners: Bool = false {
             didSet {
                 layoutManager.roundAllCorners = roundAllCorners
+                needsDisplay = true
             }
         }
 

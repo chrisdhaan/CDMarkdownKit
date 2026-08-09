@@ -22,38 +22,64 @@
         open var roundAllCorners: Bool = false {
             didSet {
                 customLayoutManager?.roundAllCorners = roundAllCorners
+                needsDisplay = true
             }
         }
 
         // MARK: - Initializers
 
         override public init(frame: NSRect) {
-            super.init(frame: frame, textContainer: nil)
+            // A manually constructed `NSTextContainer` has no size and does not track its
+            // text view's width, which makes AppKit stretch it to its 10,000,000pt maximum.
+            // Text would then never wrap, and resizing the view would never re-wrap it.
+            let container = NSTextContainer(size: NSSize(width: frame.width,
+                                                         height: .greatestFiniteMagnitude))
+            container.widthTracksTextView = true
+            let (layoutManager, textStorage) = Self.makeLayoutManagerAndTextStorage()
+            textStorage.addLayoutManager(layoutManager)
+            layoutManager.addTextContainer(container)
+
+            super.init(frame: frame, textContainer: container)
+
+            customLayoutManager = layoutManager
+            customTextStorage = textStorage
             configure()
         }
 
         public required init?(coder: NSCoder) {
             super.init(coder: coder)
+
+            // `super.init(coder:)` has already created and attached AppKit's own default
+            // text container/layout manager/text storage to `self`. Unlike `init(frame:)`,
+            // there's no way to hand a pre-wired container into `super.init(coder:)`, so
+            // instead we reuse the text container AppKit already created and swap in our
+            // own layout manager as its active layout manager. `replaceLayoutManager(_:)`
+            // pulls the *old* layout manager's text storage association onto the new one,
+            // so `addLayoutManager(_:)` must run afterward to make our own text storage
+            // the active one instead.
+            let (layoutManager, textStorage) = Self.makeLayoutManagerAndTextStorage()
+            textContainer?.replaceLayoutManager(layoutManager)
+            textStorage.addLayoutManager(layoutManager)
+
+            customLayoutManager = layoutManager
+            customTextStorage = textStorage
             configure()
+        }
+
+        /// Constructs a fresh, not-yet-wired ``CDMarkdownNSLayoutManager``/`NSTextStorage`
+        /// pair for use by either initializer; each initializer wires them into the text
+        /// system in the order its own initialization path requires.
+        private static func makeLayoutManagerAndTextStorage() -> (CDMarkdownNSLayoutManager, NSTextStorage) {
+            (CDMarkdownNSLayoutManager(), NSTextStorage())
         }
 
         // MARK: - Configuration
 
-        /// Configures the text view's custom layout manager and text storage.
+        /// Configures the text view for read-only Markdown display.
         ///
-        /// Called automatically during initialization. This method sets up the ``CDMarkdownNSLayoutManager``
-        /// and `NSTextStorage` for rendering with rounded-corner backgrounds.
+        /// Called automatically during initialization, after the custom text system
+        /// (``customLayoutManager``/``customTextStorage``) has already been wired up.
         open func configure() {
-            // Replace the default layout manager with our custom one
-            if let defaultLM = layoutManager {
-                textStorage?.removeLayoutManager(defaultLM)
-            }
-
-            customLayoutManager = CDMarkdownNSLayoutManager()
-            customTextStorage = NSTextStorage()
-            customTextStorage.addLayoutManager(customLayoutManager)
-            customLayoutManager.addTextContainer(textContainer!)
-
             isEditable = false
             isSelectable = true // required for link clicks on macOS
         }
