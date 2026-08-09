@@ -90,7 +90,20 @@ public extension CDMarkdownElement {
                 match(regexMatch,
                       attributedString: attributedString)
                 let newLength = attributedString.length
-                location = regexMatch.range.location + regexMatch.range.length + newLength - oldLength
+                let nextLocation = regexMatch.range.location + regexMatch.range.length + newLength - oldLength
+                // A zero-length match combined with a match() that doesn't change the
+                // string's length would leave location unchanged, re-finding the same
+                // match forever. Force at least one character of forward progress. If
+                // that would push past the end of the string (a zero-length match can
+                // sit at the very last position, where there's no room left to search),
+                // stop instead of clamping: clamping to the end would leave location
+                // equal to the match's own start, letting a zero-width assertion there
+                // re-match forever just as before.
+                let advancedLocation = max(nextLocation, regexMatch.range.location + 1)
+                if advancedLocation > newLength {
+                    break
+                }
+                location = advancedLocation
             }
         } catch {}
     }

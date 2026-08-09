@@ -43,6 +43,7 @@ All notable changes to this project will be documented in this file.
 - Fixed `CDMarkdownNSTextView` never actually adopting its own rounded-corner-drawing layout manager and text storage. Creating one programmatically crashed during initialization; code span backgrounds never rendered; and using the view from a storyboard or XIB could leave any text that was set on it invisible, since it was written into a text storage the view never displayed.
 - Fixed `CDMarkdownNSLabel` and `CDMarkdownNSTextView` not redrawing when their `roundAllCorners` property was toggled after the view had already been displayed, leaving rounded corners visually stale until some unrelated state change happened to force a redraw.
 - Fixed `CDMarkdownNSTextView` never wrapping its text when created programmatically. Its text container was given no width, so every line ran off the right edge instead of wrapping, and resizing the view never re-wrapped the content.
+- Hardened the default `CDMarkdownElement.parse()` loop so a custom element whose regular expression can produce a zero-length match can no longer cause parsing to loop indefinitely.
 
 ---
 
