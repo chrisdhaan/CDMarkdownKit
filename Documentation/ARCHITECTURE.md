@@ -18,7 +18,20 @@ Input: String or NSAttributedString
 │
 ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  Phase 1 — ESCAPING                                         │
+│  Phase 1 — REFERENCE DEFINITION EXTRACTION                 │
+│                                                             │
+│  CDMarkdownLinkReference                                    │
+│    Strips [ref]: url lines from the string and populates    │
+│    CDMarkdownLinkReference.references with the mappings,   │
+│    so Phase 2 link reference parsing can resolve them.      │
+│    Runs against the raw string, before escaping, so         │
+│    literal title punctuation (e.g. \" inside a quoted        │
+│    title) hasn't been UTF16-hex-encoded yet.                │
+└─────────────────────────────────────────────────────────────┘
+│
+▼
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 1.5 — ESCAPING                                       │
 │                                                             │
 │  CDMarkdownCodeEscaping                                     │
 │    Converts content inside backtick spans to UTF16-hex      │
@@ -28,16 +41,6 @@ Input: String or NSAttributedString
 │  CDMarkdownEscaping                                         │
 │    Converts \-escaped single characters to UTF16-hex.       │
 │    e.g.  \*  →  \002a                                       │
-└─────────────────────────────────────────────────────────────┘
-│
-▼
-┌─────────────────────────────────────────────────────────────┐
-│  Phase 1.5 — REFERENCE DEFINITION EXTRACTION               │
-│                                                             │
-│  CDMarkdownLinkReference                                    │
-│    Strips [ref]: url lines from the string and populates    │
-│    CDMarkdownLinkReference.references with the mappings,   │
-│    so Phase 2 link reference parsing can resolve them.      │
 └─────────────────────────────────────────────────────────────┘
 │
 ▼
@@ -144,8 +147,8 @@ CDMarkdownElement                          Foundation
 └── Direct CDMarkdownElement implementations (no shared sub-protocol)
     ├── CDMarkdownTable          pipe-delimited GFM tables; writes per-cell paragraph attrs
     ├── CDMarkdownHorizontalRule matches ---, ***, ___ and replaces with styled rule character
-    ├── CDMarkdownCodeEscaping   UTF16-hex-encodes backtick span contents (Phase 1)
-    ├── CDMarkdownEscaping       UTF16-hex-encodes backslash-escaped chars (Phase 1)
+    ├── CDMarkdownCodeEscaping   UTF16-hex-encodes backtick span contents (Phase 1.5)
+    ├── CDMarkdownEscaping       UTF16-hex-encodes backslash-escaped chars (Phase 1.5)
     └── CDMarkdownUnescaping     reverses all remaining \HHHH sequences (Phase 3)
 ```
 
