@@ -54,7 +54,11 @@ internal extension Dictionary where Key == CDAttributedStringKey {
     }
 
     mutating func addStrikethroughStyle(_ strikethroughStyle: NSUnderlineStyle) {
-        self[NSAttributedString.Key.strikethroughStyle] = strikethroughStyle.rawValue as? Value
+        guard let value = strikethroughStyle.rawValue as? Value else {
+            assertionFailure("addStrikethroughStyle: Int rawValue could not bridge to \(Value.self)")
+            return
+        }
+        self[NSAttributedString.Key.strikethroughStyle] = value
     }
 
     mutating func addUnderlineColor(_ underlineColor: Value) {
@@ -62,6 +66,10 @@ internal extension Dictionary where Key == CDAttributedStringKey {
     }
 
     mutating func addUnderlineStyle(_ underlineStyle: NSUnderlineStyle) {
-        self[NSAttributedString.Key.underlineStyle] = underlineStyle.rawValue as? Value
+        guard let value = underlineStyle.rawValue as? Value else {
+            assertionFailure("addUnderlineStyle: Int rawValue could not bridge to \(Value.self)")
+            return
+        }
+        self[NSAttributedString.Key.underlineStyle] = value
     }
 }
