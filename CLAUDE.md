@@ -61,13 +61,13 @@ See `Documentation/ARCHITECTURE.md` for the full diagram. Summary:
 ```
 Input String
     ↓
-[Phase 1 — Escaping]
-    CDMarkdownCodeEscaping   — UTF16-hex-encodes content inside backtick spans
-    CDMarkdownEscaping       — UTF16-hex-encodes \-escaped characters
+[Phase 1 — Reference Definition Extraction]
+    CDMarkdownLinkReference  — strips [ref]: url lines; populates references dict
 
     ↓
-[Phase 1.5 — Reference Definition Extraction]
-    CDMarkdownLinkReference  — strips [ref]: url lines; populates references dict
+[Phase 1.5 — Escaping]
+    CDMarkdownCodeEscaping   — UTF16-hex-encodes content inside backtick spans
+    CDMarkdownEscaping       — UTF16-hex-encodes \-escaped characters
 
     ↓
 [Phase 2 — Element Parsing]  (order matters; earlier elements take priority)
@@ -98,7 +98,9 @@ Input String
     resolveImages(in:)       — downloads remote images via URLSession, injects NSTextAttachment
 ```
 
-**Why escaping first?** Code spans must not be parsed for inner markdown. The escaping phase converts their contents to hex sequences that no other element regex can match, then Phase 3 reverses this.
+**Why reference extraction first?** Reference definition titles can contain literal `"`, `'`, `(`, or `)` characters (e.g. `[ref]: url "a title"`) that the extraction regex matches literally. Running escaping first would UTF16-hex-encode any backslash-escaped punctuation inside those titles before the regex ever saw it, silently breaking extraction for definitions with escaped title punctuation — so reference extraction runs against the raw string first.
+
+**Why escaping before element parsing?** Code spans must not be parsed for inner markdown. The escaping phase converts their contents to hex sequences that no other element regex can match, then Phase 3 reverses this.
 
 ---
 
@@ -126,8 +128,8 @@ CDMarkdownElement          (parse loop + regex matching)
 └── Direct CDMarkdownElement implementations
     ├── CDMarkdownTable          (pipe-delimited GFM tables)
     ├── CDMarkdownHorizontalRule (---, ***, ___ rules)
-    ├── CDMarkdownCodeEscaping   (Phase 1 UTF16-hex encoding)
-    ├── CDMarkdownEscaping       (Phase 1 backslash encoding)
+    ├── CDMarkdownCodeEscaping   (Phase 1.5 UTF16-hex encoding)
+    ├── CDMarkdownEscaping       (Phase 1.5 backslash encoding)
     └── CDMarkdownUnescaping     (Phase 3 decode)
 ```
 
