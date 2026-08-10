@@ -9,18 +9,18 @@ import Testing
     @MainActor
     struct CDMarkdownLabelTests {
 
-        @Test func settingAttributedTextToNilDoesNotCrash() {
+        @Test func settingAttributedTextToNilDoesNotCrash() async {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
             let parser = CDMarkdownParser()
-            label.attributedText = parser.parse("Hello **world**")
+            label.attributedText = await parser.parse("Hello **world**")
             label.attributedText = nil
             #expect(label.attributedText == nil || label.attributedText?.string.isEmpty == true)
         }
 
-        @Test func attributedTextGetterReflectsWhatWasSet() {
+        @Test func attributedTextGetterReflectsWhatWasSet() async {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
             let parser = CDMarkdownParser()
-            let parsed = parser.parse("Hello **world**")
+            let parsed = await parser.parse("Hello **world**")
             label.attributedText = parsed
             #expect(label.attributedText?.string == parsed.string)
         }
@@ -50,11 +50,11 @@ import Testing
         }
 
         @available(iOS 16.0, tvOS 16.0, *)
-        @Test func urlRangeAtLocationFindsLinkTK2() {
+        @Test func urlRangeAtLocationFindsLinkTK2() async {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
             label.configureTK2()
             let parser = CDMarkdownParser()
-            label.attributedText = parser.parse("[a link](https://example.com)")
+            label.attributedText = await parser.parse("[a link](https://example.com)")
 
             guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")
@@ -77,11 +77,11 @@ import Testing
         }
 
         @available(iOS 16.0, tvOS 16.0, *)
-        @Test func urlRangeAtLocationReturnsNilFarOutsideTextTK2() {
+        @Test func urlRangeAtLocationReturnsNilFarOutsideTextTK2() async {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
             label.configureTK2()
             let parser = CDMarkdownParser()
-            label.attributedText = parser.parse("[a link](https://example.com)")
+            label.attributedText = await parser.parse("[a link](https://example.com)")
 
             guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")
@@ -92,14 +92,14 @@ import Testing
             #expect(label.urlRange(at: CGPoint(x: -1000, y: -1000)) == nil)
         }
 
-        @Test func urlRangeAtLocationFindsLinkTK1() {
+        @Test func urlRangeAtLocationFindsLinkTK1() async {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
             // Force the TK1 dispatch branch: every dispatch site routes on whether tk2Stack
             // holds a TK2Stack, so clearing the one property is enough to force TK1 everywhere.
             label.tk2Stack = nil
             label.configureTK1()
             let parser = CDMarkdownParser()
-            label.attributedText = parser.parse("[a link](https://example.com)")
+            label.attributedText = await parser.parse("[a link](https://example.com)")
 
             label.customLayoutManager.ensureLayout(for: label.customTextContainer)
             let glyphRange = label.customLayoutManager.glyphRange(for: label.customTextContainer)
@@ -113,12 +113,12 @@ import Testing
             #expect(label.urlRange(at: hitPoint)?.url == URL(string: "https://example.com"))
         }
 
-        @Test func urlRangeAtLocationReturnsNilOutsideBoundingRectTK1() {
+        @Test func urlRangeAtLocationReturnsNilOutsideBoundingRectTK1() async {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
             label.tk2Stack = nil
             label.configureTK1()
             let parser = CDMarkdownParser()
-            label.attributedText = parser.parse("[a link](https://example.com)")
+            label.attributedText = await parser.parse("[a link](https://example.com)")
 
             label.customLayoutManager.ensureLayout(for: label.customTextContainer)
 
@@ -150,24 +150,24 @@ import Testing
             #expect(label.customLayoutManager.roundAllCorners == true)
         }
 
-        @Test func textRectForBoundsReturnsNonZeroForLaidOutText() {
+        @Test func textRectForBoundsReturnsNonZeroForLaidOutText() async {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
             let parser = CDMarkdownParser()
-            label.attributedText = parser.parse("some text to measure")
+            label.attributedText = await parser.parse("some text to measure")
 
             let rect = label.textRect(forBounds: label.bounds, limitedToNumberOfLines: 0)
             #expect(rect != .zero)
         }
 
         @available(iOS 16.0, tvOS 16.0, *)
-        @Test func fragmentEnumerationHasNoDegenerateFramesWhenContentExceedsContainerHeight() {
+        @Test func fragmentEnumerationHasNoDegenerateFramesWhenContentExceedsContainerHeight() async {
             // Mirrors CodeLabelViewController/StoryboardLabelViewController: a fixed-height
             // label (no scroll view) showing content taller than its own bounds.
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
             label.configureTK2()
             let parser = CDMarkdownParser()
             let paragraphs = (1 ... 40).map { "Paragraph \($0) with enough text to wrap across a couple of lines in a narrow label." }
-            label.attributedText = parser.parse(paragraphs.joined(separator: "\n\n"))
+            label.attributedText = await parser.parse(paragraphs.joined(separator: "\n\n"))
 
             guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")
@@ -191,10 +191,10 @@ import Testing
             #expect(fragmentFrames.allSatisfy { $0.width > 0 && $0.height > 0 })
         }
 
-        @Test func drawTextDoesNotCrashForTK2ConfiguredLabel() {
+        @Test func drawTextDoesNotCrashForTK2ConfiguredLabel() async {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 100))
             let parser = CDMarkdownParser()
-            label.attributedText = parser.parse("plain `code` text")
+            label.attributedText = await parser.parse("plain `code` text")
 
             let renderer = UIGraphicsImageRenderer(bounds: label.bounds)
             _ = renderer.image { _ in

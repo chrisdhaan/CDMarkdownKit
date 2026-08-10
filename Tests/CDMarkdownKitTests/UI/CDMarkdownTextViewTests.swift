@@ -9,7 +9,7 @@ import Testing
     @MainActor
     struct CDMarkdownTextViewTests {
 
-        @Test func secondAttributedTextAssignmentKeepsLayoutManagerAttachedToRealTextStorage() {
+        @Test func secondAttributedTextAssignmentKeepsLayoutManagerAttachedToRealTextStorage() async {
             // Build a self-consistent TK1 stack (textStorage -> layoutManager -> textContainer)
             // up front, mirroring the end state that `configureTK1()` produces on a real device
             // running iOS/tvOS 15 -- `UITextView(frame:textContainer:)` requires the container it
@@ -26,8 +26,8 @@ import Testing
                                               layoutManager: layoutManager)
             // Force the TK1 configuration path directly, since it's only auto-selected below iOS 16.
             let parser = CDMarkdownParser()
-            textView.attributedText = parser.parse("first")
-            textView.attributedText = parser.parse("second")
+            textView.attributedText = await parser.parse("first")
+            textView.attributedText = await parser.parse("second")
 
             #expect(textView.textStorage.layoutManagers.contains(where: { $0 === textView.customLayoutManager }))
         }
@@ -70,12 +70,12 @@ import Testing
             #expect(textView.isSelectable == false)
         }
 
-        @Test func settingAttributedTextOnTK1ConfiguredViewPopulatesCustomTextStorage() {
+        @Test func settingAttributedTextOnTK1ConfiguredViewPopulatesCustomTextStorage() async {
             let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
                                               textContainer: nil)
             textView.configureTK1()
             let parser = CDMarkdownParser()
-            textView.attributedText = parser.parse("hello")
+            textView.attributedText = await parser.parse("hello")
 
             #expect(textView.customTextStorage === textView.textStorage)
         }

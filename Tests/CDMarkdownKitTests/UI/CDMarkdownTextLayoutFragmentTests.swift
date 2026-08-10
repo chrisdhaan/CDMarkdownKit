@@ -18,12 +18,12 @@ import Testing
         /// created and added via `addTextLayoutManager(_:)`. This mirrors the construction
         /// pattern in `CDMarkdownLabel.configureTK2()`.
         @available(iOS 16.0, tvOS 16.0, *)
-        private func layOutFragments(markdown: String) -> (
+        private func layOutFragments(markdown: String) async -> (
             textStorage: NSTextStorage,
             fragments: [(rangeStart: Int, lineFragments: [NSTextLineFragment])]
         ) {
             let parser = CDMarkdownParser()
-            let attributedString = parser.parse(markdown)
+            let attributedString = await parser.parse(markdown)
 
             let contentStorage = NSTextContentStorage()
             let textStorage = NSTextStorage(attributedString: attributedString)
@@ -48,8 +48,8 @@ import Testing
         }
 
         @available(iOS 16.0, tvOS 16.0, *)
-        @Test func roundedBackgroundFillIsNarrowerThanFullLineWhenCodeSharesLineWithPlainText() {
-            let (textStorage, fragments) = layOutFragments(markdown: "before `code` after")
+        @Test func roundedBackgroundFillIsNarrowerThanFullLineWhenCodeSharesLineWithPlainText() async {
+            let (textStorage, fragments) = await layOutFragments(markdown: "before `code` after")
             guard let firstFragment = fragments.first, let firstLine = firstFragment.lineFragments.first else {
                 Issue.record("expected at least one laid-out line")
                 return
@@ -70,10 +70,10 @@ import Testing
         }
 
         @available(iOS 16.0, tvOS 16.0, *)
-        @Test func roundedBackgroundFillUsesCorrectOffsetAcrossParagraphs() {
+        @Test func roundedBackgroundFillUsesCorrectOffsetAcrossParagraphs() async {
             // squashNewlines (default true) collapses "\n\n" to "\n" before parsing, so this still yields
             // exactly 2 paragraphs/fragments — not 3, and not 1.
-            let (textStorage, fragments) = layOutFragments(markdown: "first `alpha` line\n\nsecond `beta` line")
+            let (textStorage, fragments) = await layOutFragments(markdown: "first `alpha` line\n\nsecond `beta` line")
             #expect(fragments.count >= 2)
             guard fragments.count >= 2 else { return }
 
@@ -113,8 +113,8 @@ import Testing
         }
 
         @available(iOS 16.0, tvOS 16.0, *)
-        @Test func roundedBackgroundFillsEmptyWhenNoRoundedAttributePresent() {
-            let (textStorage, fragments) = layOutFragments(markdown: "just plain text, no code spans")
+        @Test func roundedBackgroundFillsEmptyWhenNoRoundedAttributePresent() async {
+            let (textStorage, fragments) = await layOutFragments(markdown: "just plain text, no code spans")
             guard let firstFragment = fragments.first else {
                 Issue.record("expected at least one laid-out fragment")
                 return
@@ -128,8 +128,8 @@ import Testing
         }
 
         @available(iOS 16.0, tvOS 16.0, *)
-        @Test func roundedBackgroundFillsSkipsOutOfBoundsLines() {
-            let (textStorage, fragments) = layOutFragments(markdown: "before `code` after")
+        @Test func roundedBackgroundFillsSkipsOutOfBoundsLines() async {
+            let (textStorage, fragments) = await layOutFragments(markdown: "before `code` after")
             guard let firstFragment = fragments.first else {
                 Issue.record("expected at least one laid-out fragment")
                 return
