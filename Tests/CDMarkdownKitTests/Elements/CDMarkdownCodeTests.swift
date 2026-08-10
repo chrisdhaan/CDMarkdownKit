@@ -7,8 +7,8 @@ struct CDMarkdownCodeTests {
 
     let parser = CDMarkdownParser()
 
-    @Test func singleBacktickProducesCode() {
-        let result = parser.parse("`code`")
+    @Test func singleBacktickProducesCode() async {
+        let result = await parser.parse("`code`")
         var hasCodeColor = false
         result.enumerateAttribute(.foregroundColor, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if v != nil {
@@ -18,8 +18,8 @@ struct CDMarkdownCodeTests {
         #expect(hasCodeColor)
     }
 
-    @Test func nestedMarkdownInCodeNotParsed() {
-        let result = parser.parse("`**not bold**`")
+    @Test func nestedMarkdownInCodeNotParsed() async {
+        let result = await parser.parse("`**not bold**`")
         var hasBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.isBold {
@@ -29,24 +29,24 @@ struct CDMarkdownCodeTests {
         #expect(!hasBold)
     }
 
-    @Test func emptyBackticksProducesCode() {
-        let result = parser.parse("``")
+    @Test func emptyBackticksProducesCode() async {
+        let result = await parser.parse("``")
         #expect(result.length >= 0)
     }
 
-    @Test func backticksAreStripped() {
-        let result = parser.parse("`code`")
+    @Test func backticksAreStripped() async {
+        let result = await parser.parse("`code`")
         #expect(!result.string.contains("`"))
     }
 
-    @Test func codeSpanUsesConfiguredFont() {
+    @Test func codeSpanUsesConfiguredFont() async {
         // CDMarkdownParser passes its base font to code element at init time,
         // overriding the Menlo-Regular default. Verify the explicitly configured
         // font is applied when set directly on parser.code.
         guard let menlo = CDFont(name: "Menlo-Regular", size: 12) else { return }
         let parser = CDMarkdownParser()
         parser.code.font = menlo
-        let result = parser.parse("`code`")
+        let result = await parser.parse("`code`")
         var found = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.fontName.lowercased().contains("menlo") {
@@ -56,9 +56,9 @@ struct CDMarkdownCodeTests {
         #expect(found)
     }
 
-    @Test func codeSpanWithEmojiAppliesStylingToEntireSpan() {
+    @Test func codeSpanWithEmojiAppliesStylingToEntireSpan() async {
         let parser = CDMarkdownParser()
-        let result = parser.parse("before `code 👍 after` end")
+        let result = await parser.parse("before `code 👍 after` end")
         guard let range = result.string.range(of: "code 👍 after") else {
             Issue.record("expected decoded code span text not found")
             return
@@ -73,10 +73,10 @@ struct CDMarkdownCodeTests {
         #expect(isCodeForEntireRange)
     }
 
-    @Test func unterminatedBacktickWithLongTrailingTextParsesQuickly() {
+    @Test func unterminatedBacktickWithLongTrailingTextParsesQuickly() async {
         let input = "`" + String(repeating: " ", count: 1500)
         let start = Date()
-        _ = parser.parse(input)
+        _ = await parser.parse(input)
         let elapsed = Date().timeIntervalSince(start)
         #expect(elapsed < 2.0)
     }
