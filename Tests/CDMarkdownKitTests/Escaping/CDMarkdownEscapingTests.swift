@@ -7,9 +7,9 @@ struct CDMarkdownEscapingTests {
 
     let parser = CDMarkdownParser()
 
-    @Test func codeSpanContentIsNotBold() {
+    @Test func codeSpanContentIsNotBold() async {
         // `**text**` inside backticks must NOT produce bold
-        let result = parser.parse("`**text**`")
+        let result = await parser.parse("`**text**`")
         var hasBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.isBold {
@@ -19,8 +19,8 @@ struct CDMarkdownEscapingTests {
         #expect(!hasBold)
     }
 
-    @Test func codeSpanContentIsNotItalic() {
-        let result = parser.parse("`*text*`")
+    @Test func codeSpanContentIsNotItalic() async {
+        let result = await parser.parse("`*text*`")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.isItalic {
@@ -30,8 +30,8 @@ struct CDMarkdownEscapingTests {
         #expect(!hasItalic)
     }
 
-    @Test func nestedBoldInsideCodeFenceIsPlain() {
-        let result = parser.parse("```\n**not bold**\n```")
+    @Test func nestedBoldInsideCodeFenceIsPlain() async {
+        let result = await parser.parse("```\n**not bold**\n```")
         var hasBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.isBold {
@@ -43,9 +43,9 @@ struct CDMarkdownEscapingTests {
 
     // MARK: - Backslash escaping negative cases
 
-    @Test func backslashEscapedAsteriskDoesNotTriggerItalic() {
+    @Test func backslashEscapedAsteriskDoesNotTriggerItalic() async {
         // \* should produce a literal * and NOT open an italic span
-        let result = parser.parse("\\*not italic\\*")
+        let result = await parser.parse("\\*not italic\\*")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.isItalic {
@@ -56,9 +56,9 @@ struct CDMarkdownEscapingTests {
         #expect(result.string.contains("*"))
     }
 
-    @Test func backslashEscapedUnderscoreDoesNotTriggerItalic() {
+    @Test func backslashEscapedUnderscoreDoesNotTriggerItalic() async {
         // \_ should produce a literal _ and NOT open an italic span
-        let result = parser.parse("\\_not italic\\_")
+        let result = await parser.parse("\\_not italic\\_")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.isItalic {
@@ -69,9 +69,9 @@ struct CDMarkdownEscapingTests {
         #expect(result.string.contains("_"))
     }
 
-    @Test func backslashEscapedBacktickDoesNotTriggerCode() {
+    @Test func backslashEscapedBacktickDoesNotTriggerCode() async {
         // \` should produce a literal ` and NOT open a code span
-        let result = parser.parse("\\`not code\\`")
+        let result = await parser.parse("\\`not code\\`")
         // Code spans apply a distinct foreground color (red); plain text should not have it
         var hasCodeColor = false
         result.enumerateAttribute(.foregroundColor, in: NSRange(location: 0, length: result.length)) { v, _, _ in
@@ -83,9 +83,9 @@ struct CDMarkdownEscapingTests {
         #expect(result.string.contains("`"))
     }
 
-    @Test func backslashEscapedBracketDoesNotTriggerLink() {
+    @Test func backslashEscapedBracketDoesNotTriggerLink() async {
         // \[ should not open a link span (no URL present either, to avoid auto-detection)
-        let result = parser.parse("\\[not a link")
+        let result = await parser.parse("\\[not a link")
         var hasLink = false
         result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if v != nil {
@@ -96,9 +96,9 @@ struct CDMarkdownEscapingTests {
         #expect(result.string.contains("["))
     }
 
-    @Test func backslashEscapedEmojiRoundTripsCorrectly() {
+    @Test func backslashEscapedEmojiRoundTripsCorrectly() async {
         let parser = CDMarkdownParser()
-        let result = parser.parse("\\😀 text")
+        let result = await parser.parse("\\😀 text")
         #expect(result.string.hasPrefix("😀"))
         #expect(!result.string.contains("\u{FFFD}"))
     }
