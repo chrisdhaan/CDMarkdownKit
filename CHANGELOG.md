@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## Table of Contents
 
 - [Unreleased](#unreleased)
+- [4.2.1](#421)
 - [4.2.0](#420)
 - [4.1.0](#410)
 - [4.0.3](#403)
@@ -32,6 +33,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+---
+
+## [4.2.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.2.1)
+
+Released on 2026-08-09.
+
 ### Fixed
 
 - Fixed a catastrophic-backtracking regular expression used to parse inline code and fenced code blocks, which could freeze the app for seconds on realistic input, such as a document containing a single unclosed backtick.
@@ -44,6 +51,7 @@ All notable changes to this project will be documented in this file.
 - Fixed `CDMarkdownNSLabel` and `CDMarkdownNSTextView` not redrawing when their `roundAllCorners` property was toggled after the view had already been displayed, leaving rounded corners visually stale until some unrelated state change happened to force a redraw.
 - Fixed `CDMarkdownNSTextView` never wrapping its text when created programmatically. Its text container was given no width, so every line ran off the right edge instead of wrapping, and resizing the view never re-wrapped the content.
 - Hardened the default `CDMarkdownElement.parse()` loop so a custom element whose regular expression can produce a zero-length match can no longer cause parsing to loop indefinitely.
+- Fixed `CDMarkdownTextView`'s `init(frame:textContainer:)` initializer not configuring the view, which silently dropped the library's rounded-corner background rendering for any caller constructing it directly instead of via `.makeTextView(frame:)` or a storyboard. `customTextStorage` on the TextKit 1 (iOS 15) fallback is now also populated on every `attributedText` assignment, consistent with `CDMarkdownLabel` and `CDMarkdownNSTextView`.
 
 ---
 
