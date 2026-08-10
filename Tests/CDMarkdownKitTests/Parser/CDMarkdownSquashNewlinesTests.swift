@@ -10,13 +10,13 @@ struct CDMarkdownSquashNewlinesTests {
         #expect(parser.squashNewlines == true)
     }
 
-    @Test func squashNewlinesTrueCollapsesConsecutiveNewlines() {
+    @Test func squashNewlinesTrueCollapsesConsecutiveNewlines() async {
         // Given: two newlines between paragraphs
         let parser = CDMarkdownParser()
         // squashNewlines defaults to true
         let input = "first\n\nsecond"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then: no run of two or more consecutive newlines in the output
         let hasConsecutiveNewlines = result.string.contains("\n\n")
         #expect(!hasConsecutiveNewlines)
@@ -25,10 +25,10 @@ struct CDMarkdownSquashNewlinesTests {
         #expect(result.string.contains("second"))
     }
 
-    @Test func squashNewlinesCollapsesCRLFBlankLines() {
+    @Test func squashNewlinesCollapsesCRLFBlankLines() async {
         let parser = CDMarkdownParser()
         parser.squashNewlines = true
-        let result = parser.parse("Line1\r\n\r\n\r\nLine2")
+        let result = await parser.parse("Line1\r\n\r\n\r\nLine2")
         // Note: "\r\n\r\n\r\n" never contains a bare "\n\n" substring (each \n is preceded
         // by \r), so that check alone can't distinguish squashed from unsquashed CRLF runs.
         // Assert the CRLF run actually collapsed to a single "\n" instead, and that
@@ -45,38 +45,38 @@ struct CDMarkdownSquashNewlinesTests {
         #expect(parser.squashNewlines == false)
     }
 
-    @Test func squashNewlinesTrueDoesNotAffectSingleNewlines() {
+    @Test func squashNewlinesTrueDoesNotAffectSingleNewlines() async {
         // A single \n between lines must be preserved
         let parser = CDMarkdownParser()
         let input = "line one\nline two"
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         #expect(result.string.contains("\n"))
     }
 
-    @Test func squashNewlinesFalsePreservesConsecutiveNewlines() {
+    @Test func squashNewlinesFalsePreservesConsecutiveNewlines() async {
         // When squashNewlines is disabled, \n\n must survive into the output
         let parser = CDMarkdownParser()
         parser.squashNewlines = false
         let input = "first\n\nsecond"
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         #expect(result.string.contains("\n\n"))
     }
 
-    @Test func squashNewlinesTruePreservesBlankLinesInsideFencedCodeBlock() {
+    @Test func squashNewlinesTruePreservesBlankLinesInsideFencedCodeBlock() async {
         let parser = CDMarkdownParser()
         let input = "```\nfunc a() {}\n\nfunc b() {}\n```"
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         #expect(result.string.contains("func a() {}\n\nfunc b() {}"))
     }
 
-    @Test func squashNewlinesTrueStillCollapsesBlankLinesOutsideFencedCodeBlock() {
+    @Test func squashNewlinesTrueStillCollapsesBlankLinesOutsideFencedCodeBlock() async {
         let parser = CDMarkdownParser()
         let input = "first\n\nsecond\n\n```\ncode\n```"
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         #expect(result.string.contains("first\nsecond"))
     }
 
-    @Test func squashNewlinesTrueCollapsesBlankLineImmediatelyAfterClosingFence() {
+    @Test func squashNewlinesTrueCollapsesBlankLineImmediatelyAfterClosingFence() async {
         // A blank line right after a closing ``` fence, followed by a paragraph, must still
         // be squashed under default settings. The fence-detection regex used to exclude
         // fenced ranges from squashing greedily matched the newline right after the closing
@@ -85,7 +85,7 @@ struct CDMarkdownSquashNewlinesTests {
         // blank line after the code block.
         let parser = CDMarkdownParser()
         let input = "```\ncode\n```\n\npara"
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         #expect(result.string.contains("code\n\npara"))
         #expect(!result.string.contains("code\n\n\npara"))
     }

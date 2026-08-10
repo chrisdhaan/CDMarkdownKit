@@ -14,11 +14,11 @@ struct CDMarkdownParserTests {
 
     let parser = CDMarkdownParser()
 
-    @Test func parseBoldText() {
+    @Test func parseBoldText() async {
         // Given
         let input = "Hello **world**"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then
         var foundBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, range, _ in
@@ -29,11 +29,11 @@ struct CDMarkdownParserTests {
         #expect(foundBold)
     }
 
-    @Test func parseItalicText() {
+    @Test func parseItalicText() async {
         // Given
         let input = "Hello *world*"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then
         var foundItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, range, _ in
@@ -44,11 +44,11 @@ struct CDMarkdownParserTests {
         #expect(foundItalic)
     }
 
-    @Test func parseLinkURL() {
+    @Test func parseLinkURL() async {
         // Given
         let input = "[GitHub](https://github.com)"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then
         var foundURL = false
         result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -59,11 +59,11 @@ struct CDMarkdownParserTests {
         #expect(foundURL)
     }
 
-    @Test func parseStrikethroughText() {
+    @Test func parseStrikethroughText() async {
         // Given
         let input = "Hello ~~world~~"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then
         var foundStrikethrough = false
         result.enumerateAttribute(.strikethroughStyle,
@@ -75,12 +75,12 @@ struct CDMarkdownParserTests {
         #expect(foundStrikethrough)
     }
 
-    @Test func codeSpanNotParsedAsMarkdown() {
+    @Test func codeSpanNotParsedAsMarkdown() async {
         // Content inside backticks must not be treated as bold/italic/etc.
         // Given
         let input = "`**not bold**`"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then
         var foundBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -91,20 +91,20 @@ struct CDMarkdownParserTests {
         #expect(!foundBold)
     }
 
-    @Test func backslashEscapePreservesCharacter() {
+    @Test func backslashEscapePreservesCharacter() async {
         // Given: \* should produce a literal *, not trigger italic
         let input = "\\*not italic"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then
         #expect(result.string.contains("*"))
     }
 
-    @Test func parseHeader() {
+    @Test func parseHeader() async {
         // Given
         let input = "# Heading One"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then: the header text should have a larger font than the base font
         var foundLargerFont = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -115,14 +115,14 @@ struct CDMarkdownParserTests {
         #expect(foundLargerFont)
     }
 
-    @Test func emptyStringReturnsEmptyResult() {
-        let result = parser.parse("")
+    @Test func emptyStringReturnsEmptyResult() async {
+        let result = await parser.parse("")
         #expect(result.length == 0)
     }
 
-    @Test func plainTextHasNoMarkdownAttributes() {
+    @Test func plainTextHasNoMarkdownAttributes() async {
         let input = "Hello, world."
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         var foundLink = false
         result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
             if value != nil {
@@ -159,11 +159,11 @@ struct CDMarkdownParserTests {
 
     // MARK: - Multi-element document tests
 
-    @Test func boldAndItalicInSameParagraph() {
+    @Test func boldAndItalicInSameParagraph() async {
         // Given
         let input = "**bold** and _italic_ text"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then
         var foundBold = false
         var foundItalic = false
@@ -181,11 +181,11 @@ struct CDMarkdownParserTests {
         #expect(foundItalic)
     }
 
-    @Test func codeAndBoldInSameParagraph() {
+    @Test func codeAndBoldInSameParagraph() async {
         // Given
         let input = "`code` and **bold**"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then: code applies a foreground color; bold applies a bold font
         var foundBold = false
         var foundCodeColor = false
@@ -203,11 +203,11 @@ struct CDMarkdownParserTests {
         #expect(foundCodeColor)
     }
 
-    @Test func headerAndParagraphProduceDifferentFontSizes() {
+    @Test func headerAndParagraphProduceDifferentFontSizes() async {
         // Given
         let input = "# Heading\nNormal **bold** text"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then: header font is larger than body font — at least two distinct sizes
         var fontSizes = Set<CGFloat>()
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -219,11 +219,11 @@ struct CDMarkdownParserTests {
     }
 
     #if !os(watchOS)
-        @Test func bracketLinkAndBareUrlBothLinked() {
+        @Test func bracketLinkAndBareUrlBothLinked() async {
             // Given: a bracket-style link and a separate bare URL in the same string
             let input = "[GitHub](https://github.com) and https://example.com"
             // When
-            let result = parser.parse(input)
+            let result = await parser.parse(input)
             // Then: two distinct link attribute runs
             var linkedRuns = 0
             result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -235,7 +235,7 @@ struct CDMarkdownParserTests {
         }
     #endif
 
-    @Test func fullDocumentParsesAllElements() {
+    @Test func fullDocumentParsesAllElements() async {
         // A kitchen-sink document — verifies the pipeline handles all element
         // types together without crashing or producing an empty result.
         // Given
@@ -256,7 +256,7 @@ struct CDMarkdownParserTests {
         Visit [the docs](https://example.com) for more.
         """
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then: output is non-empty and key text survives parsing
         #expect(result.length > 0)
         #expect(result.string.contains("Welcome"))
@@ -265,14 +265,14 @@ struct CDMarkdownParserTests {
         #expect(result.string.contains("the docs"))
     }
 
-    @Test func parseAcceptsNSAttributedStringInput() {
+    @Test func parseAcceptsNSAttributedStringInput() async {
         // Given: an NSAttributedString carrying a pre-existing custom attribute
         let customKey = NSAttributedString.Key("com.test.preexisting")
         let input = NSMutableAttributedString(string: "**bold** text")
         input.addAttribute(customKey, value: "marker" as AnyObject,
                            range: NSRange(location: 0, length: input.length))
         // When: the NSAttributedString overload is used directly
-        let result = parser.parse(input as NSAttributedString)
+        let result = await parser.parse(input as NSAttributedString)
         // Then: markdown is parsed AND the pre-existing attribute survives
         var foundBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
@@ -325,11 +325,11 @@ struct CDMarkdownParserTests {
         #endif
     }
 
-    @Test func referenceDefinitionCleanupConsumesCRLFTerminator() {
+    @Test func referenceDefinitionCleanupConsumesCRLFTerminator() async {
         // Given: a CRLF-terminated reference definition line between two paragraphs
         let input = "Intro text\r\n[foo]: http://example.com\r\nBody text"
         // When
-        let result = parser.parse(input)
+        let result = await parser.parse(input)
         // Then: the definition line and its CRLF terminator are fully consumed,
         // leaving no stray blank line and no leftover reference syntax.
         // Note: a doubled CRLF terminator ("\r\n\r\n") does not contain a bare "\n\n"
@@ -339,10 +339,10 @@ struct CDMarkdownParserTests {
         #expect(!result.string.contains("[foo]:"))
     }
 
-    @Test func referenceDefinitionLookingLineInsideUnclosedFenceIsNotExtracted() {
+    @Test func referenceDefinitionLookingLineInsideUnclosedFenceIsNotExtracted() async {
         let parser = CDMarkdownParser()
         let markdown = "```\nSome code\n[note]: http://example.com\nMore code, fence never closed"
-        let result = parser.parse(markdown)
+        let result = await parser.parse(markdown)
         #expect(result.string.contains("[note]: http://example.com"))
     }
 }

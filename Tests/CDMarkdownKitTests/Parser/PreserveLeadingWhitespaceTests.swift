@@ -41,17 +41,17 @@ struct PreserveLeadingWhitespaceTests {
         return p
     }()
 
-    @Test @MainActor func inlineCodeStripsByDefault() {
-        let result = Self.parser.parse("`   indented code`")
+    @Test @MainActor func inlineCodeStripsByDefault() async {
+        let result = await Self.parser.parse("`   indented code`")
         #expect(result.string == "indented code")
     }
 
-    @Test @MainActor func inlineCodePreservesWhenEnabled() {
-        let result = Self.parserWithPreserve.parse("`   indented code`")
+    @Test @MainActor func inlineCodePreservesWhenEnabled() async {
+        let result = await Self.parserWithPreserve.parse("`   indented code`")
         #expect(result.string == "   indented code")
     }
 
-    @Test @MainActor func fencedCodeStripsByDefault() {
+    @Test @MainActor func fencedCodeStripsByDefault() async {
         let input = """
         ```
            function hello() {
@@ -59,7 +59,7 @@ struct PreserveLeadingWhitespaceTests {
            }
         ```
         """
-        let result = Self.parser.parse(input)
+        let result = await Self.parser.parse(input)
         let lines = result.string.components(separatedBy: "\n")
         // After stripping, first non-empty line should not have leading spaces
         let firstCodeLine = lines.first(where: { !$0.trimmingCharacters(in: .whitespaces).isEmpty })
@@ -76,65 +76,65 @@ struct PreserveLeadingWhitespaceTests {
         #expect(Self.parserWithPreserve.preserveLeadingWhitespace == true)
     }
 
-    @Test @MainActor func fencedCodePreservesWhenEnabled() {
+    @Test @MainActor func fencedCodePreservesWhenEnabled() async {
         let input = "```\njsx\n   function() {}\n```"
         // Create a fresh parser locally to test
         let testParser = CDMarkdownParser()
         testParser.preserveLeadingWhitespace = true
-        let result = testParser.parse(input)
+        let result = await testParser.parse(input)
         // With preserveLeadingWhitespace enabled, the function line should keep its 3 leading spaces
         #expect(result.string.contains("   function"))
     }
 
-    @Test @MainActor func whitespaceAfterCodeBlockNotAffected() {
+    @Test @MainActor func whitespaceAfterCodeBlockNotAffected() async {
         let input = "Before `code` after"
-        let result = Self.parserWithPreserve.parse(input)
+        let result = await Self.parserWithPreserve.parse(input)
         #expect(result.string.contains("Before"))
         #expect(result.string.contains("after"))
     }
 
-    @Test @MainActor func multilineInlineCodeRemovesNewlines() {
+    @Test @MainActor func multilineInlineCodeRemovesNewlines() async {
         let input = "`line1\n  line2\n    line3`"
-        let result = Self.parserWithPreserve.parse(input)
+        let result = await Self.parserWithPreserve.parse(input)
         // Inline code removes newlines, so all lines are concatenated
         #expect(result.string.contains("line1"))
         #expect(result.string.contains("line2"))
         #expect(result.string.contains("line3"))
     }
 
-    @Test @MainActor func otherElementsUnaffected() {
+    @Test @MainActor func otherElementsUnaffected() async {
         let input = "**  bold  **"
-        let resultDefault = Self.parser.parse(input)
-        let resultPreserve = Self.parserWithPreserve.parse(input)
+        let resultDefault = await Self.parser.parse(input)
+        let resultPreserve = await Self.parserWithPreserve.parse(input)
         // Both should strip leading space from inside bold
         // because bold element doesn't check preserveLeadingWhitespace
         #expect(resultDefault.string == resultPreserve.string)
     }
 
-    @Test @MainActor func uniformIndentationAcrossDocumentStillFullyStrippedByDefault() {
+    @Test @MainActor func uniformIndentationAcrossDocumentStillFullyStrippedByDefault() async {
         let input = "    first line\n    second line"
-        let result = Self.parser.parse(input)
+        let result = await Self.parser.parse(input)
         #expect(result.string == "first line\nsecond line")
     }
 
-    @Test @MainActor func relativeIndentationBetweenLinesIsPreservedByDefault() {
+    @Test @MainActor func relativeIndentationBetweenLinesIsPreservedByDefault() async {
         let input = "first line\n  second line"
-        let result = Self.parser.parse(input)
+        let result = await Self.parser.parse(input)
         #expect(result.string == "first line\n  second line")
     }
 
-    @Test @MainActor func blankLineDoesNotZeroOutMarginByDefault() {
+    @Test @MainActor func blankLineDoesNotZeroOutMarginByDefault() async {
         // The blank line has 3 spaces -- fewer than the 4-space margin shared by the
         // real content lines -- and must not force the margin to zero.
         let input = "    first line\n   \n    second line"
-        let result = Self.parser.parse(input)
+        let result = await Self.parser.parse(input)
         #expect(result.string == "first line\n\nsecond line")
     }
 
-    @Test @MainActor func mixedTabAndSpaceIndentationDoesNotFalselyDedent() {
+    @Test @MainActor func mixedTabAndSpaceIndentationDoesNotFalselyDedent() async {
         // A tab and four spaces share no common literal prefix, so nothing is stripped.
         let input = "\tfirst line\n    second line"
-        let result = Self.parser.parse(input)
+        let result = await Self.parser.parse(input)
         #expect(result.string == "\tfirst line\n    second line")
     }
 }

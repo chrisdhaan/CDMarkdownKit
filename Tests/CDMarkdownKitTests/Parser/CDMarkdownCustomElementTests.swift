@@ -29,12 +29,12 @@ extension HighlightElement: @unchecked Sendable {}
 @MainActor
 struct CDMarkdownCustomElementTests {
 
-    @Test func customElementAppliesAttributeWhenRegisteredAtInit() {
+    @Test func customElementAppliesAttributeWhenRegisteredAtInit() async {
         // Given: custom element registered at parser init time
         let element = HighlightElement()
         let parser = CDMarkdownParser(customElements: [element])
         // When
-        let result = parser.parse("Hello ^^world^^")
+        let result = await parser.parse("Hello ^^world^^")
         // Then: highlightKey attribute must appear somewhere in the output
         var found = false
         result.enumerateAttribute(highlightKey,
@@ -46,13 +46,13 @@ struct CDMarkdownCustomElementTests {
         #expect(found)
     }
 
-    @Test func addCustomElementAppliesAttribute() {
+    @Test func addCustomElementAppliesAttribute() async {
         // Given: custom element added after parser is created
         let parser = CDMarkdownParser()
         let element = HighlightElement()
         parser.addCustomElement(element)
         // When
-        let result = parser.parse("Say ^^hi^^")
+        let result = await parser.parse("Say ^^hi^^")
         // Then
         var found = false
         result.enumerateAttribute(highlightKey,
@@ -64,14 +64,14 @@ struct CDMarkdownCustomElementTests {
         #expect(found)
     }
 
-    @Test func removeCustomElementStopsApplication() {
+    @Test func removeCustomElementStopsApplication() async {
         // Given: element added then removed before parse
         let parser = CDMarkdownParser()
         let element = HighlightElement()
         parser.addCustomElement(element)
         parser.removeCustomElement(element)
         // When
-        let result = parser.parse("Say ^^hi^^")
+        let result = await parser.parse("Say ^^hi^^")
         // Then: attribute must NOT appear
         var found = false
         result.enumerateAttribute(highlightKey,
@@ -83,12 +83,12 @@ struct CDMarkdownCustomElementTests {
         #expect(!found)
     }
 
-    @Test func customElementDoesNotAffectUnmatchedText() {
+    @Test func customElementDoesNotAffectUnmatchedText() async {
         // Given
         let element = HighlightElement()
         let parser = CDMarkdownParser(customElements: [element])
         // When: input has no ^^ delimiters
-        let result = parser.parse("Hello world")
+        let result = await parser.parse("Hello world")
         // Then
         var found = false
         result.enumerateAttribute(highlightKey,

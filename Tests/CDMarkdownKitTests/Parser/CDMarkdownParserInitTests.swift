@@ -12,12 +12,12 @@ struct CDMarkdownParserInitTests {
 
     // MARK: - Base font / color applied to plain text
 
-    @Test func customFontAppliedToPlainText() {
+    @Test func customFontAppliedToPlainText() async {
         // Given: parser initialized with a distinctive point size
         let customFont = CDFont.systemFont(ofSize: 24)
         let parser = CDMarkdownParser(font: customFont)
         // When
-        let result = parser.parse("plain text")
+        let result = await parser.parse("plain text")
         // Then: every character should carry the 24pt font
         var found = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -28,11 +28,11 @@ struct CDMarkdownParserInitTests {
         #expect(found)
     }
 
-    @Test func customFontColorAppliedToPlainText() {
+    @Test func customFontColorAppliedToPlainText() async {
         // Given
         let parser = CDMarkdownParser(fontColor: CDColor.blue)
         // When
-        let result = parser.parse("plain text")
+        let result = await parser.parse("plain text")
         // Then
         var found = false
         result.enumerateAttribute(.foregroundColor,
@@ -44,11 +44,11 @@ struct CDMarkdownParserInitTests {
         #expect(found)
     }
 
-    @Test func customBackgroundColorAppliedToPlainText() {
+    @Test func customBackgroundColorAppliedToPlainText() async {
         // Given
         let parser = CDMarkdownParser(backgroundColor: CDColor.yellow)
         // When
-        let result = parser.parse("plain text")
+        let result = await parser.parse("plain text")
         // Then
         var found = false
         result.enumerateAttribute(.backgroundColor,
@@ -70,11 +70,11 @@ struct CDMarkdownParserInitTests {
     // NSDataDetector (used by CDMarkdownAutomaticLink) is unavailable on watchOS.
     #if !os(watchOS)
 
-        @Test func autoLinkDisabledPreventsLinkAttribute() {
+        @Test func autoLinkDisabledPreventsLinkAttribute() async {
             // Given: bare URL with auto-detection turned off
             let parser = CDMarkdownParser(automaticLinkDetectionEnabled: false)
             // When
-            let result = parser.parse("https://example.com")
+            let result = await parser.parse("https://example.com")
             // Then: no .link attribute should appear
             var foundLink = false
             result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
@@ -85,11 +85,11 @@ struct CDMarkdownParserInitTests {
             #expect(!foundLink)
         }
 
-        @Test func bracketLinkStillWorksWhenAutoLinkDisabled() {
+        @Test func bracketLinkStillWorksWhenAutoLinkDisabled() async {
             // [text](url) is processed by CDMarkdownLink (not CDMarkdownAutomaticLink)
             // and must remain functional even when auto-detection is off.
             let parser = CDMarkdownParser(automaticLinkDetectionEnabled: false)
-            let result = parser.parse("[GitHub](https://github.com)")
+            let result = await parser.parse("[GitHub](https://github.com)")
             var foundLink = false
             result.enumerateAttribute(.link, in: NSRange(location: 0, length: result.length)) { v, _, _ in
                 if v != nil {
