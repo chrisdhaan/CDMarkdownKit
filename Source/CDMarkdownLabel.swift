@@ -162,7 +162,6 @@
                           let layoutManager = customLayoutManager {
                     customTextStorage = NSTextStorage(attributedString: newValue)
                     customTextStorage.addLayoutManager(layoutManager)
-                    layoutManager.textStorage = customTextStorage
                 }
 
                 #if os(iOS) || os(visionOS)
@@ -452,8 +451,6 @@
                                                              let activityViewController = UIActivityViewController(activityItems: [url],
                                                                                                                    applicationActivities: [])
                                                              if parentViewController != nil {
-                                                                 activityViewController.dismiss(animated: true,
-                                                                                                completion: nil)
                                                                  parentViewController?.present(activityViewController,
                                                                                                animated: true,
                                                                                                completion: nil)
