@@ -432,31 +432,6 @@ open class CDMarkdownParser {
 
     // MARK: - Parsing
 
-    /// Parses a Markdown string and returns a styled NSAttributedString.
-    ///
-    /// - Parameter markdown: The raw Markdown text to parse.
-    /// - Returns: An `NSAttributedString` with styling applied for all recognized Markdown syntax.
-    ///
-    /// Images are not loaded in the synchronous overload. Use the async overload for remote image support.
-    @available(*, deprecated, renamed: "parse(_:)")
-    open func parse(_ markdown: String) -> NSAttributedString {
-        parse(NSAttributedString(string: markdown))
-    }
-
-    /// Parses a Markdown NSAttributedString and returns a styled NSAttributedString.
-    ///
-    /// - Parameter markdown: The attributed Markdown text to parse.
-    /// - Returns: An `NSAttributedString` with styling applied for all recognized Markdown syntax.
-    ///
-    /// Images are not loaded in the synchronous overload. Use the async overload to download remote images.
-    ///
-    /// Note: Input attributes other than font, foregroundColor, backgroundColor, and paragraphStyle are not guaranteed to survive parsing, as the
-    /// leading-whitespace dedent step performs a full-string replacement that can collapse attribute-run boundaries.
-    @available(*, deprecated, renamed: "parse(_:)")
-    open func parse(_ markdown: NSAttributedString) -> NSAttributedString {
-        runParsePipeline(markdown)
-    }
-
     /// Asynchronously parses a Markdown string with image loading support.
     ///
     /// - Parameter string: The raw Markdown text to parse.
