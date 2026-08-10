@@ -58,6 +58,28 @@ import Testing
             #expect(textView.isSelectable == false)
         }
 
+        @Test func initWithFrameAndNilTextContainerAutoConfigures() {
+            let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                              textContainer: nil)
+            if #available(iOS 16.0, tvOS 16.0, *) {
+                #expect(textView.tk2Delegate is CDMarkdownTextLayoutDelegate)
+            } else {
+                #expect(textView.customLayoutManager != nil)
+            }
+            #expect(textView.isScrollEnabled == true)
+            #expect(textView.isSelectable == false)
+        }
+
+        @Test func settingAttributedTextOnTK1ConfiguredViewPopulatesCustomTextStorage() {
+            let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                              textContainer: nil)
+            textView.configureTK1()
+            let parser = CDMarkdownParser()
+            textView.attributedText = parser.parse("hello")
+
+            #expect(textView.customTextStorage === textView.textStorage)
+        }
+
         @available(iOS 16.0, tvOS 16.0, *)
         @Test func roundAllCornersPropagatesToTK2Delegate() {
             let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
@@ -75,6 +97,10 @@ import Testing
         @Test func roundAllCornersPropagatesToTK1LayoutManagerWhenTK2NotConfigured() {
             let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
                                               textContainer: nil)
+            // roundAllCorners's didSet routes on whether tk2Delegate currently holds a
+            // CDMarkdownTextLayoutDelegate; clear it so the TK1 branch is exercised even
+            // though init() now runs configureTK2() on a modern simulator.
+            textView.tk2Delegate = nil
             textView.configureTK1()
             textView.roundAllCorners = true
 
