@@ -97,6 +97,11 @@
                     let lowerBound = lineFragment.locationForCharacter(at: subrangeInLine.location)
                     let upperBound = lineFragment.locationForCharacter(at: NSMaxRange(subrangeInLine))
 
+                    // Only a small vertical inset is needed here because the rect above is
+                    // already narrowed to the exact glyph-run span (`subrangeInLine`), unlike
+                    // TK1's `CDMarkdownLayoutManager.fillBackgroundRectArray`, which insets a
+                    // full line segment by the corner radius on both axes. This difference has
+                    // not been verified pixel-for-pixel against a real TK1 render.
                     let rect = CGRect(x: min(lowerBound.x, upperBound.x),
                                       y: lineFragment.typographicBounds.minY,
                                       width: abs(upperBound.x - lowerBound.x),
