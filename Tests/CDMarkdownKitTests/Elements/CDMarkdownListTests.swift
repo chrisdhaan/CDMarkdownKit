@@ -12,8 +12,8 @@ struct CDMarkdownListTests {
 
     let parser = CDMarkdownParser()
 
-    @Test func asteriskBulletProducesList() {
-        let result = parser.parse("* item")
+    @Test func asteriskBulletProducesList() async {
+        let result = await parser.parse("* item")
         var hasHeadIndent = false
         result.enumerateAttribute(.paragraphStyle, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let s = v as? NSParagraphStyle, s.headIndent > 0 {
@@ -23,8 +23,8 @@ struct CDMarkdownListTests {
         #expect(hasHeadIndent)
     }
 
-    @Test func dashBulletProducesList() {
-        let result = parser.parse("- item")
+    @Test func dashBulletProducesList() async {
+        let result = await parser.parse("- item")
         var hasHeadIndent = false
         result.enumerateAttribute(.paragraphStyle, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let s = v as? NSParagraphStyle, s.headIndent > 0 {
@@ -34,8 +34,8 @@ struct CDMarkdownListTests {
         #expect(hasHeadIndent)
     }
 
-    @Test func plusBulletProducesList() {
-        let result = parser.parse("+ item")
+    @Test func plusBulletProducesList() async {
+        let result = await parser.parse("+ item")
         var hasHeadIndent = false
         result.enumerateAttribute(.paragraphStyle, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let s = v as? NSParagraphStyle, s.headIndent > 0 {
@@ -45,19 +45,19 @@ struct CDMarkdownListTests {
         #expect(hasHeadIndent)
     }
 
-    @Test func listMarkerIsReplaced() {
-        let result = parser.parse("* item")
+    @Test func listMarkerIsReplaced() async {
+        let result = await parser.parse("* item")
         #expect(!result.string.contains("*"))
     }
 
-    @Test func listBulletCharacterIsPresent() {
+    @Test func listBulletCharacterIsPresent() async {
         // The default indicator is "•"; verify it replaces the markdown marker
-        let result = parser.parse("* item")
+        let result = await parser.parse("* item")
         #expect(result.string.contains("•"))
     }
 
-    @Test func topLevelListItemHasNoExtraIndentPrefix() {
-        let result = parser.parse("* item")
+    @Test func topLevelListItemHasNoExtraIndentPrefix() async {
+        let result = await parser.parse("* item")
         #expect(result.string == "• item")
     }
 
@@ -77,17 +77,17 @@ struct CDMarkdownListTests {
         return style.headIndent
     }
 
-    @Test func indentedListItemNestsDeeperThanTopLevelWhenPreservingWhitespace() {
+    @Test func indentedListItemNestsDeeperThanTopLevelWhenPreservingWhitespace() async {
         let nestingParser = CDMarkdownParser()
         nestingParser.preserveLeadingWhitespace = true
 
-        let topLevel = nestingParser.parse("* item")
-        let nested = nestingParser.parse("  * item")
+        let topLevel = await nestingParser.parse("* item")
+        let nested = await nestingParser.parse("  * item")
 
         #expect(effectiveHeadIndent(of: nested) > effectiveHeadIndent(of: topLevel))
     }
 
-    @Test func indentationNestingRequiresPreserveLeadingWhitespace() {
+    @Test func indentationNestingRequiresPreserveLeadingWhitespace() async {
         // A single indented line has no sibling line to establish *relative* indentation
         // against -- its whole leading whitespace run is the whole-document dedent margin, so
         // it's still fully stripped under default settings. Multi-line nesting (see
@@ -95,16 +95,16 @@ struct CDMarkdownListTests {
         // this single-line case specifically does not, and preserveLeadingWhitespace remains
         // the way to force it.
         let defaultParser = CDMarkdownParser()
-        let topLevel = defaultParser.parse("* item")
-        let indented = defaultParser.parse("  * item")
+        let topLevel = await defaultParser.parse("* item")
+        let indented = await defaultParser.parse("  * item")
 
         #expect(effectiveHeadIndent(of: indented) == effectiveHeadIndent(of: topLevel))
     }
 
-    @Test func nestedListItemIndentsDeeperThanParentUnderDefaultSettings() {
+    @Test func nestedListItemIndentsDeeperThanParentUnderDefaultSettings() async {
         // Two lines in one parse call: the parent has no leading whitespace, so the
         // whole-document margin is zero and the nested item's 2-space indent survives.
-        let result = parser.parse("* item\n  * nested item")
+        let result = await parser.parse("* item\n  * nested item")
         let nsString = result.string as NSString
         let newlineRange = nsString.range(of: "\n")
         #expect(newlineRange.location != NSNotFound)
@@ -115,17 +115,18 @@ struct CDMarkdownListTests {
         #expect(nestedIndent > topLevelIndent)
     }
 
-    @Test func blankLinesBeforeListItemDoNotAddSpuriousIndentationWhenSquashNewlinesDisabled() {
+    @Test func blankLinesBeforeListItemDoNotAddSpuriousIndentationWhenSquashNewlinesDisabled() async {
         let noSquashParser = CDMarkdownParser()
         noSquashParser.squashNewlines = false
 
-        let result = noSquashParser.parse("Some text.\n\n\n* item")
+        let result = await noSquashParser.parse("Some text.\n\n\n* item")
         let nsString = result.string as NSString
         let markerRange = nsString.range(of: "• item")
         #expect(markerRange.location != NSNotFound)
 
         let indentedIndent = effectiveHeadIndent(of: result, atCharacterIndex: markerRange.location)
-        let topLevelIndent = effectiveHeadIndent(of: noSquashParser.parse("* item"))
+        let parsedIndent = await noSquashParser.parse("* item")
+        let topLevelIndent = effectiveHeadIndent(of: parsedIndent)
         #expect(indentedIndent == topLevelIndent)
     }
 }

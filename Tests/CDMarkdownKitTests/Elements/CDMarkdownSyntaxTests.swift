@@ -7,8 +7,8 @@ struct CDMarkdownSyntaxTests {
 
     let parser = CDMarkdownParser()
 
-    @Test func tripleBacktickProducesFencedCode() {
-        let result = parser.parse("```\ncode\n```")
+    @Test func tripleBacktickProducesFencedCode() async {
+        let result = await parser.parse("```\ncode\n```")
         var hasCodeColor = false
         result.enumerateAttribute(.foregroundColor, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if v != nil {
@@ -18,8 +18,8 @@ struct CDMarkdownSyntaxTests {
         #expect(hasCodeColor)
     }
 
-    @Test func fencedCodeProtectsMarkdown() {
-        let result = parser.parse("```\n**not bold**\n```")
+    @Test func fencedCodeProtectsMarkdown() async {
+        let result = await parser.parse("```\n**not bold**\n```")
         var hasBold = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.isBold {
@@ -29,24 +29,24 @@ struct CDMarkdownSyntaxTests {
         #expect(!hasBold)
     }
 
-    @Test func languageHintIsStripped() {
-        let result = parser.parse("```swift\ncode\n```")
+    @Test func languageHintIsStripped() async {
+        let result = await parser.parse("```swift\ncode\n```")
         #expect(!result.string.contains("swift"))
     }
 
-    @Test func fencesAreStripped() {
-        let result = parser.parse("```\ncode\n```")
+    @Test func fencesAreStripped() async {
+        let result = await parser.parse("```\ncode\n```")
         #expect(!result.string.contains("```"))
     }
 
-    @Test func fencedCodeUsesConfiguredFont() {
+    @Test func fencedCodeUsesConfiguredFont() async {
         // CDMarkdownParser passes its base font to syntax element at init time,
         // overriding the Menlo-Regular default. Verify the explicitly configured
         // font is applied when set directly on parser.syntax.
         guard let menlo = CDFont(name: "Menlo-Regular", size: 12) else { return }
         let parser = CDMarkdownParser()
         parser.syntax.font = menlo
-        let result = parser.parse("```\ncode\n```")
+        let result = await parser.parse("```\ncode\n```")
         var found = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.fontName.lowercased().contains("menlo") {
@@ -98,9 +98,9 @@ struct CDMarkdownSyntaxTests {
         #expect(foundLanguage == "Swift")
     }
 
-    @Test func fencedBlockWithEmojiAppliesStylingToEntireSpan() {
+    @Test func fencedBlockWithEmojiAppliesStylingToEntireSpan() async {
         let parser = CDMarkdownParser()
-        let result = parser.parse("```\ncode 👍 after\n```")
+        let result = await parser.parse("```\ncode 👍 after\n```")
         guard let range = result.string.range(of: "code 👍 after") else {
             Issue.record("expected decoded fenced block text not found")
             return
@@ -115,18 +115,18 @@ struct CDMarkdownSyntaxTests {
         #expect(isCodeForEntireRange)
     }
 
-    @Test func unterminatedFenceWithLongTrailingTextParsesQuickly() {
+    @Test func unterminatedFenceWithLongTrailingTextParsesQuickly() async {
         let input = "```\n" + String(repeating: " ", count: 1500)
         let start = Date()
-        _ = parser.parse(input)
+        _ = await parser.parse(input)
         let elapsed = Date().timeIntervalSince(start)
         #expect(elapsed < 2.0)
     }
 
-    @Test func fencedCodeBlockAtEndOfDocumentExtendsBackgroundUnderTrailingNewline() {
+    @Test func fencedCodeBlockAtEndOfDocumentExtendsBackgroundUnderTrailingNewline() async {
         let parser = CDMarkdownParser()
         parser.syntax.backgroundColor = CDColor.syntaxBackgroundGray()
-        let result = parser.parse("```\ncode```\n")
+        let result = await parser.parse("```\ncode```\n")
         let lastIndex = result.length - 1
 
         // Verify the trailing newline has the background color applied (not the parser's default .clear).
