@@ -69,12 +69,15 @@
             set {
                 super.attributedText = newValue
                 guard let newValue else { return }
-                if let layoutManager = self.customLayoutManager,
-                   !self.textStorage.layoutManagers.contains(where: { $0 === layoutManager }) {
-                    // TextKit 1 fallback (iOS/tvOS 15): keep the custom layout manager attached
-                    // to the view's real, visible text storage rather than creating a second,
-                    // disconnected NSTextStorage that would silently detach it.
-                    self.textStorage.setAttributedString(newValue)
+                if let layoutManager = self.customLayoutManager {
+                    if !self.textStorage.layoutManagers.contains(where: { $0 === layoutManager }) {
+                        // TextKit 1 fallback (iOS/tvOS 15): keep the custom layout manager
+                        // attached to the view's real, visible text storage rather than
+                        // creating a second, disconnected NSTextStorage that would silently
+                        // detach it.
+                        self.textStorage.setAttributedString(newValue)
+                    }
+                    // Populate on every assignment, matching CDMarkdownLabel/CDMarkdownNSTextView.
                     self.customTextStorage = self.textStorage
                 }
             }
@@ -93,6 +96,7 @@
                              textContainer: NSTextContainer?) {
             super.init(frame: frame,
                        textContainer: textContainer)
+            self.configure()
         }
 
         public required init?(coder aDecoder: NSCoder) {
@@ -145,9 +149,7 @@
         /// On iOS/tvOS 16+, the system defaults to TextKit 2 when no text container is provided.
         @MainActor
         public static func makeTextView(frame: CGRect) -> CDMarkdownTextView {
-            let view = CDMarkdownTextView(frame: frame, textContainer: nil)
-            view.configure()
-            return view
+            CDMarkdownTextView(frame: frame, textContainer: nil)
         }
     }
 

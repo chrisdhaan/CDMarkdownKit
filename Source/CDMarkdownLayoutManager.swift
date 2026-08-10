@@ -50,6 +50,13 @@
             if hasRoundedAttribute || self.roundAllCorners {
                 cornerRadius = 3
             }
+            // This corner radius is also used below as the inset on both axes for `rectArray`,
+            // which spans each full line segment for the character range rather than a single
+            // narrowed glyph run. The TextKit 2 path (see
+            // `CDMarkdownTextLayoutFragment.roundedBackgroundFills`) narrows its rect to the
+            // exact glyph-run span before filling, so it only applies a small vertical inset,
+            // not a matching horizontal one. This difference has not been verified
+            // pixel-for-pixel against real iOS 15 (TK1) and iOS 16+ (TK2) simulator renders.
 
             let path = CGMutablePath()
 
