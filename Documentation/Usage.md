@@ -599,7 +599,7 @@ parser.syntax.font = monoFont
 
 ## Async Parsing (v3.0+)
 
-For documents with remote images, use the async `parse(_:)` overload to load images without blocking the main thread.
+For documents with remote images, `parse(_:)` downloads them concurrently instead of blocking the main thread.
 
 ### Basic Usage
 
@@ -620,7 +620,7 @@ Task {
 
 ### How It Works
 
-- The async variant first parses without loading images, inserting placeholder attributes
+- Parsing first happens without loading images, inserting placeholder attributes
 - Images are then loaded concurrently using `URLSession.shared.data(from:)`
 - Loaded images replace the placeholders in the attributed string
 - The parser respects custom image sizing from `CDMarkdownParser(imageSize:)`
