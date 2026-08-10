@@ -8,14 +8,14 @@ Create a ``CDMarkdownParser`` and call `parse(_:)`:
 
 ```swift
 let parser = CDMarkdownParser()
-let attributed = parser.parse("Hello **world**")
+let attributed = await parser.parse("Hello **world**")
 ```
 
 ## Display with CDMarkdownLabel
 
 ```swift
 let label = CDMarkdownLabel(frame: .zero)
-label.attributedText = parser.parse("Hello **world**")
+label.attributedText = await parser.parse("Hello **world**")
 ```
 
 ## Display with CDMarkdownTextView
@@ -23,7 +23,7 @@ label.attributedText = parser.parse("Hello **world**")
 ```swift
 let textView = CDMarkdownTextView(frame: view.bounds, textContainer: nil)
 textView.configure()
-textView.attributedText = parser.parse("Hello **world**")
+textView.attributedText = await parser.parse("Hello **world**")
 ```
 
 ## Async parsing with image support
