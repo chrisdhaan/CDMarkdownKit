@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## Table of Contents
 
 - [Unreleased](#unreleased)
+- [5.0.0](#500)
 - [4.2.1](#421)
 - [4.2.0](#420)
 - [4.1.0](#410)
@@ -32,6 +33,12 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [Unreleased]
+
+---
+
+## [5.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/5.0.0)
+
+Released on 2026-08-11.
 
 ### Removed
 
