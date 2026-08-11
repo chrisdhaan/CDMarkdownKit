@@ -33,6 +33,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Removed
+
+- Removed the deprecated synchronous `parse(_:)` overloads (`parse(_ markdown: String) -> NSAttributedString` and `parse(_ markdown: NSAttributedString) -> NSAttributedString`), deprecated since v3.0.0. Use the `async` `parse(_:)` overload instead — the signature is otherwise unchanged, so migration is adding `await` at each call site.
+
 ---
 
 ## [4.2.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.2.1)
