@@ -7,8 +7,8 @@ struct CDMarkdownItalicTests {
 
     let parser = CDMarkdownParser()
 
-    @Test func singleAsteriskProducesItalic() {
-        let result = parser.parse("*italic*")
+    @Test func singleAsteriskProducesItalic() async {
+        let result = await parser.parse("*italic*")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.isItalic {
@@ -18,8 +18,8 @@ struct CDMarkdownItalicTests {
         #expect(hasItalic)
     }
 
-    @Test func singleUnderscoreProducesItalic() {
-        let result = parser.parse("_italic_")
+    @Test func singleUnderscoreProducesItalic() async {
+        let result = await parser.parse("_italic_")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.isItalic {
@@ -29,8 +29,8 @@ struct CDMarkdownItalicTests {
         #expect(hasItalic)
     }
 
-    @Test func doubleAsteriskIsNotItalic() {
-        let result = parser.parse("**not italic**")
+    @Test func doubleAsteriskIsNotItalic() async {
+        let result = await parser.parse("**not italic**")
         var hasItalic = false
         result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if let f = v as? CDFont, f.isItalic {
@@ -40,8 +40,8 @@ struct CDMarkdownItalicTests {
         #expect(!hasItalic)
     }
 
-    @Test func italicDelimitersAreStripped() {
-        let result = parser.parse("*italic*")
+    @Test func italicDelimitersAreStripped() async {
+        let result = await parser.parse("*italic*")
         #expect(!result.string.contains("*"))
     }
 }

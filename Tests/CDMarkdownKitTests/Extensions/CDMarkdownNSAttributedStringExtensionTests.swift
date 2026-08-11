@@ -5,10 +5,10 @@ import Testing
 @MainActor
 struct CDMarkdownNSAttributedStringExtensionTests {
 
-    @Test func enumerateLinkAttributeFindsLink() {
+    @Test func enumerateLinkAttributeFindsLink() async {
         // Given: a parsed attributed string with a link
         let parser = CDMarkdownParser()
-        let result = parser.parse("[GitHub](https://github.com)")
+        let result = await parser.parse("[GitHub](https://github.com)")
         // When: using the internal enumerateLinkAttribute helper
         var foundLink = false
         result.enumerateLinkAttribute(in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -34,10 +34,10 @@ struct CDMarkdownNSAttributedStringExtensionTests {
         #expect(!foundLink)
     }
 
-    @Test func enumerateLinkAttributeReturnsURL() {
+    @Test func enumerateLinkAttributeReturnsURL() async {
         // Verify the value yielded by the enumerator is a URL (not just non-nil)
         let parser = CDMarkdownParser()
-        let result = parser.parse("[Docs](https://example.com)")
+        let result = await parser.parse("[Docs](https://example.com)")
         var foundURL = false
         result.enumerateLinkAttribute(in: NSRange(location: 0, length: result.length)) { value, _, _ in
             if value is URL {

@@ -12,8 +12,8 @@ struct CDMarkdownStrikethroughTests {
 
     let parser = CDMarkdownParser()
 
-    @Test func doubleTildeProducesStrikethrough() {
-        let result = parser.parse("~~strikethrough~~")
+    @Test func doubleTildeProducesStrikethrough() async {
+        let result = await parser.parse("~~strikethrough~~")
         var hasStrikethrough = false
         result.enumerateAttribute(.strikethroughStyle, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if v != nil {
@@ -23,8 +23,8 @@ struct CDMarkdownStrikethroughTests {
         #expect(hasStrikethrough)
     }
 
-    @Test func singleTildeIsNotStrikethrough() {
-        let result = parser.parse("~not strikethrough~")
+    @Test func singleTildeIsNotStrikethrough() async {
+        let result = await parser.parse("~not strikethrough~")
         var hasStrikethrough = false
         result.enumerateAttribute(.strikethroughStyle, in: NSRange(location: 0, length: result.length)) { v, _, _ in
             if v != nil {
@@ -34,21 +34,21 @@ struct CDMarkdownStrikethroughTests {
         #expect(!hasStrikethrough)
     }
 
-    @Test func strikethroughDelimitersAreStripped() {
-        let result = parser.parse("~~strikethrough~~")
+    @Test func strikethroughDelimitersAreStripped() async {
+        let result = await parser.parse("~~strikethrough~~")
         #expect(!result.string.contains("~"))
     }
 
-    @Test func strikethroughCanContainOtherMarkdown() {
-        let result = parser.parse("~~**bold strikethrough**~~")
+    @Test func strikethroughCanContainOtherMarkdown() async {
+        let result = await parser.parse("~~**bold strikethrough**~~")
         // Strikethrough with nested markdown should parse without error
         #expect(result.length > 0)
     }
 
-    @Test func customStrikethroughColorIsApplied() {
+    @Test func customStrikethroughColorIsApplied() async {
         let parser = CDMarkdownParser()
         parser.strikethrough.strikethroughColor = CDColor.red
-        let result = parser.parse("~~text~~")
+        let result = await parser.parse("~~text~~")
         var found = false
         result.enumerateAttribute(.strikethroughColor,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -59,10 +59,10 @@ struct CDMarkdownStrikethroughTests {
         #expect(found)
     }
 
-    @Test func customStrikethroughStyleIsDouble() {
+    @Test func customStrikethroughStyleIsDouble() async {
         let parser = CDMarkdownParser()
         parser.strikethrough.strikethroughStyle = .double
-        let result = parser.parse("~~text~~")
+        let result = await parser.parse("~~text~~")
         var foundDouble = false
         result.enumerateAttribute(.strikethroughStyle,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in

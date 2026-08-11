@@ -43,11 +43,7 @@ let parser = CDMarkdownParser(
 ### Parsing Markdown
 
 ```swift
-// Synchronous parsing
 let markdown = "# Hello **World**\n\nThis is *italic* text."
-let attributedString = parser.parse(markdown)
-
-// Asynchronous parsing (v3.0+, for image loading)
 let attributedString = await parser.parse(markdown)
 ```
 
@@ -93,15 +89,13 @@ let mention = CDMarkdownMention()
 parser.insertCustomElement(mention, before: CDMarkdownBold.self)
 ```
 
-#### Async vs. synchronous parsing
-
-Prefer the async overload for all new code:
+#### Parsing is always async
 
 ```swift
 let attributed = await parser.parse("Hello **world**")
 ```
 
-The synchronous `parse(_:)` overloads are deprecated and will be removed in a future major version. They remain available for backward compatibility.
+`parse(_:)` is `async` because it also resolves any remote images referenced in the document (see "Async Parsing" below); local-only Markdown with no images still parses effectively instantly.
 
 ### Customizing Element Styling
 
@@ -151,7 +145,7 @@ By default, CDMarkdownKit dedents leading whitespace: it only strips whitespace 
 ```swift
 let parser = CDMarkdownParser()
 parser.preserveLeadingWhitespace = true
-let attributed = parser.parse("""
+let attributed = await parser.parse("""
     ```
        function sayHello() {
           console.log("Hello, World!");
@@ -301,7 +295,9 @@ class MyViewController: UIViewController {
         
         let parser = CDMarkdownParser()
         let markdown = "Check out [CDMarkdownKit](https://github.com/chrisdhaan/CDMarkdownKit)"
-        label.attributedText = parser.parse(markdown)
+        Task {
+            self.label.attributedText = await parser.parse(markdown)
+        }
     }
 }
 ```
@@ -353,7 +349,7 @@ let markdown = """
 
 This is a **rich** markdown document.
 """
-textView.attributedText = parser.parse(markdown)
+textView.attributedText = await parser.parse(markdown)
 ```
 
 ### Handling Link Interactions
@@ -425,7 +421,7 @@ link interaction:
 
 ```swift
 let label = CDMarkdownNSLabel(frame: .zero)
-label.attributedText = parser.parse("Hello **world**")
+label.attributedText = await parser.parse("Hello **world**")
 ```
 
 ---
@@ -514,7 +510,7 @@ final class CDMarkdownMention: CDMarkdownElement, CDMarkdownStyle {
 ```swift
 let parser = CDMarkdownParser(font: UIFont.systemFont(ofSize: 16))
 parser.customElements = [CDMarkdownMention()]
-let attributed = parser.parse("Hello @alice, check this out!")
+let attributed = await parser.parse("Hello @alice, check this out!")
 textView.attributedText = attributed
 ```
 
@@ -603,15 +599,11 @@ parser.syntax.font = monoFont
 
 ## Async Parsing (v3.0+)
 
-For documents with remote images, use the async `parse(_:)` overload to load images without blocking the main thread.
+For documents with remote images, `parse(_:)` downloads them concurrently instead of blocking the main thread.
 
 ### Basic Usage
 
 ```swift
-// Synchronous (blocks on remote images)
-let attributedString = parser.parse(markdown)
-
-// Asynchronous (loads images in background)
 let attributedString = await parser.parse(markdown)
 ```
 
@@ -628,12 +620,12 @@ Task {
 
 ### How It Works
 
-- The async variant first parses without loading images, inserting placeholder attributes
+- Parsing first happens without loading images, inserting placeholder attributes
 - Images are then loaded concurrently using `URLSession.shared.data(from:)`
 - Loaded images replace the placeholders in the attributed string
 - The parser respects custom image sizing from `CDMarkdownParser(imageSize:)`
 
-> **Note:** The synchronous `parse(_:)` blocks on remote images. Use the async variant when parsing documents with external image URLs to prevent UI freezing.
+> **Note:** `parse(_:)` downloads remote images concurrently before returning, so it does not block the calling thread even for documents with several external image URLs.
 
 ---
 

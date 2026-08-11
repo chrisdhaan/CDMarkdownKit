@@ -62,10 +62,9 @@ let attributedString = parser.parse(markdown)
 let attributedString = await parser.parse(markdown)
 ```
 
-**When to use:**
+**Note:**
 
-- **Synchronous `parse(_:)`** – For documents with no images, or when images are bundled locally
-- **Asynchronous `await parser.parse(_:)`** – For documents with remote images to prevent blocking the main thread
+`parse(_:)` is `async` regardless of whether the document has images — local-only Markdown still parses effectively instantly. The synchronous overloads shown above were removed in a later major version; see `CHANGELOG.md`.
 
 **Migration:**
 
@@ -80,7 +79,7 @@ Task {
 }
 ```
 
-The synchronous version still works and will block on remote images, just as in 2.5.1.
+The synchronous overloads were later removed entirely (see `CHANGELOG.md`); all callers must now use the `async` form shown above.
 
 ---
 

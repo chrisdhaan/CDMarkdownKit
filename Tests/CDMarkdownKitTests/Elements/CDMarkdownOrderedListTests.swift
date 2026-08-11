@@ -12,8 +12,8 @@ struct CDMarkdownOrderedListTests {
 
     let parser = CDMarkdownParser()
 
-    @Test func singleItemHasHeadIndent() {
-        let result = parser.parse("1. First item")
+    @Test func singleItemHasHeadIndent() async {
+        let result = await parser.parse("1. First item")
         var hasHeadIndent = false
         result.enumerateAttribute(.paragraphStyle,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in
@@ -24,25 +24,25 @@ struct CDMarkdownOrderedListTests {
         #expect(hasHeadIndent)
     }
 
-    @Test func markerNumberIsPreserved() {
-        let result = parser.parse("42. Some item")
+    @Test func markerNumberIsPreserved() async {
+        let result = await parser.parse("42. Some item")
         #expect(result.string.hasPrefix("42."))
     }
 
-    @Test func multipleItemsAreRendered() {
-        let result = parser.parse("1. First\n2. Second\n3. Third")
+    @Test func multipleItemsAreRendered() async {
+        let result = await parser.parse("1. First\n2. Second\n3. Third")
         #expect(result.string.contains("1."))
         #expect(result.string.contains("2."))
         #expect(result.string.contains("3."))
     }
 
-    @Test func whitespaceAfterMarkerNormalized() {
+    @Test func whitespaceAfterMarkerNormalized() async {
         // "1.   item" (three spaces) should normalize to "1. item" (one space)
-        let result = parser.parse("1.   item")
+        let result = await parser.parse("1.   item")
         #expect(result.string == "1. item")
     }
 
-    @Test func indentedItemStillRecognizedAlongsideFlushLeftItem() {
+    @Test func indentedItemStillRecognizedAlongsideFlushLeftItem() async {
         // Under the dedent-based whitespace handling, a document containing at least one
         // flush-left line leaves other lines' indentation untouched -- including indentation
         // in front of an ordered-list marker. The ordered-list regex must still match it (this
@@ -54,7 +54,7 @@ struct CDMarkdownOrderedListTests {
         // was actually matched and run through CDMarkdownOrderedList.match() (which normalizes
         // the marker/content spacer to a single space) -- not that the raw text simply happened
         // to already look right.
-        let result = parser.parse("1. item\n   2.    nested")
+        let result = await parser.parse("1. item\n   2.    nested")
         #expect(result.string.contains("2. nested"))
         #expect(!result.string.contains("2.    nested"))
 
@@ -69,8 +69,8 @@ struct CDMarkdownOrderedListTests {
         #expect(hasHeadIndentOnSecondLine)
     }
 
-    @Test func doesNotMatchUnorderedList() {
-        let result = parser.parse("* bullet")
+    @Test func doesNotMatchUnorderedList() async {
+        let result = await parser.parse("* bullet")
         var hasHeadIndent = false
         result.enumerateAttribute(.paragraphStyle,
                                   in: NSRange(location: 0, length: result.length)) { value, _, _ in

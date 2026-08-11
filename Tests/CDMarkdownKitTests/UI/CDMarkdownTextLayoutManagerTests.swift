@@ -10,11 +10,11 @@ import Testing
     struct CDMarkdownTextLayoutManagerTests {
 
         @available(iOS 16.0, tvOS 16.0, *)
-        @Test func delegateSuppliesCustomFragmentType() {
+        @Test func delegateSuppliesCustomFragmentType() async {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
             label.configureTK2()
             let parser = CDMarkdownParser()
-            label.attributedText = parser.parse("plain `code` text")
+            label.attributedText = await parser.parse("plain `code` text")
 
             guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")
@@ -33,12 +33,12 @@ import Testing
         }
 
         @available(iOS 16.0, tvOS 16.0, *)
-        @Test func roundAllCornersPropagatesToNewlyCreatedFragments() {
+        @Test func roundAllCornersPropagatesToNewlyCreatedFragments() async {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
             label.configureTK2()
             label.roundAllCorners = true
             let parser = CDMarkdownParser()
-            label.attributedText = parser.parse("plain `code` text")
+            label.attributedText = await parser.parse("plain `code` text")
 
             guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")
@@ -58,11 +58,11 @@ import Testing
         }
 
         @available(iOS 16.0, tvOS 16.0, *)
-        @Test func togglingRoundAllCornersAfterInitialLayoutRetroactivelyUpdatesAlreadyCreatedFragments() {
+        @Test func togglingRoundAllCornersAfterInitialLayoutRetroactivelyUpdatesAlreadyCreatedFragments() async {
             let label = CDMarkdownLabel(frame: CGRect(x: 0, y: 0, width: 300, height: 200))
             label.configureTK2()
             let parser = CDMarkdownParser()
-            label.attributedText = parser.parse("plain `code` text")
+            label.attributedText = await parser.parse("plain `code` text")
 
             guard let layoutManager = (label.tk2Stack as? CDMarkdownLabel.TK2Stack)?.layoutManager else {
                 Issue.record("expected a TextKit 2 layout manager")

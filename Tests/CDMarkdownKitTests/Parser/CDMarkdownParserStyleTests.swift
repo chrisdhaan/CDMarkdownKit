@@ -10,12 +10,12 @@ import Testing
 @MainActor
 struct CDMarkdownParserStyleTests {
 
-    @Test func boldForegroundColorIsApplied() {
+    @Test func boldForegroundColorIsApplied() async {
         // Given
         let parser = CDMarkdownParser()
         parser.bold.color = CDColor.red
         // When
-        let result = parser.parse("**bold**")
+        let result = await parser.parse("**bold**")
         // Then
         var found = false
         result.enumerateAttribute(.foregroundColor,
@@ -27,12 +27,12 @@ struct CDMarkdownParserStyleTests {
         #expect(found)
     }
 
-    @Test func boldBackgroundColorIsApplied() {
+    @Test func boldBackgroundColorIsApplied() async {
         // Given
         let parser = CDMarkdownParser()
         parser.bold.backgroundColor = CDColor.yellow
         // When
-        let result = parser.parse("**bold**")
+        let result = await parser.parse("**bold**")
         // Then
         var found = false
         result.enumerateAttribute(.backgroundColor,
@@ -44,12 +44,12 @@ struct CDMarkdownParserStyleTests {
         #expect(found)
     }
 
-    @Test func italicForegroundColorIsApplied() {
+    @Test func italicForegroundColorIsApplied() async {
         // Given
         let parser = CDMarkdownParser()
         parser.italic.color = CDColor.blue
         // When
-        let result = parser.parse("*italic*")
+        let result = await parser.parse("*italic*")
         // Then
         var found = false
         result.enumerateAttribute(.foregroundColor,
@@ -61,12 +61,12 @@ struct CDMarkdownParserStyleTests {
         #expect(found)
     }
 
-    @Test func codeBackgroundColorIsApplied() {
+    @Test func codeBackgroundColorIsApplied() async {
         // Given
         let parser = CDMarkdownParser()
         parser.code.backgroundColor = CDColor.green
         // When
-        let result = parser.parse("`code`")
+        let result = await parser.parse("`code`")
         // Then
         var found = false
         result.enumerateAttribute(.backgroundColor,
@@ -78,12 +78,12 @@ struct CDMarkdownParserStyleTests {
         #expect(found)
     }
 
-    @Test func boldUnderlineStyleIsApplied() {
+    @Test func boldUnderlineStyleIsApplied() async {
         // Given
         let parser = CDMarkdownParser()
         parser.bold.underlineStyle = .single
         // When
-        let result = parser.parse("**underlined bold**")
+        let result = await parser.parse("**underlined bold**")
         // Then
         var found = false
         result.enumerateAttribute(.underlineStyle,
