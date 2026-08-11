@@ -125,8 +125,8 @@ struct CDMarkdownListTests {
         #expect(markerRange.location != NSNotFound)
 
         let indentedIndent = effectiveHeadIndent(of: result, atCharacterIndex: markerRange.location)
-        let parsedIndent = await noSquashParser.parse("* item")
-        let topLevelIndent = effectiveHeadIndent(of: parsedIndent)
+        let topLevelParsed = await noSquashParser.parse("* item")
+        let topLevelIndent = effectiveHeadIndent(of: topLevelParsed)
         #expect(indentedIndent == topLevelIndent)
     }
 }

@@ -296,7 +296,7 @@ class MyViewController: UIViewController {
         let parser = CDMarkdownParser()
         let markdown = "Check out [CDMarkdownKit](https://github.com/chrisdhaan/CDMarkdownKit)"
         Task {
-            label.attributedText = await parser.parse(markdown)
+            self.label.attributedText = await parser.parse(markdown)
         }
     }
 }

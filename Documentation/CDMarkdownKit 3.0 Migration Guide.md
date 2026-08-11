@@ -62,7 +62,7 @@ let attributedString = parser.parse(markdown)
 let attributedString = await parser.parse(markdown)
 ```
 
-**When to use:**
+**Note:**
 
 `parse(_:)` is `async` regardless of whether the document has images — local-only Markdown still parses effectively instantly. The synchronous overloads shown above were removed in a later major version; see `CHANGELOG.md`.
 
