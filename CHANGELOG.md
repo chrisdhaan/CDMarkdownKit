@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Aligned `.swiftformat`, `.swiftlint.yml`, and CI conventions with the sibling CDYelpFusionKit/CDUntappdKit/CDOAuth1Kit/CDYahooKit frameworks, including bumping `.swiftformat`'s target Swift version to 6.0 to match `swiftLanguageModes: [.v6]`, and adding an Example-app build to CI.
+- Aligned `.swiftformat`, `.swiftlint.yml`, and CI conventions with this project's established tooling standards, including bumping `.swiftformat`'s target Swift version to 6.0 to match `swiftLanguageModes: [.v6]`, and adding an Example-app build to CI.
 - Tightened the `file_length`, `function_body_length`, and `type_body_length` SwiftLint limits to the tool's own default thresholds. Every violation this surfaced was fixed by restructuring the affected code — splitting `CDMarkdownParser` and `CDMarkdownLabel` into per-concern extension files and extracting oversized functions into named helpers — rather than raising the limits or disabling the rules.
 
 ### Fixed
