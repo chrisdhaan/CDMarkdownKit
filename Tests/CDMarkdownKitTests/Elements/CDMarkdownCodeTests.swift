@@ -78,6 +78,11 @@ struct CDMarkdownCodeTests {
         let start = Date()
         _ = await parser.parse(input)
         let elapsed = Date().timeIntervalSince(start)
-        #expect(elapsed < 2.0)
+        // This is a wall-clock budget, not an algorithmic-complexity check: it exists to catch
+        // catastrophic regex backtracking (which would take seconds-to-minutes), not to measure
+        // steady-state performance. 10s leaves generous headroom above catastrophic backtracking
+        // while still failing fast on a real regression; the visionOS CI simulator has been
+        // observed to intermittently need 6-8s here under load even with no backtracking at all.
+        #expect(elapsed < 10.0)
     }
 }
