@@ -1,3 +1,7 @@
+disabled_rules: # rule identifiers to exclude from running
+  - inclusive_language
+  - opening_brace # SwiftFormat puts opening braces on new lines for wrapped signatures; disable to avoid tool conflict
+  - trailing_comma # SwiftFormat enforces trailing commas in multi-line collections; disable to avoid tool conflict
 included: # paths to include during linting. `--path` is ignored if present.
   - Source
   - Example/Source

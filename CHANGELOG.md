@@ -1,54 +1,25 @@
-# Change Log
-All notable changes to this project will be documented in this file.
-`CDMarkdownKit` adheres to [Semantic Versioning](https://semver.org/).
-
-## Table of Contents
-
-- [Unreleased](#unreleased)
-- [5.0.0](#500)
-- [4.2.1](#421)
-- [4.2.0](#420)
-- [4.1.0](#410)
-- [4.0.3](#403)
-- [4.0.2](#402)
-- [4.0.1](#401)
-- [4.0.0](#400)
-- [3.3.0](#330)
-- [3.2.0](#320)
-- [3.1.0](#310)
-- [3.0.0](#300)
-- [2.5.1](#251)
-- [2.5.0](#250)
-- [2.4.0](#240)
-- [2.3.0](#230)
-- [2.2.0](#220)
-- [2.1.1](#211)
-- [2.1.0](#210)
-- [2.0.0](#200)
-- [1.2.1](#121)
-- [1.2.0](#120)
-- [1.1.0](#110)
-- [1.0.0](#100)
-
----
+# Changelog
 
 ## [Unreleased]
-
----
 
 ## [5.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/5.0.0)
 
 Released on 2026-08-11.
 
+Breaking release removing the deprecated synchronous `parse(_:)` overloads; only the `async`
+overload remains, so callers add `await` at each call site.
+
 ### Removed
 
 - Removed the deprecated synchronous `parse(_:)` overloads (`parse(_ markdown: String) -> NSAttributedString` and `parse(_ markdown: NSAttributedString) -> NSAttributedString`), deprecated since v3.2.0. Use the `async` `parse(_:)` overload instead — the signature is otherwise unchanged, so migration is adding `await` at each call site.
 
----
-
 ## [4.2.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.2.1)
 
 Released on 2026-08-09.
+
+A parsing-safety and UI-consistency release: fixes a catastrophic-backtracking regex that could
+freeze rendering, several fenced-code/list/table edge cases, and a handful of
+`CDMarkdownLabel`/`CDMarkdownNSTextView`/`CDMarkdownTextView` rendering and lifecycle bugs.
 
 ### Fixed
 
@@ -64,11 +35,12 @@ Released on 2026-08-09.
 - Hardened the default `CDMarkdownElement.parse()` loop so a custom element whose regular expression can produce a zero-length match can no longer cause parsing to loop indefinitely.
 - Fixed `CDMarkdownTextView`'s `init(frame:textContainer:)` initializer not configuring the view, which silently dropped the library's rounded-corner background rendering for any caller constructing it directly instead of via `.makeTextView(frame:)` or a storyboard. `customTextStorage` on the TextKit 1 (iOS 15) fallback is now also populated on every `attributedText` assignment, consistent with `CDMarkdownLabel` and `CDMarkdownNSTextView`.
 
----
-
 ## [4.2.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.2.0)
 
 Released on 2026-08-05.
+
+Removes CocoaPods distribution support entirely ahead of CocoaPods Trunk going read-only; Swift
+Package Manager is now the sole supported distribution method.
 
 ### Removed
 - CocoaPods distribution support (`CDMarkdownKit.podspec`, `Gemfile`,
@@ -78,11 +50,13 @@ Released on 2026-08-05.
   CocoaPods installs will keep resolving indefinitely but will no longer
   receive updates — switch to SPM to continue getting new releases.
 
----
-
 ## [4.1.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.1.0)
 
 Released on 2026-08-03.
+
+Leading-whitespace handling now dedents instead of stripping every line outright, enabling
+indentation-based nested lists under default settings, plus fixes for the resulting indented
+blockquote/ordered-list regressions and TextKit 2 rendering/corner-rounding bugs.
 
 ### Added
 
@@ -103,11 +77,12 @@ Released on 2026-08-03.
 - Fixed Markdown tables measuring a column's width from its escaped, not rendered, cell text, so a column containing inline code was sized far too wide and threw off tab-stop alignment for any columns after it. Fixed alongside a related, more severe bug where inline code inside a table cell rendered as leftover escaped placeholder text instead of the original code.
 - Fixed indented blockquotes and indented ordered-list items failing to parse under the parser's default settings, a regression introduced by the leading-whitespace dedent change above — both elements' marker regexes assumed markers were always flush-left.
 
----
-
 ## [4.0.3](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.0.3)
 
 Released on 2026-07-31.
+
+Fixes `CDMarkdownLabel` never rendering on iOS/tvOS 16+ and TextKit 1 link-tap hit-testing, with
+new TextKit 2 test coverage.
 
 ### Fixed
 
@@ -118,11 +93,12 @@ Released on 2026-07-31.
 
 - Added test coverage for the TextKit 2 rendering path: `CDMarkdownLabel`/`CDMarkdownTextView`'s TextKit 1/TextKit 2 configuration branching, link tap hit-testing, rounded-corner background drawing (including regression coverage for bugs fixed in 4.0.2), and `roundAllCorners` propagation.
 
----
-
 ## [4.0.2](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.0.2)
 
 Released on 2026-07-24.
+
+A broad monthly bug-fix pass across parsing (URL parentheses, emoji code spans, CRLF handling),
+UI rendering (TextKit 1/2, nil-text crash), and documentation accuracy.
 
 ### Fixed
 
@@ -142,21 +118,22 @@ Released on 2026-07-24.
 - Fixed `CDColor.isEqualTo` risking a crash when comparing an atypical monochrome `CGColor`.
 - Fixed `header.color` set via a `CDMarkdownTheme` not falling back to the parser's default color when the theme left it unspecified, unlike every other themed element.
 
----
-
 ## [4.0.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.0.1)
 
 Released on 2026-06-15.
+
+Fixes infinite recursion in `CDColor.label` on iOS, tvOS, watchOS, and visionOS.
 
 ### Fixed
 
 - Fixed infinite recursion in `CDColor.label` on iOS, tvOS, watchOS, and visionOS. The property was defined in an extension on `CDColor` (a typealias for `UIColor`) and called `UIColor.label`, which resolved back to itself. The extension now only defines `label` on macOS where `NSColor.labelColor` requires bridging; on Apple's other platforms `UIColor.label` is used directly.
 
----
-
 ## [4.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/4.0.0)
 
 Released on 2026-06-15.
+
+Migrates rendering to TextKit 2 on iOS/tvOS 16+, raises minimum deployment targets, and
+strengthens Swift 6 strict concurrency across the parser and UI components.
 
 ### Added
 
@@ -176,11 +153,12 @@ Released on 2026-06-15.
 - Improved Swift 6 strict concurrency: removed `@preconcurrency` imports, `@unchecked Sendable` conformances, and `nonisolated(unsafe)` from parser properties; added `@MainActor` to all sixteen element classes and base protocol declarations; added `@MainActor` to the `NSLayoutManagerDelegate` extension.
 - Replaced `DispatchQueue.main.asyncAfter` with `Task.sleep` in the async parsing pipeline to align with structured Swift concurrency.
 
----
-
 ## [3.3.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/3.3.0)
 
 Released on 2026-06-07.
+
+Adds reference-style links, fenced-code language hints, and `CDMarkdownTheme` for unified
+styling, plus a SwiftUI theme environment key.
 
 ### Added
 
@@ -200,11 +178,12 @@ Released on 2026-06-07.
 - Fixed `UITextItemInteraction` deprecation warning on visionOS.
 - Fixed `CDMarkdownText` not re-parsing when the `markdownTheme` environment value changes.
 
----
-
 ## [3.2.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/3.2.0)
 
 Released on 2026-05-31.
+
+Adopts Swift 6 language mode, and adds task lists, horizontal rules, inline table-cell markdown
+parsing, macOS AppKit components, and SwiftUI wrappers.
 
 ### Added
 
@@ -223,11 +202,12 @@ Released on 2026-05-31.
 
 - Deprecated synchronous `parse(_:)` overloads in favour of the async overloads.
 
----
-
 ## [3.1.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/3.1.0)
 
 Released on 2026-05-12.
+
+Adds ordered lists, GFM tables, visionOS support, and DocC documentation; migrates documentation
+hosting from Jazzy to DocC.
 
 ### Added
 
@@ -243,11 +223,12 @@ Released on 2026-05-12.
 - Extended inline doc comments across all source files for full DocC compatibility.
 - Updated CI to add a visionOS build job and replace the Jazzy documentation job with a DocC build job.
 
----
-
 ## [3.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/3.0.0)
 
 Released on 2026-05-10.
+
+Moves to async/await image loading and Swift 6 concurrency safety, adds ordered-list/table
+support, and modernizes the CI pipeline, documentation, and packaging.
 
 ### Added
 
@@ -291,11 +272,11 @@ Released on 2026-05-10.
 - `CDMarkdownLabel` `NSLayoutManagerDelegate` conformance producing a Swift 6 data race warning; resolved with `@preconcurrency`
 - Leading whitespace strip regex `^\s+` consuming blank lines, causing `squashNewlines = false` to still collapse consecutive newlines; corrected to `^[ \t]+`
 
----
-
 ## [2.5.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.5.1)
 
 Released on 2022-12-13.
+
+Adds Swift 5.7 support.
 
 ### Added
 
@@ -305,41 +286,41 @@ Released on 2022-12-13.
 
 - CI: Tests device, platform, Xcode, and SDK versions
 
----
-
 ## [2.5.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.5.0)
 
 Released on 2022-12-12.
+
+Adds underline color and style to all elements.
 
 ### Added
 
 - Underline color and style on all elements
 
----
-
 ## [2.4.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.4.0)
 
 Released on 2022-12-03.
+
+Adds strikethrough support.
 
 ### Added
 
 - Strikethrough
 
----
-
 ## [2.3.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.3.0)
 
 Released on 2022-10-17.
+
+Adds the `squashNewlines` parameter.
 
 ### Added
 
 - `squashNewlines` parameter
 
----
-
 ## [2.2.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.2.0)
 
 Released on 2022-06-26.
+
+Adds Swift 5.4–5.6 support and lowers the minimum Swift Package Manager version to 5.3.
 
 ### Added
 
@@ -350,42 +331,42 @@ Released on 2022-06-26.
 - Swift Package Manager: Minimum Swift version 5.3
 - CI: Tests device, platform, Xcode, and SDK versions
 
----
-
 ## [2.1.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.1.1)
 
 Released on 2021-05-29.
+
+Fixes bold and italic parsing to work by character.
 
 ### Updated
 
 - Markdown Parsing: Bold and italic parsing by character
 - Swift Package Manager: Built with `swift-tools-version:5.1`
 
----
-
 ## [2.1.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.1.0)
 
 Released on 2020-08-30.
+
+Adds Swift 5.1 support.
 
 ### Added
 
 - Swift 5.1
 
----
-
 ## [2.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/2.0.0)
 
 Released on 2020-08-29.
+
+Adds Swift 5.0 support.
 
 ### Added
 
 - Swift 5.0
 
----
-
 ## [1.2.1](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/1.2.1)
 
 Released on 2018-12-14.
+
+Adds Swift 4.0/4.2 support and renames `CDAttributesKey` to `CDAttributedStringKey`.
 
 ### Added
 
@@ -399,11 +380,11 @@ Released on 2018-12-14.
 - Swift 4.0: Extensions assume responsibility for `swift()` macro from classes
 - `CDAttributesKey` becomes `CDAttributedStringKey`
 
----
-
 ## [1.2.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/1.2.0)
 
 Released on 2018-07-27.
+
+Adds SwiftLint enforcement and a macOS `CDFont+CDMarkdownKit.withSize` method.
 
 ### Added
 
@@ -416,21 +397,23 @@ Released on 2018-07-27.
 - UITextView With Markdown Formatting: Code example to use `NSLayoutConstraints` to correctly set `intrinsicContentSize`
 - Platform Support: macOS: `CDFont+CDMarkdownKit` `bold` and `italic` methods to use `NSFontManager` opposed to `CDFontDescriptorSymbolicTraits`
 
----
-
 ## [1.1.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/1.1.0)
 
 Released on 2018-06-12.
+
+Adds Swift 4.0 support.
 
 ### Added
 
 - Swift 4.0
 
----
-
 ## [1.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/1.0.0)
 
 Released on 2018-06-11.
+
+Initial public release: Markdown parsing for italic, bold, headers, quotes, lists, code, syntax
+highlighting, and links/images, with `UITextView` and `UILabel` integration across iOS, macOS,
+tvOS, and watchOS.
 
 ### Added
 
@@ -439,5 +422,3 @@ Released on 2018-06-11.
 - UILabel With Markdown Formatting
 - Platform Support: iOS, macOS, tvOS, watchOS
 - Documentation
-
----

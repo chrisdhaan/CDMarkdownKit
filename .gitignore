@@ -35,11 +35,9 @@ playground.xcworkspace
 # Swift Package Manager
 .build/
 
-# Carthage
-Carthage/Build
-
-# Jazzy documentation
-docs/undocumented.json
+# Local planning documents
+docs/superpowers/
+.superpowers/
 
 # Local documentation files (kept local-only for reference)
 Documentation/IMPLEMENTATION.md
