@@ -40,24 +40,29 @@
                                                    count rectCount: Int,
                                                    forCharacterRange charRange: NSRange,
                                                    color: UIColor) {
+            let cornerRadius = roundedCornerRadius(forCharacterRange: charRange)
+            let path = roundedBackgroundPath(rectArray, count: rectCount, cornerRadius: cornerRadius)
+            fill(path, color: color, lineWidth: cornerRadius * 2)
+        }
 
-            var cornerRadius: CGFloat = 0
+        private func roundedCornerRadius(forCharacterRange charRange: NSRange) -> CGFloat {
             let hasRoundedAttribute = self.textStorage?.attribute(
                 .cdMarkdownRoundedBackground,
                 at: charRange.location,
                 effectiveRange: nil
             ) as? Bool == true
-            if hasRoundedAttribute || self.roundAllCorners {
-                cornerRadius = 3
-            }
-            // This corner radius is also used below as the inset on both axes for `rectArray`,
-            // which spans each full line segment for the character range rather than a single
-            // narrowed glyph run. The TextKit 2 path (see
-            // `CDMarkdownTextLayoutFragment.roundedBackgroundFills`) narrows its rect to the
-            // exact glyph-run span before filling, so it only applies a small vertical inset,
-            // not a matching horizontal one. This difference has not been verified
-            // pixel-for-pixel against real iOS 15 (TK1) and iOS 16+ (TK2) simulator renders.
+            return (hasRoundedAttribute || self.roundAllCorners) ? 3 : 0
+        }
 
+        /// `cornerRadius` is also used below as the inset on both axes for `rectArray`, which
+        /// spans each full line segment for the character range rather than a single narrowed
+        /// glyph run. The TextKit 2 path (see `CDMarkdownTextLayoutFragment.roundedBackgroundFills`)
+        /// narrows its rect to the exact glyph-run span before filling, so it only applies a small
+        /// vertical inset, not a matching horizontal one. This difference has not been verified
+        /// pixel-for-pixel against real iOS 15 (TK1) and iOS 16+ (TK2) simulator renders.
+        private func roundedBackgroundPath(_ rectArray: UnsafePointer<CGRect>,
+                                           count rectCount: Int,
+                                           cornerRadius: CGFloat) -> CGPath {
             let path = CGMutablePath()
 
             if rectCount == 1 ||
@@ -96,14 +101,18 @@
 
                 path.closeSubpath()
             }
-            // set fill and stroke color
+
+            return path
+        }
+
+        private func fill(_ path: CGPath, color: UIColor, lineWidth: CGFloat) {
             color.set()
 
             let ctx = UIGraphicsGetCurrentContext()
             ctx?.setAllowsAntialiasing(true)
             ctx?.setShouldAntialias(true)
 
-            ctx?.setLineWidth(cornerRadius * 2)
+            ctx?.setLineWidth(lineWidth)
             ctx?.setLineJoin(.round)
 
             ctx?.addPath(path)

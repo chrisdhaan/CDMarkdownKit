@@ -109,39 +109,12 @@
             attributedString.deleteCharacters(in: NSRange(location: match.range.location,
                                                           length: linkRange.length + 2))
 
+            let contentRange = NSRange(location: match.range.location,
+                                       length: linkStartInResult - match.range.location - 1)
             if placeholderOnly {
-                let placeholderRange = NSRange(location: match.range.location,
-                                               length: linkStartInResult - match.range.location - 1)
-                if let url = URL(string: linkURLString) {
-                    let placeholder = NSMutableAttributedString(string: "\u{FFFC}")
-                    placeholder.addAttribute(.cdMarkdownImageURL,
-                                             value: url as AnyObject,
-                                             range: NSRange(location: 0, length: 1))
-                    attributedString.replaceCharacters(in: placeholderRange, with: placeholder)
-                }
+                insertPlaceholder(into: attributedString, range: contentRange, urlString: linkURLString)
             } else {
-                let textAttachment = NSTextAttachment()
-                if let url = URL(string: linkURLString) {
-                    let data = try? Data(contentsOf: url)
-                    // Try to load image from url
-                    if let data,
-                       let image = CDImage(data: data) {
-                        textAttachment.image = image
-                        adjustTextAttachmentSize(textAttachment,
-                                                 forImage: image)
-                        // Try to load image from local file store
-                    } else if let image = CDImage(named: url.path) {
-                        textAttachment.image = image
-                        adjustTextAttachmentSize(textAttachment,
-                                                 forImage: image)
-                    }
-                }
-
-                // replace text with image
-                let textAttachmentAttributedString = NSAttributedString(attachment: textAttachment)
-                attributedString.replaceCharacters(in: NSRange(location: match.range.location,
-                                                               length: linkStartInResult - match.range.location - 1),
-                                                   with: textAttachmentAttributedString)
+                insertImageAttachment(into: attributedString, range: contentRange, urlString: linkURLString)
             }
 
             // Covers the single attachment/placeholder character just inserted above,
@@ -155,6 +128,38 @@
             addAttributes(attributedString,
                           range: formatRange,
                           link: linkURLString)
+        }
+
+        private func insertPlaceholder(into attributedString: NSMutableAttributedString, range: NSRange, urlString: String) {
+            guard let url = URL(string: urlString) else { return }
+            let placeholder = NSMutableAttributedString(string: "\u{FFFC}")
+            placeholder.addAttribute(.cdMarkdownImageURL,
+                                     value: url as AnyObject,
+                                     range: NSRange(location: 0, length: 1))
+            attributedString.replaceCharacters(in: range, with: placeholder)
+        }
+
+        private func insertImageAttachment(into attributedString: NSMutableAttributedString, range: NSRange, urlString: String) {
+            let textAttachment = NSTextAttachment()
+            if let url = URL(string: urlString) {
+                let data = try? Data(contentsOf: url)
+                // Try to load image from url
+                if let data,
+                   let image = CDImage(data: data) {
+                    textAttachment.image = image
+                    adjustTextAttachmentSize(textAttachment,
+                                             forImage: image)
+                    // Try to load image from local file store
+                } else if let image = CDImage(named: url.path) {
+                    textAttachment.image = image
+                    adjustTextAttachmentSize(textAttachment,
+                                             forImage: image)
+                }
+            }
+
+            // replace text with image
+            let textAttachmentAttributedString = NSAttributedString(attachment: textAttachment)
+            attributedString.replaceCharacters(in: range, with: textAttachmentAttributedString)
         }
 
         open func addAttributes(_ attributedString: NSMutableAttributedString,
