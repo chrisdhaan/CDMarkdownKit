@@ -118,9 +118,23 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
         let columnCount = max(headerCells.count, dataRows.map(\.count).max() ?? 0)
         guard columnCount > 0 else { return }
 
-        /// Measure the maximum rendered width of each column. Cells are measured using the
-        /// post-unescape rendered text (not the raw, possibly UTF16-hex-escaped cell string)
-        /// so that a column containing e.g. inline code is sized to what's actually drawn.
+        let columnWidths = measureColumnWidths(headerCells: headerCells, dataRows: dataRows, columnCount: columnCount)
+        let tableStyle = makeTableStyle(columnWidths: columnWidths, alignments: alignments)
+        let result = buildTableRows(headerCells: headerCells,
+                                    dataRows: dataRows,
+                                    columnCount: columnCount,
+                                    tableStyle: tableStyle)
+
+        // Replace the original table block with the rebuilt attributed string
+        attributedString.replaceCharacters(in: fullRange, with: result)
+    }
+
+    // MARK: - Column Layout
+
+    /// Measures the maximum rendered width of each column. Cells are measured using the
+    /// post-unescape rendered text (not the raw, possibly UTF16-hex-escaped cell string)
+    /// so that a column containing e.g. inline code is sized to what's actually drawn.
+    private func measureColumnWidths(headerCells: [String], dataRows: [[String]], columnCount: Int) -> [CGFloat] {
         func renderedText(for cell: String) -> String {
             inlineParser?(cell).string ?? cell
         }
@@ -136,7 +150,10 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
                 columnWidths[columnIndex] = max(columnWidths[columnIndex], columnWidth)
             }
         }
+        return columnWidths
+    }
 
+    private func makeTableStyle(columnWidths: [CGFloat], alignments: [NSTextAlignment]) -> NSParagraphStyle {
         // Build tab stops from cumulative column offsets
         var tabStops = [NSTextTab]()
         var offset: CGFloat = 0
@@ -148,49 +165,54 @@ open class CDMarkdownTable: CDMarkdownElement, CDMarkdownStyle {
         let tableStyle = NSMutableParagraphStyle()
         tableStyle.tabStops = tabStops
         tableStyle.defaultTabInterval = columnWidths.first ?? 80
+        return tableStyle
+    }
 
-        // Build the replacement attributed string
-        let result = NSMutableAttributedString()
+    // MARK: - Row Building
 
-        func appendRow(_ cells: [String], isBold: Bool) {
-            let rowString = NSMutableAttributedString()
-            for columnIndex in 0 ..< columnCount {
-                if columnIndex > 0 {
-                    rowString.append(NSAttributedString(string: "\t"))
+    private func makeCellContent(_ text: String, isBold: Bool) -> NSAttributedString {
+        guard inlineParser != nil, !text.isEmpty else {
+            let cellAttributes = isBold ? boldAttributes : attributes
+            return NSAttributedString(string: text, attributes: cellAttributes)
+        }
+        // Parse inline markdown in cell content
+        let parsed = NSMutableAttributedString(attributedString: inlineParser!(text))
+        if isBold {
+            // Bold the header row if no explicit font was set by inline parsing
+            parsed.enumerateAttribute(.font,
+                                      in: NSRange(location: 0, length: parsed.length)) { value, range, _ in
+                if let font = value as? CDFont {
+                    parsed.addAttribute(.font, value: font.bold(), range: range)
                 }
-                let text = columnIndex < cells.count ? cells[columnIndex] : ""
-                let cellContent: NSAttributedString
-                if inlineParser != nil, !text.isEmpty {
-                    // Parse inline markdown in cell content
-                    let parsed = NSMutableAttributedString(attributedString: inlineParser!(text))
-                    if isBold {
-                        // Bold the header row if no explicit font was set by inline parsing
-                        parsed.enumerateAttribute(.font,
-                                                  in: NSRange(location: 0, length: parsed.length)) { value, range, _ in
-                            if let font = value as? CDFont {
-                                parsed.addAttribute(.font, value: font.bold(), range: range)
-                            }
-                        }
-                    }
-                    cellContent = parsed
-                } else {
-                    let cellAttributes = isBold ? boldAttributes : attributes
-                    cellContent = NSAttributedString(string: text, attributes: cellAttributes)
-                }
-                rowString.append(cellContent)
             }
-            rowString.append(NSAttributedString(string: "\n"))
-            let rowRange = NSRange(location: 0, length: rowString.length)
-            rowString.addAttribute(.paragraphStyle, value: tableStyle, range: rowRange)
-            result.append(rowString)
         }
+        return parsed
+    }
 
-        appendRow(headerCells, isBold: true)
+    private func makeRow(_ cells: [String], isBold: Bool, columnCount: Int, tableStyle: NSParagraphStyle) -> NSAttributedString {
+        let rowString = NSMutableAttributedString()
+        for columnIndex in 0 ..< columnCount {
+            if columnIndex > 0 {
+                rowString.append(NSAttributedString(string: "\t"))
+            }
+            let text = columnIndex < cells.count ? cells[columnIndex] : ""
+            rowString.append(makeCellContent(text, isBold: isBold))
+        }
+        rowString.append(NSAttributedString(string: "\n"))
+        let rowRange = NSRange(location: 0, length: rowString.length)
+        rowString.addAttribute(.paragraphStyle, value: tableStyle, range: rowRange)
+        return rowString
+    }
+
+    private func buildTableRows(headerCells: [String],
+                                dataRows: [[String]],
+                                columnCount: Int,
+                                tableStyle: NSParagraphStyle) -> NSAttributedString {
+        let result = NSMutableAttributedString()
+        result.append(makeRow(headerCells, isBold: true, columnCount: columnCount, tableStyle: tableStyle))
         for row in dataRows {
-            appendRow(row, isBold: false)
+            result.append(makeRow(row, isBold: false, columnCount: columnCount, tableStyle: tableStyle))
         }
-
-        // Replace the original table block with the rebuilt attributed string
-        attributedString.replaceCharacters(in: fullRange, with: result)
+        return result
     }
 }

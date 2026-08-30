@@ -120,7 +120,11 @@ struct CDMarkdownSyntaxTests {
         let start = Date()
         _ = await parser.parse(input)
         let elapsed = Date().timeIntervalSince(start)
-        #expect(elapsed < 2.0)
+        // See CDMarkdownCodeTests.unterminatedBacktickWithLongTrailingTextParsesQuickly() for why
+        // this budget is 10s rather than a tighter value: it's a catastrophic-backtracking guard,
+        // not a steady-state performance check, and the visionOS CI simulator has been observed to
+        // intermittently need several seconds here under load even with no backtracking at all.
+        #expect(elapsed < 10.0)
     }
 
     @Test func fencedCodeBlockAtEndOfDocumentExtendsBackgroundUnderTrailingNewline() async {

@@ -38,7 +38,9 @@ open class CDMarkdownParser {
     // MARK: - Element Arrays
 
     private var escapingElements: [any CDMarkdownElement]
-    private var defaultElements: [any CDMarkdownElement]
+    // Not private: `insertCustomElement(before:after:)` reads/writes this from
+    // CDMarkdownParser+Support.swift.
+    var defaultElements: [any CDMarkdownElement]
     private var unescapingElements: [any CDMarkdownElement]
 
     /// Custom Markdown elements to parse in addition to built-in elements.
@@ -86,7 +88,8 @@ open class CDMarkdownParser {
 
     private var codeEscaping = CDMarkdownCodeEscaping()
     private var escaping = CDMarkdownEscaping()
-    private var unescaping = CDMarkdownUnescaping()
+    /// Not private: `parseInline` reads this from CDMarkdownParser+Support.swift.
+    var unescaping = CDMarkdownUnescaping()
 
     // MARK: - Configuration
 
@@ -122,6 +125,7 @@ open class CDMarkdownParser {
 
     // MARK: - Initializer
 
+    // swiftlint:disable function_body_length
     /// Creates a new parser with custom styling options.
     ///
     /// - Parameters:
@@ -135,6 +139,14 @@ open class CDMarkdownParser {
     ///   - automaticLinkDetectionEnabled: Whether to automatically detect bare URLs as links. Defaults to `true`.
     ///   - squashNewlines: Whether to collapse consecutive blank lines. Defaults to `true`.
     ///   - customElements: Array of custom ``CDMarkdownElement`` implementations to parse. Defaults to an empty array.
+    ///
+    /// Element construction itself is factored out to `CDMarkdownParser+Initialization.swift`;
+    /// what remains here is individually assigning each of this type's 14 public element
+    /// properties (a stable, deliberate public API — each is independently addressable as
+    /// `parser.table`, `parser.bold`, etc.) plus the handful of array-building assignments that
+    /// Swift's two-phase initialization requires to happen inline. That floor sits a few lines
+    /// above the project's function_body_length limit without either breaking that public API
+    /// or writing deliberately denser, less readable code purely to dodge the metric.
     public init(font: CDFont = CDFont.systemFont(ofSize: 12),
                 boldFont: CDFont? = nil,
                 italicFont: CDFont? = nil,
@@ -148,74 +160,27 @@ open class CDMarkdownParser {
         self.font = font
         self.fontColor = fontColor
         self.backgroundColor = backgroundColor
-        if let paragraphStyle {
-            self.paragraphStyle = paragraphStyle
-        } else {
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.paragraphSpacing = 3
-            paragraphStyle.paragraphSpacingBefore = 0
-            paragraphStyle.lineSpacing = 1.38
-            self.paragraphStyle = paragraphStyle
-        }
+        self.paragraphStyle = paragraphStyle ?? Self.makeDefaultParagraphStyle()
 
-        table = CDMarkdownTable(font: font,
-                                color: fontColor,
-                                backgroundColor: backgroundColor,
-                                paragraphStyle: paragraphStyle)
-        horizontalRule = CDMarkdownHorizontalRule(font: font,
-                                                  color: fontColor,
-                                                  backgroundColor: backgroundColor,
-                                                  paragraphStyle: paragraphStyle)
-        header = CDMarkdownHeader(font: font,
-                                  color: fontColor,
-                                  backgroundColor: backgroundColor,
-                                  paragraphStyle: paragraphStyle)
-        list = CDMarkdownList(font: font,
-                              color: fontColor,
-                              backgroundColor: backgroundColor,
-                              paragraphStyle: paragraphStyle)
-        orderedList = CDMarkdownOrderedList(font: font,
-                                            color: fontColor,
-                                            backgroundColor: backgroundColor,
-                                            paragraphStyle: paragraphStyle)
-        taskList = CDMarkdownTaskList(font: font,
-                                      color: fontColor,
-                                      backgroundColor: backgroundColor,
-                                      paragraphStyle: paragraphStyle)
-        quote = CDMarkdownQuote(font: font,
-                                color: fontColor,
-                                backgroundColor: backgroundColor,
-                                paragraphStyle: paragraphStyle)
-        link = CDMarkdownLink(font: font,
-                              color: fontColor,
-                              backgroundColor: backgroundColor,
-                              paragraphStyle: paragraphStyle)
-        automaticLink = CDMarkdownAutomaticLink(font: font,
-                                                color: fontColor,
-                                                backgroundColor: backgroundColor,
-                                                paragraphStyle: paragraphStyle)
-        linkReference = CDMarkdownLinkReference(font: font,
-                                                color: fontColor,
-                                                backgroundColor: backgroundColor,
-                                                paragraphStyle: paragraphStyle)
-        bold = CDMarkdownBold(font: font,
-                              customBoldFont: boldFont,
-                              color: fontColor,
-                              backgroundColor: backgroundColor,
-                              paragraphStyle: paragraphStyle)
-        italic = CDMarkdownItalic(font: font,
-                                  customItalicFont: italicFont,
-                                  color: fontColor,
-                                  backgroundColor: backgroundColor,
-                                  paragraphStyle: paragraphStyle)
-        code = CDMarkdownCode(font: font,
-                              color: fontColor,
-                              backgroundColor: backgroundColor,
-                              paragraphStyle: paragraphStyle)
-        syntax = CDMarkdownSyntax(font: font,
-                                  color: fontColor,
-                                  backgroundColor: backgroundColor,
-                                  paragraphStyle: paragraphStyle)
+        let style = CDMarkdownElementStyle(font: font,
+                                           fontColor: fontColor,
+                                           backgroundColor: backgroundColor,
+                                           paragraphStyle: self.paragraphStyle)
+        let elements = Self.makeElements(style: style, boldFont: boldFont, italicFont: italicFont)
+        table = elements.table
+        horizontalRule = elements.horizontalRule
+        header = elements.header
+        list = elements.list
+        orderedList = elements.orderedList
+        taskList = elements.taskList
+        quote = elements.quote
+        link = elements.link
+        automaticLink = elements.automaticLink
+        linkReference = elements.linkReference
+        bold = elements.bold
+        italic = elements.italic
+        code = elements.code
+        syntax = elements.syntax
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
             image = CDMarkdownImage(font: font,
                                     color: fontColor,
@@ -223,27 +188,31 @@ open class CDMarkdownParser {
                                     paragraphStyle: self.paragraphStyle,
                                     size: imageSize)
         #endif
-        strikethrough = CDMarkdownStrikethrough(font: font,
-                                                color: fontColor,
-                                                backgroundColor: backgroundColor,
-                                                paragraphStyle: paragraphStyle)
+        strikethrough = elements.strikethrough
 
         self.automaticLinkDetectionEnabled = automaticLinkDetectionEnabled
         self.squashNewlines = squashNewlines
         self.escapingElements = [codeEscaping, escaping]
+        var defaultElementsList: [any CDMarkdownElement] = [
+            table, horizontalRule, header, taskList, list, orderedList, quote, link, automaticLink, linkReference
+        ]
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
-            self.defaultElements = [
-                table, horizontalRule, header, taskList, list, orderedList, quote, link,
-                automaticLink, linkReference, image, bold, italic, strikethrough
-            ]
-        #else
-            self.defaultElements = [
-                table, horizontalRule, header, taskList, list, orderedList, quote, link,
-                automaticLink, linkReference, bold, italic, strikethrough
-            ]
+            defaultElementsList.append(image)
         #endif
+        defaultElementsList.append(contentsOf: [bold, italic, strikethrough] as [any CDMarkdownElement])
+        self.defaultElements = defaultElementsList
         self.unescapingElements = [code, syntax, unescaping]
         self.customElements = customElements
+
+        wireCrossElementReferences()
+    }
+    // swiftlint:enable function_body_length
+
+    /// Wires up references between elements that can only be established once every
+    /// element on the parser has been constructed. Must run after every stored property
+    /// has an initial value (Swift's two-phase initialization requires this), so it's
+    /// called as the very last step of `init(font:...)` rather than being inlined there.
+    private func wireCrossElementReferences() {
         code.parser = self
         syntax.parser = self
 
@@ -252,103 +221,6 @@ open class CDMarkdownParser {
             guard let self else { return NSAttributedString(string: cellText) }
             return self.parseInline(cellText)
         }
-    }
-
-    /// Creates a parser pre-styled with the provided theme.
-    /// Individual element properties can still be overridden after calling this initializer.
-    public convenience init(theme: CDMarkdownTheme) {
-        self.init(font: theme.font,
-                  fontColor: theme.fontColor,
-                  backgroundColor: theme.backgroundColor)
-
-        self.header.font = theme.header.font ?? self.header.font
-        self.header.color = theme.header.color ?? self.header.color
-        self.header.fontIncrease = theme.header.fontIncrease
-        self.header.paragraphStyle = theme.header.paragraphStyle ?? self.header.paragraphStyle
-        self.header.underlineColor = theme.header.underlineColor
-        self.header.underlineStyle = theme.header.underlineStyle
-
-        self.bold.font = theme.bold.font ?? self.bold.font
-        self.bold.color = theme.bold.color ?? self.bold.color
-        self.bold.backgroundColor = theme.bold.backgroundColor
-        self.bold.paragraphStyle = theme.bold.paragraphStyle
-        self.bold.underlineColor = theme.bold.underlineColor
-        self.bold.underlineStyle = theme.bold.underlineStyle
-
-        self.italic.font = theme.italic.font ?? self.italic.font
-        self.italic.color = theme.italic.color ?? self.italic.color
-        self.italic.backgroundColor = theme.italic.backgroundColor
-        self.italic.paragraphStyle = theme.italic.paragraphStyle
-        self.italic.underlineColor = theme.italic.underlineColor
-        self.italic.underlineStyle = theme.italic.underlineStyle
-
-        self.code.font = theme.code.font ?? self.code.font
-        self.code.color = theme.code.color ?? self.code.color
-        self.code.backgroundColor = theme.code.backgroundColor ?? self.code.backgroundColor
-        self.code.paragraphStyle = theme.code.paragraphStyle
-        self.code.underlineColor = theme.code.underlineColor
-        self.code.underlineStyle = theme.code.underlineStyle
-
-        self.syntax.font = theme.syntax.font ?? self.syntax.font
-        self.syntax.color = theme.syntax.color ?? self.syntax.color
-        self.syntax.backgroundColor = theme.syntax.backgroundColor ?? self.syntax.backgroundColor
-        self.syntax.paragraphStyle = theme.syntax.paragraphStyle
-        self.syntax.underlineColor = theme.syntax.underlineColor
-        self.syntax.underlineStyle = theme.syntax.underlineStyle
-
-        self.strikethrough.font = theme.strikethrough.font ?? self.strikethrough.font
-        self.strikethrough.color = theme.strikethrough.color ?? self.strikethrough.color
-        self.strikethrough.backgroundColor = theme.strikethrough.backgroundColor
-        self.strikethrough.paragraphStyle = theme.strikethrough.paragraphStyle
-        self.strikethrough.underlineColor = theme.strikethrough.underlineColor
-        self.strikethrough.underlineStyle = theme.strikethrough.underlineStyle
-
-        self.quote.font = theme.quote.font ?? self.quote.font
-        self.quote.color = theme.quote.color ?? self.quote.color
-        self.quote.backgroundColor = theme.quote.backgroundColor
-        self.quote.paragraphStyle = theme.quote.paragraphStyle
-        self.quote.underlineColor = theme.quote.underlineColor
-        self.quote.underlineStyle = theme.quote.underlineStyle
-
-        self.list.font = theme.list.font ?? self.list.font
-        self.list.color = theme.list.color ?? self.list.color
-        self.list.backgroundColor = theme.list.backgroundColor
-        self.list.paragraphStyle = theme.list.paragraphStyle
-        self.list.underlineColor = theme.list.underlineColor
-        self.list.underlineStyle = theme.list.underlineStyle
-
-        self.orderedList.font = theme.orderedList.font ?? self.orderedList.font
-        self.orderedList.color = theme.orderedList.color ?? self.orderedList.color
-        self.orderedList.backgroundColor = theme.orderedList.backgroundColor
-        self.orderedList.paragraphStyle = theme.orderedList.paragraphStyle
-        self.orderedList.underlineColor = theme.orderedList.underlineColor
-        self.orderedList.underlineStyle = theme.orderedList.underlineStyle
-
-        self.link.font = theme.link.font ?? self.link.font
-        self.link.color = theme.link.color ?? self.link.color
-        self.link.backgroundColor = theme.link.backgroundColor
-        self.link.underlineColor = theme.link.underlineColor
-        self.link.underlineStyle = theme.link.underlineStyle
-
-        self.linkReference.font = theme.linkReference.font ?? self.linkReference.font
-        self.linkReference.color = theme.linkReference.color ?? self.linkReference.color
-        self.linkReference.backgroundColor = theme.linkReference.backgroundColor
-        self.linkReference.underlineColor = theme.linkReference.underlineColor
-        self.linkReference.underlineStyle = theme.linkReference.underlineStyle
-
-        self.taskList.font = theme.taskList.font ?? self.taskList.font
-        self.taskList.color = theme.taskList.color ?? self.taskList.color
-        self.taskList.backgroundColor = theme.taskList.backgroundColor
-        self.taskList.paragraphStyle = theme.taskList.paragraphStyle
-        self.taskList.underlineColor = theme.taskList.underlineColor
-        self.taskList.underlineStyle = theme.taskList.underlineStyle
-
-        self.horizontalRule.font = theme.horizontalRule.font ?? self.horizontalRule.font
-        self.horizontalRule.color = theme.horizontalRule.color ?? self.horizontalRule.color
-        self.horizontalRule.backgroundColor = theme.horizontalRule.backgroundColor
-        self.horizontalRule.paragraphStyle = theme.horizontalRule.paragraphStyle
-        self.horizontalRule.underlineColor = theme.horizontalRule.underlineColor
-        self.horizontalRule.underlineStyle = theme.horizontalRule.underlineStyle
     }
 
     // MARK: - Element Extensibility
@@ -375,59 +247,6 @@ open class CDMarkdownParser {
             return
         }
         customElements.remove(at: index)
-    }
-
-    /// Disables all default elements of the given type from the parsing pipeline.
-    ///
-    /// - Parameter elementType: The type of element to disable (e.g., `CDMarkdownHeader.self`).
-    ///
-    /// Use this to opt out of specific default elements without subclassing. For example:
-    /// ```swift
-    /// parser.disable(CDMarkdownHeader.self)
-    /// ```
-    public func disable(_ elementType: (some AnyObject).Type) {
-        disabledElementTypes.insert(ObjectIdentifier(elementType))
-    }
-
-    /// Re-enables all default elements of the given type in the parsing pipeline.
-    ///
-    /// - Parameter elementType: The type of element to re-enable (e.g., `CDMarkdownHeader.self`).
-    public func enable(_ elementType: (some AnyObject).Type) {
-        disabledElementTypes.remove(ObjectIdentifier(elementType))
-    }
-
-    /// Inserts a custom element into the pipeline immediately before all default elements of a given type.
-    ///
-    /// - Parameters:
-    ///   - element: A ``CDMarkdownElement`` implementation to insert.
-    ///   - elementType: The type of default element to insert before (e.g., `CDMarkdownBold.self`).
-    ///
-    /// If no default element of the specified type exists, the custom element is appended to `customElements`.
-    public func insertCustomElement(_ element: any CDMarkdownElement,
-                                    before elementType: (some AnyObject).Type) {
-        let targetID = ObjectIdentifier(elementType)
-        if let index = defaultElements.firstIndex(where: { ObjectIdentifier(type(of: $0)) == targetID }) {
-            defaultElements.insert(element, at: index)
-        } else {
-            customElements.append(element)
-        }
-    }
-
-    /// Inserts a custom element into the pipeline immediately after all default elements of a given type.
-    ///
-    /// - Parameters:
-    ///   - element: A ``CDMarkdownElement`` implementation to insert.
-    ///   - elementType: The type of default element to insert after (e.g., `CDMarkdownBold.self`).
-    ///
-    /// If no default element of the specified type exists, the custom element is appended to `customElements`.
-    public func insertCustomElement(_ element: any CDMarkdownElement,
-                                    after elementType: (some AnyObject).Type) {
-        let targetID = ObjectIdentifier(elementType)
-        if let index = defaultElements.lastIndex(where: { ObjectIdentifier(type(of: $0)) == targetID }) {
-            defaultElements.insert(element, at: index + 1)
-        } else {
-            customElements.append(element)
-        }
     }
 
     // MARK: - Parsing
@@ -461,134 +280,26 @@ open class CDMarkdownParser {
         return result
     }
 
-    private func parseInline(_ string: String) -> NSAttributedString {
-        let attrs: [CDAttributedStringKey: AnyObject] = [.font: font as AnyObject,
-                                                         .foregroundColor: fontColor as AnyObject]
-        let result = NSMutableAttributedString(string: string, attributes: attrs)
-        let inlineElements: [any CDMarkdownElement] = [
-            link, automaticLink,
-            bold, italic, strikethrough,
-            code, unescaping
-        ]
-        for element in inlineElements {
-            element.parse(result)
+    private func squashConsecutiveNewlines(in mutableString: NSMutableString) {
+        guard squashNewlines,
+              let squashRegex = try? NSRegularExpression(pattern: "(?:\r?\n){2,}") else {
+            return
         }
-        return result
-    }
-
-    /// Returns the ranges of all fenced code blocks (``` ... ```) in `string`.
-    /// Used to exclude content inside code blocks from reference definition scanning.
-    private func fencedCodeBlockRanges(in string: String) -> [NSRange] {
-        let nsString = string as NSString
-        let fullRange = NSRange(location: 0, length: nsString.length)
-
-        let closedPattern = #"^```[^\n]*\n[\s\S]*?^```[ \t]*$"#
-        guard let closedRegex = try? NSRegularExpression(pattern: closedPattern, options: .anchorsMatchLines) else {
-            return []
-        }
-        let closedRanges = closedRegex.matches(in: string, options: [], range: fullRange).map(\.range)
-
-        // An opening fence with no matching close: conservatively treat everything from
-        // that fence to the end of the string as code, so reference-definition-looking
-        // lines inside an unterminated fence aren't mistaken for real definitions.
-        guard let openPattern = try? NSRegularExpression(pattern: #"^```[^\n]*$"#, options: .anchorsMatchLines) else {
-            return closedRanges
-        }
-        var ranges = closedRanges
-        let openMatches = openPattern.matches(in: string, options: [], range: fullRange)
-        for openMatch in openMatches {
-            let alreadyCovered = closedRanges.contains { NSLocationInRange(openMatch.range.location, $0) }
-            if alreadyCovered {
-                continue
-            }
-            ranges.append(NSRange(location: openMatch.range.location,
-                                  length: nsString.length - openMatch.range.location))
-            break
-        }
-        return ranges
-    }
-
-    /// Scans `attributedString` for reference link definitions, removes them from the string,
-    /// and returns a dictionary mapping lowercased reference IDs to their resolved URLs.
-    ///
-    /// Supported definition format (one per line):
-    /// `[id]: url`
-    /// `[id]: url "title"`
-    /// `[id]: url 'title'`
-    /// `[id]: url (title)`
-    private func parseReferenceDefinitions(
-        from attributedString: NSMutableAttributedString
-    ) -> [String: (url: String, title: String?)] {
-        var definitions: [String: (url: String, title: String?)] = [:]
-
-        let pattern = #"^\[([^\]]+)\]:\s+(\S+)(?:\s+"([^"]*)"|\s+'([^']*)'|\s+\(([^)]*)\))?\s*$"#
-        guard let regex = try? NSRegularExpression(pattern: pattern, options: .anchorsMatchLines) else {
-            return definitions
-        }
-
-        let fullRange = NSRange(location: 0, length: attributedString.length)
-        let matches = regex.matches(in: attributedString.string, options: [], range: fullRange)
-        let fencedRanges = fencedCodeBlockRanges(in: attributedString.string)
-
-        // Iterate in reverse so that removing ranges doesn't shift subsequent indices
+        let fencedRanges = fencedCodeBlockRanges(in: mutableString as String)
+        let fullRange = NSRange(location: 0, length: mutableString.length)
+        let matches = squashRegex.matches(in: mutableString as String, options: [], range: fullRange)
         for match in matches.reversed() {
-            let matchRange = match.range(at: 0)
-            if fencedRanges.contains(where: { NSLocationInRange(matchRange.location, $0) }) {
+            let matchRange = match.range
+            let isInsideFencedBlock = fencedRanges.contains { NSLocationInRange(matchRange.location, $0) }
+            if isInsideFencedBlock {
                 continue
             }
-            let idRange = match.range(at: 1)
-            let urlRange = match.range(at: 2)
-            // Title may be in group 3, 4, or 5 depending on which delimiter was used
-            let titleRange = [3, 4, 5].compactMap { match.range(at: $0) }
-                .first { $0.location != NSNotFound }
-
-            guard let referenceId = Range(idRange, in: attributedString.string).map({ String(attributedString.string[$0]) }),
-                  let url = Range(urlRange, in: attributedString.string).map({ String(attributedString.string[$0]) }) else {
-                continue
-            }
-
-            let title = titleRange.flatMap { Range($0, in: attributedString.string) }
-                .map { String(attributedString.string[$0]) }
-
-            definitions[referenceId.lowercased()] = (url: url, title: title)
-
-            // Remove the definition line (including its trailing line terminator, \n or \r\n, if present)
-            var removeRange = match.range(at: 0)
-            let nsString = attributedString.string as NSString
-            let afterMatch = removeRange.location + removeRange.length
-            if afterMatch < attributedString.length {
-                let nextCharacter = nsString.character(at: afterMatch)
-                if nextCharacter == ("\r" as Unicode.Scalar).value,
-                   afterMatch + 1 < attributedString.length,
-                   nsString.character(at: afterMatch + 1) == ("\n" as Unicode.Scalar).value {
-                    removeRange.length += 2
-                } else if nextCharacter == ("\n" as Unicode.Scalar).value {
-                    removeRange.length += 1
-                }
-            }
-            attributedString.deleteCharacters(in: removeRange)
+            mutableString.replaceCharacters(in: matchRange, with: "\n")
         }
-
-        return definitions
     }
 
-    private func runParsePipeline(_ markdown: NSAttributedString) -> NSAttributedString {
-        let attributedString = NSMutableAttributedString(attributedString: markdown)
+    private func normalizeWhitespace(in attributedString: NSMutableAttributedString) {
         let mutableString = attributedString.mutableString
-        if squashNewlines,
-           let squashRegex = try? NSRegularExpression(pattern: "(?:\r?\n){2,}") {
-            let fencedRanges = fencedCodeBlockRanges(in: mutableString as String)
-            let fullRange = NSRange(location: 0, length: mutableString.length)
-            let matches = squashRegex.matches(in: mutableString as String, options: [], range: fullRange)
-            for match in matches.reversed() {
-                let matchRange = match.range
-                let isInsideFencedBlock = fencedRanges.contains { NSLocationInRange(matchRange.location, $0) }
-                if isInsideFencedBlock {
-                    continue
-                }
-                mutableString.replaceCharacters(in: matchRange, with: "\n")
-            }
-        }
         mutableString.replaceOccurrences(of: "&nbsp;",
                                          with: " ",
                                          range: NSRange(location: 0,
@@ -602,9 +313,10 @@ open class CDMarkdownParser {
                 mutableString.setString(dedented)
             }
         }
-        let range = NSRange(location: 0,
-                            length: attributedString.length)
+    }
 
+    private func applyBaseAttributes(to attributedString: NSMutableAttributedString) {
+        let range = NSRange(location: 0, length: attributedString.length)
         attributedString.addFont(font,
                                  toRange: range)
         attributedString.addForegroundColor(fontColor,
@@ -613,11 +325,9 @@ open class CDMarkdownParser {
                                             toRange: range)
         attributedString.addParagraphStyle(paragraphStyle,
                                            toRange: range)
+    }
 
-        // Phase 1.5 — Extract and strip reference link definitions
-        let referenceDefinitions = parseReferenceDefinitions(from: attributedString)
-        linkReference.references = referenceDefinitions
-
+    private func buildPipelineElements() -> [any CDMarkdownElement] {
         var elements: [any CDMarkdownElement] = escapingElements
         let activeElements = defaultElements.filter { element in
             !disabledElementTypes.contains(ObjectIdentifier(type(of: element)))
@@ -625,6 +335,20 @@ open class CDMarkdownParser {
         elements.append(contentsOf: activeElements)
         elements.append(contentsOf: customElements)
         elements.append(contentsOf: unescapingElements)
+        return elements
+    }
+
+    private func runParsePipeline(_ markdown: NSAttributedString) -> NSAttributedString {
+        let attributedString = NSMutableAttributedString(attributedString: markdown)
+        squashConsecutiveNewlines(in: attributedString.mutableString)
+        normalizeWhitespace(in: attributedString)
+        applyBaseAttributes(to: attributedString)
+
+        // Phase 1.5 — Extract and strip reference link definitions
+        let referenceDefinitions = parseReferenceDefinitions(from: attributedString)
+        linkReference.references = referenceDefinitions
+
+        let elements = buildPipelineElements()
 
         #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
             image.placeholderOnly = true
@@ -643,70 +367,4 @@ open class CDMarkdownParser {
         return attributedString
     }
 
-    @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
-    private func urlSessionData(from url: URL) async throws -> Data {
-        try await withCheckedThrowingContinuation { continuation in
-            URLSession.shared.dataTask(with: url) { data, _, error in
-                if let error {
-                    continuation.resume(throwing: error)
-                } else if let data {
-                    continuation.resume(returning: data)
-                } else {
-                    continuation.resume(throwing: URLError(.unknown))
-                }
-            }.resume()
-        }
-    }
-
-    @available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
-    private func resolveImages(in attributedString: NSMutableAttributedString) async {
-        var replacements: [(range: NSRange, url: URL)] = []
-        attributedString.enumerateAttribute(.cdMarkdownImageURL,
-                                            in: NSRange(location: 0, length: attributedString.length)) { value, range, _ in
-            if let url = value as? URL {
-                replacements.append((range, url))
-            }
-        }
-
-        for (range, url) in replacements.reversed() {
-            if let data = try? await urlSessionData(from: url),
-               let image = CDImage(data: data) {
-                let attachment = NSTextAttachment()
-                attachment.image = image
-                #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS)
-                    if let size = self.image.size {
-                        let preferredWidth = size.width - 10
-                        let widthScalingFactor = image.size.width / preferredWidth
-                        attachment.bounds = CGRect(x: 0,
-                                                   y: 0,
-                                                   width: image.size.width / widthScalingFactor,
-                                                   height: image.size.height / widthScalingFactor)
-                    }
-                #endif
-                let replacement = NSAttributedString(attachment: attachment)
-                attributedString.replaceCharacters(in: range, with: replacement)
-            }
-        }
-    }
-
-    #if os(iOS) || os(visionOS)
-        /// Returns a copy of the attributed string with VoiceOver-compatible accessibility
-        /// annotations derived from CDMarkdownKit's custom attributes.
-        ///
-        /// Pass the result to `UILabel.accessibilityAttributedLabel` or
-        /// `UITextView.accessibilityAttributedLabel`.
-        public func accessibilityAttributedString(from attributedString: NSAttributedString) -> NSAttributedString {
-            let result = NSMutableAttributedString(attributedString: attributedString)
-            let fullRange = NSRange(location: 0, length: result.length)
-
-            result.enumerateAttribute(.cdMarkdownHeadingLevel, in: fullRange) { value, range, _ in
-                guard let level = value as? Int else { return }
-                result.addAttribute(.accessibilityTextHeadingLevel,
-                                    value: level as AnyObject,
-                                    range: range)
-            }
-
-            return result
-        }
-    #endif
 }

@@ -60,6 +60,11 @@ class BaseViewController: UIViewController {
                            height: CGFloat(self.screenSize.height - (self.segmentedControl.frame.maxY + 7) - 69))
 
         // Example of a markdown parser with custom properties
+        configureBoldHeaderAndListStyling()
+        configureRemainingElementStyling()
+    }
+
+    private func configureBoldHeaderAndListStyling() {
         self.customMarkdownParser.bold.color = UIColor.cyan
         self.customMarkdownParser.bold.backgroundColor = UIColor.purple
         self.customMarkdownParser.bold.underlineColor = UIColor.red
@@ -78,6 +83,9 @@ class BaseViewController: UIViewController {
         listParagraphStyle.paragraphSpacingBefore = 0
         listParagraphStyle.lineSpacing = 15.38
         self.customMarkdownParser.list.paragraphStyle = listParagraphStyle
+    }
+
+    private func configureRemainingElementStyling() {
         self.customMarkdownParser.quote.color = UIColor.gray
         self.customMarkdownParser.quote.backgroundColor = UIColor.clear
         self.customMarkdownParser.link.color = UIColor.blue

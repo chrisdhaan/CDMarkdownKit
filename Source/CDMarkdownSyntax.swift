@@ -74,7 +74,21 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
     open func addAttributes(_ attributedString: NSMutableAttributedString,
                             range: NSRange) {
         let matchString: String = attributedString.attributedSubstring(from: range).string
-        guard var unescapedString = matchString.unescapeUTF16() else { return }
+        guard let (unescapedString, detectedLanguage) = normalizedSyntaxContent(from: matchString) else { return }
+
+        attributedString.replaceCharacters(in: range,
+                                           with: unescapedString)
+
+        let range = NSRange(location: range.location,
+                            length: unescapedString.utf16.count)
+        applyBaseAttributes(to: attributedString, range: range, language: detectedLanguage)
+        adjustBackgroundColorWrapping(in: attributedString, range: range)
+    }
+
+    /// Unescapes the matched substring, strips an optional leading language hint (e.g. "swift"
+    /// on its own first line), and conditionally trims per-line leading whitespace.
+    private func normalizedSyntaxContent(from matchString: String) -> (text: String, language: String?)? {
+        guard var unescapedString = matchString.unescapeUTF16() else { return nil }
 
         // Strip optional language hint: first line with no whitespace (e.g. "js", "swift", "python")
         let newlineCharacters = CharacterSet.newlines
@@ -94,11 +108,12 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
             unescapedString = strippedLines.joined(separator: "\n")
         }
 
-        attributedString.replaceCharacters(in: range,
-                                           with: unescapedString)
+        return (unescapedString, detectedLanguage)
+    }
 
-        let range = NSRange(location: range.location,
-                            length: unescapedString.utf16.count)
+    private func applyBaseAttributes(to attributedString: NSMutableAttributedString,
+                                     range: NSRange,
+                                     language: String?) {
         attributedString.addAttributes(attributes,
                                        range: range)
         attributedString.addAttribute(.cdMarkdownRoundedBackground,
@@ -107,11 +122,14 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         attributedString.addAttribute(.cdMarkdownIsCode,
                                       value: true as AnyObject,
                                       range: range)
-        if let language = detectedLanguage {
+        if let language {
             attributedString.addAttribute(.cdMarkdownCodeLanguage,
                                           value: language as AnyObject,
                                           range: range)
         }
+    }
+
+    private func adjustBackgroundColorWrapping(in attributedString: NSMutableAttributedString, range: NSRange) {
         // If the previous character was a newline then parser doesn't have to worry about
         // wrapping the background color from the end of the last element to the newline.
         if range.location - 4 >= 0,
