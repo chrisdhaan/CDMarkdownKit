@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Added `fontSizes` to `CDMarkdownHeader` and `CDMarkdownTheme.HeaderTheme`, an optional array of absolute point sizes indexed by heading level (index 0 = h1 through index 5 = h6). When set to a non-empty array it fully drives heading sizing and `fontIncrease` is ignored, letting callers express an arbitrary non-linear size curve rather than the single fixed ratio `fontIncrease` allows. A shorter array clamps deeper levels to its last entry; `nil` (the default) and an empty array leave existing behavior unchanged.
+
 ### Changed
 
 - Aligned `.swiftformat`, `.swiftlint.yml`, and CI conventions with this project's established tooling standards, including bumping `.swiftformat`'s target Swift version to 6.0 to match `swiftLanguageModes: [.v6]`, and adding an Example-app build to CI.

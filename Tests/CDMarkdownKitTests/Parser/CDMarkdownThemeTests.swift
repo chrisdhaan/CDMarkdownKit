@@ -67,6 +67,26 @@ struct CDMarkdownThemeTests {
         #expect(result.length > 0)
     }
 
+    @Test func themeHeaderFontSizesAreApplied() async {
+        var theme = CDMarkdownTheme.default
+        theme.header = CDMarkdownTheme.HeaderTheme(fontSizes: [40, 34, 28, 22, 18, 15])
+        let parser = CDMarkdownParser(theme: theme)
+        let result = await parser.parse("## Heading 2")
+        var foundExpectedSize = false
+        result.enumerateAttribute(.font,
+                                  in: NSRange(location: 0, length: result.length)) { value, _, _ in
+            if let font = value as? CDFont, font.pointSize == 34 {
+                foundExpectedSize = true
+            }
+        }
+        #expect(foundExpectedSize)
+    }
+
+    @Test func headerFontSizesDefaultToNilInTheme() {
+        #expect(CDMarkdownTheme.HeaderTheme().fontSizes == nil)
+        #expect(CDMarkdownParser(theme: .default).header.fontSizes == nil)
+    }
+
     @Test func headerColorFallsBackToParserDefaultWhenThemeDoesNotSpecifyOne() {
         let defaultParser = CDMarkdownParser()
         let defaultHeaderColor = defaultParser.header.color
