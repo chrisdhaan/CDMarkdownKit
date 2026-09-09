@@ -151,6 +151,43 @@
         public static func makeTextView(frame: CGRect) -> CDMarkdownTextView {
             CDMarkdownTextView(frame: frame, textContainer: nil)
         }
+
+        /// Reports the size this view needs to render its current text wrapped to `size.width`.
+        ///
+        /// Only meaningful when ``isScrollEnabled`` is `false`: a non-scrolling text view has to
+        /// grow to fit its content, so a `UIViewRepresentable` (``CDMarkdownView``) or UIKit Auto
+        /// Layout can place it inside a scroll view. A scrolling text view keeps `UITextView`'s
+        /// default behavior. Without this, a scroll-disabled `CDMarkdownTextView` hands SwiftUI no
+        /// height, so its frame and its TextKit layout desync from the bounds a `ScrollView`
+        /// assigns it.
+        override open func sizeThatFits(_ size: CGSize) -> CGSize {
+            guard !isScrollEnabled, size.width > 0, size.width.isFinite else {
+                return super.sizeThatFits(size)
+            }
+
+            let inset = textContainerInset
+            let availableWidth = max(0, size.width - inset.left - inset.right)
+
+            if #available(iOS 16.0, tvOS 16.0, *),
+               let attributedText, attributedText.length > 0 {
+                // Measure in a detached TextKit 2 stack rather than mutating this view's own
+                // width-tracking text container, so the query has no layout side effects.
+                let contentStorage = NSTextContentStorage()
+                contentStorage.attributedString = attributedText
+                let layoutManager = NSTextLayoutManager()
+                contentStorage.addTextLayoutManager(layoutManager)
+                let container = NSTextContainer(size: CGSize(width: availableWidth,
+                                                             height: .greatestFiniteMagnitude))
+                container.lineFragmentPadding = textContainer.lineFragmentPadding
+                layoutManager.textContainer = container
+                layoutManager.ensureLayout(for: layoutManager.documentRange)
+                let used = layoutManager.usageBoundsForTextContainer
+                return CGSize(width: size.width,
+                              height: ceil(used.maxY + inset.top + inset.bottom))
+            }
+
+            return super.sizeThatFits(size)
+        }
     }
 
 #endif

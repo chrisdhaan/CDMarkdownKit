@@ -77,6 +77,26 @@ import SwiftUI
             }
         }
 
+        @available(iOS 16.0, tvOS 16.0, visionOS 1.0, *)
+        public func sizeThatFits(_ proposal: ProposedViewSize,
+                                 uiView: CDMarkdownTextView,
+                                 context: Context) -> CGSize? {
+            Self.fittingSize(for: uiView, proposedWidth: proposal.width)
+        }
+
+        /// Measures the size `textView` needs for its current content at `proposedWidth`, so
+        /// SwiftUI can lay ``CDMarkdownView`` out — and scroll it — inside a `ScrollView`.
+        /// Returns `nil` when there is no usable width to measure against, letting SwiftUI fall
+        /// back to its default sizing. Pulled out as a pure, `internal` function so it's testable
+        /// via `@testable import` without constructing a `Context`.
+        @available(iOS 16.0, tvOS 16.0, visionOS 1.0, *)
+        internal static func fittingSize(for textView: CDMarkdownTextView,
+                                         proposedWidth: CGFloat?) -> CGSize? {
+            guard let width = proposedWidth, width > 0, width.isFinite else { return nil }
+            let fitted = textView.sizeThatFits(CGSize(width: width, height: .greatestFiniteMagnitude))
+            return CGSize(width: width, height: fitted.height)
+        }
+
         public func makeCoordinator() -> Coordinator {
             Coordinator(onLinkTap: onLinkTap)
         }
@@ -177,6 +197,25 @@ import SwiftUI
                 guard !Task.isCancelled else { return }
                 nsView.setAttributedString(result)
             }
+        }
+
+        @available(macOS 13.0, *)
+        public func sizeThatFits(_ proposal: ProposedViewSize,
+                                 nsView: CDMarkdownNSTextView,
+                                 context: Context) -> CGSize? {
+            Self.fittingSize(for: nsView, proposedWidth: proposal.width)
+        }
+
+        /// Measures the size `textView` needs for its current content at `proposedWidth`, so
+        /// SwiftUI can lay ``CDMarkdownView`` out — and scroll it — inside a `ScrollView`.
+        /// Returns `nil` when there is no usable width to measure against, letting SwiftUI fall
+        /// back to its default sizing. Pulled out as a pure, `internal` function so it's testable
+        /// via `@testable import` without constructing a `Context`.
+        @available(macOS 13.0, *)
+        internal static func fittingSize(for textView: CDMarkdownNSTextView,
+                                         proposedWidth: CGFloat?) -> CGSize? {
+            guard let width = proposedWidth, width > 0, width.isFinite else { return nil }
+            return CGSize(width: width, height: textView.fittingHeight(forWidth: width))
         }
 
         public func makeCoordinator() -> Coordinator {

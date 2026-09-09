@@ -92,6 +92,31 @@
         open func setAttributedString(_ attributedString: NSAttributedString) {
             customTextStorage.setAttributedString(attributedString)
         }
+
+        // MARK: - Sizing
+
+        /// Reports the height needed to render the current text wrapped to `width`, so
+        /// ``CDMarkdownView`` (an `NSViewRepresentable`) can size this view inside a `ScrollView`.
+        ///
+        /// Measured in a detached layout stack so the query has no side effects on this view's
+        /// own text system.
+        open func fittingHeight(forWidth width: CGFloat) -> CGFloat {
+            guard width > 0, width.isFinite else { return 0 }
+
+            let inset = textContainerInset
+            let availableWidth = max(0, width - inset.width * 2)
+
+            let textStorage = NSTextStorage(attributedString: customTextStorage)
+            let layoutManager = NSLayoutManager()
+            textStorage.addLayoutManager(layoutManager)
+            let container = NSTextContainer(size: NSSize(width: availableWidth,
+                                                         height: .greatestFiniteMagnitude))
+            container.lineFragmentPadding = textContainer?.lineFragmentPadding ?? 0
+            layoutManager.addTextContainer(container)
+            layoutManager.ensureLayout(for: container)
+
+            return ceil(layoutManager.usedRect(for: container).height + inset.height * 2)
+        }
     }
 
 #endif

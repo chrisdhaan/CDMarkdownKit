@@ -51,6 +51,29 @@ import Testing
             }
         #endif
 
+        @available(iOS 16.0, tvOS 16.0, visionOS 1.0, *)
+        @Test func fittingSizeWrapsLongContentToProposedWidth() async {
+            let textView = CDMarkdownView.configuredTextView()
+            textView.attributedText = await CDMarkdownParser().parse(String(repeating: "wrap ", count: 600))
+
+            let size = CDMarkdownView.fittingSize(for: textView, proposedWidth: 300)
+
+            #expect(size?.width == 300)
+            // 3,000 characters at a 300pt width must wrap to many lines. The pre-fix
+            // behavior gave SwiftUI no height at all, so the representable's view and its
+            // TextKit 2 layout desynced from the frame the ScrollView assigned it. A
+            // single unwrapped line is roughly one line tall (~20pt), so a measured
+            // height well past that proves the content is wrapped to the proposed width.
+            #expect((size?.height ?? 0) > 200)
+        }
+
+        @available(iOS 16.0, tvOS 16.0, visionOS 1.0, *)
+        @Test func fittingSizeIsNilForNonPositiveProposedWidth() {
+            let textView = CDMarkdownView.configuredTextView()
+            #expect(CDMarkdownView.fittingSize(for: textView, proposedWidth: 0) == nil)
+            #expect(CDMarkdownView.fittingSize(for: textView, proposedWidth: nil) == nil)
+        }
+
         @available(iOS 15.0, tvOS 15.0, visionOS 1.0, *)
         @Test func makeCoordinatorCarriesOnLinkTapHandler() throws {
             var tappedURL: URL?
@@ -153,6 +176,28 @@ import Testing
             theme.fontColor = .red
             let resolved = CDMarkdownView.resolveParser(explicit: nil, environment: nil, theme: theme)
             #expect(resolved.fontColor == theme.fontColor)
+        }
+
+        @available(macOS 13.0, *)
+        @Test func fittingSizeWrapsLongContentToProposedWidth() async {
+            let textView = CDMarkdownNSTextView(frame: .zero)
+            await textView.setAttributedString(CDMarkdownParser().parse(String(repeating: "wrap ", count: 600)))
+
+            let size = CDMarkdownView.fittingSize(for: textView, proposedWidth: 300)
+
+            #expect(size?.width == 300)
+            // 3,000 characters at a 300pt width must wrap to many lines; the pre-fix
+            // NSViewRepresentable reported no size, so SwiftUI could not place the view
+            // in the enclosing ScrollView. A height well past one line (~20pt) proves the
+            // content is measured wrapped to the proposed width.
+            #expect((size?.height ?? 0) > 200)
+        }
+
+        @available(macOS 13.0, *)
+        @Test func fittingSizeIsNilForNonPositiveProposedWidth() {
+            let textView = CDMarkdownNSTextView(frame: .zero)
+            #expect(CDMarkdownView.fittingSize(for: textView, proposedWidth: 0) == nil)
+            #expect(CDMarkdownView.fittingSize(for: textView, proposedWidth: nil) == nil)
         }
 
         @available(macOS 12.0, *)
