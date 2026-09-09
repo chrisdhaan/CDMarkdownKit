@@ -13,6 +13,7 @@
 
 ### Fixed
 
+- Fixed `CDMarkdownView` rendering its content outside, or independent of, the frame SwiftUI assigns it when placed in a `ScrollView`. The SwiftUI representable now reports a measured content size for the proposed width, so the view lays out within its assigned bounds and scrolls with the enclosing `ScrollView` like `CDMarkdownText` already did. `CDMarkdownTextView` gains a `sizeThatFits(_:)` override (used when scrolling is disabled) and `CDMarkdownNSTextView` a `fittingHeight(forWidth:)` method, so both also size correctly under UIKit and AppKit Auto Layout.
 - Loosened two test-only wall-clock timing budgets (catastrophic-backtracking guards for an unterminated inline-code span and an unterminated fenced code block) from 2 seconds to 10, fixing intermittent failures on a loaded visionOS CI simulator.
 
 ## [5.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/5.0.0)
