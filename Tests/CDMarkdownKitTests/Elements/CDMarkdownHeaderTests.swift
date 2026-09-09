@@ -89,4 +89,49 @@ struct CDMarkdownHeaderTests {
             #expect(found)
         }
     }
+
+    // MARK: - fontSizes override
+
+    private func maxFontSize(from parser: CDMarkdownParser, for input: String) async -> CGFloat {
+        let result = await parser.parse(input)
+        var largest: CGFloat = 0
+        result.enumerateAttribute(.font, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if let f = v as? CDFont, f.pointSize > largest {
+                largest = f.pointSize
+            }
+        }
+        return largest
+    }
+
+    private func maxFontSize(for input: String) async -> CGFloat {
+        await maxFontSize(from: parser, for: input)
+    }
+
+    @Test func fontSizesOverrideDrivesAbsolutePerLevelSizes() async {
+        parser.header.fontSizes = [40, 34, 28, 22, 18, 15]
+        #expect(await maxFontSize(for: "# H1") == 40)
+        #expect(await maxFontSize(for: "## H2") == 34)
+        #expect(await maxFontSize(for: "### H3") == 28)
+        #expect(await maxFontSize(for: "#### H4") == 22)
+        #expect(await maxFontSize(for: "##### H5") == 18)
+        #expect(await maxFontSize(for: "###### H6") == 15)
+    }
+
+    @Test func fontSizesShorterThanSixLevelsClampsToLastEntry() async {
+        parser.header.fontSizes = [40, 34, 28]
+        #expect(await maxFontSize(for: "### H3") == 28)
+        #expect(await maxFontSize(for: "#### H4") == 28)
+        #expect(await maxFontSize(for: "##### H5") == 28)
+        #expect(await maxFontSize(for: "###### H6") == 28)
+    }
+
+    @Test func emptyFontSizesArrayFallsBackToDefaultCurve() async {
+        let defaultParser = CDMarkdownParser()
+        parser.header.fontSizes = []
+        for input in ["# H1", "## H2", "### H3", "#### H4", "##### H5", "###### H6"] {
+            let overridden = await maxFontSize(for: input)
+            let expected = await maxFontSize(from: defaultParser, for: input)
+            #expect(overridden == expected)
+        }
+    }
 }

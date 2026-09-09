@@ -52,6 +52,12 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
     open var maxLevel: Int
     /// The additional font size increase per heading level.
     open var fontIncrease: Int
+    /// Absolute point sizes per heading level, index 0 = h1 … 5 = h6.
+    ///
+    /// When non-`nil` and non-empty, this fully drives heading sizing and
+    /// `fontIncrease` is ignored. Supply all six levels; a shorter array clamps
+    /// deeper levels to its last entry. An empty array behaves like `nil`.
+    open var fontSizes: [CGFloat]?
     /// The text color for headers.
     open var color: CDColor?
     /// The background color for headers.
@@ -76,10 +82,12 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
                 backgroundColor: CDColor? = nil,
                 paragraphStyle: NSParagraphStyle? = nil,
                 underlineColor: CDColor? = nil,
-                underlineStyle: NSUnderlineStyle? = nil) {
+                underlineStyle: NSUnderlineStyle? = nil,
+                fontSizes: [CGFloat]? = nil) {
         self.font = font
         self.maxLevel = maxLevel
         self.fontIncrease = fontIncrease
+        self.fontSizes = fontSizes
         self.color = color
         self.backgroundColor = backgroundColor
         if let paragraphStyle {
@@ -128,7 +136,11 @@ open class CDMarkdownHeader: CDMarkdownLevelElement {
             CGFloat(CDMarkdownHeadingHashes.four)
         }
         if let font {
-            let headerFontSize: CGFloat = font.pointSize + (CGFloat(fontMultiplier) * CGFloat(fontIncrease))
+            let headerFontSize: CGFloat = if let fontSizes, !fontSizes.isEmpty {
+                fontSizes[min(level, fontSizes.count - 1)]
+            } else {
+                font.pointSize + (CGFloat(fontMultiplier) * CGFloat(fontIncrease))
+            }
             let headerFont = font.withSize(headerFontSize)
 
             attributes.addFont(headerFont)

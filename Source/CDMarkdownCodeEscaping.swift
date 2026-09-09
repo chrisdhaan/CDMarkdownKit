@@ -56,7 +56,7 @@ open class CDMarkdownCodeEscaping: CDMarkdownElement {
             .map { (value: UInt16) -> String in String(format: "%04x",
                                                        value) }
             .reduce("") { (string: String, character: String) -> String in
-                return "\(string)\(character)"
+                "\(string)\(character)"
             }
         attributedString.replaceCharacters(in: range,
                                            with: escapedString)

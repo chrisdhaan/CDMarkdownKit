@@ -242,7 +242,7 @@ open class CDMarkdownParser {
     /// This method uses instance identity (`===`) to find and remove the element.
     open func removeCustomElement(_ element: any CDMarkdownElement) {
         guard let index = customElements.firstIndex(where: { someElement -> Bool in
-            return element === someElement
+            element === someElement
         }) else {
             return
         }

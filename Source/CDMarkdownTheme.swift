@@ -66,6 +66,12 @@ public struct CDMarkdownTheme {
         public var font: CDFont?
         public var color: CDColor?
         public var fontIncrease: Int
+        /// Absolute point sizes per heading level, index 0 = h1 … 5 = h6.
+        ///
+        /// When non-`nil` and non-empty, this fully drives heading sizing and
+        /// `fontIncrease` is ignored. Supply all six levels; a shorter array
+        /// clamps deeper levels to its last entry. An empty array behaves like `nil`.
+        public var fontSizes: [CGFloat]?
         public var paragraphStyle: NSParagraphStyle?
         public var underlineColor: CDColor?
         public var underlineStyle: NSUnderlineStyle?
@@ -73,12 +79,14 @@ public struct CDMarkdownTheme {
         public init(font: CDFont? = nil,
                     color: CDColor? = nil,
                     fontIncrease: Int = 2,
+                    fontSizes: [CGFloat]? = nil,
                     paragraphStyle: NSParagraphStyle? = nil,
                     underlineColor: CDColor? = nil,
                     underlineStyle: NSUnderlineStyle? = nil) {
             self.font = font
             self.color = color
             self.fontIncrease = fontIncrease
+            self.fontSizes = fontSizes
             self.paragraphStyle = paragraphStyle
             self.underlineColor = underlineColor
             self.underlineStyle = underlineStyle

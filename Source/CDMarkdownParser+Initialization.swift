@@ -225,6 +225,7 @@ extension CDMarkdownParser {
         self.header.font = theme.header.font ?? self.header.font
         self.header.color = theme.header.color ?? self.header.color
         self.header.fontIncrease = theme.header.fontIncrease
+        self.header.fontSizes = theme.header.fontSizes
         self.header.paragraphStyle = theme.header.paragraphStyle ?? self.header.paragraphStyle
         self.header.underlineColor = theme.header.underlineColor
         self.header.underlineStyle = theme.header.underlineStyle
