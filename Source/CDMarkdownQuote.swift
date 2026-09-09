@@ -87,7 +87,7 @@ open class CDMarkdownQuote: CDMarkdownLevelElement {
                          range: NSRange,
                          level: Int) {
         var string = (0 ..< (level - 1)).reduce("") { (string: String, _: Int) -> String in
-            return "\(string)\(separator)"
+            "\(string)\(separator)"
         }
         string = "\(string)\(indicator) "
         attributedString.replaceCharacters(in: range,
