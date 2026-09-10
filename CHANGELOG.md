@@ -5,6 +5,7 @@
 ### Added
 
 - Added `fontSizes` to `CDMarkdownHeader` and `CDMarkdownTheme.HeaderTheme`, an optional array of absolute point sizes indexed by heading level (index 0 = h1 through index 5 = h6). When set to a non-empty array it fully drives heading sizing and `fontIncrease` is ignored, letting callers express an arbitrary non-linear size curve rather than the single fixed ratio `fontIncrease` allows. A shorter array clamps deeper levels to its last entry; `nil` (the default) and an empty array leave existing behavior unchanged.
+- Added caller-supplied syntax highlighting for fenced code blocks. `CDMarkdownTheme.codeSyntaxColors` (and `CDMarkdownSyntax.syntaxColors`) take a map from semantic token type — `keyword`, `type`, `string`, `comment`, `number`, `function`, `attribute` — to colour; when set, the parser writes matching `foregroundColor` runs across the block, so every renderer (UIKit, AppKit, and both SwiftUI views) picks it up with no additional work. A small built-in tokenizer covers Swift and common C-family languages; supply a custom `CDMarkdownSyntaxHighlighter` via `CDMarkdownSyntax.syntaxHighlighter` for other languages or a different engine. Blocks with no language hint, or an unrecognised one, keep rendering as plain monospace, and leaving the colour map empty (the default) keeps output byte-for-byte identical to before.
 
 ### Changed
 
