@@ -68,6 +68,7 @@
             }
             set {
                 super.attributedText = newValue
+                invalidateIntrinsicContentSize()
                 guard let newValue else { return }
                 if let layoutManager = self.customLayoutManager {
                     if !self.textStorage.layoutManagers.contains(where: { $0 === layoutManager }) {
@@ -187,6 +188,33 @@
             }
 
             return super.sizeThatFits(size)
+        }
+
+        /// The most recent `bounds.width` seen by ``layoutSubviews()``, so the intrinsic content
+        /// size is only re-invalidated when the width — the axis that changes wrapped height —
+        /// actually changes. Starts negative so the first real layout pass always invalidates.
+        private var lastLayoutWidth: CGFloat = -1
+
+        /// Reports a height that fits the current text wrapped to `bounds.width` when
+        /// ``isScrollEnabled`` is `false`, so a `CDMarkdownTextView` used directly under UIKit
+        /// Auto Layout (with no explicit height constraint) grows to fit its content. Width is
+        /// left unconstrained. A scroll-enabled text view — the default — keeps `UITextView`'s
+        /// behavior, so existing callers are unaffected.
+        override open var intrinsicContentSize: CGSize {
+            guard !isScrollEnabled, bounds.width > 0 else {
+                return super.intrinsicContentSize
+            }
+            let fitting = sizeThatFits(CGSize(width: bounds.width,
+                                              height: .greatestFiniteMagnitude))
+            return CGSize(width: UIView.noIntrinsicMetric, height: fitting.height)
+        }
+
+        override open func layoutSubviews() {
+            super.layoutSubviews()
+            if bounds.width != lastLayoutWidth {
+                lastLayoutWidth = bounds.width
+                invalidateIntrinsicContentSize()
+            }
         }
     }
 
