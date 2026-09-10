@@ -12,6 +12,7 @@
 
 - Aligned `.swiftformat`, `.swiftlint.yml`, and CI conventions with this project's established tooling standards, including bumping `.swiftformat`'s target Swift version to 6.0 to match `swiftLanguageModes: [.v6]`, and adding an Example-app build to CI.
 - Tightened the `file_length`, `function_body_length`, and `type_body_length` SwiftLint limits to the tool's own default thresholds. Every violation this surfaced was fixed by restructuring the affected code — splitting `CDMarkdownParser` and `CDMarkdownLabel` into per-concern extension files and extracting oversized functions into named helpers — rather than raising the limits or disabling the rules.
+- Refactored the two built-in syntax lexers to share their common scanning scaffolding — comment, sigil, number, and identifier consumption — through a single internal seam, so they can no longer drift in how they classify the same construct. Purely internal; token output is unchanged.
 
 ### Fixed
 

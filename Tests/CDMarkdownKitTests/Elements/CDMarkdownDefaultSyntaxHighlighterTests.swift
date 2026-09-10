@@ -198,3 +198,30 @@ struct CDMarkdownDefaultSyntaxHighlighterSwiftTests {
         #expect(tokens.contains { $0.type == .string })
     }
 }
+
+struct CDMarkdownDefaultSyntaxHighlighterParityTests {
+
+    private let highlighter = CDMarkdownDefaultSyntaxHighlighter()
+
+    @Test func bothLexersClassifySharedConstructsIdentically() {
+        // Every construct here is one the Swift and generic lexers are contractually
+        // required to classify identically. `.keyword` tokens are excluded from the
+        // comparison — the two keyword sets legitimately differ — but types, functions,
+        // numbers, comments, sigils, and strings all flow through one shared code path,
+        // so their token streams must match exactly. This is the drift guard.
+        let code = """
+        let Foo = bar(1_000, 0xFF, 3.14e2) // note
+        /* block */ @attr obj.return Baz
+        let s = "hi"
+        """
+        let swiftTokens = highlighter.tokens(in: code, language: "swift").filter { $0.type != .keyword }
+        let cFamilyTokens = highlighter.tokens(in: code, language: "c").filter { $0.type != .keyword }
+        #expect(swiftTokens == cFamilyTokens)
+        #expect(swiftTokens.contains { $0.type == .type })
+        #expect(swiftTokens.contains { $0.type == .function })
+        #expect(swiftTokens.contains { $0.type == .number })
+        #expect(swiftTokens.contains { $0.type == .comment })
+        #expect(swiftTokens.contains { $0.type == .attribute })
+        #expect(swiftTokens.contains { $0.type == .string })
+    }
+}

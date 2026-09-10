@@ -31,10 +31,10 @@ import Foundation
 /// interpolation delimiters, `@attributes`, `#directives`, nested `/* */` block
 /// comments, and suppression of keyword-looking identifiers used as members
 /// (`xs.repeat`). Deliberately lossy — good enough for colouring, never throws.
-struct CDMarkdownSwiftSyntaxLexer {
+struct CDMarkdownSwiftSyntaxLexer: CDMarkdownSyntaxLexing {
 
-    private var scanner: CDMarkdownSyntaxScanner
-    private var tokens: [CDMarkdownSyntaxToken] = []
+    var scanner: CDMarkdownSyntaxScanner
+    var tokens: [CDMarkdownSyntaxToken] = []
 
     init(_ code: String) {
         scanner = CDMarkdownSyntaxScanner(code)
@@ -60,7 +60,7 @@ struct CDMarkdownSwiftSyntaxLexer {
             case 0x2F where scanner.peek(1) == 0x2F: // //
                 consumeLineComment()
             case 0x2F where scanner.peek(1) == 0x2A: // /*
-                consumeBlockComment()
+                consumeBlockComment(nesting: true)
             case 0x22 where scanner.peek(1) == 0x22 && scanner.peek(2) == 0x22: // """
                 consumeMultiLineString()
             case 0x22: // "
@@ -70,52 +70,12 @@ struct CDMarkdownSwiftSyntaxLexer {
             case _ where CDMarkdownSyntaxScanner.isDigit(unit):
                 consumeNumber()
             case _ where CDMarkdownSyntaxScanner.isIdentifierStart(unit):
-                consumeIdentifier()
+                consumeIdentifier(keywords: Self.keywords)
             default:
                 scanner.advance()
             }
         }
         return tokens
-    }
-
-    private mutating func emit(_ start: Int, _ type: CDMarkdownSyntaxTokenType) {
-        let length = scanner.index - start
-        guard length > 0 else { return }
-        tokens.append(CDMarkdownSyntaxToken(range: NSRange(location: start, length: length), type: type))
-    }
-
-    private mutating func consumeLineComment() {
-        let start = scanner.index
-        while let unit = scanner.peek(), unit != 0x0A, unit != 0x0D {
-            scanner.advance()
-        }
-        emit(start, .comment)
-    }
-
-    private mutating func consumeBlockComment() {
-        let start = scanner.index
-        scanner.advance()
-        scanner.advance() // consume /*
-        var depth = 1 // Swift block comments nest
-        while let unit = scanner.peek() {
-            if unit == 0x2F, scanner.peek(1) == 0x2A {
-                depth += 1
-                scanner.advance()
-                scanner.advance()
-                continue
-            }
-            if unit == 0x2A, scanner.peek(1) == 0x2F {
-                depth -= 1
-                scanner.advance()
-                scanner.advance()
-                if depth == 0 {
-                    break
-                }
-                continue
-            }
-            scanner.advance()
-        }
-        emit(start, .comment)
     }
 
     private mutating func consumeString() {
@@ -187,46 +147,5 @@ struct CDMarkdownSwiftSyntaxLexer {
             }
             scanner.advance()
         }
-    }
-
-    private mutating func consumeSigilName() {
-        let start = scanner.index
-        scanner.advance() // @ or #
-        while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isIdentifierBody(unit) {
-            scanner.advance()
-        }
-        emit(start, .attribute)
-    }
-
-    private mutating func consumeNumber() {
-        let start = scanner.index
-        cdMarkdownScanNumber(&scanner)
-        emit(start, .number)
-    }
-
-    private mutating func consumeIdentifier() {
-        let start = scanner.index
-        let precededByDot = start > 0 && scanner.units[start - 1] == 0x2E
-        while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isIdentifierBody(unit) {
-            scanner.advance()
-        }
-        let length = scanner.index - start
-        let word = String(utf16CodeUnits: Array(scanner.units[start ..< start + length]), count: length)
-
-        // function call: identifier immediately followed by '(' (skipping spaces)
-        var lookahead = scanner.index
-        while lookahead < scanner.units.count, scanner.units[lookahead] == 0x20 {
-            lookahead += 1
-        }
-        let isCall = lookahead < scanner.units.count && scanner.units[lookahead] == 0x28
-
-        if Self.keywords.contains(word), !precededByDot {
-            emit(start, .keyword)
-        } else if let first = word.utf16.first, CDMarkdownSyntaxScanner.isUppercaseASCII(first) {
-            emit(start, .type)
-        } else if isCall {
-            emit(start, .function)
-        }
-        // else: no token — renders in base colour
     }
 }
