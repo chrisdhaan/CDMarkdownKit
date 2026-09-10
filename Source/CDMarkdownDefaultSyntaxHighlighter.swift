@@ -39,9 +39,8 @@ public struct CDMarkdownDefaultSyntaxHighlighter: CDMarkdownSyntaxHighlighter, S
         guard let language, !code.isEmpty else { return [] }
         switch CDMarkdownSyntaxLanguageFamily.family(for: language.lowercased()) {
         case .swift:
-            // Swift has its own dedicated lexer, wired in a later change; until then
-            // Swift blocks yield no tokens and render as plain monospace.
-            return []
+            var lexer = CDMarkdownSwiftSyntaxLexer(code)
+            return lexer.scan()
         case .cFamily:
             var lexer = CDMarkdownGenericSyntaxLexer(code)
             return lexer.scan()
@@ -120,6 +119,47 @@ struct CDMarkdownSyntaxScanner {
 
     static func isUppercaseASCII(_ unit: UInt16) -> Bool {
         unit >= 0x41 && unit <= 0x5A
+    }
+}
+
+/// Advances `scanner` from the current index over a numeric literal: an optional
+/// `0x` / `0b` / `0o` radix prefix, digit-separator underscores, a fractional part,
+/// and a signed `e` / `E` exponent. Shared by the generic and Swift lexers so both
+/// classify numbers identically; each caller emits its own `.number` token.
+func cdMarkdownScanNumber(_ scanner: inout CDMarkdownSyntaxScanner) {
+    // 0x / 0b / 0o prefix
+    if scanner.peek() == 0x30,
+       let prefix = scanner.peek(1),
+       (prefix | 0x20) == 0x78 || (prefix | 0x20) == 0x62 || (prefix | 0x20) == 0x6F {
+        scanner.advance()
+        scanner.advance()
+        while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isHexDigit(unit) || unit == 0x5F {
+            scanner.advance()
+        }
+        return
+    }
+    while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isDigit(unit) || unit == 0x5F {
+        scanner.advance()
+    }
+    if scanner.peek() == 0x2E, let next = scanner.peek(1), CDMarkdownSyntaxScanner.isDigit(next) {
+        scanner.advance()
+        while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isDigit(unit) || unit == 0x5F {
+            scanner.advance()
+        }
+    }
+    if let exponent = scanner.peek(), (exponent | 0x20) == 0x65 { // e / E exponent
+        var lookahead = 1
+        if let sign = scanner.peek(1), sign == 0x2B || sign == 0x2D {
+            lookahead = 2
+        }
+        if let digit = scanner.peek(lookahead), CDMarkdownSyntaxScanner.isDigit(digit) {
+            for _ in 0 ..< lookahead {
+                scanner.advance()
+            }
+            while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isDigit(unit) || unit == 0x5F {
+                scanner.advance()
+            }
+        }
     }
 }
 
@@ -237,41 +277,7 @@ struct CDMarkdownGenericSyntaxLexer {
 
     private mutating func consumeNumber() {
         let start = scanner.index
-        // 0x / 0b / 0o prefix
-        if scanner.peek() == 0x30,
-           let prefix = scanner.peek(1),
-           (prefix | 0x20) == 0x78 || (prefix | 0x20) == 0x62 || (prefix | 0x20) == 0x6F {
-            scanner.advance()
-            scanner.advance()
-            while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isHexDigit(unit) || unit == 0x5F {
-                scanner.advance()
-            }
-            emit(start, .number)
-            return
-        }
-        while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isDigit(unit) || unit == 0x5F {
-            scanner.advance()
-        }
-        if scanner.peek() == 0x2E, let next = scanner.peek(1), CDMarkdownSyntaxScanner.isDigit(next) {
-            scanner.advance()
-            while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isDigit(unit) || unit == 0x5F {
-                scanner.advance()
-            }
-        }
-        if let exponent = scanner.peek(), (exponent | 0x20) == 0x65 { // e / E exponent
-            var lookahead = 1
-            if let sign = scanner.peek(1), sign == 0x2B || sign == 0x2D {
-                lookahead = 2
-            }
-            if let digit = scanner.peek(lookahead), CDMarkdownSyntaxScanner.isDigit(digit) {
-                for _ in 0 ..< lookahead {
-                    scanner.advance()
-                }
-                while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isDigit(unit) || unit == 0x5F {
-                    scanner.advance()
-                }
-            }
-        }
+        cdMarkdownScanNumber(&scanner)
         emit(start, .number)
     }
 

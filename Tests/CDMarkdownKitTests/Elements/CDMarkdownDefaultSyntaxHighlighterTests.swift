@@ -106,3 +106,68 @@ struct CDMarkdownDefaultSyntaxHighlighterGenericTests {
         #expect(Date().timeIntervalSince(start) < 5.0)
     }
 }
+
+struct CDMarkdownDefaultSyntaxHighlighterSwiftTests {
+
+    private let highlighter = CDMarkdownDefaultSyntaxHighlighter()
+
+    private func substrings(_ code: String, _ type: CDMarkdownSyntaxTokenType) -> [String] {
+        let units = Array(code.utf16)
+        return highlighter.tokens(in: code, language: "swift")
+            .filter { $0.type == type }
+            .map { String(utf16CodeUnits: Array(units[$0.range.location ..< $0.range.location + $0.range.length]),
+                          count: $0.range.length) }
+    }
+
+    @Test func classifiesSwiftKeywordsTypesStringsCommentsNumbers() {
+        let code = """
+        // greet
+        func greet(name: String) -> Int {
+            let count = 1_000
+            return count
+        }
+        """
+        #expect(substrings(code, .comment).contains("// greet"))
+        #expect(substrings(code, .keyword).contains("func"))
+        #expect(substrings(code, .keyword).contains("let"))
+        #expect(substrings(code, .keyword).contains("return"))
+        #expect(substrings(code, .type).contains("String"))
+        #expect(substrings(code, .type).contains("Int"))
+        #expect(substrings(code, .number).contains("1_000"))
+        #expect(substrings(code, .function).contains("greet"))
+    }
+
+    @Test func classifiesAttributesAndDirectives() {
+        let code = "@MainActor\n#if DEBUG\nlet x = 1\n#endif"
+        #expect(substrings(code, .attribute).contains("@MainActor"))
+        #expect(substrings(code, .attribute).contains("#if"))
+        #expect(substrings(code, .attribute).contains("#endif"))
+    }
+
+    @Test func multiLineStringIsOneStringToken() {
+        let code = "let s = \"\"\"\nline one\nline two\n\"\"\"\n"
+        let strings = substrings(code, .string)
+        #expect(strings.contains { $0.contains("line one") && $0.contains("line two") })
+    }
+
+    @Test func keywordAsMemberIsNotHighlighted() {
+        // `filter` is not a keyword; `repeat` is — after a dot it must not be flagged.
+        let code = "let y = xs.repeat\nlet z = xs.map { $0 }"
+        #expect(!substrings(code, .keyword).contains("repeat"))
+    }
+
+    @Test func interpolationDelimitersAreString() {
+        let code = "let s = \"value \\(x) end\""
+        // The whole literal is covered by string tokens; `x` inside may be a gap.
+        let joined = substrings(code, .string).joined()
+        #expect(joined.contains("\"value "))
+        #expect(joined.contains(") end\""))
+    }
+
+    @Test func unterminatedMultiLineStringDoesNotCrash() {
+        let code = "let s = \"\"\"\nnever closed\n"
+        let tokens = highlighter.tokens(in: code, language: "swift")
+        #expect(tokens.allSatisfy { $0.range.location + $0.range.length <= code.utf16.count })
+        #expect(tokens.contains { $0.type == .string })
+    }
+}
