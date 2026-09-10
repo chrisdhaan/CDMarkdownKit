@@ -68,6 +68,25 @@ struct CDMarkdownTextTests {
         #expect(type(of: view) != CDMarkdownText.self) // wrapped in modifier
     }
 
+    @available(iOS 15.0, tvOS 15.0, macOS 12.0, watchOS 8.0, visionOS 1.0, *)
+    @Test func convertPreservesSyntaxTokenColors() async {
+        let parser = CDMarkdownParser()
+        parser.syntax.syntaxColors = [.keyword: CDColor.red]
+        let nsAttributed = await parser.parse("```swift\nreturn 1\n```")
+        let converted = CDMarkdownText.convert(nsAttributed, fallback: "return 1")
+
+        let hasRedKeywordRun = converted.runs.contains { run in
+            let substring = String(converted[run.range].characters)
+            guard substring.contains("return") else { return false }
+            #if os(macOS)
+                return run.appKit.foregroundColor == CDColor.red
+            #else
+                return run.uiKit.foregroundColor == CDColor.red
+            #endif
+        }
+        #expect(hasRedKeywordRun)
+    }
+
     #if !os(watchOS)
         @available(iOS 16.0, tvOS 16.0, macOS 13.0, visionOS 1.0, *)
         @Test func markdownThemeModifierPropagatesThroughLiveViewHierarchy() {

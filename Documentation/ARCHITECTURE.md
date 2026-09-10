@@ -75,7 +75,10 @@ Input: String or NSAttributedString
 │  CDMarkdownSyntax                                           │
 │    Handles ```fenced blocks```: decodes UTF16-hex content,  │
 │    applies Menlo font + gray theme, manages background-     │
-│    color wrapping at line boundaries                        │
+│    color wrapping at line boundaries, and — when a token    │
+│    colour map is set — asks a CDMarkdownSyntaxHighlighter   │
+│    for typed token ranges and writes foregroundColor runs   │
+│    across the block                                         │
 │                                                             │
 │  CDMarkdownUnescaping                                       │
 │    Converts any remaining \HHHH sequences back to chars     │
@@ -151,6 +154,15 @@ CDMarkdownElement                          Foundation
     ├── CDMarkdownEscaping       UTF16-hex-encodes backslash-escaped chars (Phase 1.5)
     └── CDMarkdownUnescaping     reverses all remaining \HHHH sequences (Phase 3)
 ```
+
+### Syntax highlighting
+
+`CDMarkdownSyntaxHighlighter` (protocol) turns a fenced block's decoded source plus its
+language hint into `[CDMarkdownSyntaxToken]` (an `NSRange` + a `CDMarkdownSyntaxTokenType`).
+`CDMarkdownSyntax` consults it only when `syntaxColors` is non-empty, then applies
+`.foregroundColor` per token. The built-in `CDMarkdownDefaultSyntaxHighlighter` covers Swift
+and a generic C-family set; anything else returns no tokens (plain monospace). This is purely
+attribute-driven, so all six renderers inherit it with no renderer code.
 
 ---
 

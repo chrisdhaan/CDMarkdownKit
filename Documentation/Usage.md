@@ -275,6 +275,48 @@ attributed.enumerateAttribute(.cdMarkdownCodeLanguage,
 The attribute is a `String` whose value is the exact text after the opening fence — `"swift"`,
 `"python"`, `"js"`, etc. It is absent when no hint is given.
 
+### Syntax highlighting for fenced code blocks
+
+Fenced code blocks can be token-coloured. Provide a colour per semantic token type, either
+on a theme:
+
+```swift
+var theme = CDMarkdownTheme.default
+theme.codeSyntaxColors = [
+    .keyword:  UIColor.systemPink,
+    .type:     UIColor.systemTeal,
+    .string:   UIColor.systemGreen,
+    .comment:  UIColor.systemGray,
+    .number:   UIColor.systemOrange,
+    .function: UIColor.systemBlue,
+    .attribute: UIColor.systemPurple
+]
+let parser = CDMarkdownParser(theme: theme)
+```
+
+or directly on the parser's syntax element:
+
+```swift
+let parser = CDMarkdownParser()
+parser.syntax.syntaxColors = [.keyword: .systemPink, .string: .systemGreen]
+```
+
+The built-in tokenizer understands `swift` and common C-family languages (`js`, `ts`, `java`,
+`c`, `cpp`, `kotlin`, `go`, `rust`, …). A fence with no language hint, or a language the
+tokenizer doesn't recognise, renders as plain monospace. Leaving `codeSyntaxColors` empty
+(the default) changes nothing.
+
+For other languages or a different engine, implement `CDMarkdownSyntaxHighlighter` and assign
+it:
+
+```swift
+parser.syntax.syntaxHighlighter = MyTreeSitterHighlighter()
+```
+
+Highlighting is applied as `foregroundColor` attributes during parsing, so it works
+identically across all six renderers: `CDMarkdownLabel`, `CDMarkdownTextView`,
+`CDMarkdownNSTextView`, `CDMarkdownNSLabel`, `CDMarkdownText`, and `CDMarkdownView`.
+
 ---
 
 ## CDMarkdownLabel

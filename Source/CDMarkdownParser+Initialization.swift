@@ -259,6 +259,7 @@ extension CDMarkdownParser {
         self.syntax.paragraphStyle = theme.syntax.paragraphStyle
         self.syntax.underlineColor = theme.syntax.underlineColor
         self.syntax.underlineStyle = theme.syntax.underlineStyle
+        self.syntax.syntaxColors = theme.codeSyntaxColors
 
         self.strikethrough.font = theme.strikethrough.font ?? self.strikethrough.font
         self.strikethrough.color = theme.strikethrough.color ?? self.strikethrough.color

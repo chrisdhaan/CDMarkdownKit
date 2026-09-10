@@ -94,4 +94,39 @@ struct CDMarkdownThemeTests {
         let themedParser = CDMarkdownParser(theme: .default)
         #expect(themedParser.header.color == defaultHeaderColor)
     }
+
+    @Test func codeSyntaxColorsFromThemeReachParserSyntaxElement() async {
+        var theme = CDMarkdownTheme.default
+        theme.codeSyntaxColors = [.keyword: CDColor.red, .string: CDColor.green]
+        let parser = CDMarkdownParser(theme: theme)
+        #expect(parser.syntax.syntaxColors[.keyword] == CDColor.red)
+        #expect(parser.syntax.syntaxColors[.string] == CDColor.green)
+
+        let result = await parser.parse("```swift\nlet x = 1\n```")
+        guard let r = result.string.range(of: "let") else {
+            Issue.record("no 'let'")
+            return
+        }
+        let color = result.attribute(.foregroundColor,
+                                     at: NSRange(r, in: result.string).location,
+                                     effectiveRange: nil) as? CDColor
+        #expect(color == CDColor.red)
+    }
+
+    @Test func defaultAndSystemDarkThemesHaveEmptyCodeSyntaxColors() {
+        #expect(CDMarkdownTheme.default.codeSyntaxColors.isEmpty)
+        if #available(iOS 13.0, tvOS 13.0, macOS 10.15, watchOS 4.0, visionOS 1.0, *) {
+            #expect(CDMarkdownTheme.systemDark.codeSyntaxColors.isEmpty)
+        }
+    }
+
+    @Test func codeSyntaxColorsParticipatesInEquatable() {
+        var a = CDMarkdownTheme.default
+        var b = CDMarkdownTheme.default
+        #expect(a == b)
+        a.codeSyntaxColors = [.keyword: CDColor.red]
+        #expect(a != b)
+        b.codeSyntaxColors = [.keyword: CDColor.red]
+        #expect(a == b)
+    }
 }

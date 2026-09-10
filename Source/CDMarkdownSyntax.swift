@@ -49,6 +49,13 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
     open var underlineColor: CDColor?
     /// The underline style for code blocks.
     open var underlineStyle: NSUnderlineStyle?
+    /// Semantic-token → colour map applied to this block's tokens. Empty (the default)
+    /// disables highlighting entirely — output is identical to not having the feature.
+    open var syntaxColors: [CDMarkdownSyntaxTokenType: CDColor]
+    /// The tokenizer consulted when ``syntaxColors`` is non-empty. Defaults to
+    /// ``CDMarkdownDefaultSyntaxHighlighter``; assign a custom implementation for more
+    /// languages or a different engine.
+    open var syntaxHighlighter: any CDMarkdownSyntaxHighlighter
 
     weak var parser: CDMarkdownParser?
 
@@ -62,13 +69,17 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
                 backgroundColor: CDColor? = CDColor.syntaxBackgroundGray(),
                 paragraphStyle: NSParagraphStyle? = nil,
                 underlineColor: CDColor? = nil,
-                underlineStyle: NSUnderlineStyle? = nil) {
+                underlineStyle: NSUnderlineStyle? = nil,
+                syntaxColors: [CDMarkdownSyntaxTokenType: CDColor] = [:],
+                syntaxHighlighter: any CDMarkdownSyntaxHighlighter = CDMarkdownDefaultSyntaxHighlighter()) {
         self.font = font
         self.color = color
         self.backgroundColor = backgroundColor
         self.paragraphStyle = paragraphStyle
         self.underlineColor = underlineColor
         self.underlineStyle = underlineStyle
+        self.syntaxColors = syntaxColors
+        self.syntaxHighlighter = syntaxHighlighter
     }
 
     open func addAttributes(_ attributedString: NSMutableAttributedString,
@@ -82,7 +93,41 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         let range = NSRange(location: range.location,
                             length: unescapedString.utf16.count)
         applyBaseAttributes(to: attributedString, range: range, language: detectedLanguage)
+        applySyntaxHighlighting(to: attributedString,
+                                blockRange: range,
+                                code: unescapedString,
+                                language: detectedLanguage)
         adjustBackgroundColorWrapping(in: attributedString, range: range)
+    }
+
+    /// Writes `.foregroundColor` runs over the block's token ranges. No-op unless a
+    /// palette is set. Out-of-bounds or zero-length token ranges from a misbehaving
+    /// highlighter are dropped — never applied, never a crash.
+    private func applySyntaxHighlighting(to attributedString: NSMutableAttributedString,
+                                         blockRange: NSRange,
+                                         code: String,
+                                         language: String?) {
+        guard !syntaxColors.isEmpty else { return }
+        let unitCount = code.utf16.count
+        guard unitCount > 0 else { return }
+
+        // The highlighter contract takes a lowercased hint; the raw `.cdMarkdownCodeLanguage`
+        // attribute written by `applyBaseAttributes` stays verbatim as the fence wrote it.
+        for token in syntaxHighlighter.tokens(in: code, language: language?.lowercased()) {
+            guard let color = syntaxColors[token.type] else { continue }
+            let local = token.range
+            // Subtraction form so a pathological `NSRange(location: 1, length: .max)` from a
+            // custom highlighter can't trap on `Int` overflow during bounds validation.
+            guard local.length > 0,
+                  local.location >= 0,
+                  local.location <= unitCount,
+                  local.length <= unitCount - local.location else { continue }
+            let shifted = NSRange(location: blockRange.location + local.location, length: local.length)
+            guard shifted.location >= 0,
+                  shifted.location <= attributedString.length,
+                  shifted.length <= attributedString.length - shifted.location else { continue }
+            attributedString.addForegroundColor(color, toRange: shifted)
+        }
     }
 
     /// Unescapes the matched substring, strips an optional leading language hint (e.g. "swift"
