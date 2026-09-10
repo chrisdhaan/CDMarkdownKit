@@ -108,7 +108,7 @@ import Testing
         }
 
         @Test func parsedSwiftBlockRetainsDistinctTokenColorsInTextStorage() async {
-            // Spec §7 end-to-end assertion: syntax token colours survive the full
+            // End-to-end: syntax token colours survive the full
             // parse -> NSAttributedString -> CDMarkdownTextView pipeline and reach the
             // view's text storage as distinct `.foregroundColor` runs.
             let parser = CDMarkdownParser()
