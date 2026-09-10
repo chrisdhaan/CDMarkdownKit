@@ -75,6 +75,7 @@
 		5FB6FBA02FB3FD6100E97C06 /* CDMarkdownQuote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B366191F324DE90078B962 /* CDMarkdownQuote.swift */; };
 		5FB6FBA12FB3FD6100E97C06 /* CDMarkdownStrikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD0A028FC20150069CA4B /* CDMarkdownStrikethrough.swift */; };
 		678608D520866EF751E58B0E /* CDMarkdownSwiftSyntaxLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBFF8E82513A371C9476BFA /* CDMarkdownSwiftSyntaxLexer.swift */; };
+		5FD16F4E5ABA4DB89ED50E46 /* CDMarkdownSyntaxLexers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E4A4AD9E54B2097A643C3 /* CDMarkdownSyntaxLexers.swift */; };
 		3B7396324B83E134237791A3 /* CDMarkdownDefaultSyntaxHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6C29F0A2C1D9752DC1886D /* CDMarkdownDefaultSyntaxHighlighter.swift */; };
 		ADA2B25EED2C245E9A9DDE29 /* CDMarkdownSyntaxHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538DE37186E62BBE54749523 /* CDMarkdownSyntaxHighlighting.swift */; };
 		5FB6FBA22FB3FD6100E97C06 /* CDMarkdownOrderedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0001AA00000000000000A1 /* CDMarkdownOrderedList.swift */; };
@@ -260,18 +261,22 @@
 		B2B366381F324DE90078B962 /* CDFont+CDMarkdownKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2B3661F1F324DE90078B962 /* CDFont+CDMarkdownKit.swift */; };
 		B2CAD0A128FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD0A028FC20150069CA4B /* CDMarkdownStrikethrough.swift */; };
 		B0D75FA8E5443E5A37C71BD9 /* CDMarkdownSwiftSyntaxLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBFF8E82513A371C9476BFA /* CDMarkdownSwiftSyntaxLexer.swift */; };
+		75F3034827CB48B5B4113C5C /* CDMarkdownSyntaxLexers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E4A4AD9E54B2097A643C3 /* CDMarkdownSyntaxLexers.swift */; };
 		0D006313B2F089D5091CB8F3 /* CDMarkdownDefaultSyntaxHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6C29F0A2C1D9752DC1886D /* CDMarkdownDefaultSyntaxHighlighter.swift */; };
 		8B7C7E021E2D0E0F7FEAD7A6 /* CDMarkdownSyntaxHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538DE37186E62BBE54749523 /* CDMarkdownSyntaxHighlighting.swift */; };
 		B2CAD0A228FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD0A028FC20150069CA4B /* CDMarkdownStrikethrough.swift */; };
 		9E8D7DAC87B00A284C1DF571 /* CDMarkdownSwiftSyntaxLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBFF8E82513A371C9476BFA /* CDMarkdownSwiftSyntaxLexer.swift */; };
+		2C1D9CCFBAA747128B58287D /* CDMarkdownSyntaxLexers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E4A4AD9E54B2097A643C3 /* CDMarkdownSyntaxLexers.swift */; };
 		BB8000E569A4A464F483072C /* CDMarkdownDefaultSyntaxHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6C29F0A2C1D9752DC1886D /* CDMarkdownDefaultSyntaxHighlighter.swift */; };
 		967D5DB698E572B1677E74BC /* CDMarkdownSyntaxHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538DE37186E62BBE54749523 /* CDMarkdownSyntaxHighlighting.swift */; };
 		B2CAD0A328FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD0A028FC20150069CA4B /* CDMarkdownStrikethrough.swift */; };
 		113254B9E90C54E5884E8B38 /* CDMarkdownSwiftSyntaxLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBFF8E82513A371C9476BFA /* CDMarkdownSwiftSyntaxLexer.swift */; };
+		6E55FBE806D64503A1502CF4 /* CDMarkdownSyntaxLexers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E4A4AD9E54B2097A643C3 /* CDMarkdownSyntaxLexers.swift */; };
 		9A2D0939E6315F37625FE2E8 /* CDMarkdownDefaultSyntaxHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6C29F0A2C1D9752DC1886D /* CDMarkdownDefaultSyntaxHighlighter.swift */; };
 		42F5FA3CADE06569D9BB1C12 /* CDMarkdownSyntaxHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538DE37186E62BBE54749523 /* CDMarkdownSyntaxHighlighting.swift */; };
 		B2CAD0A428FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2CAD0A028FC20150069CA4B /* CDMarkdownStrikethrough.swift */; };
 		6140483B1635EFF5CB387254 /* CDMarkdownSwiftSyntaxLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEBFF8E82513A371C9476BFA /* CDMarkdownSwiftSyntaxLexer.swift */; };
+		16CD9F28BD114DA7899444C3 /* CDMarkdownSyntaxLexers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E4A4AD9E54B2097A643C3 /* CDMarkdownSyntaxLexers.swift */; };
 		13B46ACF2A44509C8B9F121A /* CDMarkdownDefaultSyntaxHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6C29F0A2C1D9752DC1886D /* CDMarkdownDefaultSyntaxHighlighter.swift */; };
 		19E3F48236F783252DD0F026 /* CDMarkdownSyntaxHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538DE37186E62BBE54749523 /* CDMarkdownSyntaxHighlighting.swift */; };
 		CD0001AA00000000000000B1 /* CDMarkdownOrderedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0001AA00000000000000A1 /* CDMarkdownOrderedList.swift */; };
@@ -369,6 +374,7 @@
 		B2B3661F1F324DE90078B962 /* CDFont+CDMarkdownKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CDFont+CDMarkdownKit.swift"; sourceTree = "<group>"; };
 		B2CAD0A028FC20150069CA4B /* CDMarkdownStrikethrough.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownStrikethrough.swift; sourceTree = "<group>"; };
 		EEBFF8E82513A371C9476BFA /* CDMarkdownSwiftSyntaxLexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownSwiftSyntaxLexer.swift; sourceTree = "<group>"; };
+		E65E4A4AD9E54B2097A643C3 /* CDMarkdownSyntaxLexers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownSyntaxLexers.swift; sourceTree = "<group>"; };
 		2A6C29F0A2C1D9752DC1886D /* CDMarkdownDefaultSyntaxHighlighter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownDefaultSyntaxHighlighter.swift; sourceTree = "<group>"; };
 		538DE37186E62BBE54749523 /* CDMarkdownSyntaxHighlighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDMarkdownSyntaxHighlighting.swift; sourceTree = "<group>"; };
 		B2D61BD420CF62F80091BFFF /* PULL_REQUEST_TEMPLATE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = PULL_REQUEST_TEMPLATE.md; path = .github/PULL_REQUEST_TEMPLATE.md; sourceTree = "<group>"; };
@@ -517,6 +523,7 @@
 				B2B366191F324DE90078B962 /* CDMarkdownQuote.swift */,
 				B2CAD0A028FC20150069CA4B /* CDMarkdownStrikethrough.swift */,
 				EEBFF8E82513A371C9476BFA /* CDMarkdownSwiftSyntaxLexer.swift */,
+				E65E4A4AD9E54B2097A643C3 /* CDMarkdownSyntaxLexers.swift */,
 				2A6C29F0A2C1D9752DC1886D /* CDMarkdownDefaultSyntaxHighlighter.swift */,
 				538DE37186E62BBE54749523 /* CDMarkdownSyntaxHighlighting.swift */,
 				B2B3661B1F324DE90078B962 /* CDMarkdownSyntax.swift */,
@@ -973,6 +980,7 @@
 				5FB6FBA02FB3FD6100E97C06 /* CDMarkdownQuote.swift in Sources */,
 				5FB6FBA12FB3FD6100E97C06 /* CDMarkdownStrikethrough.swift in Sources */,
 				678608D520866EF751E58B0E /* CDMarkdownSwiftSyntaxLexer.swift in Sources */,
+				5FD16F4E5ABA4DB89ED50E46 /* CDMarkdownSyntaxLexers.swift in Sources */,
 				3B7396324B83E134237791A3 /* CDMarkdownDefaultSyntaxHighlighter.swift in Sources */,
 				ADA2B25EED2C245E9A9DDE29 /* CDMarkdownSyntaxHighlighting.swift in Sources */,
 				5FB6FBA22FB3FD6100E97C06 /* CDMarkdownOrderedList.swift in Sources */,
@@ -1040,6 +1048,7 @@
 				B267903B2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
 				B2CAD0A228FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */,
 				B0D75FA8E5443E5A37C71BD9 /* CDMarkdownSwiftSyntaxLexer.swift in Sources */,
+				75F3034827CB48B5B4113C5C /* CDMarkdownSyntaxLexers.swift in Sources */,
 				0D006313B2F089D5091CB8F3 /* CDMarkdownDefaultSyntaxHighlighter.swift in Sources */,
 				8B7C7E021E2D0E0F7FEAD7A6 /* CDMarkdownSyntaxHighlighting.swift in Sources */,
 				B2ACA0A31FBF95A400EABEF6 /* CDMarkdownImage.swift in Sources */,
@@ -1106,6 +1115,7 @@
 				B267903C2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
 				B2CAD0A328FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */,
 				9E8D7DAC87B00A284C1DF571 /* CDMarkdownSwiftSyntaxLexer.swift in Sources */,
+				2C1D9CCFBAA747128B58287D /* CDMarkdownSyntaxLexers.swift in Sources */,
 				BB8000E569A4A464F483072C /* CDMarkdownDefaultSyntaxHighlighter.swift in Sources */,
 				967D5DB698E572B1677E74BC /* CDMarkdownSyntaxHighlighting.swift in Sources */,
 				B2ACA0BC1FBF960A00EABEF6 /* CDMarkdownImage.swift in Sources */,
@@ -1172,6 +1182,7 @@
 				B267903D2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
 				B2CAD0A428FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */,
 				113254B9E90C54E5884E8B38 /* CDMarkdownSwiftSyntaxLexer.swift in Sources */,
+				6E55FBE806D64503A1502CF4 /* CDMarkdownSyntaxLexers.swift in Sources */,
 				9A2D0939E6315F37625FE2E8 /* CDMarkdownDefaultSyntaxHighlighter.swift in Sources */,
 				42F5FA3CADE06569D9BB1C12 /* CDMarkdownSyntaxHighlighting.swift in Sources */,
 				B2ACA0D51FBF967800EABEF6 /* CDMarkdownImage.swift in Sources */,
@@ -1238,6 +1249,7 @@
 				B267903A2868AC0E00DFAAA5 /* CDMarkdownKit.swift in Sources */,
 				B2CAD0A128FC20150069CA4B /* CDMarkdownStrikethrough.swift in Sources */,
 				6140483B1635EFF5CB387254 /* CDMarkdownSwiftSyntaxLexer.swift in Sources */,
+				16CD9F28BD114DA7899444C3 /* CDMarkdownSyntaxLexers.swift in Sources */,
 				13B46ACF2A44509C8B9F121A /* CDMarkdownDefaultSyntaxHighlighter.swift in Sources */,
 				19E3F48236F783252DD0F026 /* CDMarkdownSyntaxHighlighting.swift in Sources */,
 				B2B366201F324DE90078B962 /* CDMarkdownImage.swift in Sources */,
