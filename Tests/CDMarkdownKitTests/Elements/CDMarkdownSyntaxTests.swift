@@ -165,6 +165,23 @@ struct CDMarkdownSyntaxTests {
         #expect(valueColor != CDColor.red)
     }
 
+    @Test func capitalizedLanguageHintStillGetsHighlighted() async {
+        // The highlighter contract receives the hint lowercased, so a third-party
+        // highlighter written to `if language == "swift"` works for ```Swift too.
+        let parser = CDMarkdownParser()
+        parser.syntax.syntaxColors = [.keyword: CDColor.red]
+        let result = await parser.parse("```Swift\nlet value = 1\n```")
+
+        guard let letRange = result.string.range(of: "let") else {
+            Issue.record("decoded 'let' not found")
+            return
+        }
+        let color = result.attribute(.foregroundColor,
+                                     at: NSRange(letRange, in: result.string).location,
+                                     effectiveRange: nil) as? CDColor
+        #expect(color == CDColor.red)
+    }
+
     @Test func emptyPaletteLeavesAttributesUnchanged() async {
         // Backward-compat guard: with no palette, the attribute output must match
         // what the parser produced before this feature existed.
@@ -214,7 +231,21 @@ struct CDMarkdownSyntaxTests {
         parser.syntax.syntaxColors = [.keyword: .red, .string: .green, .number: .blue]
         parser.syntax.syntaxHighlighter = BadHighlighter()
         let result = await parser.parse("```swift\nabc\n```")
-        #expect(result.length > 0) // no crash, no throw; out-of-bounds tokens dropped
+        #expect(result.length > 0) // no crash, no throw
+
+        guard let abcRange = result.string.range(of: "abc") else {
+            Issue.record("decoded 'abc' not found")
+            return
+        }
+        let base = NSRange(abcRange, in: result.string).location
+        // The only valid token, (1, 2) typed `.number`, colours "bc" blue.
+        let bcColor = result.attribute(.foregroundColor, at: base + 1, effectiveRange: nil) as? CDColor
+        #expect(bcColor == CDColor.blue)
+        // The negative-location keyword token and the over-long string token were dropped:
+        // nothing red or green landed on "a".
+        let aColor = result.attribute(.foregroundColor, at: base, effectiveRange: nil) as? CDColor
+        #expect(aColor != CDColor.red)
+        #expect(aColor != CDColor.green)
     }
 
     @Test func tokenColorWinsOverBaseSyntaxColor() async {

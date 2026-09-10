@@ -77,8 +77,8 @@ public protocol CDMarkdownSyntaxHighlighter {
     ///
     /// - Parameters:
     ///   - code: the decoded block source, with the language-hint line already removed.
-    ///   - language: the lowercased hint exactly as written after the opening fence,
-    ///     or `nil` when the fence carried no hint.
+    ///   - language: the language hint from the opening fence, lowercased
+    ///     (or `nil` when the fence carried no hint).
     /// - Returns: non-overlapping tokens in ascending `range.location` order. Return an
     ///   empty array when the language is unsupported — the block then renders as plain
     ///   monospace. Characters not covered by any token render in the block's base colour.

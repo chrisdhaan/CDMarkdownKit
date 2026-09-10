@@ -314,8 +314,8 @@ parser.syntax.syntaxHighlighter = MyTreeSitterHighlighter()
 ```
 
 Highlighting is applied as `foregroundColor` attributes during parsing, so it works
-identically across `CDMarkdownLabel`, `CDMarkdownTextView`, `CDMarkdownNSTextView`,
-`CDMarkdownText`, and `CDMarkdownView`.
+identically across all six renderers: `CDMarkdownLabel`, `CDMarkdownTextView`,
+`CDMarkdownNSTextView`, `CDMarkdownNSLabel`, `CDMarkdownText`, and `CDMarkdownView`.
 
 ---
 

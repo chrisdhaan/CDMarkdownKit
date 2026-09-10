@@ -25,10 +25,6 @@ struct CDMarkdownDefaultSyntaxHighlighterGenericTests {
 
     private let highlighter = CDMarkdownDefaultSyntaxHighlighter()
 
-    private func types(_ code: String, _ language: String?) -> [CDMarkdownSyntaxTokenType] {
-        highlighter.tokens(in: code, language: language).map(\.type)
-    }
-
     private func substrings(_ code: String, _ language: String?, _ type: CDMarkdownSyntaxTokenType) -> [String] {
         let units = Array(code.utf16)
         return highlighter.tokens(in: code, language: language)
@@ -104,6 +100,37 @@ struct CDMarkdownDefaultSyntaxHighlighterGenericTests {
         let start = Date()
         _ = highlighter.tokens(in: code, language: "js")
         #expect(Date().timeIntervalSince(start) < 5.0)
+    }
+
+    @Test func cppContainerMembersEndAndBeginAreNotKeywords() {
+        // `end` / `begin` were pruned from the generic keyword set: as members followed by
+        // `(` they classify as `.function`, never `.keyword`.
+        let code = "std::vector<int> v; auto a = v.begin(); auto b = v.end();"
+        #expect(!substrings(code, "cpp", .keyword).contains("begin"))
+        #expect(!substrings(code, "cpp", .keyword).contains("end"))
+        #expect(substrings(code, "cpp", .function).contains("begin"))
+        #expect(substrings(code, "cpp", .function).contains("end"))
+    }
+
+    @Test func jsPromiseThenMemberIsFunctionNotKeyword() {
+        let code = "promise.then(x)"
+        #expect(!substrings(code, "js", .keyword).contains("then"))
+        #expect(substrings(code, "js", .function).contains("then"))
+    }
+
+    @Test func keywordLookingMemberAfterDotIsSuppressed() {
+        // `default` is a genuine C-family keyword, but not when used as a member.
+        let code = "let v = obj.default;"
+        #expect(!substrings(code, "js", .keyword).contains("default"))
+    }
+
+    @Test func genericLexerDoesNotSwallowRustLifetimeAsString() {
+        // Single-quote lifetime must not be scanned as one big `.string`; a real
+        // double-quote literal on the same line still is.
+        let code = "let x: &'a str = \"hi\";"
+        let strings = substrings(code, "rust", .string)
+        #expect(strings.contains("\"hi\""))
+        #expect(!strings.contains { $0.contains("'a str") })
     }
 }
 

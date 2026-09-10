@@ -62,12 +62,12 @@ enum CDMarkdownSyntaxLanguageFamily {
         "java", "kt", "kotlin", "scala", "groovy",
         "c", "h", "cpp", "cc", "cxx", "c++", "hpp", "hh",
         "cs", "csharp", "c#",
-        "go", "golang", "rs", "rust", "dart", "swiftpm",
+        "go", "golang", "rs", "rust", "dart",
         "objc", "objective-c", "objectivec", "obj-c", "m", "mm", "php"
     ]
 
     static func family(for language: String) -> CDMarkdownSyntaxLanguageFamily {
-        if language == "swift" {
+        if language == "swift" || language == "swiftpm" {
             return .swift
         }
         if cFamilyHints.contains(language) {
@@ -175,19 +175,23 @@ struct CDMarkdownGenericSyntaxLexer {
         scanner = CDMarkdownSyntaxScanner(code)
     }
 
+    /// C-family / JS / TS / Java / Kotlin / Go / Rust / C# / Swift-family keywords only.
+    /// Python / Ruby / Lua-only words (`end`, `begin`, `def`, `print`, `then`, `elif`,
+    /// `not`, `and`, `or`, `with`, `lambda`, `pass`, `none`, `match`) were removed:
+    /// `cFamilyHints` never routes those languages here, and the words collide with
+    /// ordinary identifiers in the supported ones (C++ `v.end()`, Java `int end = 0`).
     fileprivate static let keywords: Set<String> = [
         "if", "else", "for", "while", "do", "switch", "case", "default", "break",
-        "continue", "return", "goto", "function", "func", "fn", "def", "lambda",
+        "continue", "return", "goto", "function", "func", "fn",
         "class", "struct", "enum", "interface", "trait", "protocol", "impl", "extends",
         "implements", "namespace", "package", "module", "import", "export", "from",
         "using", "include", "require", "public", "private", "protected", "internal",
         "static", "final", "abstract", "virtual", "override", "const", "let", "var",
-        "val", "new", "delete", "this", "self", "super", "null", "nil", "none", "true",
+        "val", "new", "delete", "this", "self", "super", "null", "nil", "true",
         "false", "void", "int", "long", "short", "float", "double", "bool", "boolean",
         "char", "byte", "string", "typeof", "instanceof", "sizeof", "typedef", "in",
         "of", "as", "is", "try", "catch", "finally", "throw", "throws", "async", "await",
-        "yield", "defer", "unsafe", "match", "where", "with", "pass", "print",
-        "not", "and", "or", "then", "end", "begin", "elif"
+        "yield", "defer", "unsafe", "where"
     ]
 
     mutating func scan() -> [CDMarkdownSyntaxToken] {
@@ -206,7 +210,7 @@ struct CDMarkdownGenericSyntaxLexer {
             case _ where CDMarkdownSyntaxScanner.isDigit(unit):
                 consumeNumber()
             case _ where CDMarkdownSyntaxScanner.isIdentifierStart(unit):
-                consumeIdentifier(swiftMemberSuppression: false)
+                consumeIdentifier()
             default:
                 scanner.advance()
             }
@@ -245,6 +249,13 @@ struct CDMarkdownGenericSyntaxLexer {
 
     private mutating func consumeString(delimiter: UInt16) {
         let start = scanner.index
+        // A `'` only opens a string when a closing `'` follows within a short same-line
+        // window. Otherwise it's a Rust lifetime (`&'a str`), a C++ digit separator
+        // (`1'000'000`), or a stray quote — advance one unit and emit no token.
+        if delimiter == 0x27, !singleQuoteOpensString() {
+            scanner.advance()
+            return
+        }
         // Swift-style triple quote is handled by the Swift lexer; here treat "" as empty.
         scanner.advance() // opening delimiter
         while let unit = scanner.peek() {
@@ -266,6 +277,23 @@ struct CDMarkdownGenericSyntaxLexer {
         emit(start, .string)
     }
 
+    /// True when a closing `'` occurs within ~8 code units on the same line as the
+    /// opening `'` at the current index — the mark of a char literal rather than a
+    /// Rust lifetime or a C++ digit separator.
+    private func singleQuoteOpensString() -> Bool {
+        var offset = 1
+        while offset <= 8, let unit = scanner.peek(offset) {
+            if unit == 0x0A || unit == 0x0D {
+                return false
+            }
+            if unit == 0x27 {
+                return true
+            }
+            offset += 1
+        }
+        return false
+    }
+
     private mutating func consumeSigilName(type: CDMarkdownSyntaxTokenType) {
         let start = scanner.index
         scanner.advance() // @ or #
@@ -281,8 +309,10 @@ struct CDMarkdownGenericSyntaxLexer {
         emit(start, .number)
     }
 
-    private mutating func consumeIdentifier(swiftMemberSuppression: Bool) {
+    private mutating func consumeIdentifier() {
         let start = scanner.index
+        // A keyword-looking word used as a member (`promise.then`, `obj.default`) is not a
+        // keyword. The Swift lexer suppresses the same way — the two identifier rules match.
         let precededByDot = start > 0 && scanner.units[start - 1] == 0x2E
         while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isIdentifierBody(unit) {
             scanner.advance()
@@ -297,7 +327,7 @@ struct CDMarkdownGenericSyntaxLexer {
         }
         let isCall = lookahead < scanner.units.count && scanner.units[lookahead] == 0x28
 
-        if Self.keywords.contains(word), !(swiftMemberSuppression && precededByDot) {
+        if Self.keywords.contains(word), !precededByDot {
             emit(start, .keyword)
         } else if let first = word.utf16.first, CDMarkdownSyntaxScanner.isUppercaseASCII(first) {
             emit(start, .type)

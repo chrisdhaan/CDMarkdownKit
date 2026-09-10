@@ -111,16 +111,21 @@ open class CDMarkdownSyntax: CDMarkdownCommonElement {
         let unitCount = code.utf16.count
         guard unitCount > 0 else { return }
 
-        for token in syntaxHighlighter.tokens(in: code, language: language) {
+        // The highlighter contract takes a lowercased hint; the raw `.cdMarkdownCodeLanguage`
+        // attribute written by `applyBaseAttributes` stays verbatim as the fence wrote it.
+        for token in syntaxHighlighter.tokens(in: code, language: language?.lowercased()) {
             guard let color = syntaxColors[token.type] else { continue }
             let local = token.range
+            // Subtraction form so a pathological `NSRange(location: 1, length: .max)` from a
+            // custom highlighter can't trap on `Int` overflow during bounds validation.
             guard local.length > 0,
                   local.location >= 0,
                   local.location <= unitCount,
-                  local.location + local.length <= unitCount else { continue }
+                  local.length <= unitCount - local.location else { continue }
             let shifted = NSRange(location: blockRange.location + local.location, length: local.length)
             guard shifted.location >= 0,
-                  shifted.location + shifted.length <= attributedString.length else { continue }
+                  shifted.location <= attributedString.length,
+                  shifted.length <= attributedString.length - shifted.location else { continue }
             attributedString.addForegroundColor(color, toRange: shifted)
         }
     }
