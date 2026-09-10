@@ -132,6 +132,34 @@ struct CDMarkdownDefaultSyntaxHighlighterGenericTests {
         #expect(strings.contains("\"hi\""))
         #expect(!strings.contains { $0.contains("'a str") })
     }
+
+    @Test func rustMatchIsKeywordButNotForOtherCFamilyLanguages() {
+        // `match` is a Rust keyword the shared C-family set omits; it colours only
+        // when the fence language routes to the Rust keyword set.
+        let code = "match value { _ => 1 }"
+        #expect(substrings(code, "rust", .keyword).contains("match"))
+        #expect(substrings(code, "rs", .keyword).contains("match"))
+        #expect(!substrings(code, "cpp", .keyword).contains("match"))
+    }
+
+    @Test func scalaDefIsKeywordButNotForOtherCFamilyLanguages() {
+        let code = "def total = 1 + 2"
+        #expect(substrings(code, "scala", .keyword).contains("def"))
+        #expect(substrings(code, "groovy", .keyword).contains("def"))
+        #expect(!substrings(code, "js", .keyword).contains("def"))
+    }
+
+    @Test func cppDigitSeparatorsAreNotScannedAsString() {
+        // The inner `'000'` of a C++ digit-separated literal must not be a `.string`.
+        let code = "int n = 1'000'000;"
+        #expect(substrings(code, "cpp", .string).isEmpty)
+        #expect(substrings(code, "cpp", .number).contains { $0.contains("000") })
+    }
+
+    @Test func bareSigilWithNoBodyEmitsNoAttributeToken() {
+        // A lone `@` with no identifier body is not a token.
+        #expect(substrings("let x = a @ b", "js", .attribute).isEmpty)
+    }
 }
 
 struct CDMarkdownDefaultSyntaxHighlighterSwiftTests {
@@ -196,6 +224,24 @@ struct CDMarkdownDefaultSyntaxHighlighterSwiftTests {
         let tokens = highlighter.tokens(in: code, language: "swift")
         #expect(tokens.allSatisfy { $0.range.location + $0.range.length <= code.utf16.count })
         #expect(tokens.contains { $0.type == .string })
+    }
+
+    @Test func bareSigilWithNoBodyEmitsNoAttributeToken() {
+        // Lone `@` / `#` with no identifier body must not emit a 1-unit `.attribute`.
+        #expect(substrings("let a = 1\n@\n#\nlet b = 2", .attribute).isEmpty)
+    }
+
+    @Test func interpolationContainingNestedQuotesAndParensStaysOneStringRun() {
+        // The nested `"a ) b"` literal and its `)` live inside `\( … )`; the outer
+        // literal must not be truncated at that inner `)`.
+        let code = "let s = \"\\(\"a ) b\") end\""
+        let joined = substrings(code, .string).joined()
+        #expect(joined.contains("\"a ) b\""))
+        #expect(joined.contains(") end\""))
+        let units = code.utf16.count
+        #expect(highlighter.tokens(in: code, language: "swift").allSatisfy {
+            $0.range.location >= 0 && $0.range.location + $0.range.length <= units
+        })
     }
 }
 

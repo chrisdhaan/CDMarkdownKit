@@ -173,14 +173,20 @@ extension CDMarkdownSyntaxLexing {
         emit(start, .comment)
     }
 
-    /// Consumes an `@name` / `#name` sigil and emits it as `.attribute`.
+    /// Consumes an `@name` / `#name` sigil and emits it as `.attribute`. A lone sigil with
+    /// no identifier body emits nothing — the cursor still advances past the sigil char so
+    /// `scan()` keeps making progress.
     mutating func consumeSigilName() {
         let start = scanner.index
         scanner.advance() // @ or #
+        var bodyLength = 0
         while let unit = scanner.peek(), CDMarkdownSyntaxScanner.isIdentifierBody(unit) {
             scanner.advance()
+            bodyLength += 1
         }
-        emit(start, .attribute)
+        if bodyLength > 0 {
+            emit(start, .attribute)
+        }
     }
 
     /// Consumes a numeric literal and emits it as `.number`.
@@ -230,8 +236,13 @@ struct CDMarkdownGenericSyntaxLexer: CDMarkdownSyntaxLexing {
     var scanner: CDMarkdownSyntaxScanner
     var tokens: [CDMarkdownSyntaxToken] = []
 
-    init(_ code: String) {
+    /// `baseKeywords` plus any language-specific additions for the fence hint this lexer
+    /// was built for. Fixed at init and handed to every `consumeIdentifier` call.
+    private let keywords: Set<String>
+
+    init(_ code: String, language: String? = nil) {
         scanner = CDMarkdownSyntaxScanner(code)
+        keywords = Self.baseKeywords.union(Self.extraKeywords(for: language))
     }
 
     /// C-family / JS / TS / Java / Kotlin / Go / Rust / C# / Swift-family keywords only.
@@ -239,7 +250,9 @@ struct CDMarkdownGenericSyntaxLexer: CDMarkdownSyntaxLexing {
     /// `not`, `and`, `or`, `with`, `lambda`, `pass`, `none`, `match`) were removed:
     /// `cFamilyHints` never routes those languages here, and the words collide with
     /// ordinary identifiers in the supported ones (C++ `v.end()`, Java `int end = 0`).
-    private static let keywords: Set<String> = [
+    /// A few of those (`match`, `def`) are real keywords in one routed language and are
+    /// layered back in per-language by `extraKeywords(for:)`.
+    private static let baseKeywords: Set<String> = [
         "if", "else", "for", "while", "do", "switch", "case", "default", "break",
         "continue", "return", "goto", "function", "func", "fn",
         "class", "struct", "enum", "interface", "trait", "protocol", "impl", "extends",
@@ -252,6 +265,20 @@ struct CDMarkdownGenericSyntaxLexer: CDMarkdownSyntaxLexing {
         "of", "as", "is", "try", "catch", "finally", "throw", "throws", "async", "await",
         "yield", "defer", "unsafe", "where"
     ]
+
+    /// Keywords layered onto `baseKeywords` for a specific fence hint: `match` for Rust,
+    /// `def` for Scala / Groovy. Both route here via `cFamilyHints` but need a word the
+    /// shared set omits to avoid mis-colouring the other C-family languages.
+    private static func extraKeywords(for language: String?) -> Set<String> {
+        switch language {
+        case "rs", "rust":
+            ["match"]
+        case "scala", "groovy":
+            ["def"]
+        default:
+            []
+        }
+    }
 
     mutating func scan() -> [CDMarkdownSyntaxToken] {
         while let unit = scanner.peek() {
@@ -269,7 +296,7 @@ struct CDMarkdownGenericSyntaxLexer: CDMarkdownSyntaxLexing {
             case _ where CDMarkdownSyntaxScanner.isDigit(unit):
                 consumeNumber()
             case _ where CDMarkdownSyntaxScanner.isIdentifierStart(unit):
-                consumeIdentifier(keywords: Self.keywords)
+                consumeIdentifier(keywords: keywords)
             default:
                 scanner.advance()
             }
@@ -279,12 +306,17 @@ struct CDMarkdownGenericSyntaxLexer: CDMarkdownSyntaxLexing {
 
     private mutating func consumeString(delimiter: UInt16) {
         let start = scanner.index
-        // A `'` only opens a string when a closing `'` follows within a short same-line
-        // window. Otherwise it's a Rust lifetime (`&'a str`), a C++ digit separator
-        // (`1'000'000`), or a stray quote — advance one unit and emit no token.
-        if delimiter == 0x27, !singleQuoteOpensString() {
-            scanner.advance()
-            return
+        // A `'` only opens a string when it follows a non-identifier, non-digit character
+        // *and* a closing `'` follows within a short same-line window. Otherwise it's a
+        // C++ digit separator (`1'000'000`), a Rust lifetime (`&'a str`), or a stray
+        // quote — advance one unit and emit no token.
+        if delimiter == 0x27 {
+            let precededByIdentifierOrDigit = start > 0
+                && CDMarkdownSyntaxScanner.isIdentifierBody(scanner.units[start - 1])
+            if precededByIdentifierOrDigit || !singleQuoteOpensString() {
+                scanner.advance()
+                return
+            }
         }
         // Swift-style triple quote is handled by the Swift lexer; here treat "" as empty.
         scanner.advance() // opening delimiter

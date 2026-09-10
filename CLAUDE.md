@@ -4,7 +4,7 @@
 
 CDMarkdownKit is a pure-Swift, zero-dependency framework for parsing Markdown text into `NSAttributedString`. It supports rendering inside custom `UILabel` and `UITextView` subclasses with optional rounded-corner background styling for code and syntax blocks.
 
-- **Current version**: 5.0.0
+- **Current version**: 5.1.0
 - **License**: MIT
 - **Author**: Christopher de Haan (contact@christopherdehaan.me)
 
@@ -365,6 +365,7 @@ Do **not** run `swift package generate-documentation` directly to publish docs â
 
 | Version | Date       | Notable Change |
 |---------|------------|----------------|
+| 5.1.0   | 2026-09-10 | Per-level heading font sizes (`CDMarkdownHeader.fontSizes`); caller-supplied fenced-code syntax highlighting (`CDMarkdownSyntaxHighlighter`, `CDMarkdownDefaultSyntaxHighlighter` with built-in Swift + C-family lexers); `intrinsicContentSize` on `CDMarkdownTextView`/`CDMarkdownNSTextView`; `CDMarkdownView` ScrollView layout fix; syntax-highlighter language-fidelity fixes |
 | 5.0.0   | 2026-08-11 | **Breaking:** removed `CDMarkdownParser`'s deprecated synchronous `parse(_:)` overloads (deprecated since v3.2.0); only the `async` overloads remain. Callers must add `await` at each call site â€” the signature is otherwise unchanged |
 | 4.2.1   | 2026-08-09 | UI-layer cleanup: `CDMarkdownTextView` now auto-configures on `init(frame:textContainer:)` and populates `customTextStorage` on the TextKit 1 fallback, consistent with `CDMarkdownLabel`/`CDMarkdownNSTextView`; removed dead code in `CDMarkdownLabel`; documented the TK1/TK2 rounded-background inset difference |
 | 4.2.0   | 2026-08-05 | Removed CocoaPods distribution support (podspec, Gemfile, CI job, docs) ahead of CocoaPods Trunk going read-only 2026-12-02; SPM is now the sole supported distribution method |
