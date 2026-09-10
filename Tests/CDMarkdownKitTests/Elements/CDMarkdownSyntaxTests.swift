@@ -139,4 +139,93 @@ struct CDMarkdownSyntaxTests {
         let trailingNewlineColor = result.attribute(.backgroundColor, at: lastIndex, effectiveRange: nil) as? CDColor
         #expect(trailingNewlineColor == CDColor.syntaxBackgroundGray())
     }
+
+    @Test func swiftBlockAppliesTokenColorFromPalette() async {
+        let parser = CDMarkdownParser()
+        parser.syntax.syntaxColors = [.keyword: CDColor.red]
+        let result = await parser.parse("```swift\nlet value = 1\n```")
+
+        guard let letRange = result.string.range(of: "let") else {
+            Issue.record("decoded 'let' not found")
+            return
+        }
+        let color = result.attribute(.foregroundColor,
+                                     at: NSRange(letRange, in: result.string).location,
+                                     effectiveRange: nil) as? CDColor
+        #expect(color == CDColor.red)
+
+        // A non-keyword token keeps the block's base colour, not red.
+        guard let valueRange = result.string.range(of: "value") else {
+            Issue.record("decoded 'value' not found")
+            return
+        }
+        let valueColor = result.attribute(.foregroundColor,
+                                          at: NSRange(valueRange, in: result.string).location,
+                                          effectiveRange: nil) as? CDColor
+        #expect(valueColor != CDColor.red)
+    }
+
+    @Test func emptyPaletteLeavesAttributesUnchanged() async {
+        // Backward-compat guard: with no palette, the attribute output must match
+        // what the parser produced before this feature existed.
+        let control = CDMarkdownParser()
+        let subject = CDMarkdownParser()
+        subject.syntax.syntaxColors = [:] // explicit default
+
+        let md = "```swift\nlet x = 1 // note\n```"
+        let a = await control.parse(md)
+        let b = await subject.parse(md)
+
+        #expect(a.string == b.string)
+        var mismatches = 0
+        a.enumerateAttributes(in: NSRange(location: 0, length: a.length)) { attrs, range, _ in
+            let other = b.attributes(at: range.location, effectiveRange: nil)
+            if (attrs[.foregroundColor] as? CDColor) != (other[.foregroundColor] as? CDColor) {
+                mismatches += 1
+            }
+        }
+        #expect(mismatches == 0)
+    }
+
+    @Test func blockWithoutLanguageHintIsNotHighlighted() async {
+        let parser = CDMarkdownParser()
+        parser.syntax.syntaxColors = [.keyword: CDColor.red]
+        let result = await parser.parse("```\nlet x = 1\n```")
+        var sawRed = false
+        result.enumerateAttribute(.foregroundColor, in: NSRange(location: 0, length: result.length)) { v, _, _ in
+            if let c = v as? CDColor, c == CDColor.red {
+                sawRed = true
+            }
+        }
+        #expect(!sawRed)
+    }
+
+    @Test func malformedHighlighterRangesDoNotCrash() async {
+        struct BadHighlighter: CDMarkdownSyntaxHighlighter {
+            func tokens(in code: String, language: String?) -> [CDMarkdownSyntaxToken] {
+                [
+                    CDMarkdownSyntaxToken(range: NSRange(location: -5, length: 3), type: .keyword),
+                    CDMarkdownSyntaxToken(range: NSRange(location: 0, length: 9999), type: .string),
+                    CDMarkdownSyntaxToken(range: NSRange(location: 1, length: 2), type: .number)
+                ]
+            }
+        }
+        let parser = CDMarkdownParser()
+        parser.syntax.syntaxColors = [.keyword: .red, .string: .green, .number: .blue]
+        parser.syntax.syntaxHighlighter = BadHighlighter()
+        let result = await parser.parse("```swift\nabc\n```")
+        #expect(result.length > 0) // no crash, no throw; out-of-bounds tokens dropped
+    }
+
+    @Test func tokenColorWinsOverBaseSyntaxColor() async {
+        let parser = CDMarkdownParser()
+        parser.syntax.color = CDColor.gray
+        parser.syntax.syntaxColors = [.keyword: CDColor.red]
+        let result = await parser.parse("```swift\nreturn 1\n```")
+        guard let r = result.string.range(of: "return") else { Issue.record("no 'return'")
+            return
+        }
+        let color = result.attribute(.foregroundColor, at: NSRange(r, in: result.string).location, effectiveRange: nil) as? CDColor
+        #expect(color == CDColor.red)
+    }
 }
