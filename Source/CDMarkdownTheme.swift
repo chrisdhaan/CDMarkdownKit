@@ -26,6 +26,10 @@ public struct CDMarkdownTheme {
     public var italic: InlineTheme
     public var code: InlineTheme
     public var syntax: InlineTheme
+    /// Semantic-token → colour map for fenced code blocks. Empty (the default) leaves
+    /// fenced-block rendering unchanged. The tokenizer itself is not part of the theme —
+    /// set `parser.syntax.syntaxHighlighter` for a custom engine.
+    public var codeSyntaxColors: [CDMarkdownSyntaxTokenType: CDColor]
     public var strikethrough: InlineTheme
     public var quote: InlineTheme
     public var list: InlineTheme
@@ -133,6 +137,7 @@ public struct CDMarkdownTheme {
             color: CDColor.syntaxTextGray(),
             backgroundColor: CDColor.syntaxBackgroundGray()
         ),
+        codeSyntaxColors: [CDMarkdownSyntaxTokenType: CDColor] = [:],
         strikethrough: InlineTheme = InlineTheme(),
         quote: InlineTheme = InlineTheme(),
         list: InlineTheme = InlineTheme(),
@@ -150,6 +155,7 @@ public struct CDMarkdownTheme {
         self.italic = italic
         self.code = code
         self.syntax = syntax
+        self.codeSyntaxColors = codeSyntaxColors
         self.strikethrough = strikethrough
         self.quote = quote
         self.list = list
