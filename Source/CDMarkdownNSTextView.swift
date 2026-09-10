@@ -91,6 +91,7 @@
         /// - Parameter attributedString: The `NSAttributedString` to display. Typically produced by `CDMarkdownParser.parse(_:)`.
         open func setAttributedString(_ attributedString: NSAttributedString) {
             customTextStorage.setAttributedString(attributedString)
+            invalidateIntrinsicContentSize()
         }
 
         // MARK: - Sizing
@@ -116,6 +117,28 @@
             layoutManager.ensureLayout(for: container)
 
             return ceil(layoutManager.usedRect(for: container).height + inset.height * 2)
+        }
+
+        /// The most recent `bounds.width` seen by ``layout()``, so intrinsic content size is
+        /// only re-invalidated when the width — the axis that changes wrapped height — actually
+        /// changes. Starts negative so the first real layout pass always invalidates.
+        private var lastLayoutWidth: CGFloat = -1
+
+        /// Reports a height that fits the current text wrapped to `bounds.width`, so a
+        /// ``CDMarkdownNSTextView`` used directly under AppKit Auto Layout (with no explicit
+        /// height constraint) grows to fit its content. Width is left unconstrained.
+        override open var intrinsicContentSize: NSSize {
+            guard customTextStorage != nil else { return super.intrinsicContentSize }
+            return NSSize(width: NSView.noIntrinsicMetric,
+                          height: fittingHeight(forWidth: bounds.width))
+        }
+
+        override open func layout() {
+            super.layout()
+            if bounds.width != lastLayoutWidth {
+                lastLayoutWidth = bounds.width
+                invalidateIntrinsicContentSize()
+            }
         }
     }
 

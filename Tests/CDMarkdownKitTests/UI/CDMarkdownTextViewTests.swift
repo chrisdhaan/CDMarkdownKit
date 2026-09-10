@@ -140,5 +140,82 @@ import Testing
             #expect(sawGreen)
             #expect(distinct.count >= 2)
         }
+
+        // MARK: - intrinsicContentSize
+
+        @Test func intrinsicContentSizeReportsMeasuredHeightWhenScrollingDisabled() async {
+            let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                              textContainer: nil)
+            textView.isScrollEnabled = false
+            let parser = CDMarkdownParser()
+            textView.attributedText = await parser.parse(
+                "# Heading\n\nA paragraph long enough to wrap onto several lines when it is "
+                    + "constrained to three hundred points of width."
+            )
+
+            let size = textView.intrinsicContentSize
+            let expected = textView.sizeThatFits(CGSize(width: textView.bounds.width,
+                                                        height: .greatestFiniteMagnitude))
+            #expect(size.width == UIView.noIntrinsicMetric)
+            #expect(size.height == expected.height)
+            #expect(size.height > 0)
+        }
+
+        @Test func intrinsicContentSizeStaysNoIntrinsicMetricWhenScrollingEnabled() async {
+            let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                              textContainer: nil)
+            // Default: isScrollEnabled == true -- existing callers see no behavior change.
+            textView.attributedText = await CDMarkdownParser().parse("plenty of words here to wrap")
+
+            #expect(textView.intrinsicContentSize.height == UIView.noIntrinsicMetric)
+        }
+
+        @Test func intrinsicContentSizeIsSafeForEmptyTextWhenScrollingDisabled() {
+            let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                              textContainer: nil)
+            textView.isScrollEnabled = false
+            let size = textView.intrinsicContentSize
+            #expect(size.width == UIView.noIntrinsicMetric)
+            #expect(size.height.isFinite)
+        }
+
+        @Test func settingAttributedTextInvalidatesIntrinsicContentSize() async {
+            let textView = SpyTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                       textContainer: nil)
+            textView.invalidateCount = 0
+
+            textView.attributedText = await CDMarkdownParser().parse("hello")
+
+            #expect(textView.invalidateCount == 1)
+        }
+
+        @Test func layoutSubviewsInvalidatesIntrinsicContentSizeOnlyWhenWidthChanges() {
+            let textView = SpyTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                       textContainer: nil)
+            textView.frame = CGRect(x: 0, y: 0, width: 250, height: 200)
+            textView.invalidateCount = 0
+
+            textView.layoutSubviews()
+            let afterWidthChange = textView.invalidateCount
+
+            textView.layoutSubviews()
+            let afterSameWidth = textView.invalidateCount
+
+            #expect(afterWidthChange == 1)
+            #expect(afterSameWidth == afterWidthChange)
+        }
+    }
+
+    /// Counts `invalidateIntrinsicContentSize()` calls so tests can assert the view
+    /// invalidates its layout at the right moments.
+    @MainActor
+    private final class SpyTextView: CDMarkdownTextView {
+
+        var invalidateCount = 0
+
+        override func invalidateIntrinsicContentSize() {
+            invalidateCount += 1
+            super.invalidateIntrinsicContentSize()
+        }
     }
 #endif

@@ -73,6 +73,79 @@
             #expect(textView.layoutManager === textView.customLayoutManager)
             #expect(textView.textStorage === textView.customTextStorage)
         }
+
+        // MARK: - intrinsicContentSize
+
+        @Test func intrinsicContentSizeReportsFittingHeightAndNoIntrinsicWidth() async {
+            let textView = CDMarkdownNSTextView(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
+            await textView.setAttributedString(
+                parser.parse(
+                    "# Heading\n\nA paragraph long enough to wrap onto several lines "
+                        + "when it is constrained to three hundred points of width."
+                )
+            )
+
+            let size = textView.intrinsicContentSize
+            #expect(size.width == NSView.noIntrinsicMetric)
+            #expect(size.height == textView.fittingHeight(forWidth: textView.bounds.width))
+            #expect(size.height > 0)
+        }
+
+        @Test func intrinsicContentSizeHeightGrowsWithLongerText() async {
+            let textView = CDMarkdownNSTextView(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
+
+            await textView.setAttributedString(parser.parse("one line"))
+            let shortHeight = textView.intrinsicContentSize.height
+
+            await textView.setAttributedString(
+                parser.parse(Array(repeating: "line", count: 40).joined(separator: "\n\n"))
+            )
+            let tallHeight = textView.intrinsicContentSize.height
+
+            #expect(tallHeight > shortHeight)
+        }
+
+        @Test func intrinsicContentSizeIsSafeForEmptyText() {
+            let textView = CDMarkdownNSTextView(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
+            let size = textView.intrinsicContentSize
+            #expect(size.height >= 0)
+            #expect(size.height.isFinite)
+        }
+
+        @Test func setAttributedStringInvalidatesIntrinsicContentSize() async {
+            let textView = SpyNSTextView(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
+            textView.invalidateCount = 0
+
+            await textView.setAttributedString(parser.parse("Hello **world**"))
+
+            #expect(textView.invalidateCount == 1)
+        }
+
+        @Test func layoutInvalidatesIntrinsicContentSizeOnlyWhenWidthChanges() async {
+            let textView = SpyNSTextView(frame: NSRect(x: 0, y: 0, width: 300, height: 100))
+            await textView.setAttributedString(parser.parse("Hello"))
+            textView.invalidateCount = 0
+
+            textView.setFrameSize(NSSize(width: 250, height: 100))
+            textView.layout()
+            #expect(textView.invalidateCount == 1)
+
+            textView.layout()
+            #expect(textView.invalidateCount == 1)
+        }
+    }
+
+    /// Counts `invalidateIntrinsicContentSize()` calls so tests can assert the view
+    /// invalidates its layout at the right moments.
+    @MainActor
+    private final class SpyNSTextView: CDMarkdownNSTextView {
+
+        var invalidateCount = 0
+
+        override func invalidateIntrinsicContentSize() {
+            invalidateCount += 1
+            super.invalidateIntrinsicContentSize()
+        }
     }
 
 #endif

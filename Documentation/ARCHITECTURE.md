@@ -207,6 +207,8 @@ Rounding decisions are driven by the `.cdMarkdownRoundedBackground` custom attri
 
 `makeTextView(frame:)` is the preferred factory for programmatic construction — it calls `configure()`, which auto-selects TextKit 2 on iOS/tvOS 16+.
 
+When `isScrollEnabled` is `false`, `sizeThatFits(_:)` and `intrinsicContentSize` both report a measured height (via a detached layout stack, so the query has no side effects) so the view grows to fit its content under `CDMarkdownView`, `UIViewRepresentable` sizing, and direct UIKit Auto Layout. `intrinsicContentSize` is re-invalidated when `attributedText` is set and when `layoutSubviews()` sees a new `bounds.width`. The default scroll-enabled view keeps `UITextView`'s behavior.
+
 ### CDMarkdownLabel (iOS/tvOS/visionOS)
 
 `@MainActor UILabel` subclass that maintains its own text rendering stack, also TextKit-version-branched via `configure()`:
@@ -221,7 +223,7 @@ Supports tapping links on both paths:
 
 ### CDMarkdownNSTextView (macOS)
 
-`NSTextView` subclass with rounded-corner support via `CDMarkdownNSLayoutManager`. Configured as read-only, non-editable by default. Links in the attributed string are opened by `NSWorkspace` on click unless a custom `NSTextViewDelegate` intercepts them. Use `setAttributedString(_:)` to display parsed markdown.
+`NSTextView` subclass with rounded-corner support via `CDMarkdownNSLayoutManager`. Configured as read-only, non-editable by default. Links in the attributed string are opened by `NSWorkspace` on click unless a custom `NSTextViewDelegate` intercepts them. Use `setAttributedString(_:)` to display parsed markdown. `fittingHeight(forWidth:)` and an `intrinsicContentSize` override (re-invalidated on `setAttributedString(_:)` and on width change in `layout()`) report a measured height via a detached layout stack, so the view sizes to its content under `CDMarkdownView` and direct AppKit Auto Layout.
 
 ### CDMarkdownNSLabel (macOS)
 
