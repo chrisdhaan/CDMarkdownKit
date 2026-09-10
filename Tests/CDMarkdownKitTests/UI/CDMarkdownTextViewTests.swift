@@ -106,5 +106,39 @@ import Testing
 
             #expect(textView.customLayoutManager.roundAllCorners == true)
         }
+
+        @Test func parsedSwiftBlockRetainsDistinctTokenColorsInTextStorage() async {
+            // Spec §7 end-to-end assertion: syntax token colours survive the full
+            // parse -> NSAttributedString -> CDMarkdownTextView pipeline and reach the
+            // view's text storage as distinct `.foregroundColor` runs.
+            let parser = CDMarkdownParser()
+            parser.syntax.syntaxColors = [.keyword: .red, .string: .green]
+            let attributed = await parser.parse("```swift\nlet s = \"hi\"\n```")
+
+            let textView = CDMarkdownTextView(frame: CGRect(x: 0, y: 0, width: 300, height: 200),
+                                              textContainer: nil)
+            textView.attributedText = attributed
+
+            let storage = textView.textStorage
+            var sawRed = false
+            var sawGreen = false
+            var distinct: [CDColor] = []
+            storage.enumerateAttribute(.foregroundColor,
+                                       in: NSRange(location: 0, length: storage.length)) { value, _, _ in
+                guard let color = value as? CDColor else { return }
+                if color == CDColor.red {
+                    sawRed = true
+                }
+                if color == CDColor.green {
+                    sawGreen = true
+                }
+                if !distinct.contains(color) {
+                    distinct.append(color)
+                }
+            }
+            #expect(sawRed)
+            #expect(sawGreen)
+            #expect(distinct.count >= 2)
+        }
     }
 #endif
