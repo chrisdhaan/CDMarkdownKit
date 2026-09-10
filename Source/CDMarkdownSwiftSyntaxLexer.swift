@@ -130,22 +130,55 @@ struct CDMarkdownSwiftSyntaxLexer: CDMarkdownSyntaxLexing {
 
     /// Consumes a balanced `( … )` run starting at the current `(`. Used to skip past
     /// a `\( … )` interpolation segment so the surrounding literal stays one string run.
+    /// A nested string literal or `//` comment inside the segment is stepped over whole,
+    /// so a `(` / `)` living inside one does not skew the depth count.
     private mutating func skipBalancedParens() {
         guard scanner.peek() == 0x28 else { return }
         var depth = 0
         while let unit = scanner.peek() {
-            if unit == 0x28 {
+            switch unit {
+            case 0x28:
                 depth += 1
-            }
-            if unit == 0x29 {
+                scanner.advance()
+            case 0x29:
                 depth -= 1
                 scanner.advance()
                 if depth == 0 {
                     return
                 }
+            case 0x22:
+                skipNestedString()
+            case 0x2F where scanner.peek(1) == 0x2F:
+                while let commentUnit = scanner.peek(), commentUnit != 0x0A, commentUnit != 0x0D {
+                    scanner.advance()
+                }
+            default:
+                scanner.advance()
+            }
+        }
+    }
+
+    /// Consumes a `"…"` literal from the current `"`, honouring `\` escapes and stopping
+    /// at the closing quote or end of line. Lets `skipBalancedParens` step over a string
+    /// nested inside a `\( … )` segment without its punctuation disturbing the count.
+    private mutating func skipNestedString() {
+        guard scanner.peek() == 0x22 else { return }
+        scanner.advance() // opening "
+        while let unit = scanner.peek() {
+            if unit == 0x5C {
+                scanner.advance()
+                if !scanner.isAtEnd {
+                    scanner.advance()
+                }
                 continue
             }
+            if unit == 0x0A || unit == 0x0D {
+                return
+            }
             scanner.advance()
+            if unit == 0x22 {
+                return
+            }
         }
     }
 }

@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [5.1.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/5.1.0)
+
+Released on 2026-09-10.
+
+A feature release: per-level heading font sizes via `CDMarkdownHeader.fontSizes`,
+caller-supplied fenced-code syntax highlighting backed by a built-in Swift and C-family
+tokenizer, and `intrinsicContentSize` support for the UIKit and AppKit text views. Also
+fixes `CDMarkdownView` layout inside a `ScrollView` and several built-in
+syntax-highlighter fidelity issues.
+
 ### Added
 
 - Added `fontSizes` to `CDMarkdownHeader` and `CDMarkdownTheme.HeaderTheme`, an optional array of absolute point sizes indexed by heading level (index 0 = h1 through index 5 = h6). When set to a non-empty array it fully drives heading sizing and `fontIncrease` is ignored, letting callers express an arbitrary non-linear size curve rather than the single fixed ratio `fontIncrease` allows. A shorter array clamps deeper levels to its last entry; `nil` (the default) and an empty array leave existing behavior unchanged.
@@ -18,6 +28,7 @@
 
 - Fixed `CDMarkdownView` rendering its content outside, or independent of, the frame SwiftUI assigns it when placed in a `ScrollView`. The SwiftUI representable now reports a measured content size for the proposed width, so the view lays out within its assigned bounds and scrolls with the enclosing `ScrollView` like `CDMarkdownText` already did. `CDMarkdownTextView` gains a `sizeThatFits(_:)` override (used when scrolling is disabled) and `CDMarkdownNSTextView` a `fittingHeight(forWidth:)` method, so both also size correctly under UIKit and AppKit Auto Layout.
 - Loosened two test-only wall-clock timing budgets (catastrophic-backtracking guards for an unterminated inline-code span and an unterminated fenced code block) from 2 seconds to 10, fixing intermittent failures on a loaded visionOS CI simulator.
+- Improved language fidelity in the built-in fenced-code syntax highlighter. `match` now keyword-colours in Rust and `def` in Scala and Groovy, without those words colouring in the other C-family languages that share the highlighter. A C++ digit separator such as `1'000'000` and a Rust lifetime such as `&'a` are no longer scanned as a string. A lone `@` or `#` with no identifier after it no longer emits a stray one-character attribute token. In Swift, a string interpolation segment that itself contains a quoted string or parenthesis — `"\("a ) b")"` — no longer truncates the surrounding literal.
 
 ## [5.0.0](https://github.com/chrisdhaan/CDMarkdownKit/releases/tag/5.0.0)
 

@@ -37,12 +37,13 @@ public struct CDMarkdownDefaultSyntaxHighlighter: CDMarkdownSyntaxHighlighter, S
 
     public func tokens(in code: String, language: String?) -> [CDMarkdownSyntaxToken] {
         guard let language, !code.isEmpty else { return [] }
-        switch CDMarkdownSyntaxLanguageFamily.family(for: language.lowercased()) {
+        let hint = language.lowercased()
+        switch CDMarkdownSyntaxLanguageFamily.family(for: hint) {
         case .swift:
             var lexer = CDMarkdownSwiftSyntaxLexer(code)
             return lexer.scan()
         case .cFamily:
-            var lexer = CDMarkdownGenericSyntaxLexer(code)
+            var lexer = CDMarkdownGenericSyntaxLexer(code, language: hint)
             return lexer.scan()
         case .unsupported:
             return []
